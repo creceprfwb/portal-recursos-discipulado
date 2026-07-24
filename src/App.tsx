@@ -1,14 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { categoryOptions, initialResources, typeOptions } from './data';
-import { AdminCredentials, Resource } from './types';
+import { Resource } from './types';
 
 const storageKey = 'discipulado-resources-v1';
 const authStorageKey = 'discipulado-admin-session-v1';
-const defaultAdmin: AdminCredentials = {
-  email: 'admin@iglesia.local',
-  password: 'admin123',
-};
-
 const emptyResource: Omit<Resource, 'id' | 'createdAt' | 'displayOrder'> = {
   title: '',
   description: '',
@@ -77,17 +72,7 @@ function App() {
 
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (
-      loginForm.email === defaultAdmin.email &&
-      loginForm.password === defaultAdmin.password
-    ) {
-      setIsAdmin(true);
-      localStorage.setItem(authStorageKey, 'authenticated');
-      setErrorMessage('');
-      return;
-    }
-
-    setErrorMessage('Credenciales inválidas. Usa administrador local de la demo.');
+    setErrorMessage('Usa el panel admin.html publicado para iniciar sesión con Firebase.');
   };
 
   const handleLogout = () => {
@@ -290,7 +275,6 @@ function App() {
               />
             </label>
             <button type="submit">Iniciar sesión</button>
-            <small>Demo local: admin@iglesia.local / admin123</small>
             {errorMessage ? <p className="error-text">{errorMessage}</p> : null}
           </form>
         ) : (

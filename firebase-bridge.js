@@ -81,7 +81,7 @@
 
   async function signIn(email, password) {
     if (!firebaseState.isConfigured || !firebaseState.auth) {
-      return email === 'admin@iglesia.local' && password === 'admin123';
+      return false;
     }
 
     try {

@@ -127,7 +127,6 @@
             <input id="passwordInput" type="password" />
           </label>
           <button id="loginButton">Iniciar sesión</button>
-          <small>Demo local: admin@iglesia.local / admin123</small>
           <p id="errorMessage" class="error-text"></p>
         </div>
 
@@ -353,13 +352,13 @@
         const password = els.passwordInput.value.trim();
         const firebaseLogin = await window.discipladoFirebase?.signIn?.(email, password);
 
-        if (firebaseLogin || (email === 'admin@iglesia.local' && password === 'admin123')) {
+        if (firebaseLogin) {
           isAdmin = true;
           localStorage.setItem(authStorageKey, 'authenticated');
           els.errorMessage.textContent = '';
           toggleAdminView();
         } else {
-          els.errorMessage.textContent = 'Credenciales inválidas. Usa admin@iglesia.local / admin123';
+          els.errorMessage.textContent = 'Credenciales inválidas. Usa el usuario administrador de Firebase.';
         }
       });
 

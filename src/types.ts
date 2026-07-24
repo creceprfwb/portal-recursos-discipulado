@@ -23,8 +23,3 @@ export interface Resource {
   createdAt: string;
   displayOrder: number;
 }
-
-export interface AdminCredentials {
-  email: string;
-  password: string;
-}
