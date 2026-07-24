@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recurso | PRFWB</title>
+    <style>
+      :root {
+        font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        color: #123d4f;
+        background: #f5f5f3;
+        line-height: 1.5;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-width: 320px; background: #f5f5f3; }
+      .viewer-shell { min-height: 100vh; display: grid; grid-template-rows: auto 1fr; }
+      .viewer-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 18px clamp(16px, 4vw, 42px);
+        color: white;
+        background:
+          linear-gradient(90deg, rgba(33, 71, 63, 0.9), rgba(14, 59, 81, 0.96) 48%, rgba(53, 61, 74, 0.9)),
+          linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+        background-size: auto, 48px 48px, 48px 48px;
+      }
+      .brand-lockup { display: flex; align-items: center; gap: 0.85rem; min-width: 0; }
+      .logo-badge {
+        width: 145px;
+        height: 54px;
+        flex: 0 0 auto;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        border-radius: 8px;
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+        background: rgba(7, 29, 53, 0.32);
+      }
+      .logo-badge img { width: 100%; height: 100%; object-fit: contain; display: block; }
+      .title-wrap { min-width: 0; }
+      .eyebrow {
+        display: block;
+        font-size: 0.68rem;
+        font-weight: 900;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        color: #ffca2f;
+      }
+      h1 {
+        margin: 0.1rem 0 0;
+        font-size: clamp(1.05rem, 3vw, 1.55rem);
+        line-height: 1.18;
+        overflow-wrap: anywhere;
+      }
+      .actions { display: flex; gap: 0.7rem; flex-wrap: wrap; justify-content: flex-end; }
+      a.button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 42px;
+        padding: 0.68rem 0.9rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 900;
+        color: #123d4f;
+        background: #ffca2f;
+      }
+      a.secondary { background: #fff4cc; }
+      .pdf-frame {
+        width: 100%;
+        height: calc(100vh - 91px);
+        border: 0;
+        background: white;
+        display: block;
+      }
+      .empty-state {
+        max-width: 720px;
+        margin: 48px auto;
+        padding: 1rem;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 12px 30px rgba(18, 61, 79, 0.08);
+      }
+      @media (max-width: 720px) {
+        .viewer-header { align-items: stretch; flex-direction: column; }
+        .brand-lockup { align-items: flex-start; flex-direction: column; }
+        .actions { justify-content: stretch; }
+        a.button { width: 100%; }
+        .pdf-frame { height: 78vh; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="viewer-shell">
+      <header class="viewer-header">
+        <div class="brand-lockup">
+          <div class="logo-badge">
+            <img src="./prfwb-logo-cropped-v2.png" alt="PR Free Will Baptists" />
+          </div>
+          <div class="title-wrap">
+            <span class="eyebrow">Recurso de discipulado</span>
+            <h1 id="resourceTitle">Recurso</h1>
+          </div>
+        </div>
+        <div class="actions">
+          <a class="button secondary" href="./index.html">Volver</a>
+          <a id="openFile" class="button" href="#" target="_blank" rel="noreferrer noopener">Abrir PDF</a>
+        </div>
+      </header>
+      <main id="viewerMount"></main>
+    </div>
+
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const file = params.get('file') || '';
+      const title = params.get('title') || 'Recurso';
+      const mount = document.getElementById('viewerMount');
+      const titleElement = document.getElementById('resourceTitle');
+      const openFile = document.getElementById('openFile');
+
+      titleElement.textContent = title;
+      document.title = `${title} | PRFWB`;
+
+      if (!file) {
+        mount.innerHTML = '<div class="empty-state">No se encontró el archivo del recurso.</div>';
+        openFile.style.display = 'none';
+      } else {
+        openFile.href = file;
+        mount.innerHTML = `<iframe class="pdf-frame" src="${file}" title="${title}"></iframe>`;
+      }
+    </script>
+  </body>
+</html>

@@ -352,6 +352,14 @@
         window.parent?.postMessage({ type: 'DISCIPLESHIP_APP_HEIGHT', height: document.documentElement.scrollHeight }, '*');
       }
 
+      function getResourceHref(resource) {
+        const href = resource.externalUrl || resource.fileUrl || '#';
+        if (resource.fileUrl && resource.fileUrl.toLowerCase().includes('.pdf')) {
+          return `./viewer.html?file=${encodeURIComponent(resource.fileUrl)}&title=${encodeURIComponent(resource.title)}`;
+        }
+        return href;
+      }
+
       function renderCard(resource) {
         return `
           <article class="resource-card">
@@ -361,7 +369,7 @@
               <h3>${resource.title}</h3>
               <p>${resource.description}</p>
               <div class="card-meta"><span>${resource.type}</span><span>${resource.author || 'Sin autor'}</span></div>
-              <a href="${resource.externalUrl || resource.fileUrl || '#'}" target="_blank" rel="noreferrer noopener">Abrir recurso</a>
+              <a href="${getResourceHref(resource)}" target="_blank" rel="noreferrer noopener">Abrir recurso</a>
             </div>
           </article>
         `;
