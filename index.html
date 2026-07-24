@@ -166,7 +166,7 @@
       </section>
 
       <section class="public-section">
-        <div class="section-header"><h2>Recursos recientes</h2></div>
+        <div class="section-header"><h2>Todos los recursos</h2></div>
         <div id="recentList" class="card-grid"></div>
       </section>
 
@@ -327,7 +327,7 @@
       function renderPublicResources() {
         const filtered = getFilteredResources();
         const featured = filtered.filter((resource) => resource.isFeatured).slice(0, 3);
-        const recent = filtered.slice(0, 6);
+        const recent = filtered;
 
         els.featuredList.innerHTML = featured.length ? featured.map(renderCard).join('') : '<div class="empty-state">No hay recursos destacados con los filtros actuales.</div>';
         els.recentList.innerHTML = recent.length ? recent.map(renderCard).join('') : '<div class="empty-state">No se encontraron recursos. Intenta cambiar los filtros.</div>';

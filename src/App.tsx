@@ -68,7 +68,7 @@ function App() {
   }, [publicResources]);
 
   const featuredResources = publicResources.filter((resource) => resource.isFeatured).slice(0, 3);
-  const recentResources = publicResources.slice(0, 6);
+  const recentResources = publicResources;
 
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -228,7 +228,7 @@ function App() {
 
       <section className="public-section">
         <div className="section-header">
-          <h2>Recursos recientes</h2>
+          <h2>Todos los recursos</h2>
         </div>
         {recentResources.length === 0 ? (
           <div className="empty-state">No se encontraron recursos. Intenta cambiar los filtros.</div>
