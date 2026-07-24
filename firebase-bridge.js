@@ -66,6 +66,15 @@
 
     try {
       const batch = firebaseState.db.batch();
+      const nextResourceIds = new Set(resources.map((resource, index) => resource.id || `res-${index}`));
+      const currentSnapshot = await firebaseState.db.collection('resources').get();
+
+      currentSnapshot.docs.forEach((doc) => {
+        if (!nextResourceIds.has(doc.id)) {
+          batch.delete(doc.ref);
+        }
+      });
+
       resources.forEach((resource, index) => {
         const resourceRef = firebaseState.db.collection('resources').doc(resource.id || `res-${index}`);
         batch.set(resourceRef, {
