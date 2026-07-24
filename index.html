@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portal de Recursos de Discipulado</title>
+    <meta
+      name="description"
+      content="Portal de recursos de discipulado para iglesia, compatible con embed de Wix."
+    />
+    <style>
+      :root {
+        font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        color: #123d4f;
+        background: #f5f5f3;
+        line-height: 1.5;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-width: 320px; background: #f5f5f3; }
+      button, input, select, textarea { font: inherit; }
+      img { max-width: 100%; }
+      .app-shell { width: min(1200px, calc(100% - 2rem)); margin: 0 auto; padding: 24px 0 48px; }
+      .hero {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        align-items: start;
+        color: white;
+        padding: 56px 32px;
+        border-radius: 0;
+        background:
+          linear-gradient(90deg, rgba(33, 71, 63, 0.88), rgba(14, 59, 81, 0.94) 48%, rgba(53, 61, 74, 0.88)),
+          linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+        background-size: auto, 48px 48px, 48px 48px;
+      }
+      .hero h1 { margin: 0.4rem 0 0.8rem; }
+      .hero p { max-width: 780px; margin: 0; }
+      .eyebrow { text-transform: uppercase; font-size: 0.78rem; font-weight: 800; letter-spacing: 0.28em; color: #e44b41; }
+      .brand-lockup { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+      .logo-badge {
+        width: 250px;
+        height: 94px;
+        flex: 0 0 auto;
+        border-radius: 16px;
+        display: grid;
+        place-items: center;
+        background: rgba(7, 29, 53, 0.32);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        overflow: hidden;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.25), 0 8px 20px rgba(0, 0, 0, 0.14);
+      }
+      .logo-badge img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+      }
+      .brand-name {
+        font-size: 1.15rem;
+        font-weight: 900;
+        letter-spacing: 0.03em;
+        line-height: 1.1;
+      }
+      .filter-grid, .resource-form, .admin-login, .admin-row, .resource-card, .admin-section { background: white; border-radius: 8px; box-shadow: 0 12px 30px rgba(18, 61, 79, 0.08); }
+      .filter-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; padding: 1rem; margin-top: 1rem; }
+      .filter-grid label, .admin-login label, .resource-form label { display: flex; flex-direction: column; gap: 0.4rem; font-weight: 600; }
+      input, select, textarea { width: 100%; border: 1px solid #d7dedf; border-radius: 8px; padding: 0.7rem 0.8rem; background: #fdfefe; }
+      textarea { min-height: 100px; resize: vertical; }
+      button { border: none; border-radius: 8px; padding: 0.75rem 1rem; background: #123d4f; color: white; cursor: pointer; font-weight: 800; }
+      button:hover { opacity: 0.94; }
+      .ghost-button { background: #fff4cc; color: #123d4f; }
+      .hero-action {
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.9rem 1.15rem;
+        min-width: 160px;
+        border-radius: 8px;
+        background: #ffca2f;
+        color: #123d4f;
+        font-weight: 900;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        transition: transform 0.16s ease, box-shadow 0.16s ease;
+      }
+      .hero-action:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.22);
+      }
+      .danger-button { background: #e44b41; }
+      .public-section, .admin-section { margin-top: 1.5rem; padding: 1rem; }
+      .section-header { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+      .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; }
+      .resource-card { overflow: hidden; }
+      .resource-card img { width: 100%; height: 180px; object-fit: cover; }
+      .card-body { padding: 1rem; }
+      .card-meta { display: flex; justify-content: space-between; gap: 0.5rem; margin: 0.5rem 0 1rem; font-size: 0.85rem; color: #5c6a6c; }
+      .tag { display: inline-flex; background: #fff4cc; color: #123d4f; border-radius: 999px; padding: 0.25rem 0.6rem; font-size: 0.78rem; font-weight: 800; }
+      .admin-login, .resource-form { padding: 1rem; display: grid; gap: 1rem; }
+      .admin-content { display: grid; gap: 1rem; }
+      .admin-actions { display: flex; justify-content: end; }
+      .admin-table { display: grid; gap: 0.8rem; }
+      .admin-row { padding: 1rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+      .admin-row small { display: block; color: #56708f; }
+      .row-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+      .form-actions, .checkbox-row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+      .checkbox-row { align-items: center; }
+      .checkbox-row label {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 600;
+      }
+      .checkbox-row input[type="checkbox"] {
+        width: auto;
+        margin: 0;
+      }
+      .empty-state { padding: 1rem; background: #f8f5ea; border-radius: 8px; color: #48617e; }
+      .error-text { color: #e44b41; }
+      @media (max-width: 768px) {
+        .hero, .section-header, .admin-row { flex-direction: column; align-items: stretch; }
+        .brand-lockup { align-items: flex-start; flex-direction: column; }
+        .logo-badge { width: min(250px, 100%); }
+        .filter-grid { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="hero">
+        <div>
+          <div class="brand-lockup">
+            <div class="logo-badge">
+              <img src="./prfwb-logo-cropped-v2.png" alt="PR Free Will Baptists" />
+            </div>
+            <div class="brand-name">Recursos de Discipulado</div>
+          </div>
+          <span class="eyebrow">Portal de Recursos</span>
+          <h1>Recursos de discipulado para la iglesia</h1>
+          <p>Encuentra materiales, estudios, devocionales y recursos para líderes en un único portal pensado para mostrarse dentro de Wix usando un iframe o HTML Embed.</p>
+        </div>
+        <a id="adminToggle" href="./admin.html" class="hero-action">Ir al panel</a>
+      </header>
+
+      <section class="filter-grid">
+        <label>
+          Buscar
+          <input id="searchInput" placeholder="Título, tema o autor" />
+        </label>
+        <label>
+          Categoría
+          <select id="categoryFilter"></select>
+        </label>
+        <label>
+          Tipo
+          <select id="typeFilter"></select>
+        </label>
+      </section>
+
+      <section class="public-section">
+        <div class="section-header"><h2>Recursos destacados</h2></div>
+        <div id="featuredList" class="card-grid"></div>
+      </section>
+
+      <section class="public-section">
+        <div class="section-header"><h2>Recursos recientes</h2></div>
+        <div id="recentList" class="card-grid"></div>
+      </section>
+
+      <section class="admin-section">
+        <div class="section-header">
+          <h2>Administración</h2>
+          <a href="./admin.html" class="ghost-button" style="text-decoration:none;display:inline-flex;align-items:center;">Abrir panel administrativo</a>
+        </div>
+        <p>El contenido administrativo se gestiona en una página independiente para mantener el portal público limpio y ordenado.</p>
+      </section>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="./firebase-config.js"></script>
+    <script src="./firebase-bridge.js"></script>
+    <script>
+      const categoryOptions = [
+        'Nuevo creyente',
+        'Discipulado',
+        'Estudios bíblicos',
+        'Oración',
+        'Devocionales',
+        'Familia',
+        'Jóvenes',
+        'Niños',
+        'Liderazgo',
+        'Recursos para líderes',
+        'Predicaciones',
+        'Multimedia'
+      ];
+      const typeOptions = ['pdf', 'video', 'audio', 'link', 'study', 'devotional', 'course', 'document'];
+      const defaultResourceImages = {
+        'Nuevo creyente': 'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?auto=format&fit=crop&w=900&q=80',
+        'Discipulado': 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=900&q=80',
+        'Estudios bÃ­blicos': 'https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&w=900&q=80',
+        'OraciÃ³n': 'https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=900&q=80',
+        'Devocionales': 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=900&q=80',
+        'Familia': 'https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=900&q=80',
+        'JÃ³venes': 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=900&q=80',
+        'NiÃ±os': 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=900&q=80',
+        'Liderazgo': 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80',
+        'Recursos para lÃ­deres': 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=80',
+        'Predicaciones': 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=900&q=80',
+        'Multimedia': 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=900&q=80'
+      };
+
+      function getResourceImage(resource) {
+        return resource.imageUrl || defaultResourceImages[resource.category] || defaultResourceImages.Discipulado;
+      }
+
+      const initialResources = [
+        {
+          id: '1',
+          title: 'Fundamentos del discipulado',
+          description: 'Guía breve para nuevas personas en su proceso de crecimiento espiritual.',
+          category: 'Nuevo creyente',
+          type: 'document',
+          imageUrl: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80',
+          fileUrl: 'https://example.com/discipulado.pdf',
+          author: 'Ministerio de discípulos',
+          isPublished: true,
+          isFeatured: true,
+          createdAt: '2026-07-01',
+          displayOrder: 1
+        },
+        {
+          id: '2',
+          title: 'Oración y silencio espiritual',
+          description: 'Devocional para profundizar en la práctica de la oración diaria.',
+          category: 'Oración',
+          type: 'devotional',
+          imageUrl: 'https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=900&q=80',
+          externalUrl: 'https://example.com/oracion',
+          author: 'Equipo pastoral',
+          isPublished: true,
+          isFeatured: false,
+          createdAt: '2026-07-08',
+          displayOrder: 2
+        },
+        {
+          id: '3',
+          title: 'Estudio bíblico: Vida en comunidad',
+          description: 'Serie de estudio para líderes y grupos pequeños.',
+          category: 'Estudios bíblicos',
+          type: 'study',
+          imageUrl: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=900&q=80',
+          externalUrl: 'https://youtube.com/watch?v=example',
+          author: 'Pastor Javier',
+          isPublished: true,
+          isFeatured: true,
+          createdAt: '2026-07-12',
+          displayOrder: 3
+        },
+        {
+          id: '4',
+          title: 'Guía para líderes jóvenes',
+          description: 'Curso práctico orientado a liderazgo y acompañamiento.',
+          category: 'Liderazgo',
+          type: 'course',
+          imageUrl: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80',
+          fileUrl: 'https://example.com/liderazgo.pdf',
+          author: 'Academia de líderes',
+          isPublished: false,
+          isFeatured: false,
+          createdAt: '2026-07-14',
+          displayOrder: 4
+        }
+      ];
+
+      const storageKey = 'discipulado-resources-v1';
+      let resources = [];
+
+      async function initializeResources() {
+        const firebaseResources = await window.discipladoFirebase?.getResources?.();
+        resources = firebaseResources?.length ? firebaseResources : JSON.parse(localStorage.getItem(storageKey) || 'null') || initialResources;
+        localStorage.setItem(storageKey, JSON.stringify(resources));
+        renderPublicResources();
+      }
+
+      function saveResources() {
+        localStorage.setItem(storageKey, JSON.stringify(resources));
+        if (window.discipladoFirebase?.saveResources) {
+          window.discipladoFirebase.saveResources(resources);
+        }
+      }
+
+      const els = {
+        searchInput: document.getElementById('searchInput'),
+        categoryFilter: document.getElementById('categoryFilter'),
+        typeFilter: document.getElementById('typeFilter'),
+        featuredList: document.getElementById('featuredList'),
+        recentList: document.getElementById('recentList'),
+        adminToggle: document.getElementById('adminToggle')
+      };
+
+      function populateSelect(select, options, placeholder = 'Todas') {
+        select.innerHTML = '<option value="">' + placeholder + '</option>';
+        options.forEach((option) => {
+          const element = document.createElement('option');
+          element.value = option;
+          element.textContent = option;
+          select.appendChild(element);
+        });
+      }
+
+      function getFilteredResources() {
+        const query = (els.searchInput.value || '').toLowerCase().trim();
+        return resources
+          .filter((resource) => resource.isPublished)
+          .filter((resource) => !query || [resource.title, resource.description, resource.category, resource.author].join(' ').toLowerCase().includes(query))
+          .filter((resource) => !els.categoryFilter.value || resource.category === els.categoryFilter.value)
+          .filter((resource) => !els.typeFilter.value || resource.type === els.typeFilter.value)
+          .sort((a, b) => b.displayOrder - a.displayOrder);
+      }
+
+      function renderPublicResources() {
+        const filtered = getFilteredResources();
+        const featured = filtered.filter((resource) => resource.isFeatured).slice(0, 3);
+        const recent = filtered.slice(0, 6);
+
+        els.featuredList.innerHTML = featured.length ? featured.map(renderCard).join('') : '<div class="empty-state">No hay recursos destacados con los filtros actuales.</div>';
+        els.recentList.innerHTML = recent.length ? recent.map(renderCard).join('') : '<div class="empty-state">No se encontraron recursos. Intenta cambiar los filtros.</div>';
+
+        window.parent?.postMessage({ type: 'DISCIPLESHIP_APP_HEIGHT', height: document.documentElement.scrollHeight }, '*');
+      }
+
+      function renderCard(resource) {
+        return `
+          <article class="resource-card">
+            <img src="${getResourceImage(resource)}" alt="${resource.title}" loading="lazy">
+            <div class="card-body">
+              <span class="tag">${resource.category}</span>
+              <h3>${resource.title}</h3>
+              <p>${resource.description}</p>
+              <div class="card-meta"><span>${resource.type}</span><span>${resource.author || 'Sin autor'}</span></div>
+              <a href="${resource.externalUrl || resource.fileUrl || '#'}" target="_blank" rel="noreferrer noopener">Abrir recurso</a>
+            </div>
+          </article>
+        `;
+      }
+
+      els.searchInput.addEventListener('input', renderPublicResources);
+      els.categoryFilter.addEventListener('change', renderPublicResources);
+      els.typeFilter.addEventListener('change', renderPublicResources);
+
+      populateSelect(els.categoryFilter, categoryOptions, 'Todas');
+      populateSelect(els.typeFilter, typeOptions, 'Todos');
+      initializeResources();
+    </script>
+  </body>
+</html>
