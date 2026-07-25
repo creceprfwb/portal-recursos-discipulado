@@ -71,6 +71,7 @@
         font-weight: 900;
       }
       .button.secondary { background: #fff4cc; }
+      .button:disabled { cursor: not-allowed; opacity: 0.5; }
       .toolbar {
         display: grid;
         grid-template-columns: minmax(260px, 1fr) auto auto;
@@ -92,20 +93,58 @@
         color: #123d4f;
         font-weight: 700;
       }
-      .viewer-card {
+      .lesson-card {
         margin-top: 1rem;
-        overflow: hidden;
+        padding: clamp(1rem, 3vw, 2rem);
         background: white;
         border-radius: 8px;
         box-shadow: 0 12px 30px rgba(18, 61, 79, 0.08);
       }
-      .viewer-frame {
-        width: 100%;
-        height: 78vh;
-        min-height: 740px;
-        border: 0;
-        display: block;
-        background: white;
+      .lesson-meta {
+        display: inline-flex;
+        margin-bottom: 1.2rem;
+        padding: 0.25rem 0.65rem;
+        border-radius: 999px;
+        background: #fff4cc;
+        color: #123d4f;
+        font-size: 0.82rem;
+        font-weight: 900;
+      }
+      .lesson-title {
+        margin: 0 0 1rem;
+        font-size: clamp(1.55rem, 3vw, 2.25rem);
+        line-height: 1.12;
+      }
+      .lesson-content {
+        display: grid;
+        gap: 0.75rem;
+        max-width: 860px;
+      }
+      .lesson-content h3 {
+        margin: 1rem 0 0.1rem;
+        color: #123d4f;
+        font-size: 1.12rem;
+      }
+      .lesson-content p { margin: 0; color: #24343a; }
+      .lesson-content ul,
+      .lesson-content ol { margin: 0; padding-left: 1.4rem; color: #24343a; }
+      .lesson-content li { margin: 0.25rem 0; }
+      .scripture-box,
+      .activity-box,
+      .challenge-box {
+        padding: 0.9rem 1rem;
+        border-radius: 8px;
+        background: #fff8df;
+        border-left: 4px solid #ffca2f;
+      }
+      .activity-box { background: #f8f5ea; border-left-color: #21473f; }
+      .challenge-box { background: #fff1ef; border-left-color: #e44b41; }
+      .lesson-nav {
+        display: flex;
+        justify-content: space-between;
+        gap: 0.75rem;
+        margin-top: 1.25rem;
+        flex-wrap: wrap;
       }
       .note {
         margin-top: 1rem;
@@ -122,8 +161,8 @@
         h1 { font-size: 1.75rem; }
         .toolbar { grid-template-columns: 1fr; margin-top: 0; border-radius: 0; box-shadow: none; }
         .button { width: 100%; }
-        .viewer-card { margin-top: 0; border-radius: 0; box-shadow: none; }
-        .viewer-frame { height: 76vh; min-height: 620px; }
+        .lesson-card { margin-top: 0; border-radius: 0; box-shadow: none; }
+        .lesson-nav { flex-direction: column; }
         .note { margin: 1rem; }
       }
     </style>
@@ -150,75 +189,140 @@
 
       <section class="toolbar" aria-label="Navegación de la guía">
         <label>
-          Ir a una sección
+          Selecciona una lección
           <select id="sectionSelect"></select>
         </label>
         <a id="openPdf" class="button" href="./files/formando-discipulos.pdf" target="_blank" rel="noreferrer noopener">
-          Abrir PDF
+          Abrir PDF completo
         </a>
-        <a id="downloadPdf" class="button secondary" href="./files/formando-discipulos.pdf" download>
+        <a class="button secondary" href="./files/formando-discipulos.pdf" download>
           Descargar
         </a>
       </section>
 
-      <section class="viewer-card">
-        <iframe
-          id="pdfFrame"
-          class="viewer-frame"
-          src="./files/formando-discipulos.pdf#page=1"
-          title="Formando discípulos que forman discípulos">
-        </iframe>
+      <section class="lesson-card">
+        <span id="lessonMeta" class="lesson-meta">Lección</span>
+        <h2 id="lessonTitle" class="lesson-title"></h2>
+        <div id="lessonContent" class="lesson-content"></div>
+        <div class="lesson-nav">
+          <button id="previousLesson" class="button secondary" type="button">Anterior</button>
+          <button id="nextLesson" class="button" type="button">Siguiente</button>
+        </div>
       </section>
 
       <p class="note">
-        En algunos celulares el navegador puede abrir el PDF en una pestaña nueva. Usa el selector para
-        ubicar la semana y el botón descargar si deseas guardar la guía.
+        Esta vista muestra una lección a la vez para que sea más fácil leerla en computadora o teléfono.
+        El PDF completo sigue disponible para abrirlo o descargarlo.
       </p>
     </div>
 
+    <script src="./discipulado-data.js"></script>
     <script>
-      const pdfPath = './files/formando-discipulos.pdf';
-      const sections = [
-        { label: 'Portada', page: 1 },
-        { label: 'Tabla de contenido', page: 2 },
-        { label: 'Introducción al discipulado', page: 3 },
-        { label: 'Semana 1 - El Evangelio', page: 5 },
-        { label: 'Semana 2 - Qué es un discípulo', page: 6 },
-        { label: 'Semana 3 - La Palabra de Dios', page: 7 },
-        { label: 'Semana 4 - La Oración', page: 8 },
-        { label: 'Semana 5 - La Iglesia', page: 9 },
-        { label: 'Semana 6 - Tentación y Santidad', page: 10 },
-        { label: 'Semana 7 - El Espíritu Santo', page: 11 },
-        { label: 'Semana 8 - Servicio', page: 12 },
-        { label: 'Semana 9 - Evangelismo', page: 13 },
-        { label: 'Semana 10 - Rendición de Cuentas', page: 14 },
-        { label: 'Semana 11 - Formando Otros Discípulos', page: 15 },
-        { label: 'Semana 12 - Vida y Misión', page: 16 },
-        { label: 'Notas Finales y Compromiso', page: 17 },
-        { label: 'Versículos para memorizar', page: 18 },
-        { label: 'Guía para discipular a otros', page: 18 }
-      ];
-
+      const lessons = window.discipuladoLessons || [];
       const select = document.getElementById('sectionSelect');
-      const frame = document.getElementById('pdfFrame');
-      const openPdf = document.getElementById('openPdf');
+      const lessonMeta = document.getElementById('lessonMeta');
+      const lessonTitle = document.getElementById('lessonTitle');
+      const lessonContent = document.getElementById('lessonContent');
+      const previousLesson = document.getElementById('previousLesson');
+      const nextLesson = document.getElementById('nextLesson');
+      let currentIndex = 0;
 
-      sections.forEach((section) => {
+      lessons.forEach((lesson, index) => {
         const option = document.createElement('option');
-        option.value = section.page;
-        option.textContent = section.label;
+        option.value = String(index);
+        option.textContent = lesson.title;
         select.appendChild(option);
       });
 
-      function setPage(page) {
-        const target = `${pdfPath}#page=${page}`;
-        frame.src = target;
-        openPdf.href = target;
+      function escapeHtml(value) {
+        return value
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+
+      function getLineType(line) {
+        if (/^(📜|🎯|🗣️|🚩|📄|📝|📔|📌|👌|🛠️|🔧|👥)/.test(line)) return 'heading';
+        if (/^(Lectura Bíblica|Objetivo|Preguntas|Actividad|Versículo|Desafío|Para reproducir)/i.test(line)) return 'heading';
+        if (/^\d+[.\u00a0 ]/.test(line)) return 'ordered';
+        if (/^[•\-]\s+/.test(line)) return 'unordered';
+        return 'paragraph';
+      }
+
+      function renderContent(content) {
+        const lines = content.split('\n').map((line) => line.trim()).filter(Boolean);
+        const html = [];
+        let listType = null;
+
+        function closeList() {
+          if (listType) {
+            html.push(listType === 'ordered' ? '</ol>' : '</ul>');
+            listType = null;
+          }
+        }
+
+        lines.forEach((line) => {
+          const type = getLineType(line);
+          const clean = escapeHtml(line.replace(/^[•\-]\s+/, '').replace(/^\d+[.\u00a0 ]+/, ''));
+
+          if (type === 'heading') {
+            closeList();
+            html.push(`<h3>${clean}</h3>`);
+            return;
+          }
+
+          if (type === 'ordered' || type === 'unordered') {
+            if (listType !== type) {
+              closeList();
+              html.push(type === 'ordered' ? '<ol>' : '<ul>');
+              listType = type;
+            }
+            html.push(`<li>${clean}</li>`);
+            return;
+          }
+
+          closeList();
+          const boxClass = /Versículo|Romanos|Efesios|Mateo|Juan|Lucas|Hechos|Salmo|Gálatas|Hebreos|Colosenses|Timoteo|Pedro|Corintios|Santiago|Proverbios/i.test(line)
+            ? 'scripture-box'
+            : /Actividad|testimonio|diario|método|escribe|comienza/i.test(line)
+              ? 'activity-box'
+              : /Desafío|Ora por|Toma una decisión|Aparta|Identifica/i.test(line)
+                ? 'challenge-box'
+                : '';
+          html.push(boxClass ? `<p class="${boxClass}">${clean}</p>` : `<p>${clean}</p>`);
+        });
+
+        closeList();
+        return html.join('');
+      }
+
+      function renderLesson(index) {
+        if (!lessons.length) return;
+        currentIndex = Math.max(0, Math.min(index, lessons.length - 1));
+        const lesson = lessons[currentIndex];
+        select.value = String(currentIndex);
+        lessonMeta.textContent = `Lección ${currentIndex + 1} de ${lessons.length}`;
+        lessonTitle.textContent = lesson.title;
+        lessonContent.innerHTML = renderContent(lesson.content);
+        previousLesson.disabled = currentIndex === 0;
+        nextLesson.disabled = currentIndex === lessons.length - 1;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
 
       select.addEventListener('change', (event) => {
-        setPage(event.target.value);
+        renderLesson(Number(event.target.value));
       });
+
+      previousLesson.addEventListener('click', () => {
+        renderLesson(currentIndex - 1);
+      });
+
+      nextLesson.addEventListener('click', () => {
+        renderLesson(currentIndex + 1);
+      });
+
+      renderLesson(0);
     </script>
   </body>
 </html>
