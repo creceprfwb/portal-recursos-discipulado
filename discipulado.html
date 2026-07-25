@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Formando discípulos | PRFWB</title>
+    <meta
+      name="description"
+      content="Guía de discipulado de 12 semanas: formando discípulos que forman discípulos."
+    />
+    <style>
+      :root {
+        font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        color: #123d4f;
+        background: #f5f5f3;
+        line-height: 1.5;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-width: 320px; overflow-x: hidden; background: #f5f5f3; }
+      button, select { font: inherit; }
+      img { max-width: 100%; }
+      .page-shell { width: min(1180px, calc(100% - 2rem)); margin: 0 auto; padding: 24px 0 42px; }
+      .hero {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        align-items: flex-start;
+        color: white;
+        padding: 46px 32px;
+        background:
+          linear-gradient(90deg, rgba(33, 71, 63, 0.88), rgba(14, 59, 81, 0.94) 48%, rgba(53, 61, 74, 0.88)),
+          linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+        background-size: auto, 48px 48px, 48px 48px;
+      }
+      .brand-lockup { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+      .logo-badge {
+        width: 250px;
+        height: 94px;
+        flex: 0 0 auto;
+        border-radius: 8px;
+        display: grid;
+        place-items: center;
+        background: rgba(7, 29, 53, 0.32);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        overflow: hidden;
+      }
+      .logo-badge img { width: 100%; height: 100%; object-fit: contain; display: block; }
+      .brand-name { font-size: 1.15rem; font-weight: 900; line-height: 1.1; }
+      .eyebrow {
+        text-transform: uppercase;
+        font-size: 0.78rem;
+        font-weight: 900;
+        letter-spacing: 0.28em;
+        color: #e44b41;
+      }
+      h1 { margin: 0.4rem 0 0.8rem; font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.08; }
+      .hero p { max-width: 780px; margin: 0; }
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        min-height: 44px;
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        border: 0;
+        background: #ffca2f;
+        color: #123d4f;
+        cursor: pointer;
+        font-weight: 900;
+      }
+      .button.secondary { background: #fff4cc; }
+      .toolbar {
+        display: grid;
+        grid-template-columns: minmax(260px, 1fr) auto auto;
+        gap: 0.8rem;
+        align-items: end;
+        margin-top: 1rem;
+        padding: 1rem;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 12px 30px rgba(18, 61, 79, 0.08);
+      }
+      label { display: grid; gap: 0.4rem; font-weight: 800; }
+      select {
+        width: 100%;
+        border: 1px solid #d7dedf;
+        border-radius: 8px;
+        padding: 0.75rem 0.85rem;
+        background: #fdfefe;
+        color: #123d4f;
+        font-weight: 700;
+      }
+      .viewer-card {
+        margin-top: 1rem;
+        overflow: hidden;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 12px 30px rgba(18, 61, 79, 0.08);
+      }
+      .viewer-frame {
+        width: 100%;
+        height: 78vh;
+        min-height: 740px;
+        border: 0;
+        display: block;
+        background: white;
+      }
+      .note {
+        margin-top: 1rem;
+        padding: 1rem;
+        color: #5c6a6c;
+        background: #fff4cc;
+        border-radius: 8px;
+      }
+      @media (max-width: 768px) {
+        .page-shell { width: 100%; padding: 0 0 32px; }
+        .hero { flex-direction: column; padding: 28px 18px; }
+        .brand-lockup { align-items: flex-start; flex-direction: column; }
+        .logo-badge { width: min(210px, 100%); height: 79px; }
+        h1 { font-size: 1.75rem; }
+        .toolbar { grid-template-columns: 1fr; margin-top: 0; border-radius: 0; box-shadow: none; }
+        .button { width: 100%; }
+        .viewer-card { margin-top: 0; border-radius: 0; box-shadow: none; }
+        .viewer-frame { height: 76vh; min-height: 620px; }
+        .note { margin: 1rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <div>
+          <div class="brand-lockup">
+            <div class="logo-badge">
+              <img src="./prfwb-logo-cropped-v2.png" alt="PR Free Will Baptists" />
+            </div>
+            <div class="brand-name">Formando discípulos</div>
+          </div>
+          <span class="eyebrow">Guía de 12 semanas</span>
+          <h1>Formando discípulos que forman discípulos</h1>
+          <p>
+            Un recorrido práctico para líderes, diáconos y creyentes que desean obedecer el
+            llamado de Jesús a hacer discípulos.
+          </p>
+        </div>
+        <a class="button secondary" href="./index.html">Volver a recursos</a>
+      </header>
+
+      <section class="toolbar" aria-label="Navegación de la guía">
+        <label>
+          Ir a una sección
+          <select id="sectionSelect"></select>
+        </label>
+        <a id="openPdf" class="button" href="./files/formando-discipulos.pdf" target="_blank" rel="noreferrer noopener">
+          Abrir PDF
+        </a>
+        <a id="downloadPdf" class="button secondary" href="./files/formando-discipulos.pdf" download>
+          Descargar
+        </a>
+      </section>
+
+      <section class="viewer-card">
+        <iframe
+          id="pdfFrame"
+          class="viewer-frame"
+          src="./files/formando-discipulos.pdf#page=1"
+          title="Formando discípulos que forman discípulos">
+        </iframe>
+      </section>
+
+      <p class="note">
+        En algunos celulares el navegador puede abrir el PDF en una pestaña nueva. Usa el selector para
+        ubicar la semana y el botón descargar si deseas guardar la guía.
+      </p>
+    </div>
+
+    <script>
+      const pdfPath = './files/formando-discipulos.pdf';
+      const sections = [
+        { label: 'Portada', page: 1 },
+        { label: 'Tabla de contenido', page: 2 },
+        { label: 'Introducción al discipulado', page: 3 },
+        { label: 'Semana 1 - El Evangelio', page: 5 },
+        { label: 'Semana 2 - Qué es un discípulo', page: 6 },
+        { label: 'Semana 3 - La Palabra de Dios', page: 7 },
+        { label: 'Semana 4 - La Oración', page: 8 },
+        { label: 'Semana 5 - La Iglesia', page: 9 },
+        { label: 'Semana 6 - Tentación y Santidad', page: 10 },
+        { label: 'Semana 7 - El Espíritu Santo', page: 11 },
+        { label: 'Semana 8 - Servicio', page: 12 },
+        { label: 'Semana 9 - Evangelismo', page: 13 },
+        { label: 'Semana 10 - Rendición de Cuentas', page: 14 },
+        { label: 'Semana 11 - Formando Otros Discípulos', page: 15 },
+        { label: 'Semana 12 - Vida y Misión', page: 16 },
+        { label: 'Notas Finales y Compromiso', page: 17 },
+        { label: 'Versículos para memorizar', page: 18 },
+        { label: 'Guía para discipular a otros', page: 18 }
+      ];
+
+      const select = document.getElementById('sectionSelect');
+      const frame = document.getElementById('pdfFrame');
+      const openPdf = document.getElementById('openPdf');
+
+      sections.forEach((section) => {
+        const option = document.createElement('option');
+        option.value = section.page;
+        option.textContent = section.label;
+        select.appendChild(option);
+      });
+
+      function setPage(page) {
+        const target = `${pdfPath}#page=${page}`;
+        frame.src = target;
+        openPdf.href = target;
+      }
+
+      select.addEventListener('change', (event) => {
+        setPage(event.target.value);
+      });
+    </script>
+  </body>
+</html>
