@@ -2,7 +2,7 @@ window.discipuladoLessons = [
   {
     "slug": "intro",
     "title": "Introducción al Discipulado",
-    "content": "El mandato de hacer discípulos no fue dado solo a pastores o líderes, sino a toda la iglesia. Jesucristo llamó a sus seguidores a ir, enseñar y reproducirse espiritualmente (Mateo 28:18-20). Esta guía busca ayudarte a cumplir ese llamado.\nSer discípulo es ser un aprendiz de Cristo. Es seguirlo, obedecerlo y crecer a su imagen. Pero también es comprometerse a formar a otros para que hagan lo mismo. Este proceso de crecimiento espiritual no debe quedarse en ti, sino que está diseñado para multiplicarse.\nCada sesión de esta guía está estructurada para ayudarte a:\n- Fortalecer tu fe en aspectos esenciales.\n- Practicar la obediencia a la Palabra de Dios.\n- Prepararte para enseñar a otros con sencillez.\nAl finalizar estas 12 semanas, deberías estar listo para comenzar este mismo recorrido con otra persona. Nuestro anhelo es que esta herramienta te sirva como puente entre el conocimiento y la acción, para la gloria de Dios y la expansión de su Reino.\n::overview-table::\n::agenda::"
+    "content": "::intro-lead::\n::intro-cards::\n::overview-table::\n::agenda::"
   },
   {
     "slug": "semana-1",

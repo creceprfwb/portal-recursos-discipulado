@@ -150,6 +150,48 @@
         font-size: 0.84rem;
       }
       .overview-table tr:last-child td { border-bottom: 0; }
+      .intro-lead {
+        padding: 1rem;
+        border-radius: 8px;
+        background: linear-gradient(90deg, #f8f5ea, #fff8df);
+        border-left: 4px solid #ffca2f;
+        font-size: 1.03rem;
+      }
+      .intro-grid,
+      .week-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        gap: 0.8rem;
+      }
+      .intro-card,
+      .week-card {
+        padding: 1rem;
+        border-radius: 8px;
+        background: #f8f5ea;
+        border: 1px solid #e5e2d4;
+      }
+      .intro-card strong,
+      .week-card strong {
+        display: block;
+        color: #123d4f;
+        margin-bottom: 0.25rem;
+      }
+      .week-card span {
+        display: inline-flex;
+        margin-bottom: 0.5rem;
+        padding: 0.18rem 0.55rem;
+        border-radius: 999px;
+        background: #ffca2f;
+        color: #123d4f;
+        font-size: 0.8rem;
+        font-weight: 900;
+      }
+      .week-card small {
+        display: block;
+        margin-top: 0.45rem;
+        color: #5c6a6c;
+        line-height: 1.35;
+      }
       .agenda-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -261,7 +303,7 @@
       </p>
     </div>
 
-    <script src="./discipulado-data.js"></script>
+    <script src="./discipulado-data.js?v=20260725-2"></script>
     <script>
       const lessons = window.discipuladoLessons || [];
       const select = document.getElementById('sectionSelect');
@@ -317,10 +359,39 @@
           ];
           return `
             <h3>Recorrido de 12 semanas</h3>
-            <table class="overview-table">
-              <thead><tr><th>Semana</th><th>Tema</th><th>Lecturas</th><th>Clave</th></tr></thead>
-              <tbody>${rows.map((row) => `<tr>${row.map((cell) => `<td>${cell}</td>`).join('')}</tr>`).join('')}</tbody>
-            </table>
+            <div class="week-grid">
+              ${rows.map((row) => `
+                <article class="week-card">
+                  <span>Semana ${row[0]}</span>
+                  <strong>${row[1]}</strong>
+                  <small>${row[2]}</small>
+                  <small>${row[3]}</small>
+                </article>
+              `).join('')}
+            </div>
+          `;
+        }
+
+        function renderIntroLead() {
+          return `
+            <p class="intro-lead">
+              El mandato de hacer discípulos no fue dado solo a pastores o líderes, sino a toda la iglesia.
+              Jesucristo llamó a sus seguidores a ir, enseñar y reproducirse espiritualmente
+              <strong>(Mateo 28:18-20)</strong>.
+            </p>
+          `;
+        }
+
+        function renderIntroCards() {
+          const cards = [
+            ['Qué es ser discípulo', 'Ser aprendiz de Cristo: seguirlo, obedecerlo y crecer a su imagen.'],
+            ['Para qué existe esta guía', 'Fortalecer la fe, practicar la obediencia y preparar a cada creyente para enseñar a otros.'],
+            ['La meta', 'Que al finalizar las 12 semanas puedas comenzar este mismo recorrido con otra persona.']
+          ];
+          return `
+            <div class="intro-grid">
+              ${cards.map((card) => `<article class="intro-card"><strong>${card[0]}</strong><p>${card[1]}</p></article>`).join('')}
+            </div>
           `;
         }
 
@@ -351,6 +422,18 @@
         }
 
         lines.forEach((line) => {
+          if (line === '::intro-lead::') {
+            closeList();
+            html.push(renderIntroLead());
+            return;
+          }
+
+          if (line === '::intro-cards::') {
+            closeList();
+            html.push(renderIntroCards());
+            return;
+          }
+
           if (line === '::overview-table::') {
             closeList();
             html.push(renderOverviewTable());
