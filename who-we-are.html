@@ -7,14 +7,19 @@
 
   <style>
     :root {
-      --azul: #173d52;
-      --azul-oscuro: #102f40;
-      --azul-claro: #eef5f8;
-      --coral: #d85343;
-      --dorado: #f2c94c;
+      --azul: #078ca3;
+      --azul-medio: #12607a;
+      --azul-oscuro: #12384d;
+      --azul-profundo: #0d2b3a;
+      --azul-claro: #eaf4f7;
+      --coral: #d95643;
+      --dorado: #f1c84b;
+      --verde: #5da56d;
       --blanco: #ffffff;
-      --texto: #4d6472;
-      --borde: #dce7ec;
+      --fondo: #f4f8fa;
+      --texto: #526875;
+      --borde: #dbe7ec;
+      --sombra: 0 18px 50px rgba(13, 43, 58, .10);
     }
 
     * {
@@ -28,8 +33,8 @@
       margin: 0;
       padding: 0;
       overflow-x: hidden;
-      background: #ffffff;
-      color: var(--azul);
+      background: var(--blanco);
+      color: var(--azul-oscuro);
       font-family: Arial, Helvetica, sans-serif;
       line-height: 1.7;
     }
@@ -57,7 +62,7 @@
 
     .contenedor {
       width: 100%;
-      max-width: 1120px;
+      max-width: 1180px;
       margin: 0 auto;
       padding-left: 20px;
       padding-right: 20px;
@@ -82,7 +87,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      color: var(--azul);
+      color: var(--azul-oscuro);
       font-weight: 900;
       letter-spacing: .4px;
     }
@@ -106,25 +111,29 @@
       justify-content: center;
       padding: 9px 15px;
       border-radius: 999px;
-      color: var(--azul);
+      color: var(--azul-oscuro);
       font-size: 14px;
       font-weight: 900;
     }
 
     .site-tabs a.activo {
-      background: var(--azul);
+      background: var(--azul-oscuro);
       color: var(--blanco);
     }
 
     .hero {
       position: relative;
-      width: 100%;
+      width: 100vw;
+      min-height: 520px;
+      display: grid;
+      align-items: center;
+      margin-left: calc(50% - 50vw);
       padding: 100px 20px 90px;
       overflow: hidden;
       background:
-        radial-gradient(circle at 10% 20%, rgba(242, 201, 76, 0.16), transparent 28%),
-        radial-gradient(circle at 90% 80%, rgba(216, 83, 67, 0.18), transparent 30%),
-        linear-gradient(135deg, var(--azul-oscuro), var(--azul));
+        radial-gradient(circle at 82% 42%, rgba(49, 219, 240, .42), transparent 25%),
+        radial-gradient(circle at 15% 15%, rgba(255, 255, 255, .12), transparent 28%),
+        linear-gradient(125deg, #078fa4 0%, #08778e 40%, #123f60 72%, #102f49 100%);
       color: white;
       text-align: center;
     }
@@ -203,7 +212,7 @@
 
     .introduccion {
       padding: 80px 0 35px;
-      background: white;
+      background: var(--blanco);
       text-align: center;
     }
 
@@ -222,7 +231,7 @@
 
     .identidad {
       padding: 55px 0 90px;
-      background: white;
+      background: var(--blanco);
     }
 
     .titulo-seccion {
@@ -258,8 +267,8 @@
       overflow: hidden;
       border: 1px solid var(--borde);
       border-radius: 24px;
-      background: white;
-      box-shadow: 0 18px 50px rgba(16, 47, 64, 0.08);
+      background: var(--blanco);
+      box-shadow: var(--sombra);
     }
 
     .tarjeta-grande::after {
@@ -391,8 +400,8 @@
       min-width: 0;
       padding: 28px 30px;
       border-radius: 18px;
-      background: white;
-      box-shadow: 0 12px 30px rgba(16, 47, 64, 0.07);
+      background: var(--blanco);
+      box-shadow: 0 12px 30px rgba(13, 43, 58, .07);
     }
 
     .momento-contenido span {
@@ -415,7 +424,7 @@
 
     .creencias {
       padding: 90px 0;
-      background: white;
+      background: var(--blanco);
     }
 
     .rejilla-creencias {
@@ -430,7 +439,8 @@
       padding: 30px 25px;
       border: 1px solid var(--borde);
       border-radius: 20px;
-      background: white;
+      background: var(--blanco);
+      box-shadow: 0 10px 28px rgba(13, 43, 58, .05);
       text-align: center;
     }
 
@@ -486,7 +496,7 @@
 
     .conviccion {
       padding: 85px 20px;
-      background: #ffffff;
+      background: var(--blanco);
     }
 
     .caja-conviccion {
@@ -509,7 +519,7 @@
 
     .caja-conviccion p {
       margin: 0;
-      color: var(--azul);
+      color: var(--azul-oscuro);
       font-size: clamp(22px, 3vw, 32px);
       font-weight: 700;
       line-height: 1.45;
