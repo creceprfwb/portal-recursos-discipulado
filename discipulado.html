@@ -21,16 +21,12 @@
       img { max-width: 100%; }
       .page-shell { width: min(1180px, calc(100% - 2rem)); margin: 0 auto; padding: 24px 0 42px; }
       .hero {
-        display: flex;
-        justify-content: space-between;
-        gap: 1rem;
-        align-items: flex-start;
         color: white;
-        padding: 46px 32px;
+        padding: 42px 30px;
         background:
-          linear-gradient(90deg, rgba(33, 71, 63, 0.88), rgba(14, 59, 81, 0.94) 48%, rgba(53, 61, 74, 0.88)),
-          linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+          linear-gradient(90deg, rgba(111, 47, 40, 0.92), rgba(18, 61, 79, 0.95) 55%, rgba(33, 71, 63, 0.9)),
+          linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
         background-size: auto, 48px 48px, 48px 48px;
       }
       .brand-lockup { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
@@ -52,10 +48,11 @@
         font-size: 0.78rem;
         font-weight: 900;
         letter-spacing: 0.28em;
-        color: #e44b41;
+        color: #ffca2f;
       }
       h1 { margin: 0.4rem 0 0.8rem; font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.08; }
       .hero p { max-width: 780px; margin: 0; }
+      .hero-actions { display: flex; gap: 0.65rem; flex-wrap: wrap; margin-top: 1.2rem; }
       .button {
         display: inline-flex;
         align-items: center;
@@ -72,6 +69,14 @@
       }
       .button.secondary { background: #fff4cc; }
       .button:disabled { cursor: not-allowed; opacity: 0.5; }
+      .toolbar,
+      .lesson-shell,
+      .side-lesson-nav,
+      .lesson-card {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 12px 30px rgba(18, 61, 79, 0.08);
+      }
       .toolbar {
         display: grid;
         grid-template-columns: minmax(260px, 1fr) auto auto;
@@ -79,9 +84,6 @@
         align-items: end;
         margin-top: 1rem;
         padding: 1rem;
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 12px 30px rgba(18, 61, 79, 0.08);
       }
       label { display: grid; gap: 0.4rem; font-weight: 800; }
       select {
@@ -93,20 +95,52 @@
         color: #123d4f;
         font-weight: 700;
       }
-      .lesson-card {
+      .lesson-shell {
+        display: grid;
+        grid-template-columns: 270px 1fr;
+        gap: 1rem;
         margin-top: 1rem;
-        padding: clamp(1rem, 3vw, 2rem);
+        padding: 1rem;
+      }
+      .side-lesson-nav {
+        box-shadow: none;
+        border: 1px solid #eadfd5;
+        overflow: hidden;
+        align-self: start;
+      }
+      .side-lesson-nav button {
+        width: 100%;
+        display: block;
+        text-align: left;
+        padding: 0.85rem;
+        border: 0;
+        border-bottom: 1px solid #eadfd5;
         background: white;
-        border-radius: 8px;
-        box-shadow: 0 12px 30px rgba(18, 61, 79, 0.08);
+        color: #123d4f;
+        cursor: pointer;
+        font-weight: 900;
+      }
+      .side-lesson-nav button:last-child { border-bottom: 0; }
+      .side-lesson-nav button.active { background: #6f2f28; color: white; }
+      .side-lesson-nav small {
+        display: block;
+        margin-top: 0.2rem;
+        color: inherit;
+        font-weight: 700;
+        opacity: 0.82;
+      }
+      .lesson-card {
+        padding: clamp(1rem, 3vw, 2rem);
+        box-shadow: none;
+        border: 1px solid #eadfd5;
       }
       .lesson-meta {
         display: inline-flex;
         margin-bottom: 1.2rem;
         padding: 0.25rem 0.65rem;
         border-radius: 999px;
-        background: #fff4cc;
-        color: #123d4f;
+        background: #f8e8df;
+        color: #6f2f28;
         font-size: 0.82rem;
         font-weight: 900;
       }
@@ -154,7 +188,7 @@
         padding: 1rem;
         border-radius: 8px;
         background: linear-gradient(90deg, #f8f5ea, #fff8df);
-        border-left: 4px solid #ffca2f;
+        border-left: 4px solid #d5684f;
         font-size: 1.03rem;
       }
       .intro-grid,
@@ -181,7 +215,7 @@
         margin-bottom: 0.5rem;
         padding: 0.18rem 0.55rem;
         border-radius: 999px;
-        background: #ffca2f;
+        background: #d5684f;
         color: #123d4f;
         font-size: 0.8rem;
         font-weight: 900;
@@ -226,7 +260,7 @@
       }
       .activity-box { background: #f8f5ea; border-left-color: #21473f; }
       .challenge-box { background: #fff1ef; border-left-color: #e44b41; }
-      .lesson-nav {
+      .lesson-pager {
         display: flex;
         justify-content: space-between;
         gap: 0.75rem;
@@ -242,14 +276,16 @@
       }
       @media (max-width: 768px) {
         .page-shell { width: 100%; padding: 0 0 32px; }
-        .hero { flex-direction: column; padding: 28px 18px; }
+        .hero { padding: 28px 18px; }
         .brand-lockup { align-items: flex-start; flex-direction: column; }
         .logo-badge { width: min(210px, 100%); height: 79px; }
         h1 { font-size: 1.75rem; }
-        .toolbar { grid-template-columns: 1fr; margin-top: 0; border-radius: 0; box-shadow: none; }
+        .toolbar,
+        .lesson-shell { grid-template-columns: 1fr; margin-top: 0; border-radius: 0; box-shadow: none; }
+        .side-lesson-nav { display: none; }
         .button { width: 100%; }
-        .lesson-card { margin-top: 0; border-radius: 0; box-shadow: none; }
-        .lesson-nav { flex-direction: column; }
+        .lesson-card { border-radius: 0; box-shadow: none; }
+        .lesson-pager { flex-direction: column; }
         .note { margin: 1rem; }
       }
     </style>
@@ -270,8 +306,13 @@
             Un recorrido práctico para líderes, diáconos y creyentes que desean obedecer el
             llamado de Jesús a hacer discípulos.
           </p>
+          <div class="hero-actions">
+            <a class="button" href="./index.html?v=999999">Volver a recursos</a>
+            <a class="button secondary" href="./files/formando-discipulos.pdf" target="_blank" rel="noreferrer noopener">
+              Abrir PDF completo
+            </a>
+          </div>
         </div>
-        <a class="button secondary" href="./index.html">Volver a recursos</a>
       </header>
 
       <section class="toolbar" aria-label="Navegación de la guía">
@@ -279,23 +320,28 @@
           Selecciona una lección
           <select id="sectionSelect"></select>
         </label>
-        <a id="openPdf" class="button" href="./files/formando-discipulos.pdf" target="_blank" rel="noreferrer noopener">
-          Abrir PDF completo
-        </a>
-        <a class="button secondary" href="./files/formando-discipulos.pdf" download>
-          Descargar
-        </a>
+        <button id="previousLesson" class="button secondary" type="button">Anterior</button>
+        <button id="nextLesson" class="button" type="button">Siguiente</button>
       </section>
 
-      <section class="lesson-card">
-        <span id="lessonMeta" class="lesson-meta">Lección</span>
-        <h2 id="lessonTitle" class="lesson-title"></h2>
-        <div id="lessonContent" class="lesson-content"></div>
-        <div class="lesson-nav">
-          <button id="previousLesson" class="button secondary" type="button">Anterior</button>
-          <button id="nextLesson" class="button" type="button">Siguiente</button>
-        </div>
-      </section>
+      <main class="lesson-shell">
+        <nav id="lessonNav" class="side-lesson-nav" aria-label="Lecciones de discipulado"></nav>
+        <article class="lesson-card">
+          <span id="lessonMeta" class="lesson-meta">Lección</span>
+          <h2 id="lessonTitle" class="lesson-title"></h2>
+          <div id="lessonContent" class="lesson-content"></div>
+          <div class="lesson-pager">
+            <button id="previousLessonBottom" class="button secondary" type="button">Anterior</button>
+            <button id="nextLessonBottom" class="button" type="button">Siguiente</button>
+          </div>
+        </article>
+      </main>
+
+      <div class="hero-actions">
+        <a class="button secondary" href="./files/formando-discipulos.pdf" download>
+          Descargar PDF
+        </a>
+      </div>
 
       <p class="note">
         Esta vista muestra una lección a la vez para que sea más fácil leerla en computadora o teléfono.
@@ -310,8 +356,11 @@
       const lessonMeta = document.getElementById('lessonMeta');
       const lessonTitle = document.getElementById('lessonTitle');
       const lessonContent = document.getElementById('lessonContent');
+      const lessonNav = document.getElementById('lessonNav');
       const previousLesson = document.getElementById('previousLesson');
       const nextLesson = document.getElementById('nextLesson');
+      const previousLessonBottom = document.getElementById('previousLessonBottom');
+      const nextLessonBottom = document.getElementById('nextLessonBottom');
       let currentIndex = 0;
 
       lessons.forEach((lesson, index) => {
@@ -320,6 +369,19 @@
         option.textContent = lesson.title;
         select.appendChild(option);
       });
+
+      function getNavLabel(index) {
+        if (index === 0) return 'Inicio';
+        if (index >= 1 && index <= 12) return `Semana ${index}`;
+        return 'Recurso';
+      }
+
+      lessonNav.innerHTML = lessons.map((lesson, index) => `
+        <button type="button" data-index="${index}">
+          ${getNavLabel(index)}
+          <small>${lesson.title}</small>
+        </button>
+      `).join('');
 
       function escapeHtml(value) {
         return value
@@ -490,6 +552,11 @@
         lessonContent.innerHTML = renderContent(lesson.content);
         previousLesson.disabled = currentIndex === 0;
         nextLesson.disabled = currentIndex === lessons.length - 1;
+        previousLessonBottom.disabled = currentIndex === 0;
+        nextLessonBottom.disabled = currentIndex === lessons.length - 1;
+        [...lessonNav.querySelectorAll('button')].forEach((button, index) => {
+          button.classList.toggle('active', index === currentIndex);
+        });
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
 
@@ -503,6 +570,19 @@
 
       nextLesson.addEventListener('click', () => {
         renderLesson(currentIndex + 1);
+      });
+
+      previousLessonBottom.addEventListener('click', () => {
+        renderLesson(currentIndex - 1);
+      });
+
+      nextLessonBottom.addEventListener('click', () => {
+        renderLesson(currentIndex + 1);
+      });
+
+      lessonNav.addEventListener('click', (event) => {
+        const button = event.target.closest('button[data-index]');
+        if (button) renderLesson(Number(button.dataset.index));
       });
 
       renderLesson(0);

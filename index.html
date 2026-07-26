@@ -338,8 +338,7 @@
         'Niños',
         'Liderazgo',
         'Recursos para líderes',
-        'Predicaciones',
-        'Multimedia'
+        'Predicaciones'
       ];
       const typeOptions = ['pdf', 'video', 'audio', 'link', 'study', 'devotional', 'course', 'document'];
       const defaultResourceImages = {
@@ -353,12 +352,16 @@
         'Niños': 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=900&q=80',
         'Liderazgo': 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80',
         'Recursos para líderes': 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=80',
-        'Predicaciones': 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=900&q=80',
-        'Multimedia': 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=900&q=80'
+        'Predicaciones': 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=900&q=80'
       };
 
+      function normalizeCategory(category) {
+        return category === 'Multimedia' ? 'Nuevo creyente' : category;
+      }
+
       function getResourceImage(resource) {
-        return resource.imageUrl || defaultResourceImages[resource.category] || defaultResourceImages.Discipulado;
+        const category = normalizeCategory(resource.category);
+        return resource.imageUrl || defaultResourceImages[category] || defaultResourceImages.Discipulado;
       }
 
       const initialResources = [];
@@ -393,7 +396,7 @@
       }
 
       function renderCategoryChips() {
-        const chips = ['Todas', 'Discipulado', 'Niños', 'Jóvenes', 'Estudios bíblicos', 'Liderazgo', 'Multimedia'];
+        const chips = ['Todas', 'Discipulado', 'Niños', 'Jóvenes', 'Estudios bíblicos', 'Liderazgo', 'Nuevo creyente'];
         els.categoryStrip.innerHTML = chips.map((category) => `
           <button class="category-chip${(!els.categoryFilter.value && category === 'Todas') || els.categoryFilter.value === category ? ' active' : ''}" data-category="${category === 'Todas' ? '' : category}">
             ${category}
@@ -410,8 +413,8 @@
         const query = (els.searchInput.value || '').toLowerCase().trim();
         return resources
           .filter((resource) => resource.isPublished)
-          .filter((resource) => !query || [resource.title, resource.description, resource.category, resource.author].join(' ').toLowerCase().includes(query))
-          .filter((resource) => !els.categoryFilter.value || resource.category === els.categoryFilter.value)
+          .filter((resource) => !query || [resource.title, resource.description, normalizeCategory(resource.category), resource.author].join(' ').toLowerCase().includes(query))
+          .filter((resource) => !els.categoryFilter.value || normalizeCategory(resource.category) === els.categoryFilter.value)
           .filter((resource) => !els.typeFilter.value || resource.type === els.typeFilter.value)
           .sort((a, b) => Number(b.displayOrder || 0) - Number(a.displayOrder || 0));
       }
@@ -437,11 +440,12 @@
       }
 
       function renderCard(resource) {
+        const category = normalizeCategory(resource.category);
         return `
           <article class="resource-card">
             <img src="${getResourceImage(resource)}" alt="${resource.title}" loading="lazy">
             <div class="card-body">
-              <span class="tag">${resource.category}</span>
+              <span class="tag">${category}</span>
               <h3>${resource.title}</h3>
               <p>${resource.description}</p>
               <div class="card-meta"><span>${resource.type}</span><span>${resource.author || 'Sin autor'}</span></div>

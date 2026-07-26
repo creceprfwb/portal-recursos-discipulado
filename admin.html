@@ -216,8 +216,7 @@
         'Niños',
         'Liderazgo',
         'Recursos para líderes',
-        'Predicaciones',
-        'Multimedia'
+        'Predicaciones'
       ];
       const typeOptions = ['pdf', 'video', 'audio', 'link', 'study', 'devotional', 'course', 'document'];
       const defaultResourceImages = {
@@ -232,7 +231,6 @@
         'Liderazgo': 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80',
         'Recursos para lÃ­deres': 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=80',
         'Predicaciones': 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=900&q=80',
-        'Multimedia': 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=900&q=80'
       };
       const storageKey = 'discipulado-resources-v1';
       const authStorageKey = 'discipulado-admin-session-v1';
@@ -293,12 +291,16 @@
         return defaultResourceImages[category] || defaultResourceImages.Discipulado;
       }
 
+      function normalizeCategory(category) {
+        return category === 'Multimedia' ? 'Nuevo creyente' : category;
+      }
+
       function renderAdminResources() {
         els.adminResourceList.innerHTML = resources.map((resource) => `
           <div class="admin-row">
             <div>
               <strong>${resource.title}</strong>
-              <small>${resource.category} · ${resource.type} · ${resource.isPublished ? 'Publicado' : 'Borrador'}</small>
+              <small>${normalizeCategory(resource.category)} · ${resource.type} · ${resource.isPublished ? 'Publicado' : 'Borrador'}</small>
             </div>
             <div class="row-actions">
               <button type="button" data-action="toggle-published" data-id="${resource.id}">${resource.isPublished ? 'Despublicar' : 'Publicar'}</button>
@@ -329,7 +331,7 @@
           els.formTitle.textContent = 'Editar recurso';
           els.titleInput.value = resource.title;
           els.descriptionInput.value = resource.description;
-          els.categoryInput.value = resource.category;
+          els.categoryInput.value = normalizeCategory(resource.category);
           els.typeInput.value = resource.type;
           els.authorInput.value = resource.author || '';
           els.externalUrlInput.value = resource.externalUrl || '';
