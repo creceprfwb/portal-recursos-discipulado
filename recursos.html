@@ -11,21 +11,28 @@
     <style>
       :root {
         font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        --azul: #078ca3;
+        --azul-oscuro: #12384d;
+        --verde: #21473f;
+        --dorado: #f1c84b;
+        --coral: #d95643;
+        --fondo: #f4f8fa;
+        --borde: #dbe7ec;
         color: #12384d;
-        background: #f4f8fa;
+        background: var(--fondo);
         line-height: 1.5;
       }
       * { box-sizing: border-box; }
-      body { margin: 0; min-width: 320px; overflow-x: hidden; background: #f4f8fa; }
+      body { margin: 0; min-width: 320px; overflow-x: hidden; background: var(--fondo); }
       button, input, select { font: inherit; }
       img { max-width: 100%; }
-      .app-shell { width: min(1180px, calc(100% - 2rem)); margin: 0 auto; padding: 22px 0 48px; }
+      .app-shell { width: 100%; margin: 0; padding: 0 0 64px; }
       .site-nav {
         display: flex;
         justify-content: space-between;
         align-items: center;
         gap: 18px;
-        padding: 0.7rem 0;
+        padding: 0.7rem max(1rem, calc((100vw - 1180px) / 2));
         border-bottom: 1px solid #dbe7ec;
         background: #ffffff;
       }
@@ -51,7 +58,7 @@
         gap: 1rem;
         align-items: start;
         color: white;
-        padding: 34px 30px;
+        padding: 70px max(1rem, calc((100vw - 1180px) / 2));
         background:
           linear-gradient(90deg, rgba(33, 71, 63, 0.88), rgba(14, 59, 81, 0.94) 48%, rgba(53, 61, 74, 0.88)),
           linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
@@ -110,8 +117,18 @@
         grid-template-columns: 1fr 190px 170px;
         gap: 0.75rem;
         padding: 1rem;
-        margin-top: 1rem;
+        margin: -28px auto 0;
+        position: relative;
+        z-index: 2;
         align-items: end;
+      }
+      .toolbar,
+      .category-strip,
+      .section,
+      .admin-section {
+        width: min(1180px, calc(100% - 2rem));
+        margin-left: auto;
+        margin-right: auto;
       }
       label { display: grid; gap: 0.35rem; font-weight: 800; }
       input, select {
@@ -140,7 +157,7 @@
         font-weight: 900;
       }
       .category-chip.active { background: #12384d; color: white; border-color: #12384d; }
-      .section { margin-top: 1.25rem; }
+      .section { margin-top: 1.45rem; }
       .section-header {
         display: flex;
         justify-content: space-between;
@@ -241,13 +258,17 @@
         .site-nav { padding: 0.75rem 1rem; }
         .nav-links { width: 100%; display: grid; grid-template-columns: 1fr; }
         .nav-links a { border: 1px solid #dbe7ec; }
-        .hero { padding: 26px 18px; }
+        .hero { padding: 34px 18px 48px; }
         .brand-lockup { align-items: flex-start; flex-direction: column; gap: 0.75rem; }
         .logo-badge { width: min(210px, 100%); height: 79px; }
         .hero-action, .button { width: 100%; }
         .toolbar,
         .quick-grid,
         .admin-section { margin: 0; border-radius: 0; box-shadow: none; }
+        .toolbar,
+        .category-strip,
+        .section,
+        .admin-section { width: 100%; }
         .section { margin-top: 0; padding: 1rem; }
         .quick-grid { grid-template-columns: 1fr; }
         .card-grid { grid-template-columns: 1fr; }
@@ -263,11 +284,11 @@
           <span>PRFWB</span>
         </a>
         <div class="nav-links">
-          <a href="./index.html?v=menu1">Home</a>
-          <a href="./who-we-are.html?v=menu1">Who We Are</a>
-          <a class="active" href="./recursos.html?v=menu1">Recursos</a>
-          <a href="./oracion.html?v=menu1">Oración</a>
-          <a href="./crece.html?v=menu1">CRECE</a>
+          <a href="./index.html?v=wide1">Home</a>
+          <a href="./who-we-are.html?v=wide1">Who We Are</a>
+          <a class="active" href="./recursos.html?v=wide1">Recursos</a>
+          <a href="./oracion.html?v=wide1">Oración</a>
+          <a href="./crece.html?v=wide1">CRECE</a>
         </div>
       </nav>
       <header class="hero">
@@ -309,7 +330,7 @@
           </div>
         </div>
         <div class="quick-grid">
-          <a class="quick-card" href="./discipulado.html?v=menu1">
+          <a class="quick-card" href="./discipulado.html?v=wide1">
             <strong>Guía de 12 semanas</strong>
             <span>Formando discípulos que forman discípulos.</span>
           </a>
@@ -317,7 +338,7 @@
             <strong>Escuela del Carácter</strong>
             <span>El carácter del líder organizado por clases.</span>
           </a>
-          <a class="quick-card" href="./oracion.html?v=menu1">
+          <a class="quick-card" href="./oracion.html?v=wide1">
             <strong>Muro de Oración</strong>
             <span>Peticiones revisadas y comunidad orando.</span>
           </a>

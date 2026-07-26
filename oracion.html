@@ -8,20 +8,27 @@
     <style>
       :root {
         font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        --azul: #078ca3;
+        --azul-oscuro: #12384d;
+        --verde: #21473f;
+        --dorado: #f1c84b;
+        --coral: #d95643;
+        --fondo: #f4f8fa;
+        --borde: #dbe7ec;
         color: #12384d;
-        background: #f4f8fa;
+        background: var(--fondo);
         line-height: 1.5;
       }
       * { box-sizing: border-box; }
-      body { margin: 0; min-width: 320px; overflow-x: hidden; background: #f4f8fa; }
+      body { margin: 0; min-width: 320px; overflow-x: hidden; background: var(--fondo); }
       button, input, select, textarea { font: inherit; }
-      .page-shell { width: min(1180px, calc(100% - 2rem)); margin: 0 auto; padding: 22px 0 48px; }
+      .page-shell { width: 100%; margin: 0; padding: 0 0 64px; }
       .site-nav {
         display: flex;
         justify-content: space-between;
         align-items: center;
         gap: 18px;
-        padding: 0.7rem 0;
+        padding: 0.7rem max(1rem, calc((100vw - 1180px) / 2));
         border-bottom: 1px solid #dbe7ec;
         background: #ffffff;
       }
@@ -43,7 +50,7 @@
       .nav-links a.active { background: #12384d; color: white; }
       .hero {
         color: white;
-        padding: 36px 30px;
+        padding: 70px max(1rem, calc((100vw - 1180px) / 2));
         background:
           linear-gradient(90deg, rgba(33, 71, 63, 0.92), rgba(14, 59, 81, 0.95) 55%, rgba(48, 72, 82, 0.88)),
           linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
@@ -93,7 +100,10 @@
         display: grid;
         grid-template-columns: minmax(320px, 0.9fr) minmax(0, 1.4fr);
         gap: 1rem;
-        margin-top: 1rem;
+        width: min(1180px, calc(100% - 2rem));
+        margin: -28px auto 0;
+        position: relative;
+        z-index: 2;
       }
       .panel, .request-card, .toolbar {
         background: white;
@@ -162,11 +172,11 @@
         .site-nav { padding: 0.75rem 1rem; }
         .nav-links { width: 100%; display: grid; grid-template-columns: 1fr; }
         .nav-links a { border: 1px solid #dbe7ec; }
-        .hero { padding: 26px 18px; }
+        .hero { padding: 34px 18px 48px; }
         .brand-lockup { align-items: flex-start; flex-direction: column; gap: 0.75rem; }
         .logo-badge { width: min(210px, 100%); height: 79px; }
         .panel, .toolbar { border-radius: 0; box-shadow: none; }
-        .layout { margin-top: 0; }
+        .layout { width: 100%; margin-top: 0; }
         .request-list { padding: 0 1rem; }
         .button, button { width: 100%; }
         .request-top { flex-direction: column; }
@@ -181,11 +191,11 @@
           <span>PRFWB</span>
         </a>
         <div class="nav-links">
-          <a href="./index.html?v=menu1">Home</a>
-          <a href="./who-we-are.html?v=menu1">Who We Are</a>
-          <a href="./recursos.html?v=menu1">Recursos</a>
-          <a class="active" href="./oracion.html?v=menu1">Oración</a>
-          <a href="./crece.html?v=menu1">CRECE</a>
+          <a href="./index.html?v=wide1">Home</a>
+          <a href="./who-we-are.html?v=wide1">Who We Are</a>
+          <a href="./recursos.html?v=wide1">Recursos</a>
+          <a class="active" href="./oracion.html?v=wide1">Oración</a>
+          <a href="./crece.html?v=wide1">CRECE</a>
         </div>
       </nav>
       <header class="hero">
@@ -202,7 +212,7 @@
           marcando que estas orando por ellos.
         </p>
         <div class="hero-actions">
-          <a class="button primary" href="./recursos.html?v=menu1">Ir a recursos</a>
+          <a class="button primary" href="./recursos.html?v=wide1">Ir a recursos</a>
           <a class="button secondary" href="./admin.html">Panel admin</a>
         </div>
       </header>
