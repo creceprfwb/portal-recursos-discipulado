@@ -147,24 +147,40 @@
       .resource-count { color: #5c6a6c; font-weight: 800; }
       .card-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 0.85rem;
+        grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+        gap: 1rem;
       }
       .resource-card {
         display: grid;
-        grid-template-columns: 104px 1fr;
         overflow: hidden;
-        min-height: 154px;
+        min-height: 100%;
       }
       .resource-card img {
-        width: 104px;
-        height: 100%;
-        min-height: 154px;
+        width: 100%;
+        height: 145px;
+        min-height: 0;
         object-fit: cover;
       }
-      .card-body { display: grid; gap: 0.45rem; padding: 0.85rem; }
-      .card-body h3 { margin: 0; font-size: 1.02rem; line-height: 1.25; }
-      .card-body p { margin: 0; color: #24343a; font-size: 0.92rem; }
+      .card-body {
+        display: grid;
+        gap: 0.55rem;
+        padding: 0.9rem;
+        align-content: start;
+      }
+      .card-body h3 {
+        margin: 0;
+        font-size: 1.08rem;
+        line-height: 1.22;
+      }
+      .card-body p {
+        margin: 0;
+        color: #24343a;
+        font-size: 0.92rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
       .card-meta {
         display: flex;
         gap: 0.45rem;
@@ -182,7 +198,7 @@
         font-size: 0.75rem;
         font-weight: 900;
       }
-      .card-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.15rem; }
+      .card-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.35rem; }
       .card-actions a { min-height: 38px; padding: 0.55rem 0.75rem; }
       .admin-section { margin-top: 1.5rem; padding: 1rem; }
       .empty-state { padding: 1rem; background: #f8f5ea; border-radius: 8px; color: #48617e; }
@@ -206,8 +222,7 @@
         .section { margin-top: 0; padding: 1rem; }
         .quick-grid { grid-template-columns: 1fr; }
         .card-grid { grid-template-columns: 1fr; }
-        .resource-card { grid-template-columns: 92px 1fr; }
-        .resource-card img { width: 92px; }
+        .resource-card img { height: 165px; }
       }
     </style>
   </head>
