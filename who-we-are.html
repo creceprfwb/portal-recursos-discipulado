@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Who We Are | PRFWB</title>
+
+  <style>
+    :root {
+      --azul: #173d52;
+      --azul-oscuro: #102f40;
+      --azul-claro: #eef5f8;
+      --coral: #d85343;
+      --dorado: #f2c94c;
+      --blanco: #ffffff;
+      --texto: #4d6472;
+      --borde: #dce7ec;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      max-width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      background: #ffffff;
+      color: var(--azul);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.7;
+    }
+
+    img,
+    svg,
+    video,
+    iframe {
+      max-width: 100%;
+      height: auto;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    .pagina {
+      width: 100%;
+      max-width: 100%;
+      overflow: hidden;
+    }
+
+    .contenedor {
+      width: 100%;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
+    .site-nav {
+      position: relative;
+      z-index: 20;
+      background: var(--blanco);
+      border-bottom: 1px solid var(--borde);
+    }
+
+    .site-nav-inner {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .site-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--azul);
+      font-weight: 900;
+      letter-spacing: .4px;
+    }
+
+    .site-brand img {
+      width: 118px;
+      height: 44px;
+      object-fit: contain;
+    }
+
+    .site-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .site-tabs a {
+      min-height: 42px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 15px;
+      border-radius: 999px;
+      color: var(--azul);
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .site-tabs a.activo {
+      background: var(--azul);
+      color: var(--blanco);
+    }
+
+    .hero {
+      position: relative;
+      width: 100%;
+      padding: 100px 20px 90px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 10% 20%, rgba(242, 201, 76, 0.16), transparent 28%),
+        radial-gradient(circle at 90% 80%, rgba(216, 83, 67, 0.18), transparent 30%),
+        linear-gradient(135deg, var(--azul-oscuro), var(--azul));
+      color: white;
+      text-align: center;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+      background-size: 42px 42px;
+      pointer-events: none;
+    }
+
+    .hero-contenido {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .etiqueta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      max-width: 100%;
+      margin-bottom: 20px;
+      padding: 8px 16px;
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      white-space: normal;
+    }
+
+    .etiqueta::before {
+      content: "✦";
+      color: var(--dorado);
+    }
+
+    .hero h1 {
+      margin-bottom: 15px;
+      font-size: clamp(38px, 7vw, 78px);
+      line-height: 1.05;
+      letter-spacing: -2px;
+      overflow-wrap: anywhere;
+    }
+
+    .subtitulo {
+      margin-bottom: 26px;
+      color: var(--dorado);
+      font-size: clamp(20px, 3vw, 31px);
+      font-weight: 700;
+    }
+
+    .hero p {
+      max-width: 790px;
+      margin: 0 auto;
+      color: #e5eef2;
+      font-size: 18px;
+    }
+
+    .linea {
+      width: 78px;
+      height: 4px;
+      margin: 30px auto 0;
+      border-radius: 20px;
+      background: var(--coral);
+    }
+
+    .introduccion {
+      padding: 80px 0 35px;
+      background: white;
+      text-align: center;
+    }
+
+    .introduccion h2 {
+      margin-bottom: 20px;
+      font-size: clamp(30px, 4vw, 45px);
+      line-height: 1.2;
+    }
+
+    .introduccion p {
+      max-width: 850px;
+      margin: 0 auto;
+      color: var(--texto);
+      font-size: 18px;
+    }
+
+    .identidad {
+      padding: 55px 0 90px;
+      background: white;
+    }
+
+    .titulo-seccion {
+      margin-bottom: 45px;
+      text-align: center;
+    }
+
+    .titulo-seccion span {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--coral);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    .titulo-seccion h2 {
+      margin: 0;
+      font-size: clamp(32px, 4vw, 46px);
+    }
+
+    .tarjetas-identidad {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 28px;
+    }
+
+    .tarjeta-grande {
+      position: relative;
+      min-width: 0;
+      padding: 40px;
+      overflow: hidden;
+      border: 1px solid var(--borde);
+      border-radius: 24px;
+      background: white;
+      box-shadow: 0 18px 50px rgba(16, 47, 64, 0.08);
+    }
+
+    .tarjeta-grande::after {
+      content: "";
+      position: absolute;
+      right: -50px;
+      bottom: -50px;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: var(--azul-claro);
+    }
+
+    .icono {
+      position: relative;
+      z-index: 2;
+      width: 62px;
+      height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      border-radius: 18px;
+      background: var(--azul-claro);
+      color: var(--coral);
+      font-size: 29px;
+      font-weight: 700;
+    }
+
+    .tarjeta-grande h3 {
+      position: relative;
+      z-index: 2;
+      margin-bottom: 15px;
+      font-size: 30px;
+    }
+
+    .tarjeta-grande p {
+      position: relative;
+      z-index: 2;
+      color: var(--texto);
+    }
+
+    .lista {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .lista-item {
+      display: flex;
+      gap: 11px;
+      align-items: flex-start;
+      min-width: 0;
+      color: var(--texto);
+    }
+
+    .lista-item span:last-child {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .check {
+      flex: 0 0 24px;
+      width: 24px;
+      height: 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+      border-radius: 50%;
+      background: #edf6ef;
+      color: #3a8750;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .historia {
+      padding: 90px 0;
+      background: var(--azul-claro);
+    }
+
+    .linea-tiempo {
+      position: relative;
+      max-width: 920px;
+      margin: 0 auto;
+    }
+
+    .linea-tiempo::before {
+      content: "";
+      position: absolute;
+      left: 28px;
+      top: 15px;
+      bottom: 15px;
+      width: 3px;
+      background: #c9dce4;
+    }
+
+    .momento {
+      position: relative;
+      display: grid;
+      grid-template-columns: 60px minmax(0, 1fr);
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+
+    .momento:last-child {
+      margin-bottom: 0;
+    }
+
+    .punto {
+      position: relative;
+      z-index: 2;
+      width: 58px;
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 6px solid var(--azul-claro);
+      border-radius: 50%;
+      background: var(--coral);
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .momento-contenido {
+      min-width: 0;
+      padding: 28px 30px;
+      border-radius: 18px;
+      background: white;
+      box-shadow: 0 12px 30px rgba(16, 47, 64, 0.07);
+    }
+
+    .momento-contenido span {
+      color: var(--coral);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .momento-contenido h3 {
+      margin: 4px 0 10px;
+      font-size: 25px;
+    }
+
+    .momento-contenido p {
+      margin: 0;
+      color: var(--texto);
+    }
+
+    .creencias {
+      padding: 90px 0;
+      background: white;
+    }
+
+    .rejilla-creencias {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .creencia {
+      min-width: 0;
+      min-height: 260px;
+      padding: 30px 25px;
+      border: 1px solid var(--borde);
+      border-radius: 20px;
+      background: white;
+      text-align: center;
+    }
+
+    .creencia .icono {
+      margin: 0 auto 20px;
+    }
+
+    .creencia h3 {
+      margin-bottom: 12px;
+      font-size: 22px;
+    }
+
+    .creencia p {
+      margin: 0;
+      color: var(--texto);
+      font-size: 15px;
+    }
+
+    .mision {
+      padding: 90px 0;
+      background: var(--azul-oscuro);
+      color: white;
+      text-align: center;
+    }
+
+    .mision .titulo-seccion h2 {
+      color: white;
+    }
+
+    .mision .titulo-seccion span {
+      color: var(--dorado);
+    }
+
+    .acciones {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      max-width: 950px;
+      margin: 0 auto;
+    }
+
+    .accion {
+      min-width: 0;
+      padding: 21px 16px;
+      border: 1px solid rgba(255,255,255,.17);
+      border-radius: 14px;
+      background: rgba(255,255,255,.07);
+      color: white;
+      font-size: 17px;
+      font-weight: 700;
+      overflow-wrap: anywhere;
+    }
+
+    .conviccion {
+      padding: 85px 20px;
+      background: #ffffff;
+    }
+
+    .caja-conviccion {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 52px;
+      border-left: 7px solid var(--coral);
+      border-radius: 20px;
+      background: var(--azul-claro);
+      text-align: center;
+    }
+
+    .comillas {
+      margin-bottom: 14px;
+      color: var(--coral);
+      font-size: 55px;
+      line-height: 1;
+      font-family: Georgia, serif;
+    }
+
+    .caja-conviccion p {
+      margin: 0;
+      color: var(--azul);
+      font-size: clamp(22px, 3vw, 32px);
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .firma {
+      margin-top: 20px;
+      color: var(--texto);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 960px) {
+      .rejilla-creencias {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .acciones {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .contenedor {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      .site-nav-inner {
+        align-items: flex-start;
+        flex-direction: column;
+        padding-top: 12px;
+        padding-bottom: 12px;
+      }
+
+      .site-tabs {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      .site-tabs a {
+        border: 1px solid var(--borde);
+      }
+
+      .hero {
+        padding: 68px 16px 60px;
+      }
+
+      .hero h1 {
+        font-size: 40px;
+        letter-spacing: -1px;
+      }
+
+      .hero p,
+      .introduccion p {
+        font-size: 16px;
+      }
+
+      .etiqueta {
+        font-size: 11px;
+        letter-spacing: 1px;
+      }
+
+      .tarjetas-identidad {
+        grid-template-columns: 1fr;
+      }
+
+      .tarjeta-grande {
+        padding: 28px 22px;
+      }
+
+      .tarjeta-grande h3 {
+        font-size: 26px;
+      }
+
+      .rejilla-creencias,
+      .acciones {
+        grid-template-columns: 1fr;
+      }
+
+      .introduccion,
+      .identidad,
+      .historia,
+      .creencias,
+      .mision {
+        padding-top: 58px;
+        padding-bottom: 58px;
+      }
+
+      .titulo-seccion {
+        margin-bottom: 32px;
+      }
+
+      .momento {
+        grid-template-columns: 46px minmax(0, 1fr);
+        gap: 12px;
+      }
+
+      .punto {
+        width: 46px;
+        height: 46px;
+        border-width: 5px;
+        font-size: 14px;
+      }
+
+      .linea-tiempo::before {
+        left: 22px;
+      }
+
+      .momento-contenido {
+        padding: 22px 18px;
+      }
+
+      .momento-contenido h3 {
+        font-size: 21px;
+      }
+
+      .conviccion {
+        padding: 58px 16px;
+      }
+
+      .caja-conviccion {
+        padding: 34px 20px;
+        border-left-width: 5px;
+      }
+
+      .caja-conviccion p {
+        font-size: 22px;
+      }
+
+      .firma {
+        font-size: 11px;
+        letter-spacing: 1px;
+      }
+    }
+
+    @media (max-width: 390px) {
+      .hero h1 {
+        font-size: 34px;
+      }
+
+      .subtitulo {
+        font-size: 20px;
+      }
+
+      .titulo-seccion h2 {
+        font-size: 29px;
+      }
+
+      .tarjeta-grande {
+        padding: 24px 18px;
+      }
+
+      .momento {
+        grid-template-columns: 40px minmax(0, 1fr);
+        gap: 9px;
+      }
+
+      .punto {
+        width: 40px;
+        height: 40px;
+        font-size: 12px;
+      }
+
+      .linea-tiempo::before {
+        left: 19px;
+      }
+
+      .momento-contenido {
+        padding: 20px 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="pagina">
+    <nav class="site-nav" aria-label="Navegación principal">
+      <div class="contenedor site-nav-inner">
+        <a class="site-brand" href="./index.html">
+          <img src="./prfwb-logo-cropped-v2.png" alt="PRFWB" />
+          <span>PRFWB</span>
+        </a>
+        <div class="site-tabs">
+          <a href="./index.html?v=prfwb1">Home</a>
+          <a class="activo" href="./who-we-are.html?v=prfwb1">Who We Are</a>
+          <a href="https://creceprfwb.github.io/ministerio-crece-prfwb/" target="_top" rel="noopener">CRECE</a>
+          <a href="./recursos.html?v=prfwb1">Recursos</a>
+          <a href="./oracion.html?v=prfwb1">Oración</a>
+        </div>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-contenido">
+       <div class="etiqueta" style="display:none;">Puerto Rico Free Will Baptists</div>
+        <h1>Los Bautistas Libres</h1>
+        <div class="subtitulo">Free Will Baptists</div>
+
+        <p>
+          Una familia de iglesias comprometidas con la autoridad de la Biblia,
+          la proclamación del evangelio, la libertad humana para responder a la
+          gracia de Dios y el cumplimiento de la Gran Comisión.
+        </p>
+
+        <div class="linea"></div>
+      </div>
+    </section>
+
+    <section class="introduccion">
+      <div class="contenedor">
+        <div class="titulo-seccion">
+          <span>Quiénes somos</span>
+          <h2>Una identidad centrada en Cristo</h2>
+        </div>
+
+        <p>
+          Los Bautistas Libres somos un grupo cristiano que se originó en el
+          siglo XVII, principalmente en Inglaterra, y posteriormente se
+          expandió a los Estados Unidos. Nuestro nombre refleja dos aspectos
+          fundamentales de nuestra teología y práctica: nuestra identidad
+          bautista y nuestra convicción en el libre albedrío.
+        </p>
+      </div>
+    </section>
+
+    <section class="identidad">
+      <div class="contenedor">
+        <div class="titulo-seccion">
+          <span>Nuestra identidad</span>
+          <h2>¿Qué significa ser Bautista Libre?</h2>
+        </div>
+
+        <div class="tarjetas-identidad">
+
+          <article class="tarjeta-grande">
+            <div class="icono">💧</div>
+            <h3>Bautistas</h3>
+
+            <p>
+              El término “bautista” se refiere a nuestra creencia en el
+              bautismo de creyentes. Enseñamos que el bautismo debe ser
+              administrado a personas que han profesado personalmente su fe
+              en Jesucristo.
+            </p>
+
+            <div class="lista">
+              <div class="lista-item">
+                <span class="check">✓</span>
+                <span>Practicamos el bautismo de creyentes por inmersión.</span>
+              </div>
+
+              <div class="lista-item">
+                <span class="check">✓</span>
+                <span>Afirmamos la autoridad de la Biblia como regla de fe y práctica.</span>
+              </div>
+
+              <div class="lista-item">
+                <span class="check">✓</span>
+                <span>Creemos en la autonomía de cada iglesia local.</span>
+              </div>
+
+              <div class="lista-item">
+                <span class="check">✓</span>
+                <span>Defendemos la separación de la iglesia y el Estado.</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="tarjeta-grande">
+            <div class="icono">🕊</div>
+            <h3>Libres o Free Will</h3>
+
+            <p>
+              El término “Free Will” o libre albedrío expresa nuestra creencia
+              arminiana de que Dios ofrece la salvación a todas las personas,
+              y que cada ser humano tiene la responsabilidad de responder a
+              su gracia.
+            </p>
+
+            <div class="lista">
+              <div class="lista-item">
+                <span class="check">✓</span>
+                <span>Creemos que Cristo murió por toda la humanidad.</span>
+              </div>
+
+              <div class="lista-item">
+                <span class="check">✓</span>
+                <span>Dios ofrece la salvación a todas las personas.</span>
+              </div>
+
+              <div class="lista-item">
+                <span class="check">✓</span>
+                <span>Cada persona puede aceptar o rechazar el llamado de Dios.</span>
+              </div>
+
+              <div class="lista-item">
+                <span class="check">✓</span>
+                <span>Enfatizamos la responsabilidad humana ante el evangelio.</span>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="historia">
+      <div class="contenedor">
+        <div class="titulo-seccion">
+          <span>Nuestra historia</span>
+          <h2>Una herencia de fe y libertad</h2>
+        </div>
+
+        <div class="linea-tiempo">
+
+          <article class="momento">
+            <div class="punto">17</div>
+            <div class="momento-contenido">
+              <span>Siglo XVII</span>
+              <h3>Origen en Inglaterra</h3>
+              <p>
+                Los Bautistas Libres surgieron en el contexto de la Reforma
+                Protestante y del movimiento puritano en Inglaterra.
+              </p>
+            </div>
+          </article>
+
+          <article class="momento">
+            <div class="punto">TH</div>
+            <div class="momento-contenido">
+              <span>Liderazgo histórico</span>
+              <h3>Thomas Helwys</h3>
+              <p>
+                Thomas Helwys fue uno de los primeros líderes bautistas y un
+                firme defensor de la libertad religiosa y de la separación
+                entre la iglesia y el Estado.
+              </p>
+            </div>
+          </article>
+
+          <article class="momento">
+            <div class="punto">18</div>
+            <div class="momento-contenido">
+              <span>Siglo XVIII</span>
+              <h3>Expansión en Estados Unidos</h3>
+              <p>
+                En Estados Unidos, los Bautistas Libres se organizaron
+                formalmente durante el siglo XVIII y crecieron especialmente
+                en el sur y el medio oeste del país.
+              </p>
+            </div>
+          </article>
+
+          <article class="momento">
+            <div class="punto">HOY</div>
+            <div class="momento-contenido">
+              <span>Actualidad</span>
+              <h3>Una misión que continúa</h3>
+              <p>
+                Actualmente existen asociaciones y convenciones de Bautistas
+                Libres que colaboran en evangelismo, discipulado, educación
+                cristiana, plantación de iglesias y misiones alrededor del
+                mundo.
+              </p>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="creencias">
+      <div class="contenedor">
+        <div class="titulo-seccion">
+          <span>Creencias y prácticas</span>
+          <h2>Convicciones que guían nuestra vida</h2>
+        </div>
+
+        <div class="rejilla-creencias">
+
+          <article class="creencia">
+            <div class="icono">✝</div>
+            <h3>Salvación</h3>
+            <p>
+              Creemos en la salvación por gracia mediante la fe en Jesucristo
+              y enfatizamos la responsabilidad humana de responder al llamado
+              de Dios.
+            </p>
+          </article>
+
+          <article class="creencia">
+            <div class="icono">💧</div>
+            <h3>Bautismo</h3>
+            <p>
+              Practicamos el bautismo por inmersión como un acto público y
+              simbólico de fe, obediencia e identificación con Jesucristo.
+            </p>
+          </article>
+
+          <article class="creencia">
+            <div class="icono">🔥</div>
+            <h3>Santidad</h3>
+            <p>
+              Enfatizamos una vida de santidad, obediencia y separación del
+              pecado, reflejando el carácter de Cristo en nuestra vida diaria.
+            </p>
+          </article>
+
+          <article class="creencia">
+            <div class="icono">⌂</div>
+            <h3>Iglesia local</h3>
+            <p>
+              Mantenemos una estructura congregacional en la que cada iglesia
+              local es autónoma bajo el señorío de Jesucristo.
+            </p>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="mision">
+      <div class="contenedor">
+        <div class="titulo-seccion">
+          <span>Nuestra misión</span>
+          <h2>Existimos para glorificar a Dios</h2>
+        </div>
+
+        <div class="acciones">
+          <div class="accion">Proclamar el evangelio</div>
+          <div class="accion">Formar discípulos</div>
+          <div class="accion">Fortalecer iglesias</div>
+          <div class="accion">Capacitar líderes</div>
+          <div class="accion">Enviar misioneros</div>
+          <div class="accion">Servir a la comunidad</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="conviccion">
+      <div class="caja-conviccion">
+        <div class="comillas">“</div>
+
+        <p>
+          Los Bautistas Libres combinamos las creencias bautistas tradicionales
+          con una fuerte convicción en el libre albedrío y la responsabilidad
+          humana ante la salvación ofrecida por Dios.
+        </p>
+
+        <div class="firma">
+          Puerto Rico Free Will Baptist Association
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    function enviarAltura() {
+      const altura = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight
+      );
+
+      window.parent.postMessage(
+        {
+          type: "resize",
+          height: altura
+        },
+        "*"
+      );
+    }
+
+    window.addEventListener("load", enviarAltura);
+    window.addEventListener("resize", enviarAltura);
+
+    setTimeout(enviarAltura, 300);
+    setTimeout(enviarAltura, 1000);
+  </script>
+</body>
+</html>
