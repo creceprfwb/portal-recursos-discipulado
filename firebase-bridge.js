@@ -258,6 +258,7 @@
       phone: payload.phone || '',
       church: payload.church || '',
       attendees: String(payload.attendees || '1'),
+      attendeeNames: Array.isArray(payload.attendeeNames) ? payload.attendeeNames.filter(Boolean) : [],
       role: payload.role || 'Miembro',
       notes: payload.notes || '',
       status: 'new',
@@ -265,7 +266,7 @@
       updatedAt: now
     };
 
-    if (!registration.name || !registration.email) {
+    if (!registration.name || !registration.email || !registration.attendeeNames.length) {
       return false;
     }
 

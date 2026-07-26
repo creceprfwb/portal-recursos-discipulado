@@ -60,6 +60,7 @@ service cloud.firestore {
           "phone",
           "church",
           "attendees",
+          "attendeeNames",
           "role",
           "notes",
           "status",
@@ -69,6 +70,7 @@ service cloud.firestore {
         && request.resource.data.eventId is string
         && request.resource.data.name is string
         && request.resource.data.email is string
+        && request.resource.data.attendeeNames is list
         && request.resource.data.status == "new";
       allow read, update, delete: if request.auth != null;
     }

@@ -225,7 +225,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
     <script src="./firebase-config.js"></script>
-    <script src="./firebase-bridge.js?v=eventapp1"></script>
+    <script src="./firebase-bridge.js?v=eventapp2"></script>
     <script>
       const categoryOptions = [
         'Nuevo creyente',
@@ -377,6 +377,7 @@
               <strong>${registration.name}</strong>
               <small>${registration.eventTitle || registration.eventId} · ${registration.email} · ${registration.phone || 'Sin teléfono'}</small>
               <small>${registration.church || 'Sin iglesia'} · ${registration.attendees || '1'} persona(s) · ${registration.role || 'Miembro'}</small>
+              <small>Asistentes: ${(registration.attendeeNames || []).join(', ') || registration.name}</small>
               <small>${registration.notes || ''}</small>
             </div>
           </div>

@@ -222,7 +222,17 @@
       .registration-panel h2 { margin: 0 0 6px; color: var(--deep); font-size: clamp(24px, 3vw, 34px); }
       .registration-panel p { margin: 0 0 16px; color: var(--muted); }
       form { display: grid; gap: 12px; }
-      .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+      .form-grid, .attendee-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+      .attendee-section {
+        display: grid;
+        gap: 10px;
+        padding: 14px;
+        border: 1px solid rgba(18, 56, 77, .14);
+        border-radius: 16px;
+        background: rgba(18, 56, 77, .04);
+      }
+      .attendee-section h3 { margin: 0; color: var(--deep); font-size: 18px; }
+      .attendee-section p { margin: 0; color: var(--muted); font-size: 13px; }
       label { display: grid; gap: 6px; color: var(--deep); font-size: 13px; font-weight: 900; }
       input, select, textarea {
         width: 100%;
@@ -275,7 +285,7 @@
         .poster { padding: 18px; }
         .poster img { width: min(82vw, 340px); max-height: none; margin: 0 auto; border-radius: 18px; }
         .content { padding: 32px 22px; }
-        .facts, .form-grid { grid-template-columns: 1fr; }
+        .facts, .form-grid, .attendee-grid { grid-template-columns: 1fr; }
         .day { grid-template-columns: 1fr; gap: 4px; }
         .btn { width: 100%; min-height: 46px; }
       }
@@ -294,17 +304,17 @@
   </head>
   <body>
     <nav class="site-nav" aria-label="Navegacion principal">
-      <a class="nav-logo" href="./index.html?v=eventapp1">
+      <a class="nav-logo" href="./index.html?v=eventapp2">
         <img src="./prfwb-logo-cropped-v2.png" alt="PRFWB" />
         <span>PRFWB</span>
       </a>
       <div class="nav-links">
-        <a href="./index.html?v=eventapp1">Home</a>
-        <a href="./who-we-are.html?v=eventapp1">Who We Are</a>
-        <a class="active" href="./eventos.html?v=eventapp1">Eventos</a>
-        <a href="./recursos.html?v=eventapp1">Recursos</a>
-        <a href="./oracion.html?v=eventapp1">Oración</a>
-        <a href="./crece.html?v=eventapp1">CRECE</a>
+        <a href="./index.html?v=eventapp2">Home</a>
+        <a href="./who-we-are.html?v=eventapp2">Who We Are</a>
+        <a class="active" href="./eventos.html?v=eventapp2">Eventos</a>
+        <a href="./recursos.html?v=eventapp2">Recursos</a>
+        <a href="./oracion.html?v=eventapp2">Oración</a>
+        <a href="./crece.html?v=eventapp2">CRECE</a>
       </div>
     </nav>
 
@@ -378,7 +388,11 @@
                       <option value="3">3 personas</option>
                       <option value="4">4 personas</option>
                       <option value="5">5 personas</option>
-                      <option value="6+">6 o más</option>
+                      <option value="6">6 personas</option>
+                      <option value="7">7 personas</option>
+                      <option value="8">8 personas</option>
+                      <option value="9">9 personas</option>
+                      <option value="10">10 personas</option>
                     </select>
                   </label>
                   <label>
@@ -391,6 +405,13 @@
                     </select>
                   </label>
                 </div>
+                <section class="attendee-section" aria-label="Nombres de asistentes">
+                  <div>
+                    <h3>Nombres de los asistentes</h3>
+                    <p>Escribe el nombre de cada persona que irá en este registro.</p>
+                  </div>
+                  <div id="attendeeNamesGrid" class="attendee-grid"></div>
+                </section>
                 <label>
                   Comentarios
                   <textarea id="notesInput" name="notes" maxlength="600" placeholder="Alguna información adicional"></textarea>
@@ -413,12 +434,15 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
     <script src="./firebase-config.js"></script>
-    <script src="./firebase-bridge.js?v=eventapp1"></script>
+    <script src="./firebase-bridge.js?v=eventapp2"></script>
     <script>
       const form = document.getElementById('eventRegistrationForm');
       const submitButton = document.getElementById('submitButton');
       const clearButton = document.getElementById('clearButton');
       const message = document.getElementById('formMessage');
+      const nameInput = document.getElementById('nameInput');
+      const attendeesInput = document.getElementById('attendeesInput');
+      const attendeeNamesGrid = document.getElementById('attendeeNamesGrid');
 
       function showMessage(text, type) {
         message.textContent = text;
@@ -429,16 +453,58 @@
         return document.getElementById(id).value.trim();
       }
 
+      function renderAttendeeNameFields() {
+        const previousValues = Array.from(attendeeNamesGrid.querySelectorAll('input')).map((input) => input.value.trim());
+        const count = Number(attendeesInput.value || 1);
+        attendeeNamesGrid.innerHTML = '';
+
+        for (let index = 0; index < count; index += 1) {
+          const label = document.createElement('label');
+          const input = document.createElement('input');
+          input.type = 'text';
+          input.required = true;
+          input.maxLength = 120;
+          input.className = 'attendee-name-input';
+          input.placeholder = `Nombre de la persona ${index + 1}`;
+          input.value = previousValues[index] || (index === 0 ? nameInput.value.trim() : '');
+          label.append(`Persona ${index + 1}`);
+          label.appendChild(input);
+          attendeeNamesGrid.appendChild(label);
+        }
+      }
+
+      function getAttendeeNames() {
+        return Array.from(attendeeNamesGrid.querySelectorAll('input'))
+          .map((input) => input.value.trim())
+          .filter(Boolean);
+      }
+
       clearButton.addEventListener('click', () => {
         form.reset();
+        renderAttendeeNameFields();
         message.className = 'message';
         message.textContent = '';
+      });
+
+      attendeesInput.addEventListener('change', renderAttendeeNameFields);
+      nameInput.addEventListener('input', () => {
+        const firstAttendee = attendeeNamesGrid.querySelector('input');
+        if (firstAttendee && !firstAttendee.dataset.edited) {
+          firstAttendee.value = nameInput.value.trim();
+        }
+      });
+      attendeeNamesGrid.addEventListener('input', (event) => {
+        if (event.target.matches('input')) {
+          event.target.dataset.edited = 'true';
+        }
       });
 
       form.addEventListener('submit', async (event) => {
         event.preventDefault();
         submitButton.disabled = true;
         submitButton.textContent = 'Enviando...';
+
+        const attendeeNames = getAttendeeNames();
 
         const payload = {
           eventId: 'convencion-2027',
@@ -448,13 +514,22 @@
           phone: getValue('phoneInput'),
           church: getValue('churchInput'),
           attendees: getValue('attendeesInput'),
+          attendeeNames,
           role: getValue('roleInput'),
           notes: getValue('notesInput'),
         };
 
+        if (attendeeNames.length !== Number(payload.attendees)) {
+          showMessage('Escribe el nombre de cada asistente antes de enviar.', 'error');
+          submitButton.disabled = false;
+          submitButton.textContent = 'Enviar registro';
+          return;
+        }
+
         const saved = await window.discipladoFirebase?.createEventRegistration?.(payload);
         if (saved) {
           form.reset();
+          renderAttendeeNameFields();
           showMessage('Registro recibido. Gracias, te contactaremos con más detalles.', 'success');
         } else {
           showMessage('No se pudo enviar ahora. Revisa la conexión o intenta nuevamente.', 'error');
@@ -463,6 +538,8 @@
         submitButton.disabled = false;
         submitButton.textContent = 'Enviar registro';
       });
+
+      renderAttendeeNameFields();
     </script>
   </body>
 </html>
