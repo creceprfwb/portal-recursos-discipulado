@@ -152,7 +152,7 @@ function App() {
         <div>
           <div className="brand-lockup">
             <div className="logo-badge">
-              <img src="./prfwb-logo-cropped-v2.png" alt="PR Free Will Baptists" />
+              <img src="./prfwb-logo-main-cropped.png" alt="PR Free Will Baptists" />
             </div>
             <div className="brand-name">Recursos de Discipulado</div>
           </div>
