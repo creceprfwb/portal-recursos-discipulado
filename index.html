@@ -202,6 +202,38 @@
     .hero-linea{width:64px;height:4px;margin:25px auto;border-radius:20px;background:var(--coral)}
     .hero-tarjeta strong{display:block;color:var(--blanco);font-size:17px}
 
+    /* JEEC */
+    .jeec-banner{
+      padding:46px 0 0;
+      background:var(--blanco);
+    }
+    .jeec-card{
+      display:grid;
+      grid-template-columns:1.05fr .95fr;
+      gap:0;
+      overflow:hidden;
+      border-radius:22px;
+      background:linear-gradient(120deg,var(--azul-profundo),var(--azul-oscuro));
+      color:var(--blanco);
+      box-shadow:var(--sombra);
+    }
+    .jeec-copy{
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      padding:42px;
+    }
+    .jeec-copy .etiqueta{color:var(--dorado)}
+    .jeec-copy h2{
+      margin:0 0 14px;
+      font-size:clamp(28px,4vw,46px);
+      line-height:1.1;
+    }
+    .jeec-copy p{margin:0 0 24px;color:#e6f2f5;font-size:17px}
+    .jeec-actions{display:flex;flex-wrap:wrap;gap:12px}
+    .jeec-media{min-height:320px;background:#0d2b3a}
+    .jeec-media img{width:100%;height:100%;object-fit:cover}
+
     /* STATS */
     .estadisticas-contenedor{position:relative;z-index:5;margin-top:-48px}
     .estadisticas{
@@ -560,10 +592,20 @@
       font-weight:900;
     }
     .site-tabs a.activo{background:var(--azul-oscuro);color:var(--blanco)}
+    .site-tabs a.donate-link{
+      background:var(--dorado);
+      color:var(--azul-oscuro);
+      border:1px solid rgba(18,56,77,.12);
+      box-shadow:0 8px 18px rgba(18,56,77,.12);
+    }
     @media(max-width:760px){
       .site-nav-inner{align-items:flex-start;flex-direction:column;padding-top:12px;padding-bottom:12px}
       .site-tabs{width:100%;display:grid;grid-template-columns:1fr}
       .site-tabs a{border:1px solid var(--borde)}
+      .jeec-card{grid-template-columns:1fr}
+      .jeec-copy{padding:34px 24px}
+      .jeec-actions{display:grid}
+      .jeec-media{min-height:240px}
     }
   </style>
 </head>
@@ -576,13 +618,15 @@
         <span>PRFWB</span>
       </a>
       <div class="site-tabs">
-        <a class="activo" href="./index.html?v=eventapp2">Home</a>
-        <a href="./who-we-are.html?v=eventapp2">Who We Are</a>
+        <a class="activo" href="./index.html?v=donate1">Home</a>
+        <a href="./who-we-are.html?v=donate1">Who We Are</a>
         
-          <a href="./eventos.html?v=eventapp2">Eventos</a>
-          <a href="./recursos.html?v=eventapp2">Recursos</a>
-        <a href="./oracion.html?v=eventapp2">Oración</a>
-        <a href="./crece.html?v=eventapp2">CRECE</a>
+          <a href="./eventos.html?v=donate1">Eventos</a>
+          <a href="./recursos.html?v=donate1">Recursos</a>
+        <a href="./oracion.html?v=donate1">Oración</a>
+          <a class="donate-link" href="https://donate.stripe.com/7sY6oJ7XVcLz5WI5Ie63K00" target="_blank" rel="noopener">Donar PRFWB</a>
+
+        <a href="./crece.html?v=donate1">CRECE</a>
       </div>
     </div>
   </nav>
@@ -614,8 +658,7 @@
             Conoce nuestra misión
           </button>
           <a class="boton boton-principal"
-             href="https://www.prfwb.com/jeec"
-             target="_top"
+             href="./jeec.html?v=donate1"
              rel="noopener">
             Apoya a Jesús es el Centro
           </a>
@@ -643,6 +686,27 @@
     </div>
   </div>
 
+  <section class="jeec-banner" aria-label="Campana Jesus es el Centro">
+    <div class="contenedor">
+      <div class="jeec-card">
+        <div class="jeec-copy">
+          <span class="etiqueta">Campana de edificio</span>
+          <h2>Jesus es el Centro: se parte de este sueno</h2>
+          <p>
+            Apoya la compra del edificio para crear mas espacio de adoracion,
+            discipulado y servicio a la comunidad.
+          </p>
+          <div class="jeec-actions">
+            <a class="boton boton-principal" href="./jeec.html?v=donate1">Ver campana JEEC</a>
+            <a class="boton boton-claro" href="https://donate.stripe.com/bJe28t5PNdPDgBm0nU63K01" target="_blank" rel="noopener">Donar a JEEC</a>
+          </div>
+        </div>
+        <div class="jeec-media">
+          <img src="./files/jeec-edificio-campana.png" alt="Campana para la compra del edificio de Jesus es el Centro">
+        </div>
+      </div>
+    </div>
+  </section>
   <section id="quienes-somos" class="seccion">
     <div class="contenedor nosotros-grid">
       <div class="nosotros-visual">
@@ -757,7 +821,7 @@
           No queremos solamente ofrecer clases. Queremos formar discípulos que conozcan
           a Cristo, comprendan la Palabra, vivan el Evangelio y estén preparados para compartirlo.
         </p>
-        <a class="boton boton-principal" href="./crece.html?v=eventapp2">Conoce el proyecto CRECE →</a>
+        <a class="boton boton-principal" href="./crece.html?v=donate1">Conoce el proyecto CRECE →</a>
       </div>
 
       <div class="letras-crece">

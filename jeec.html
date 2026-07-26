@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Jesús es el Centro | Donaciones</title>
+    <meta
+      name="description"
+      content="Campaña de donación para la compra del edificio de Jesús es el Centro."
+    />
+    <style>
+      :root {
+        --azul: #078ca3;
+        --azul-oscuro: #12384d;
+        --azul-profundo: #0d2b3a;
+        --verde: #21473f;
+        --dorado: #f1c84b;
+        --coral: #d95643;
+        --fondo: #f4f8fa;
+        --borde: #dbe7ec;
+        --texto: #526875;
+        --blanco: #ffffff;
+        --sombra: 0 22px 60px rgba(13, 43, 58, .16);
+        font-family: Arial, Helvetica, sans-serif;
+        color: var(--azul-oscuro);
+        background: var(--fondo);
+        line-height: 1.6;
+      }
+      * { box-sizing: border-box; }
+      html, body { width: 100%; margin: 0; overflow-x: hidden; background: var(--fondo); }
+      a { color: inherit; text-decoration: none; }
+      img { display: block; max-width: 100%; }
+      .site-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 18px;
+        padding: .7rem max(1rem, calc((100vw - 1180px) / 2));
+        border-bottom: 1px solid var(--borde);
+        background: var(--blanco);
+      }
+      .site-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--azul-oscuro);
+        font-weight: 900;
+        letter-spacing: .4px;
+      }
+      .site-brand img { width: 118px; height: 44px; object-fit: contain; }
+      .site-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+      .site-tabs a {
+        min-height: 42px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 9px 15px;
+        border-radius: 999px;
+        color: var(--azul-oscuro);
+        font-size: 14px;
+        font-weight: 900;
+      }
+      .site-tabs a.activo { background: var(--azul-oscuro); color: var(--blanco); }
+      .site-tabs a.donate-link {
+        background: var(--dorado);
+        color: var(--azul-oscuro);
+        border: 1px solid rgba(18, 56, 77, .12);
+        box-shadow: 0 8px 18px rgba(18, 56, 77, .12);
+      }
+      .hero {
+        position: relative;
+        color: var(--blanco);
+        background:
+          linear-gradient(90deg, rgba(13, 43, 58, .94), rgba(18, 56, 77, .72) 48%, rgba(13, 43, 58, .18)),
+          url("./files/jeec-edificio-campana.png") center / cover no-repeat;
+      }
+      .hero-inner {
+        width: min(1180px, calc(100% - 2rem));
+        min-height: 690px;
+        display: grid;
+        align-items: center;
+        margin: 0 auto;
+        padding: 90px 0;
+      }
+      .hero-copy { width: min(620px, 100%); }
+      .eyebrow {
+        display: inline-flex;
+        margin-bottom: 18px;
+        color: var(--dorado);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 2.4px;
+        text-transform: uppercase;
+      }
+      h1 {
+        margin: 0 0 18px;
+        font-size: clamp(42px, 7vw, 78px);
+        line-height: .98;
+        letter-spacing: -1px;
+      }
+      h1 span { color: var(--dorado); }
+      .hero-copy p {
+        max-width: 560px;
+        margin: 0 0 28px;
+        color: #eef7f9;
+        font-size: 18px;
+      }
+      .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+      .button {
+        min-height: 50px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 13px 22px;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        font-weight: 900;
+        text-align: center;
+      }
+      .button.primary { background: var(--dorado); color: var(--azul-profundo); }
+      .button.secondary { border-color: rgba(255,255,255,.38); color: var(--blanco); background: rgba(255,255,255,.08); }
+      .section {
+        width: min(1180px, calc(100% - 2rem));
+        margin: 0 auto;
+        padding: 72px 0;
+      }
+      .donation-panel {
+        display: grid;
+        grid-template-columns: .9fr 1.1fr;
+        gap: 28px;
+        align-items: stretch;
+      }
+      .panel-card {
+        padding: 32px;
+        border-radius: 12px;
+        background: var(--blanco);
+        border: 1px solid var(--borde);
+        box-shadow: var(--sombra);
+      }
+      .panel-card h2 { margin: 0 0 12px; font-size: clamp(28px, 4vw, 42px); line-height: 1.1; }
+      .panel-card p { margin: 0 0 20px; color: var(--texto); }
+      .amount-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        margin: 18px 0 20px;
+      }
+      .amount {
+        min-height: 64px;
+        display: grid;
+        place-items: center;
+        border-radius: 10px;
+        background: #fff8db;
+        border: 1px solid rgba(241, 200, 75, .65);
+        color: var(--azul-oscuro);
+        font-size: 20px;
+        font-weight: 900;
+      }
+      .note {
+        padding: 14px 16px;
+        border-left: 4px solid var(--coral);
+        background: #fff8f6;
+        color: #7b463c;
+        font-size: 14px;
+      }
+      .impact-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+      .impact {
+        min-height: 138px;
+        padding: 22px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #ffffff, #eef7f9);
+        border: 1px solid var(--borde);
+      }
+      .impact strong { display: block; margin-bottom: 8px; font-size: 18px; }
+      .impact span { color: var(--texto); font-size: 14px; }
+      .image-card {
+        overflow: hidden;
+        border-radius: 14px;
+        background: var(--azul-profundo);
+        box-shadow: var(--sombra);
+      }
+      .image-card img { width: 100%; height: 100%; min-height: 420px; object-fit: cover; }
+      .final-cta {
+        margin-top: 28px;
+        padding: 34px;
+        border-radius: 14px;
+        background: linear-gradient(120deg, var(--azul-profundo), var(--azul-oscuro));
+        color: var(--blanco);
+        text-align: center;
+      }
+      .final-cta h2 { margin: 0 0 10px; font-size: clamp(28px, 4vw, 44px); }
+      .final-cta p { max-width: 720px; margin: 0 auto 22px; color: #dceef3; }
+      @media (max-width: 850px) {
+        .site-nav { align-items: flex-start; flex-direction: column; }
+        .site-tabs { width: 100%; display: grid; grid-template-columns: 1fr; }
+        .site-tabs a { border: 1px solid var(--borde); }
+        .hero { background-position: 62% center; }
+        .hero-inner { min-height: 620px; padding: 64px 0; }
+        .donation-panel { grid-template-columns: 1fr; }
+        .image-card img { min-height: 300px; }
+      }
+      @media (max-width: 560px) {
+        .hero {
+          background:
+            linear-gradient(180deg, rgba(13,43,58,.92), rgba(13,43,58,.62)),
+            url("./files/jeec-edificio-campana.png") center / cover no-repeat;
+        }
+        .hero-inner { min-height: 540px; }
+        .actions, .button { width: 100%; }
+        .amount-grid, .impact-grid { grid-template-columns: 1fr; }
+        .panel-card { padding: 24px 18px; }
+        .section { padding: 48px 0; }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="site-nav" aria-label="Navegacion principal">
+      <a class="site-brand" href="./index.html?v=donate1">
+        <img src="./prfwb-logo-cropped-v2.png" alt="PRFWB" />
+        <span>PRFWB</span>
+      </a>
+      <div class="site-tabs">
+        <a href="./index.html?v=donate1">Home</a>
+        <a href="./who-we-are.html?v=donate1">Who We Are</a>
+        <a href="./eventos.html?v=donate1">Eventos</a>
+        <a href="./recursos.html?v=donate1">Recursos</a>
+        <a href="./oracion.html?v=donate1">Oración</a>
+        <a class="donate-link" href="https://donate.stripe.com/7sY6oJ7XVcLz5WI5Ie63K00" target="_blank" rel="noopener">Donar PRFWB</a>
+        <a href="./crece.html?v=donate1">CRECE</a>
+      </div>
+    </nav>
+
+    <header class="hero">
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <span class="eyebrow">Campaña de edificio</span>
+          <h1>Jesús es el Centro: <span>un hogar para adorar y servir.</span></h1>
+          <p>
+            Tu donación ayuda a la compra del edificio para que la iglesia tenga más espacio
+            para adorar, discipular y servir a la comunidad.
+          </p>
+          <div class="actions">
+            <a class="button primary" href="https://donate.stripe.com/bJe28t5PNdPDgBm0nU63K01" target="_blank" rel="noopener">Donar a JEEC</a>
+            <a class="button secondary" href="./index.html?v=donate1#iglesias">Ver iglesias</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="section">
+        <div class="donation-panel">
+          <div class="panel-card">
+            <span class="eyebrow">Dona hoy</span>
+            <h2>Sé parte de este sueño</h2>
+            <p>
+              Selecciona una cantidad sugerida y luego confirma tu ofrenda en Stripe.
+              Todos los botones te llevan a la página segura de donación de Jesús es el Centro.
+            </p>
+            <div class="amount-grid" aria-label="Cantidades sugeridas">
+              <a class="amount" href="https://donate.stripe.com/bJe28t5PNdPDgBm0nU63K01" target="_blank" rel="noopener">$25</a>
+              <a class="amount" href="https://donate.stripe.com/bJe28t5PNdPDgBm0nU63K01" target="_blank" rel="noopener">$50</a>
+              <a class="amount" href="https://donate.stripe.com/bJe28t5PNdPDgBm0nU63K01" target="_blank" rel="noopener">$100</a>
+              <a class="amount" href="https://donate.stripe.com/bJe28t5PNdPDgBm0nU63K01" target="_blank" rel="noopener">$250</a>
+              <a class="amount" href="https://donate.stripe.com/bJe28t5PNdPDgBm0nU63K01" target="_blank" rel="noopener">$500</a>
+              <a class="amount" href="https://donate.stripe.com/bJe28t5PNdPDgBm0nU63K01" target="_blank" rel="noopener">Otro</a>
+            </div>
+            <div class="note">
+              Si quieres que cada botón abra Stripe con una cantidad fija, crea un Payment Link separado por cada monto y me pasas esos enlaces.
+            </div>
+          </div>
+          <div class="image-card">
+            <img src="./files/jeec-edificio-campana.png" alt="Campaña para la compra del edificio de Jesús es el Centro" />
+          </div>
+        </div>
+
+        <div class="final-cta">
+          <h2>Tu apoyo hace posible este sueño</h2>
+          <p>
+            Oremos, trabajemos y creemos juntos. Cada ofrenda acerca más este proyecto a convertirse
+            en un lugar de adoración, discipulado y servicio.
+          </p>
+          <a class="button primary" href="https://donate.stripe.com/bJe28t5PNdPDgBm0nU63K01" target="_blank" rel="noopener">Ir a donación segura</a>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

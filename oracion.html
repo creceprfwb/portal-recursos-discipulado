@@ -48,6 +48,15 @@
         font-weight: 900;
       }
       .nav-links a.active { background: #12384d; color: white; }
+            .site-tabs a.donate-link,
+      .nav-links a.donate-link {
+        background: #f1c84b;
+        color: #12384d;
+        border: 1px solid rgba(18, 56, 77, .12);
+        box-shadow: 0 8px 18px rgba(18, 56, 77, .12);
+      }
+      .site-tabs a.donate-link:hover,
+      .nav-links a.donate-link:hover { transform: translateY(-2px); }
       .hero {
         color: white;
         padding: 70px max(1rem, calc((100vw - 1180px) / 2));
@@ -191,13 +200,15 @@
           <span>PRFWB</span>
         </a>
         <div class="nav-links">
-          <a href="./index.html?v=eventapp2">Home</a>
-          <a href="./who-we-are.html?v=eventapp2">Who We Are</a>
+          <a href="./index.html?v=donate1">Home</a>
+          <a href="./who-we-are.html?v=donate1">Who We Are</a>
           
-          <a href="./eventos.html?v=eventapp2">Eventos</a>
-          <a href="./recursos.html?v=eventapp2">Recursos</a>
-          <a class="active" href="./oracion.html?v=eventapp2">Oración</a>
-          <a href="./crece.html?v=eventapp2">CRECE</a>
+          <a href="./eventos.html?v=donate1">Eventos</a>
+          <a href="./recursos.html?v=donate1">Recursos</a>
+          <a class="active" href="./oracion.html?v=donate1">Oración</a>
+          <a class="donate-link" href="https://donate.stripe.com/7sY6oJ7XVcLz5WI5Ie63K00" target="_blank" rel="noopener">Donar PRFWB</a>
+
+          <a href="./crece.html?v=donate1">CRECE</a>
         </div>
       </nav>
       <header class="hero">
@@ -214,7 +225,7 @@
           marcando que estas orando por ellos.
         </p>
         <div class="hero-actions">
-          <a class="button primary" href="./recursos.html?v=eventapp2">Ir a recursos</a>
+          <a class="button primary" href="./recursos.html?v=donate1">Ir a recursos</a>
           <a class="button secondary" href="./admin.html">Panel admin</a>
         </div>
       </header>
@@ -291,7 +302,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
     <script src="./firebase-config.js"></script>
-    <script src="./firebase-bridge.js?v=eventapp2"></script>
+    <script src="./firebase-bridge.js?v=donate1"></script>
     <script>
       const categories = ['Familia', 'Salud', 'Salvacion', 'Matrimonio', 'Trabajo', 'Finanzas', 'Iglesia', 'Jovenes', 'Duelo', 'Otra'];
       let requests = [];

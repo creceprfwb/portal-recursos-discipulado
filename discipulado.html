@@ -52,6 +52,15 @@
         font-weight: 900;
       }
       .nav-links a.active { background: var(--azul-oscuro); color: #ffffff; }
+            .site-tabs a.donate-link,
+      .nav-links a.donate-link {
+        background: #f1c84b;
+        color: #12384d;
+        border: 1px solid rgba(18, 56, 77, .12);
+        box-shadow: 0 8px 18px rgba(18, 56, 77, .12);
+      }
+      .site-tabs a.donate-link:hover,
+      .nav-links a.donate-link:hover { transform: translateY(-2px); }
       .hero {
         color: white;
         padding: 74px max(1rem, calc((100vw - 1180px) / 2)) 88px;
@@ -338,18 +347,20 @@
   <body>
     <div class="page-shell">
       <nav class="site-nav" aria-label="Navegacion principal">
-        <a class="nav-logo" href="./index.html?v=eventapp2">
+        <a class="nav-logo" href="./index.html?v=donate1">
           <img src="./prfwb-logo-cropped-v2.png" alt="PRFWB" />
           <span>PRFWB</span>
         </a>
         <div class="nav-links">
-          <a href="./index.html?v=eventapp2">Home</a>
-          <a href="./who-we-are.html?v=eventapp2">Who We Are</a>
+          <a href="./index.html?v=donate1">Home</a>
+          <a href="./who-we-are.html?v=donate1">Who We Are</a>
           
-          <a href="./eventos.html?v=eventapp2">Eventos</a>
-          <a class="active" href="./recursos.html?v=eventapp2">Recursos</a>
-          <a href="./oracion.html?v=eventapp2">Oración</a>
-          <a href="./crece.html?v=eventapp2">CRECE</a>
+          <a href="./eventos.html?v=donate1">Eventos</a>
+          <a class="active" href="./recursos.html?v=donate1">Recursos</a>
+          <a href="./oracion.html?v=donate1">Oración</a>
+          <a class="donate-link" href="https://donate.stripe.com/7sY6oJ7XVcLz5WI5Ie63K00" target="_blank" rel="noopener">Donar PRFWB</a>
+
+          <a href="./crece.html?v=donate1">CRECE</a>
         </div>
       </nav>
       <header class="hero">
@@ -367,7 +378,7 @@
             llamado de Jesús a hacer discípulos.
           </p>
           <div class="hero-actions">
-            <a class="button" href="./recursos.html?v=eventapp2">Volver a recursos</a>
+            <a class="button" href="./recursos.html?v=donate1">Volver a recursos</a>
             <a class="button secondary" href="./files/formando-discipulos.pdf" target="_blank" rel="noreferrer noopener">
               Abrir PDF completo
             </a>
