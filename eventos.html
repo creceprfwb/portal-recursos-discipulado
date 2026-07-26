@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Eventos | PRFWB</title>
+    <meta
+      name="description"
+      content="Eventos oficiales de PRFWB, incluyendo la Convencion 2027."
+    />
+    <style>
+      :root {
+        --azul: #078ca3;
+        --azul-oscuro: #12384d;
+        --verde: #21473f;
+        --dorado: #f1c84b;
+        --coral: #d95643;
+        --fondo: #f4f8fa;
+        --borde: #dbe7ec;
+        --texto: #526875;
+        --blanco: #ffffff;
+        font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: var(--azul-oscuro);
+        background: var(--fondo);
+        line-height: 1.5;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-width: 320px; overflow-x: hidden; background: var(--fondo); }
+      a { color: inherit; text-decoration: none; }
+      img { display: block; max-width: 100%; }
+      .page-shell { width: 100%; min-height: 100vh; padding-bottom: 64px; }
+      .site-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 18px;
+        padding: 0.7rem max(1rem, calc((100vw - 1180px) / 2));
+        border-bottom: 1px solid var(--borde);
+        background: var(--blanco);
+      }
+      .nav-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--azul-oscuro);
+        font-weight: 900;
+        letter-spacing: .4px;
+      }
+      .nav-logo img { width: 118px; height: 44px; object-fit: contain; }
+      .nav-links { display: flex; gap: 8px; flex-wrap: wrap; }
+      .nav-links a {
+        min-height: 42px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 9px 15px;
+        border-radius: 999px;
+        color: var(--azul-oscuro);
+        font-size: 14px;
+        font-weight: 900;
+      }
+      .nav-links a.active { background: var(--azul-oscuro); color: var(--blanco); }
+      .hero {
+        color: var(--blanco);
+        padding: 74px max(1rem, calc((100vw - 1180px) / 2)) 92px;
+        background:
+          linear-gradient(90deg, rgba(33, 71, 63, 0.9), rgba(18, 61, 79, 0.95) 55%, rgba(53, 61, 74, 0.88)),
+          linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+        background-size: auto, 48px 48px, 48px 48px;
+      }
+      .hero-content {
+        width: min(1180px, 100%);
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
+        gap: clamp(1.5rem, 4vw, 3.5rem);
+        align-items: center;
+      }
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--dorado);
+        text-transform: uppercase;
+        font-size: 0.76rem;
+        font-weight: 900;
+        letter-spacing: 0.24em;
+      }
+      .eyebrow::before {
+        content: "";
+        width: 28px;
+        height: 3px;
+        border-radius: 999px;
+        background: var(--coral);
+      }
+      h1 {
+        margin: 0.55rem 0 0.75rem;
+        font-size: clamp(2.25rem, 6vw, 4.5rem);
+        line-height: 0.98;
+      }
+      .hero p { max-width: 720px; margin: 0; color: #f8fbfb; font-size: 1.05rem; }
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 46px;
+        width: fit-content;
+        padding: 0.78rem 1.1rem;
+        border-radius: 8px;
+        background: var(--dorado);
+        color: var(--azul-oscuro);
+        font-weight: 900;
+      }
+      .button.secondary { background: #fff6d6; }
+      .hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.25rem; }
+      .event-poster {
+        min-height: 430px;
+        display: grid;
+        align-content: end;
+        gap: 1rem;
+        padding: 1.3rem;
+        border-radius: 8px;
+        background:
+          linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.18)),
+          linear-gradient(160deg, #f6efe3 0%, #f1c84b 45%, #d95643 100%);
+        color: var(--azul-oscuro);
+        box-shadow: 0 28px 70px rgba(3, 24, 39, 0.28);
+      }
+      .event-poster img {
+        width: 178px;
+        padding: 0.65rem;
+        border-radius: 8px;
+        background: rgba(255,255,255,0.72);
+        border: 1px solid rgba(255,255,255,0.45);
+      }
+      .poster-title {
+        margin-top: auto;
+        font-size: clamp(2.3rem, 5vw, 4rem);
+        font-weight: 900;
+        line-height: 0.9;
+      }
+      .poster-title span { display: block; color: var(--blanco); }
+      .poster-subtitle {
+        display: inline-flex;
+        width: fit-content;
+        padding: 0.35rem 0.65rem;
+        border-radius: 999px;
+        background: rgba(18, 56, 77, 0.9);
+        color: var(--blanco);
+        font-weight: 900;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        font-size: 0.76rem;
+      }
+      .section {
+        width: min(1180px, calc(100% - 2rem));
+        margin: 1.35rem auto 0;
+      }
+      .event-card {
+        display: grid;
+        grid-template-columns: 0.95fr 1.05fr;
+        gap: 1rem;
+        padding: 1rem;
+        border-radius: 8px;
+        background: var(--blanco);
+        box-shadow: 0 12px 30px rgba(18, 61, 79, 0.08);
+      }
+      .event-art {
+        min-height: 320px;
+        display: grid;
+        place-items: center;
+        padding: 1rem;
+        border-radius: 8px;
+        background:
+          radial-gradient(circle at 20% 20%, rgba(241, 200, 75, 0.3), transparent 35%),
+          linear-gradient(135deg, #f8f5ea, #eaf5f7);
+      }
+      .event-art-inner {
+        width: min(100%, 360px);
+        aspect-ratio: 4 / 5;
+        display: grid;
+        align-content: end;
+        gap: 0.85rem;
+        padding: 1.2rem;
+        border-radius: 8px;
+        background:
+          linear-gradient(160deg, rgba(18, 56, 77, 0.92), rgba(33, 71, 63, 0.88)),
+          linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+        background-size: auto, 34px 34px, 34px 34px;
+        color: var(--blanco);
+      }
+      .event-art-inner strong { color: var(--dorado); font-size: 3rem; line-height: 0.9; }
+      .event-art-inner span { color: var(--blanco); font-size: 2rem; font-weight: 900; line-height: 1; }
+      .event-details { padding: clamp(0.5rem, 2vw, 1.5rem); }
+      .event-details h2 {
+        margin: 0 0 0.6rem;
+        font-size: clamp(1.8rem, 4vw, 3rem);
+        line-height: 1.02;
+      }
+      .event-details p { margin: 0; color: #24343a; }
+      .facts {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.75rem;
+        margin: 1.2rem 0;
+      }
+      .fact {
+        min-height: 98px;
+        padding: 0.85rem;
+        border-radius: 8px;
+        background: #f8f5ea;
+        border: 1px solid #e5e2d4;
+      }
+      .fact b { display: block; color: var(--azul-oscuro); font-size: 1.05rem; }
+      .fact span {
+        display: block;
+        margin-top: 0.25rem;
+        color: var(--texto);
+        font-size: 0.78rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+      .schedule {
+        display: grid;
+        gap: 0.7rem;
+        margin: 1rem 0 1.25rem;
+      }
+      .schedule-item {
+        padding: 0.85rem;
+        border-left: 4px solid var(--dorado);
+        border-radius: 8px;
+        background: #eef7f9;
+      }
+      .schedule-item strong { display: block; color: var(--azul); }
+      .note { margin-top: 0.85rem; color: var(--texto); font-size: 0.92rem; }
+      @media (max-width: 860px) {
+        .site-nav { align-items: flex-start; flex-direction: column; padding: 0.75rem 1rem; }
+        .nav-links { width: 100%; display: grid; grid-template-columns: 1fr; }
+        .nav-links a { border: 1px solid var(--borde); }
+        .hero { padding: 42px 1rem 60px; }
+        .hero-content,
+        .event-card,
+        .facts { grid-template-columns: 1fr; }
+        .event-poster { min-height: 320px; }
+        .button { width: 100%; }
+      }
+      @media (max-width: 520px) {
+        .section { width: 100%; margin-top: 0; }
+        .event-card { border-radius: 0; box-shadow: none; }
+        .event-art { border-radius: 0; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-shell">
+      <nav class="site-nav" aria-label="Navegacion principal">
+        <a class="nav-logo" href="./index.html?v=events1">
+          <img src="./prfwb-logo-cropped-v2.png" alt="PRFWB" />
+          <span>PRFWB</span>
+        </a>
+        <div class="nav-links">
+          <a href="./index.html?v=events1">Home</a>
+          <a href="./who-we-are.html?v=events1">Who We Are</a>
+          <a class="active" href="./eventos.html?v=events1">Eventos</a>
+          <a href="./recursos.html?v=events1">Recursos</a>
+          <a href="./oracion.html?v=events1">Oración</a>
+          <a href="./crece.html?v=events1">CRECE</a>
+        </div>
+      </nav>
+
+      <header class="hero">
+        <div class="hero-content">
+          <div>
+            <span class="eyebrow">Próximos eventos</span>
+            <h1>Convención 2027</h1>
+            <p>
+              Un fin de semana para adorar, recibir visión y ser enviados con propósito
+              junto a la familia de iglesias PRFWB.
+            </p>
+            <div class="hero-actions">
+              <a
+                class="button"
+                href="https://www.prfwb.com/events/prfwb-2027-state-convention-2027-02-19-19-00"
+                target="_blank"
+                rel="noopener"
+              >
+                Registrarme ahora
+              </a>
+              <a class="button secondary" href="./recursos.html?v=events1">Ver recursos</a>
+            </div>
+          </div>
+          <aside class="event-poster" aria-label="Afiche Convencion 2027">
+            <img src="./prfwb-logo-cropped-v2.png" alt="PRFWB" />
+            <div class="poster-subtitle">Convención estatal</div>
+            <div class="poster-title">Enviados <span>2027</span></div>
+          </aside>
+        </div>
+      </header>
+
+      <main class="section">
+        <article class="event-card">
+          <div class="event-art" aria-hidden="true">
+            <div class="event-art-inner">
+              <strong>2027</strong>
+              <span>Enviados</span>
+              <p>PRFWB State Convention</p>
+            </div>
+          </div>
+          <div class="event-details">
+            <h2>PRFWB 2027 State Convention</h2>
+            <p>
+              Reunión anual para líderes, iglesias, familias y ministerios. Esta página queda lista
+              para añadir más eventos usando el mismo formato.
+            </p>
+            <div class="facts">
+              <div class="fact">
+                <b>19 feb.</b>
+                <span>Fecha de inicio</span>
+              </div>
+              <div class="fact">
+                <b>Registro</b>
+                <span>Disponible en PRFWB</span>
+              </div>
+              <div class="fact">
+                <b>PRFWB</b>
+                <span>Evento oficial</span>
+              </div>
+            </div>
+            <div class="schedule">
+              <div class="schedule-item">
+                <strong>Convención 2027</strong>
+                <span>Adoración, visión, compañerismo y llamado a servir.</span>
+              </div>
+              <div class="schedule-item">
+                <strong>Más detalles</strong>
+                <span>La información oficial y cupos se manejan desde la página de registro.</span>
+              </div>
+            </div>
+            <div class="hero-actions">
+              <a
+                class="button"
+                href="https://www.prfwb.com/events/prfwb-2027-state-convention-2027-02-19-19-00"
+                target="_blank"
+                rel="noopener"
+              >
+                Abrir registro oficial
+              </a>
+            </div>
+            <p class="note">Después podemos conectar esta página a Firebase para manejar varios eventos desde el panel.</p>
+          </div>
+        </article>
+      </main>
+    </div>
+  </body>
+</html>
