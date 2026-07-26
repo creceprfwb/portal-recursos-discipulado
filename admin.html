@@ -195,6 +195,17 @@
           </form>
 
           <div id="adminResourceList" class="admin-table"></div>
+
+          <section class="panel-card">
+            <div class="section-header">
+              <div>
+                <h2>Peticiones de oración</h2>
+                <p class="help-text">Aprueba, marca urgente o cierra peticiones antes de que aparezcan en el muro.</p>
+              </div>
+              <button id="refreshPrayerButton" type="button" class="ghost-button">Actualizar</button>
+            </div>
+            <div id="adminPrayerList" class="admin-table"></div>
+          </section>
         </div>
       </section>
     </div>
@@ -235,6 +246,7 @@
       const storageKey = 'discipulado-resources-v1';
       const authStorageKey = 'discipulado-admin-session-v1';
       let resources = [];
+      let prayerRequests = [];
       let selectedResourceId = null;
       let isAdmin = localStorage.getItem(authStorageKey) === 'authenticated';
 
@@ -276,6 +288,8 @@
         adminResourceList: document.getElementById('adminResourceList'),
         cancelFormButton: document.getElementById('cancelFormButton')
       };
+      els.adminPrayerList = document.getElementById('adminPrayerList');
+      els.refreshPrayerButton = document.getElementById('refreshPrayerButton');
 
       function populateSelect(select, options, placeholder = 'Selecciona') {
         select.innerHTML = '<option value="">' + placeholder + '</option>';
@@ -310,6 +324,30 @@
             </div>
           </div>
         `).join('');
+      }
+
+      async function loadAdminPrayerRequests() {
+        prayerRequests = await window.discipladoFirebase?.getPrayerRequests?.({ includePending: true }) || [];
+        renderAdminPrayerRequests();
+      }
+
+      function renderAdminPrayerRequests() {
+        if (!els.adminPrayerList) return;
+        els.adminPrayerList.innerHTML = prayerRequests.length ? prayerRequests.map((request) => `
+          <div class="admin-row">
+            <div>
+              <strong>${request.title}</strong>
+              <small>${request.anonymous ? 'Anónimo' : request.name || 'Sin nombre'} · ${request.category} · ${request.approved ? 'Aprobada' : 'Pendiente'} · ${request.status}${request.urgent ? ' · Urgente' : ''}</small>
+              <small>${request.description}</small>
+            </div>
+            <div class="row-actions">
+              <button type="button" data-prayer-action="approve" data-id="${request.id}">Aprobar</button>
+              <button type="button" data-prayer-action="urgent" data-id="${request.id}">${request.urgent ? 'Quitar urgente' : 'Urgente'}</button>
+              <button type="button" data-prayer-action="answered" data-id="${request.id}">Contestada</button>
+              <button type="button" data-prayer-action="reject" data-id="${request.id}" class="danger-button">Rechazar</button>
+            </div>
+          </div>
+        `).join('') : '<div class="admin-row"><div><strong>No hay peticiones todavía.</strong><small>Cuando alguien envíe una petición aparecerá aquí.</small></div></div>';
       }
 
       function resetForm() {
@@ -360,7 +398,10 @@
         els.loginView.style.display = isAdmin ? 'none' : 'grid';
         els.adminView.style.display = isAdmin ? 'grid' : 'none';
         els.logoutButton.style.display = isAdmin ? 'inline-flex' : 'none';
-        if (isAdmin) renderAdminResources();
+        if (isAdmin) {
+          renderAdminResources();
+          loadAdminPrayerRequests();
+        }
       }
 
       els.loginButton.addEventListener('click', async () => {
@@ -453,6 +494,27 @@
           const resource = resources.find((item) => item.id === id);
           if (resource) openForm(resource);
         }
+      });
+
+      els.refreshPrayerButton?.addEventListener('click', loadAdminPrayerRequests);
+
+      els.adminPrayerList?.addEventListener('click', async (event) => {
+        const actionElement = event.target.closest('[data-prayer-action]');
+        if (!actionElement) return;
+        const id = actionElement.getAttribute('data-id');
+        const action = actionElement.getAttribute('data-prayer-action');
+        const request = prayerRequests.find((item) => item.id === id);
+        if (!request) return;
+
+        const patches = {
+          approve: { approved: true, status: 'active' },
+          urgent: { urgent: !request.urgent },
+          answered: { approved: true, status: 'answered' },
+          reject: { approved: false, status: 'rejected' }
+        };
+
+        await window.discipladoFirebase?.updatePrayerRequest?.(id, patches[action]);
+        await loadAdminPrayerRequests();
       });
 
       populateSelect(els.categoryInput, categoryOptions, 'Selecciona');

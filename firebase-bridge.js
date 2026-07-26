@@ -1,5 +1,6 @@
 (function () {
   const resourcesStorageKey = 'discipulado-resources-v1';
+  const prayerStorageKey = 'discipulado-prayer-requests-v1';
   const authStorageKey = 'discipulado-admin-session-v1';
   const config = window.firebaseConfig || {};
   const hasRealConfig = Boolean(
@@ -109,11 +110,152 @@
     localStorage.removeItem(authStorageKey);
   }
 
+  function sanitizePrayerRequest(doc) {
+    const data = doc.data ? doc.data() : doc;
+    return {
+      id: doc.id || data.id,
+      name: data.name || '',
+      anonymous: Boolean(data.anonymous),
+      title: data.title || '',
+      description: data.description || '',
+      category: data.category || 'Otra',
+      status: data.status || 'pending',
+      urgent: Boolean(data.urgent),
+      privacy: data.privacy || 'public',
+      allowEncouragement: data.allowEncouragement !== false,
+      prayerCount: Number(data.prayerCount || 0),
+      approved: Boolean(data.approved),
+      createdAt: data.createdAt?.toDate ? data.createdAt.toDate().toISOString() : data.createdAt || new Date().toISOString(),
+      updatedAt: data.updatedAt?.toDate ? data.updatedAt.toDate().toISOString() : data.updatedAt || ''
+    };
+  }
+
+  async function getPrayerRequests({ includePending = false } = {}) {
+    const localRequests = JSON.parse(localStorage.getItem(prayerStorageKey) || 'null') || [];
+
+    if (!firebaseState.isConfigured || !firebaseState.db) {
+      return localRequests;
+    }
+
+    try {
+      let query = firebaseState.db.collection('prayerRequests');
+      if (!includePending) {
+        query = query.where('approved', '==', true).where('privacy', '==', 'public');
+      }
+      const snapshot = await query.limit(80).get();
+      const remoteRequests = snapshot.docs
+        .map(sanitizePrayerRequest)
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      if (!includePending) {
+        localStorage.setItem(prayerStorageKey, JSON.stringify(remoteRequests));
+      }
+      return remoteRequests;
+    } catch (error) {
+      console.warn('No se pudieron leer peticiones de oración:', error);
+      return localRequests;
+    }
+  }
+
+  async function createPrayerRequest(payload) {
+    const now = new Date().toISOString();
+    const request = {
+      name: payload.name || '',
+      anonymous: Boolean(payload.anonymous),
+      title: payload.title || '',
+      description: payload.description || '',
+      category: payload.category || 'Otra',
+      status: 'pending',
+      urgent: Boolean(payload.urgent),
+      privacy: payload.privacy || 'public',
+      allowEncouragement: payload.allowEncouragement !== false,
+      prayerCount: 0,
+      approved: false,
+      createdAt: now,
+      updatedAt: now
+    };
+
+    if (!firebaseState.isConfigured || !firebaseState.db) {
+      const localRequests = JSON.parse(localStorage.getItem(prayerStorageKey) || 'null') || [];
+      localStorage.setItem(prayerStorageKey, JSON.stringify([{ id: `prayer-${Date.now()}`, ...request }, ...localRequests]));
+      return true;
+    }
+
+    try {
+      const docRef = await firebaseState.db.collection('prayerRequests').add({
+        ...request,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      if (payload.email || payload.phone || payload.notificationPreference) {
+        await firebaseState.db.collection('prayerContacts').doc(docRef.id).set({
+          requestId: docRef.id,
+          email: payload.email || '',
+          phone: payload.phone || '',
+          notificationPreference: payload.notificationPreference || 'none',
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      }
+      return true;
+    } catch (error) {
+      console.warn('No se pudo crear la petición de oración:', error);
+      return false;
+    }
+  }
+
+  async function markPraying(requestId) {
+    const localKey = `prayed-${requestId}`;
+    if (localStorage.getItem(localKey)) return false;
+
+    if (!firebaseState.isConfigured || !firebaseState.db) {
+      localStorage.setItem(localKey, 'true');
+      return true;
+    }
+
+    try {
+      const ref = firebaseState.db.collection('prayerRequests').doc(requestId);
+      await firebaseState.db.runTransaction(async (transaction) => {
+        const snapshot = await transaction.get(ref);
+        const nextCount = Number(snapshot.data()?.prayerCount || 0) + 1;
+        transaction.update(ref, {
+          prayerCount: nextCount,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      });
+      localStorage.setItem(localKey, 'true');
+      return true;
+    } catch (error) {
+      console.warn('No se pudo registrar la oración:', error);
+      return false;
+    }
+  }
+
+  async function updatePrayerRequest(requestId, patch) {
+    if (!firebaseState.isConfigured || !firebaseState.db || !firebaseState.auth?.currentUser) {
+      return false;
+    }
+
+    try {
+      await firebaseState.db.collection('prayerRequests').doc(requestId).update({
+        ...patch,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      return true;
+    } catch (error) {
+      console.warn('No se pudo actualizar la petición:', error);
+      return false;
+    }
+  }
+
   window.discipladoFirebase = {
     ...firebaseState,
     init: initFirebase,
     getResources,
     saveResources,
+    getPrayerRequests,
+    createPrayerRequest,
+    markPraying,
+    updatePrayerRequest,
     signIn,
     signOut
   };
