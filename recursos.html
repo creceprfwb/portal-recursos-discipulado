@@ -70,10 +70,10 @@
         min-height: 360px;
         padding: 76px max(1rem, calc((100vw - 1180px) / 2)) 88px;
         background:
-          linear-gradient(90deg, rgba(33, 71, 63, 0.88), rgba(14, 59, 81, 0.94) 48%, rgba(53, 61, 74, 0.88)),
-          linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
-        background-size: auto, 48px 48px, 48px 48px;
+          radial-gradient(circle at 82% 42%, rgba(49, 219, 240, .50), transparent 25%),
+          radial-gradient(circle at 15% 15%, rgba(255, 255, 255, .12), transparent 28%),
+          linear-gradient(125deg, #078fa4 0%, #08778e 40%, #123f60 72%, #102f49 100%);
+        background-size: auto;
       }
       .brand-lockup { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
       .logo-badge {
@@ -335,9 +335,6 @@
       </nav>
       <header class="hero">
         <div>
-          <div class="brand-lockup">
-            <div class="brand-name">Centro de Recursos</div>
-          </div>
           <span class="eyebrow">Portal de Recursos</span>
           <h1>Recursos para formar discípulos</h1>
           <p>Encuentra guías, estudios, clases y materiales listos para usar en la iglesia.</p>
