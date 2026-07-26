@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CRECE | PRFWB</title>    <script>
+      if (new URLSearchParams(window.location.search).get('embed') === '1') {
+        document.documentElement.classList.add('embed-mode');
+      }
+    </script>
+    <style>
+      html.embed-mode .site-nav,
+      html.embed-mode .viewer-header { display: none !important; }
+      html.embed-mode body { background: #f4f8fa; }
+    </style>
+    <style>
+      :root {
+        --azul: #078ca3;
+        --azul-oscuro: #12384d;
+        --dorado: #f1c84b;
+        --blanco: #ffffff;
+        --fondo: #f4f8fa;
+        --texto: #526875;
+        --borde: #dbe7ec;
+      }
+      * { box-sizing: border-box; }
+      html, body {
+        width: 100%;
+        min-width: 320px;
+        margin: 0;
+        overflow-x: hidden;
+        background: var(--fondo);
+        color: var(--azul-oscuro);
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      a { color: inherit; text-decoration: none; }
+      .shell { width: 100%; margin: 0; }
+      .site-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 18px;
+        padding: 0.7rem max(1rem, calc((100vw - 1180px) / 2));
+        border-bottom: 1px solid var(--borde);
+        background: var(--blanco);
+      }
+      .site-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--azul-oscuro);
+        font-weight: 900;
+        letter-spacing: .4px;
+      }
+      .site-brand img { width: 118px; height: 44px; object-fit: contain; }
+      .site-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+      .site-tabs a {
+        min-height: 42px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 9px 15px;
+        border-radius: 999px;
+        color: var(--azul-oscuro);
+        font-size: 14px;
+        font-weight: 900;
+      }
+      .site-tabs a.activo { background: var(--azul-oscuro); color: var(--blanco); }
+            .site-tabs a.donate-link,
+      .nav-links a.donate-link {
+        background: #f1c84b;
+        color: #12384d;
+        border: 1px solid rgba(18, 56, 77, .12);
+        box-shadow: 0 8px 18px rgba(18, 56, 77, .12);
+      }
+      .site-tabs a.donate-link:hover,
+      .nav-links a.donate-link:hover { transform: translateY(-2px); }
+      .frame-header {
+        padding: 58px max(1rem, calc((100vw - 1180px) / 2));
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        color: var(--blanco);
+        background:
+          linear-gradient(90deg, rgba(33, 71, 63, 0.92), rgba(14, 59, 81, 0.95) 55%, rgba(48, 72, 82, 0.88)),
+          linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+        background-size: auto, 48px 48px, 48px 48px;
+      }
+      .frame-header h1 { margin: 0; font-size: clamp(1.6rem, 4vw, 2.4rem); }
+      .frame-header p { margin: 0.2rem 0 0; color: #f8fbfb; }
+      .button {
+        min-height: 42px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.7rem 1rem;
+        border-radius: 999px;
+        background: var(--dorado);
+        color: var(--azul-oscuro);
+        font-weight: 900;
+        white-space: nowrap;
+      }
+      .crece-frame {
+        width: 100%;
+        height: calc(100vh - 218px);
+        min-height: 720px;
+        border: 0;
+        background: var(--blanco);
+      }
+      @media (max-width: 760px) {
+        .shell { width: 100%; }
+        .site-nav,
+        .frame-header {
+          align-items: stretch;
+          flex-direction: column;
+          padding-left: 1rem;
+          padding-right: 1rem;
+        }
+        .site-tabs { width: 100%; display: grid; grid-template-columns: 1fr; }
+        .site-tabs a { border: 1px solid var(--borde); }
+        .button { width: 100%; }
+        .crece-frame { height: 78vh; min-height: 620px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+
+      <header class="frame-header">
+        <div>
+          <h1>Ministerio CRECE</h1>
+          <p>Proyecto de educación cristiana de PRFWB.</p>
+        </div>
+        <a class="button" href="https://creceprfwb.github.io/ministerio-crece-prfwb/" target="_blank" rel="noopener">
+          Abrir CRECE aparte
+        </a>
+      </header>
+
+      <iframe
+        class="crece-frame"
+        title="Ministerio CRECE"
+        src="https://creceprfwb.github.io/ministerio-crece-prfwb/"
+      ></iframe>
+    </div>
+  </body>
+</html>

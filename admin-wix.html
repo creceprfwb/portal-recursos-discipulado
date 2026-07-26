@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin · Portal de Recursos de Discipulado</title>    <script>
+      if (new URLSearchParams(window.location.search).get('embed') === '1') {
+        document.documentElement.classList.add('embed-mode');
+      }
+    </script>
+    <style>
+      html.embed-mode .site-nav,
+      html.embed-mode .viewer-header { display: none !important; }
+      html.embed-mode body { background: #f4f8fa; }
+    </style>
+    <style>
+      :root {
+        font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        color: #123d4f;
+        background: #f5f5f3;
+        line-height: 1.5;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-width: 320px; overflow-x: hidden; background: #f5f5f3; }
+      button, input, select, textarea { font: inherit; }
+      img { max-width: 100%; }
+      .app-shell { width: min(1100px, calc(100% - 2rem)); margin: 0 auto; padding: 24px 0 48px; }
+      .hero {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        align-items: start;
+        color: white;
+        padding: 56px 32px;
+        border-radius: 0;
+        background:
+          linear-gradient(90deg, rgba(33, 71, 63, 0.88), rgba(14, 59, 81, 0.94) 48%, rgba(53, 61, 74, 0.88)),
+          linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+        background-size: auto, 48px 48px, 48px 48px;
+      }
+      .brand-lockup { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+      .logo-badge {
+        width: 250px;
+        height: 94px;
+        flex: 0 0 auto;
+        border-radius: 16px;
+        display: grid;
+        place-items: center;
+        background: rgba(7, 29, 53, 0.32);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        overflow: hidden;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.25), 0 8px 20px rgba(0, 0, 0, 0.14);
+      }
+      .logo-badge img { width: 100%; height: 100%; object-fit: contain; display: block; }
+      .brand-name { font-size: 1.15rem; font-weight: 900; letter-spacing: 0.03em; line-height: 1.1; }
+      .eyebrow { text-transform: uppercase; font-size: 0.78rem; font-weight: 800; letter-spacing: 0.28em; color: #e44b41; }
+      .panel-card, .resource-form, .admin-login, .admin-row { background: white; border-radius: 8px; box-shadow: 0 12px 30px rgba(18, 61, 79, 0.08); }
+      .panel-card { padding: 1rem; margin-top: 1rem; }
+      .section-header { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+      .admin-login, .resource-form { padding: 1rem; display: grid; gap: 1rem; }
+      .admin-login label, .resource-form label { display: flex; flex-direction: column; gap: 0.4rem; font-weight: 600; }
+      input, select, textarea { width: 100%; border: 1px solid #d7dedf; border-radius: 8px; padding: 0.7rem 0.8rem; background: #fdfefe; }
+      textarea { min-height: 100px; resize: vertical; }
+      button { border: none; border-radius: 8px; padding: 0.75rem 1rem; background: #123d4f; color: white; cursor: pointer; font-weight: 800; }
+      .ghost-button { background: #fff4cc; color: #123d4f; }
+      .hero-action {
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.9rem 1.15rem;
+        min-width: 160px;
+        border-radius: 8px;
+        background: #ffca2f;
+        color: #123d4f;
+        font-weight: 900;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        transition: transform 0.16s ease, box-shadow 0.16s ease;
+      }
+      .hero-action:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.22);
+      }
+      .danger-button { background: #e44b41; }
+      .admin-content { display: grid; gap: 1rem; }
+      .admin-actions { display: flex; justify-content: end; }
+      .admin-table { display: grid; gap: 0.8rem; }
+      .admin-row { padding: 1rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+      .admin-row small { display: block; color: #5c6a6c; }
+      .row-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+      .checkbox-row { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; }
+      .checkbox-row label { display: flex !important; align-items: center; flex-direction: row !important; gap: 0.5rem; }
+      .checkbox-row input[type="checkbox"] { width: auto; margin: 0; }
+      .form-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+      .help-text { margin: -0.2rem 0 0; color: #5c6a6c; font-size: 0.85rem; }
+      .error-text { color: #e44b41; }
+      @media (max-width: 768px) {
+        .hero, .section-header, .admin-row { flex-direction: column; align-items: stretch; }
+        .brand-lockup { align-items: flex-start; flex-direction: column; }
+        .logo-badge { width: min(250px, 100%); }
+      }
+      @media (max-width: 520px) {
+        .app-shell { width: 100%; padding: 0 0 32px; }
+        .hero { padding: 28px 18px; }
+        .hero h1 { font-size: 1.65rem; line-height: 1.16; }
+        .hero p { font-size: 0.95rem; }
+        .logo-badge { width: min(210px, 100%); height: 79px; }
+        .hero-action { width: 100%; min-width: 0; }
+        .panel-card { margin: 0; border-radius: 0; box-shadow: none; }
+        .admin-row { border-radius: 8px; }
+        .row-actions,
+        .form-actions { flex-direction: column; }
+        .row-actions button,
+        .form-actions button { width: 100%; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="hero">
+        <div>
+          <div class="brand-lockup">
+            <div class="brand-name">Panel administrativo</div>
+          </div>
+          <span class="eyebrow">Administración</span>
+          <h1>Gestiona recursos de discipulado</h1>
+          <p>Desde aquí puedes crear, editar, publicar y mantener los contenidos del portal.</p>
+        </div>
+        <a href="./index-wix.html" class="hero-action">Volver al portal</a>
+      </header>
+
+      <section class="panel-card">
+        <div class="section-header">
+          <h2>Panel administrativo</h2>
+          <button id="logoutButton" class="danger-button" style="display:none">Cerrar sesión</button>
+        </div>
+
+        <div id="loginView" class="admin-login">
+          <label>
+            Email
+            <input id="emailInput" type="email" />
+          </label>
+          <label>
+            Contraseña
+            <input id="passwordInput" type="password" />
+          </label>
+          <button id="loginButton">Iniciar sesión</button>
+          <p id="errorMessage" class="error-text"></p>
+        </div>
+
+        <div id="adminView" style="display:none" class="admin-content">
+          <div class="admin-actions">
+            <button id="newResourceButton">Nuevo recurso</button>
+          </div>
+
+          <form id="resourceForm" class="resource-form" style="display:none">
+            <h3 id="formTitle">Crear recurso</h3>
+            <label>
+              Título
+              <input id="titleInput" required />
+            </label>
+            <label>
+              Descripción
+              <textarea id="descriptionInput"></textarea>
+            </label>
+            <label>
+              Categoría
+              <select id="categoryInput"></select>
+            </label>
+            <label>
+              Tipo
+              <select id="typeInput"></select>
+            </label>
+            <label>
+              Autor
+              <input id="authorInput" />
+            </label>
+            <label>
+              URL externa
+              <input id="externalUrlInput" />
+            </label>
+            <label>
+              Imagen URL
+              <input id="imageUrlInput" />
+              <small class="help-text">Opcional. Si lo dejas vacío, se usa una imagen automática según la categoría.</small>
+            </label>
+            <label>
+              Enlace del archivo
+              <input id="fileUrlInput" />
+            </label>
+            <div class="checkbox-row">
+              <label><input id="publishedInput" type="checkbox" /> Publicado</label>
+              <label><input id="featuredInput" type="checkbox" /> Destacado</label>
+            </div>
+            <div class="form-actions">
+              <button type="submit">Guardar</button>
+              <button type="button" id="cancelFormButton" class="ghost-button">Cancelar</button>
+            </div>
+          </form>
+
+          <div id="adminResourceList" class="admin-table"></div>
+
+          <section class="panel-card">
+            <div class="section-header">
+              <div>
+                <h2>Peticiones de oración</h2>
+                <p class="help-text">Aprueba, marca urgente o cierra peticiones antes de que aparezcan en el muro.</p>
+              </div>
+              <button id="refreshPrayerButton" type="button" class="ghost-button">Actualizar</button>
+            </div>
+            <div id="adminPrayerList" class="admin-table"></div>
+          </section>
+
+          <section class="panel-card">
+            <div class="section-header">
+              <div>
+                <h2>Registros de eventos</h2>
+                <p class="help-text">Registros recibidos desde la página de Eventos.</p>
+              </div>
+              <button id="refreshEventButton" type="button" class="ghost-button">Actualizar</button>
+            </div>
+            <div id="adminEventList" class="admin-table"></div>
+          </section>
+        </div>
+      </section>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="./firebase-config.js"></script>
+    <script src="./firebase-bridge.js?v=donate1"></script>
+    <script>
+      const categoryOptions = [
+        'Nuevo creyente',
+        'Discipulado',
+        'Estudios bíblicos',
+        'Oración',
+        'Devocionales',
+        'Familia',
+        'Jóvenes',
+        'Niños',
+        'Liderazgo',
+        'Recursos para líderes',
+        'Predicaciones'
+      ];
+      const typeOptions = ['pdf', 'video', 'audio', 'link', 'study', 'devotional', 'course', 'document'];
+      const defaultResourceImages = {
+        'Nuevo creyente': 'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?auto=format&fit=crop&w=900&q=80',
+        'Discipulado': 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=900&q=80',
+        'Estudios bÃ­blicos': 'https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&w=900&q=80',
+        'OraciÃ³n': 'https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=900&q=80',
+        'Devocionales': 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=900&q=80',
+        'Familia': 'https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=900&q=80',
+        'JÃ³venes': 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=900&q=80',
+        'NiÃ±os': 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=900&q=80',
+        'Liderazgo': 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80',
+        'Recursos para lÃ­deres': 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=80',
+        'Predicaciones': 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=900&q=80',
+      };
+      const storageKey = 'discipulado-resources-v1';
+      const authStorageKey = 'discipulado-admin-session-v1';
+      let resources = [];
+      let prayerRequests = [];
+      let eventRegistrations = [];
+      let selectedResourceId = null;
+      let isAdmin = localStorage.getItem(authStorageKey) === 'authenticated';
+
+      async function initializeResources() {
+        const firebaseResources = await window.discipladoFirebase?.getResources?.();
+        resources = firebaseResources?.length ? firebaseResources : JSON.parse(localStorage.getItem(storageKey) || 'null') || [];
+        localStorage.setItem(storageKey, JSON.stringify(resources));
+        renderAdminResources();
+      }
+
+      function saveResources() {
+        localStorage.setItem(storageKey, JSON.stringify(resources));
+        if (window.discipladoFirebase?.saveResources) {
+          window.discipladoFirebase.saveResources(resources);
+        }
+      }
+
+      const els = {
+        loginView: document.getElementById('loginView'),
+        adminView: document.getElementById('adminView'),
+        errorMessage: document.getElementById('errorMessage'),
+        emailInput: document.getElementById('emailInput'),
+        passwordInput: document.getElementById('passwordInput'),
+        loginButton: document.getElementById('loginButton'),
+        logoutButton: document.getElementById('logoutButton'),
+        newResourceButton: document.getElementById('newResourceButton'),
+        resourceForm: document.getElementById('resourceForm'),
+        titleInput: document.getElementById('titleInput'),
+        descriptionInput: document.getElementById('descriptionInput'),
+        categoryInput: document.getElementById('categoryInput'),
+        typeInput: document.getElementById('typeInput'),
+        authorInput: document.getElementById('authorInput'),
+        externalUrlInput: document.getElementById('externalUrlInput'),
+        imageUrlInput: document.getElementById('imageUrlInput'),
+        fileUrlInput: document.getElementById('fileUrlInput'),
+        publishedInput: document.getElementById('publishedInput'),
+        featuredInput: document.getElementById('featuredInput'),
+        formTitle: document.getElementById('formTitle'),
+        adminResourceList: document.getElementById('adminResourceList'),
+        cancelFormButton: document.getElementById('cancelFormButton')
+      };
+      els.adminPrayerList = document.getElementById('adminPrayerList');
+      els.refreshPrayerButton = document.getElementById('refreshPrayerButton');
+      els.adminEventList = document.getElementById('adminEventList');
+      els.refreshEventButton = document.getElementById('refreshEventButton');
+
+      function populateSelect(select, options, placeholder = 'Selecciona') {
+        select.innerHTML = '<option value="">' + placeholder + '</option>';
+        options.forEach((option) => {
+          const element = document.createElement('option');
+          element.value = option;
+          element.textContent = option;
+          select.appendChild(element);
+        });
+      }
+
+      function getDefaultResourceImage(category) {
+        return defaultResourceImages[category] || defaultResourceImages.Discipulado;
+      }
+
+      function normalizeCategory(category) {
+        return category === 'Multimedia' ? 'Nuevo creyente' : category;
+      }
+
+      function renderAdminResources() {
+        els.adminResourceList.innerHTML = resources.map((resource) => `
+          <div class="admin-row">
+            <div>
+              <strong>${resource.title}</strong>
+              <small>${normalizeCategory(resource.category)} · ${resource.type} · ${resource.isPublished ? 'Publicado' : 'Borrador'}</small>
+            </div>
+            <div class="row-actions">
+              <button type="button" data-action="toggle-published" data-id="${resource.id}">${resource.isPublished ? 'Despublicar' : 'Publicar'}</button>
+              <button type="button" data-action="toggle-featured" data-id="${resource.id}">${resource.isFeatured ? 'Quitar destaque' : 'Destacar'}</button>
+              <button type="button" data-action="edit" data-id="${resource.id}">Editar</button>
+              <button type="button" class="danger-button" data-action="delete" data-id="${resource.id}">Eliminar</button>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      async function loadAdminPrayerRequests() {
+        prayerRequests = await window.discipladoFirebase?.getPrayerRequests?.({ includePending: true }) || [];
+        renderAdminPrayerRequests();
+      }
+
+      function renderAdminPrayerRequests() {
+        if (!els.adminPrayerList) return;
+        els.adminPrayerList.innerHTML = prayerRequests.length ? prayerRequests.map((request) => `
+          <div class="admin-row">
+            <div>
+              <strong>${request.title}</strong>
+              <small>${request.anonymous ? 'Anónimo' : request.name || 'Sin nombre'} · ${request.category} · ${request.approved ? 'Aprobada' : 'Pendiente'} · ${request.status}${request.urgent ? ' · Urgente' : ''}</small>
+              <small>${request.description}</small>
+            </div>
+            <div class="row-actions">
+              <button type="button" data-prayer-action="approve" data-id="${request.id}">Aprobar</button>
+              <button type="button" data-prayer-action="urgent" data-id="${request.id}">${request.urgent ? 'Quitar urgente' : 'Urgente'}</button>
+              <button type="button" data-prayer-action="answered" data-id="${request.id}">Contestada</button>
+              <button type="button" data-prayer-action="reject" data-id="${request.id}" class="danger-button">Rechazar</button>
+            </div>
+          </div>
+        `).join('') : '<div class="admin-row"><div><strong>No hay peticiones todavía.</strong><small>Cuando alguien envíe una petición aparecerá aquí.</small></div></div>';
+      }
+
+      async function loadAdminEventRegistrations() {
+        eventRegistrations = await window.discipladoFirebase?.getEventRegistrations?.() || [];
+        renderAdminEventRegistrations();
+      }
+
+      function renderAdminEventRegistrations() {
+        if (!els.adminEventList) return;
+        els.adminEventList.innerHTML = eventRegistrations.length ? eventRegistrations.map((registration) => `
+          <div class="admin-row">
+            <div>
+              <strong>${registration.name}</strong>
+              <small>${registration.eventTitle || registration.eventId} · ${registration.email} · ${registration.phone || 'Sin teléfono'}</small>
+              <small>${registration.church || 'Sin iglesia'} · ${registration.attendees || '1'} persona(s) · ${registration.role || 'Miembro'}</small>
+              <small>Asistentes: ${(registration.attendeeNames || []).join(', ') || registration.name}</small>
+              <small>${registration.notes || ''}</small>
+            </div>
+          </div>
+        `).join('') : '<div class="admin-row"><div><strong>No hay registros todavía.</strong><small>Cuando alguien se registre aparecerá aquí.</small></div></div>';
+      }
+
+      function resetForm() {
+        selectedResourceId = null;
+        els.resourceForm.style.display = 'none';
+        els.titleInput.value = '';
+        els.descriptionInput.value = '';
+        els.authorInput.value = '';
+        els.externalUrlInput.value = '';
+        els.imageUrlInput.value = '';
+        els.fileUrlInput.value = '';
+        els.publishedInput.checked = true;
+        els.featuredInput.checked = false;
+      }
+
+      function openForm(resource = null) {
+        if (resource) {
+          selectedResourceId = resource.id;
+          els.formTitle.textContent = 'Editar recurso';
+          els.titleInput.value = resource.title;
+          els.descriptionInput.value = resource.description;
+          els.categoryInput.value = normalizeCategory(resource.category);
+          els.typeInput.value = resource.type;
+          els.authorInput.value = resource.author || '';
+          els.externalUrlInput.value = resource.externalUrl || '';
+          els.imageUrlInput.value = resource.imageUrl || '';
+          els.fileUrlInput.value = resource.fileUrl || '';
+          els.publishedInput.checked = resource.isPublished;
+          els.featuredInput.checked = resource.isFeatured;
+        } else {
+          selectedResourceId = null;
+          els.formTitle.textContent = 'Crear recurso';
+          els.titleInput.value = '';
+          els.descriptionInput.value = '';
+          els.categoryInput.value = categoryOptions[0];
+          els.typeInput.value = typeOptions[0];
+          els.authorInput.value = '';
+          els.externalUrlInput.value = '';
+          els.imageUrlInput.value = '';
+          els.fileUrlInput.value = '';
+          els.publishedInput.checked = true;
+          els.featuredInput.checked = false;
+        }
+        els.resourceForm.style.display = 'grid';
+      }
+
+      function toggleAdminView() {
+        els.loginView.style.display = isAdmin ? 'none' : 'grid';
+        els.adminView.style.display = isAdmin ? 'grid' : 'none';
+        els.logoutButton.style.display = isAdmin ? 'inline-flex' : 'none';
+        if (isAdmin) {
+          renderAdminResources();
+          loadAdminPrayerRequests();
+          loadAdminEventRegistrations();
+        }
+      }
+
+      els.loginButton.addEventListener('click', async () => {
+        const email = els.emailInput.value.trim();
+        const password = els.passwordInput.value.trim();
+        const firebaseLogin = await window.discipladoFirebase?.signIn?.(email, password);
+
+        if (firebaseLogin) {
+          isAdmin = true;
+          localStorage.setItem(authStorageKey, 'authenticated');
+          els.errorMessage.textContent = '';
+          toggleAdminView();
+        } else {
+          els.errorMessage.textContent = 'Credenciales inválidas. Usa el usuario administrador de Firebase.';
+        }
+      });
+
+      els.logoutButton.addEventListener('click', async () => {
+        await window.discipladoFirebase?.signOut?.();
+        isAdmin = false;
+        localStorage.removeItem(authStorageKey);
+        toggleAdminView();
+      });
+
+      els.newResourceButton.addEventListener('click', () => openForm());
+      els.cancelFormButton.addEventListener('click', resetForm);
+
+      els.resourceForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const newResource = {
+          id: selectedResourceId || `res-${Date.now()}`,
+          title: els.titleInput.value.trim(),
+          description: els.descriptionInput.value.trim(),
+          category: els.categoryInput.value,
+          type: els.typeInput.value,
+          author: els.authorInput.value.trim() || 'Sin autor',
+          externalUrl: els.externalUrlInput.value.trim(),
+          imageUrl: els.imageUrlInput.value.trim() || getDefaultResourceImage(els.categoryInput.value),
+          fileUrl: els.fileUrlInput.value.trim(),
+          isPublished: els.publishedInput.checked,
+          isFeatured: els.featuredInput.checked,
+          createdAt: new Date().toISOString(),
+          displayOrder: resources.length + 1
+        };
+
+        if (!newResource.title || !newResource.category || !newResource.type) {
+          els.errorMessage.textContent = 'Título, categoría y tipo son obligatorios.';
+          return;
+        }
+
+        if (selectedResourceId) {
+          resources = resources.map((resource) => resource.id === selectedResourceId ? { ...resource, ...newResource } : resource);
+        } else {
+          resources = [newResource, ...resources];
+        }
+
+        saveResources();
+        resetForm();
+        renderAdminResources();
+        els.errorMessage.textContent = '';
+      });
+
+      els.adminResourceList.addEventListener('click', (event) => {
+        const actionElement = event.target.closest('[data-action]');
+        if (!actionElement) return;
+
+        const id = actionElement.getAttribute('data-id');
+        const action = actionElement.getAttribute('data-action');
+
+        if (action === 'delete') {
+          if (!window.confirm('¿Eliminar este recurso?')) return;
+          resources = resources.filter((resource) => resource.id !== id);
+          saveResources();
+          renderAdminResources();
+        }
+
+        if (action === 'toggle-published') {
+          resources = resources.map((resource) => resource.id === id ? { ...resource, isPublished: !resource.isPublished } : resource);
+          saveResources();
+          renderAdminResources();
+        }
+
+        if (action === 'toggle-featured') {
+          resources = resources.map((resource) => resource.id === id ? { ...resource, isFeatured: !resource.isFeatured } : resource);
+          saveResources();
+          renderAdminResources();
+        }
+
+        if (action === 'edit') {
+          const resource = resources.find((item) => item.id === id);
+          if (resource) openForm(resource);
+        }
+      });
+
+      els.refreshPrayerButton?.addEventListener('click', loadAdminPrayerRequests);
+      els.refreshEventButton?.addEventListener('click', loadAdminEventRegistrations);
+
+      els.adminPrayerList?.addEventListener('click', async (event) => {
+        const actionElement = event.target.closest('[data-prayer-action]');
+        if (!actionElement) return;
+        const id = actionElement.getAttribute('data-id');
+        const action = actionElement.getAttribute('data-prayer-action');
+        const request = prayerRequests.find((item) => item.id === id);
+        if (!request) return;
+
+        const patches = {
+          approve: { approved: true, status: 'active' },
+          urgent: { urgent: !request.urgent },
+          answered: { approved: true, status: 'answered' },
+          reject: { approved: false, status: 'rejected' }
+        };
+
+        await window.discipladoFirebase?.updatePrayerRequest?.(id, patches[action]);
+        await loadAdminPrayerRequests();
+      });
+
+      populateSelect(els.categoryInput, categoryOptions, 'Selecciona');
+      populateSelect(els.typeInput, typeOptions, 'Selecciona');
+      initializeResources();
+      toggleAdminView();
+    </script>
+  </body>
+</html>
