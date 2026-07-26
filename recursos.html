@@ -7,7 +7,16 @@
     <meta
       name="description"
       content="Centro de recursos de discipulado para iglesia, compatible con embed de Wix."
-    />
+    />    <script>
+      if (new URLSearchParams(window.location.search).get('embed') === '1') {
+        document.documentElement.classList.add('embed-mode');
+      }
+    </script>
+    <style>
+      html.embed-mode .site-nav,
+      html.embed-mode .viewer-header { display: none !important; }
+      html.embed-mode body { background: #f4f8fa; }
+    </style>
     <style>
       :root {
         font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;

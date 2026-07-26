@@ -3,9 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Who We Are | PRFWB</title>
-
-  <style>
+  <title>Who We Are | PRFWB</title>    <script>
+      if (new URLSearchParams(window.location.search).get('embed') === '1') {
+        document.documentElement.classList.add('embed-mode');
+      }
+    </script>
+    <style>
+      html.embed-mode .site-nav,
+      html.embed-mode .viewer-header { display: none !important; }
+      html.embed-mode body { background: #f4f8fa; }
+    </style>
+    <style>
     :root {
       --azul: #078ca3;
       --azul-medio: #12607a;
