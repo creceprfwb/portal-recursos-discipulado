@@ -51,6 +51,28 @@ service cloud.firestore {
       allow read, update, delete: if request.auth != null;
     }
 
+    match /eventRegistrations/{registrationId} {
+      allow create: if request.resource.data.keys().hasOnly([
+          "eventId",
+          "eventTitle",
+          "name",
+          "email",
+          "phone",
+          "church",
+          "attendees",
+          "role",
+          "notes",
+          "status",
+          "createdAt",
+          "updatedAt"
+        ])
+        && request.resource.data.eventId is string
+        && request.resource.data.name is string
+        && request.resource.data.email is string
+        && request.resource.data.status == "new";
+      allow read, update, delete: if request.auth != null;
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }

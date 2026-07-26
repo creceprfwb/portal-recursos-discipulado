@@ -1,6 +1,7 @@
 (function () {
   const resourcesStorageKey = 'discipulado-resources-v1';
   const prayerStorageKey = 'discipulado-prayer-requests-v1';
+  const eventRegistrationsStorageKey = 'discipulado-event-registrations-v1';
   const authStorageKey = 'discipulado-admin-session-v1';
   const config = window.firebaseConfig || {};
   const hasRealConfig = Boolean(
@@ -247,6 +248,78 @@
     }
   }
 
+  async function createEventRegistration(payload) {
+    const now = new Date().toISOString();
+    const registration = {
+      eventId: payload.eventId || 'convencion-2027',
+      eventTitle: payload.eventTitle || '',
+      name: payload.name || '',
+      email: payload.email || '',
+      phone: payload.phone || '',
+      church: payload.church || '',
+      attendees: String(payload.attendees || '1'),
+      role: payload.role || 'Miembro',
+      notes: payload.notes || '',
+      status: 'new',
+      createdAt: now,
+      updatedAt: now
+    };
+
+    if (!registration.name || !registration.email) {
+      return false;
+    }
+
+    if (!firebaseState.isConfigured || !firebaseState.db) {
+      const localRegistrations = JSON.parse(localStorage.getItem(eventRegistrationsStorageKey) || 'null') || [];
+      localStorage.setItem(
+        eventRegistrationsStorageKey,
+        JSON.stringify([{ id: `event-registration-${Date.now()}`, ...registration }, ...localRegistrations])
+      );
+      return true;
+    }
+
+    try {
+      await firebaseState.db.collection('eventRegistrations').add({
+        ...registration,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      return true;
+    } catch (error) {
+      console.warn('No se pudo crear el registro del evento:', error);
+      return false;
+    }
+  }
+
+  async function getEventRegistrations() {
+    const localRegistrations = JSON.parse(localStorage.getItem(eventRegistrationsStorageKey) || 'null') || [];
+
+    if (!firebaseState.isConfigured || !firebaseState.db || !firebaseState.auth?.currentUser) {
+      return localRegistrations;
+    }
+
+    try {
+      const snapshot = await firebaseState.db
+        .collection('eventRegistrations')
+        .orderBy('createdAt', 'desc')
+        .limit(200)
+        .get();
+      const remoteRegistrations = snapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          ...data,
+          createdAt: data.createdAt?.toDate ? data.createdAt.toDate().toISOString() : data.createdAt || ''
+        };
+      });
+      localStorage.setItem(eventRegistrationsStorageKey, JSON.stringify(remoteRegistrations));
+      return remoteRegistrations;
+    } catch (error) {
+      console.warn('No se pudieron leer registros de eventos:', error);
+      return localRegistrations;
+    }
+  }
+
   window.discipladoFirebase = {
     ...firebaseState,
     init: initFirebase,
@@ -256,6 +329,8 @@
     createPrayerRequest,
     markPraying,
     updatePrayerRequest,
+    createEventRegistration,
+    getEventRegistrations,
     signIn,
     signOut
   };

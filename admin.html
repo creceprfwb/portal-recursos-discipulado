@@ -206,6 +206,17 @@
             </div>
             <div id="adminPrayerList" class="admin-table"></div>
           </section>
+
+          <section class="panel-card">
+            <div class="section-header">
+              <div>
+                <h2>Registros de eventos</h2>
+                <p class="help-text">Registros recibidos desde la página de Eventos.</p>
+              </div>
+              <button id="refreshEventButton" type="button" class="ghost-button">Actualizar</button>
+            </div>
+            <div id="adminEventList" class="admin-table"></div>
+          </section>
         </div>
       </section>
     </div>
@@ -214,7 +225,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
     <script src="./firebase-config.js"></script>
-    <script src="./firebase-bridge.js"></script>
+    <script src="./firebase-bridge.js?v=eventapp1"></script>
     <script>
       const categoryOptions = [
         'Nuevo creyente',
@@ -247,6 +258,7 @@
       const authStorageKey = 'discipulado-admin-session-v1';
       let resources = [];
       let prayerRequests = [];
+      let eventRegistrations = [];
       let selectedResourceId = null;
       let isAdmin = localStorage.getItem(authStorageKey) === 'authenticated';
 
@@ -290,6 +302,8 @@
       };
       els.adminPrayerList = document.getElementById('adminPrayerList');
       els.refreshPrayerButton = document.getElementById('refreshPrayerButton');
+      els.adminEventList = document.getElementById('adminEventList');
+      els.refreshEventButton = document.getElementById('refreshEventButton');
 
       function populateSelect(select, options, placeholder = 'Selecciona') {
         select.innerHTML = '<option value="">' + placeholder + '</option>';
@@ -350,6 +364,25 @@
         `).join('') : '<div class="admin-row"><div><strong>No hay peticiones todavía.</strong><small>Cuando alguien envíe una petición aparecerá aquí.</small></div></div>';
       }
 
+      async function loadAdminEventRegistrations() {
+        eventRegistrations = await window.discipladoFirebase?.getEventRegistrations?.() || [];
+        renderAdminEventRegistrations();
+      }
+
+      function renderAdminEventRegistrations() {
+        if (!els.adminEventList) return;
+        els.adminEventList.innerHTML = eventRegistrations.length ? eventRegistrations.map((registration) => `
+          <div class="admin-row">
+            <div>
+              <strong>${registration.name}</strong>
+              <small>${registration.eventTitle || registration.eventId} · ${registration.email} · ${registration.phone || 'Sin teléfono'}</small>
+              <small>${registration.church || 'Sin iglesia'} · ${registration.attendees || '1'} persona(s) · ${registration.role || 'Miembro'}</small>
+              <small>${registration.notes || ''}</small>
+            </div>
+          </div>
+        `).join('') : '<div class="admin-row"><div><strong>No hay registros todavía.</strong><small>Cuando alguien se registre aparecerá aquí.</small></div></div>';
+      }
+
       function resetForm() {
         selectedResourceId = null;
         els.resourceForm.style.display = 'none';
@@ -401,6 +434,7 @@
         if (isAdmin) {
           renderAdminResources();
           loadAdminPrayerRequests();
+          loadAdminEventRegistrations();
         }
       }
 
@@ -497,6 +531,7 @@
       });
 
       els.refreshPrayerButton?.addEventListener('click', loadAdminPrayerRequests);
+      els.refreshEventButton?.addEventListener('click', loadAdminEventRegistrations);
 
       els.adminPrayerList?.addEventListener('click', async (event) => {
         const actionElement = event.target.closest('[data-prayer-action]');

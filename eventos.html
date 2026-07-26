@@ -2,50 +2,42 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Eventos | PRFWB</title>
-    <meta
-      name="description"
-      content="Eventos oficiales de PRFWB, incluyendo la Convencion 2027."
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Convención 2027 | PRFWB</title>
+    <meta name="description" content="Registro interno para la Convención 2027 Enviados de PRFWB." />
     <style>
       :root {
-        --azul: #078ca3;
-        --azul-oscuro: #12384d;
-        --verde: #21473f;
-        --dorado: #f1c84b;
+        --ink: #0b2530;
+        --deep: #12384d;
+        --teal: #0f6170;
+        --gold: #c7912b;
         --coral: #d95643;
-        --fondo: #f4f8fa;
-        --borde: #dbe7ec;
-        --texto: #526875;
-        --blanco: #ffffff;
-        font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        color: var(--azul-oscuro);
-        background: var(--fondo);
-        line-height: 1.5;
+        --paper: #f6efe3;
+        --soft: #f4f8fa;
+        --white: #ffffff;
+        --muted: #60717b;
+        --line: rgba(18, 56, 77, .14);
+        --shadow: 0 22px 60px rgba(11, 37, 48, .14);
+        font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+        color: var(--ink);
+        background: var(--soft);
+        line-height: 1.55;
       }
       * { box-sizing: border-box; }
-      body { margin: 0; min-width: 320px; overflow-x: hidden; background: var(--fondo); }
+      html, body { width: 100%; margin: 0; overflow-x: hidden; background: var(--soft); }
       a { color: inherit; text-decoration: none; }
       img { display: block; max-width: 100%; }
-      .page-shell { width: 100%; min-height: 100vh; padding-bottom: 64px; }
+      button, input, select, textarea { font: inherit; }
       .site-nav {
         display: flex;
         justify-content: space-between;
         align-items: center;
         gap: 18px;
-        padding: 0.7rem max(1rem, calc((100vw - 1180px) / 2));
-        border-bottom: 1px solid var(--borde);
-        background: var(--blanco);
+        padding: .7rem max(1rem, calc((100vw - 1180px) / 2));
+        border-bottom: 1px solid #dbe7ec;
+        background: var(--white);
       }
-      .nav-logo {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        color: var(--azul-oscuro);
-        font-weight: 900;
-        letter-spacing: .4px;
-      }
+      .nav-logo { display: flex; align-items: center; gap: 10px; color: var(--deep); font-weight: 900; letter-spacing: .4px; }
       .nav-logo img { width: 118px; height: 44px; object-fit: contain; }
       .nav-links { display: flex; gap: 8px; flex-wrap: wrap; }
       .nav-links a {
@@ -55,303 +47,422 @@
         justify-content: center;
         padding: 9px 15px;
         border-radius: 999px;
-        color: var(--azul-oscuro);
+        color: var(--deep);
         font-size: 14px;
         font-weight: 900;
       }
-      .nav-links a.active { background: var(--azul-oscuro); color: var(--blanco); }
-      .hero {
-        color: var(--blanco);
-        padding: 74px max(1rem, calc((100vw - 1180px) / 2)) 92px;
+      .nav-links a.active { background: var(--deep); color: var(--white); }
+      .event-wrap {
+        width: 100%;
+        padding: 54px max(1rem, calc((100vw - 1180px) / 2)) 64px;
         background:
-          linear-gradient(90deg, rgba(33, 71, 63, 0.9), rgba(18, 61, 79, 0.95) 55%, rgba(53, 61, 74, 0.88)),
-          linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
-        background-size: auto, 48px 48px, 48px 48px;
+          radial-gradient(circle at 14% 10%, rgba(199, 145, 43, .16), transparent 28%),
+          radial-gradient(circle at 90% 12%, rgba(15, 97, 112, .13), transparent 30%),
+          linear-gradient(180deg, #fff 0%, var(--soft) 100%);
       }
-      .hero-content {
-        width: min(1180px, 100%);
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
-        gap: clamp(1.5rem, 4vw, 3.5rem);
-        align-items: center;
-      }
+      .event-shell { width: 100%; max-width: 1180px; margin: 0 auto; }
+      .event-head { text-align: center; margin: 0 auto 30px; max-width: 760px; }
       .eyebrow {
         display: inline-flex;
         align-items: center;
-        gap: 10px;
-        color: var(--dorado);
-        text-transform: uppercase;
-        font-size: 0.76rem;
+        gap: 8px;
+        color: var(--coral);
+        font-size: 12px;
         font-weight: 900;
-        letter-spacing: 0.24em;
+        letter-spacing: 2.2px;
+        text-transform: uppercase;
       }
-      .eyebrow::before {
+      .eyebrow::before, .eyebrow::after {
         content: "";
-        width: 28px;
-        height: 3px;
-        border-radius: 999px;
-        background: var(--coral);
+        width: 24px;
+        height: 2px;
+        border-radius: 20px;
+        background: var(--gold);
       }
-      h1 {
-        margin: 0.55rem 0 0.75rem;
-        font-size: clamp(2.25rem, 6vw, 4.5rem);
-        line-height: 0.98;
+      h1, h2 { letter-spacing: 0; }
+      .event-head h1 {
+        margin: 10px 0 8px;
+        color: var(--deep);
+        font-size: clamp(32px, 5vw, 56px);
+        line-height: 1.04;
       }
-      .hero p { max-width: 720px; margin: 0; color: #f8fbfb; font-size: 1.05rem; }
-      .button {
-        display: inline-flex;
+      .event-head p { margin: 0; color: var(--muted); font-size: 17px; }
+      .feature {
+        overflow: hidden;
+        display: grid;
+        grid-template-columns: .92fr 1.08fr;
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        background: var(--white);
+        box-shadow: var(--shadow);
+      }
+      .poster {
+        min-height: 100%;
+        display: flex;
         align-items: center;
         justify-content: center;
-        min-height: 46px;
-        width: fit-content;
-        padding: 0.78rem 1.1rem;
-        border-radius: 8px;
-        background: var(--dorado);
-        color: var(--azul-oscuro);
-        font-weight: 900;
+        padding: 24px;
+        background: linear-gradient(180deg, #f6efe3, #ead9bd);
       }
-      .button.secondary { background: #fff6d6; }
-      .hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.25rem; }
-      .event-poster {
-        min-height: 430px;
-        display: grid;
-        align-content: end;
-        gap: 1rem;
-        padding: 1.3rem;
-        border-radius: 8px;
-        background:
-          linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.18)),
-          linear-gradient(160deg, #f6efe3 0%, #f1c84b 45%, #d95643 100%);
-        color: var(--azul-oscuro);
-        box-shadow: 0 28px 70px rgba(3, 24, 39, 0.28);
+      .poster img {
+        width: min(100%, 430px);
+        height: auto;
+        max-height: 760px;
+        object-fit: contain;
+        border-radius: 20px;
+        box-shadow: 0 18px 42px rgba(11, 37, 48, .18);
       }
-      .event-poster img {
-        width: 178px;
-        padding: 0.65rem;
-        border-radius: 8px;
-        background: rgba(255,255,255,0.72);
-        border: 1px solid rgba(255,255,255,0.45);
+      .content {
+        position: relative;
+        overflow: hidden;
+        padding: clamp(28px, 4vw, 46px);
+        background: linear-gradient(135deg, rgba(255, 255, 255, .96), rgba(246, 239, 227, .78));
       }
-      .poster-title {
-        margin-top: auto;
-        font-size: clamp(2.3rem, 5vw, 4rem);
-        font-weight: 900;
-        line-height: 0.9;
+      .content::before {
+        content: "";
+        position: absolute;
+        right: -90px;
+        top: -90px;
+        width: 240px;
+        height: 240px;
+        border: 1px solid rgba(199, 145, 43, .26);
+        border-radius: 50%;
       }
-      .poster-title span { display: block; color: var(--blanco); }
-      .poster-subtitle {
+      .content > * { position: relative; }
+      .brand-mark {
         display: inline-flex;
-        width: fit-content;
-        padding: 0.35rem 0.65rem;
-        border-radius: 999px;
-        background: rgba(18, 56, 77, 0.9);
-        color: var(--blanco);
-        font-weight: 900;
-        letter-spacing: 0.16em;
+        flex-direction: column;
+        margin-bottom: 18px;
+        color: var(--deep);
+        line-height: 1;
+      }
+      .brand-mark span { font-size: 28px; font-weight: 900; letter-spacing: 1px; }
+      .brand-mark small {
+        margin-top: 3px;
+        color: var(--muted);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: .7px;
         text-transform: uppercase;
-        font-size: 0.76rem;
       }
-      .section {
-        width: min(1180px, calc(100% - 2rem));
-        margin: 1.35rem auto 0;
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 20px;
+        padding: 8px 13px;
+        border: 1px solid rgba(15, 97, 112, .18);
+        border-radius: 999px;
+        background: rgba(15, 97, 112, .08);
+        color: var(--teal);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
       }
-      .event-card {
-        display: grid;
-        grid-template-columns: 0.95fr 1.05fr;
-        gap: 1rem;
-        padding: 1rem;
-        border-radius: 8px;
-        background: var(--blanco);
-        box-shadow: 0 12px 30px rgba(18, 61, 79, 0.08);
+      .event-title {
+        margin: 0 0 8px;
+        color: var(--ink);
+        font-size: clamp(38px, 5.6vw, 70px);
+        line-height: .98;
+        font-weight: 900;
       }
-      .event-art {
-        min-height: 320px;
-        display: grid;
-        place-items: center;
-        padding: 1rem;
-        border-radius: 8px;
-        background:
-          radial-gradient(circle at 20% 20%, rgba(241, 200, 75, 0.3), transparent 35%),
-          linear-gradient(135deg, #f8f5ea, #eaf5f7);
-      }
-      .event-art-inner {
-        width: min(100%, 360px);
-        aspect-ratio: 4 / 5;
-        display: grid;
-        align-content: end;
-        gap: 0.85rem;
-        padding: 1.2rem;
-        border-radius: 8px;
-        background:
-          linear-gradient(160deg, rgba(18, 56, 77, 0.92), rgba(33, 71, 63, 0.88)),
-          linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
-        background-size: auto, 34px 34px, 34px 34px;
-        color: var(--blanco);
-      }
-      .event-art-inner strong { color: var(--dorado); font-size: 3rem; line-height: 0.9; }
-      .event-art-inner span { color: var(--blanco); font-size: 2rem; font-weight: 900; line-height: 1; }
-      .event-details { padding: clamp(0.5rem, 2vw, 1.5rem); }
-      .event-details h2 {
-        margin: 0 0 0.6rem;
-        font-size: clamp(1.8rem, 4vw, 3rem);
-        line-height: 1.02;
-      }
-      .event-details p { margin: 0; color: #24343a; }
+      .event-title span { color: var(--gold); }
+      .subtitle { margin: 0 0 28px; max-width: 560px; color: var(--muted); font-size: 18px; }
       .facts {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 0.75rem;
-        margin: 1.2rem 0;
+        gap: 12px;
+        margin: 0 0 28px;
       }
       .fact {
-        min-height: 98px;
-        padding: 0.85rem;
-        border-radius: 8px;
-        background: #f8f5ea;
-        border: 1px solid #e5e2d4;
+        min-width: 0;
+        padding: 16px 14px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, .76);
       }
-      .fact b { display: block; color: var(--azul-oscuro); font-size: 1.05rem; }
+      .fact b { display: block; margin-bottom: 2px; color: var(--deep); font-size: 18px; }
       .fact span {
         display: block;
-        margin-top: 0.25rem;
-        color: var(--texto);
-        font-size: 0.78rem;
-        font-weight: 900;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 800;
         text-transform: uppercase;
-        letter-spacing: 0.08em;
+        letter-spacing: .8px;
       }
-      .schedule {
+      .schedule { display: grid; gap: 10px; margin: 0 0 30px; }
+      .day {
         display: grid;
-        gap: 0.7rem;
-        margin: 1rem 0 1.25rem;
+        grid-template-columns: 96px minmax(0, 1fr);
+        gap: 14px;
+        align-items: start;
+        padding: 14px;
+        border-left: 4px solid var(--gold);
+        border-radius: 16px;
+        background: rgba(18, 56, 77, .06);
       }
-      .schedule-item {
-        padding: 0.85rem;
-        border-left: 4px solid var(--dorado);
-        border-radius: 8px;
-        background: #eef7f9;
+      .day strong {
+        color: var(--teal);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 1.1px;
+        text-transform: uppercase;
       }
-      .schedule-item strong { display: block; color: var(--azul); }
-      .note { margin-top: 0.85rem; color: var(--texto); font-size: 0.92rem; }
-      @media (max-width: 860px) {
-        .site-nav { align-items: flex-start; flex-direction: column; padding: 0.75rem 1rem; }
+      .day p { margin: 0; color: var(--ink); font-size: 14px; }
+      .day p span { color: var(--muted); }
+      .registration-panel {
+        margin-top: 22px;
+        padding: 18px;
+        border: 1px solid rgba(18, 56, 77, .16);
+        border-radius: 22px;
+        background: var(--white);
+        box-shadow: 0 14px 34px rgba(11, 37, 48, .10);
+      }
+      .registration-panel h2 { margin: 0 0 6px; color: var(--deep); font-size: clamp(24px, 3vw, 34px); }
+      .registration-panel p { margin: 0 0 16px; color: var(--muted); }
+      form { display: grid; gap: 12px; }
+      .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+      label { display: grid; gap: 6px; color: var(--deep); font-size: 13px; font-weight: 900; }
+      input, select, textarea {
+        width: 100%;
+        min-height: 46px;
+        border: 1px solid rgba(18, 56, 77, .18);
+        border-radius: 12px;
+        padding: 11px 12px;
+        background: #fdfefe;
+        color: var(--ink);
+      }
+      textarea { min-height: 92px; resize: vertical; }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+      }
+      .btn {
+        min-height: 50px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 13px 22px;
+        border: 0;
+        border-radius: 999px;
+        font-size: 14px;
+        font-weight: 900;
+        text-align: center;
+        cursor: pointer;
+      }
+      .btn-primary { background: var(--deep); color: var(--white); box-shadow: 0 12px 24px rgba(18, 56, 77, .18); }
+      .btn-light { border: 1px solid var(--line); background: var(--white); color: var(--deep); }
+      .btn:disabled { cursor: not-allowed; opacity: .6; }
+      .note { margin: 18px 0 0; color: var(--muted); font-size: 13px; }
+      .message {
+        display: none;
+        margin-top: 12px;
+        padding: 12px 14px;
+        border-radius: 14px;
+        font-weight: 800;
+      }
+      .message.success { display: block; background: #e7f2ec; color: #12607a; }
+      .message.error { display: block; background: #fff1ef; color: #9c2f28; }
+      @media (max-width: 880px) {
+        .site-nav { align-items: flex-start; flex-direction: column; padding: .75rem 1rem; }
         .nav-links { width: 100%; display: grid; grid-template-columns: 1fr; }
-        .nav-links a { border: 1px solid var(--borde); }
-        .hero { padding: 42px 1rem 60px; }
-        .hero-content,
-        .event-card,
-        .facts { grid-template-columns: 1fr; }
-        .event-poster { min-height: 320px; }
-        .button { width: 100%; }
+        .nav-links a { border: 1px solid #dbe7ec; }
+        .event-wrap { padding: 44px 14px 52px; }
+        .feature { grid-template-columns: 1fr; border-radius: 22px; }
+        .poster { padding: 18px; }
+        .poster img { width: min(82vw, 340px); max-height: none; margin: 0 auto; border-radius: 18px; }
+        .content { padding: 32px 22px; }
+        .facts, .form-grid { grid-template-columns: 1fr; }
+        .day { grid-template-columns: 1fr; gap: 4px; }
+        .btn { width: 100%; min-height: 46px; }
       }
-      @media (max-width: 520px) {
-        .section { width: 100%; margin-top: 0; }
-        .event-card { border-radius: 0; box-shadow: none; }
-        .event-art { border-radius: 0; }
+      @media (max-width: 390px) {
+        .event-wrap { padding: 34px 12px 42px; }
+        .event-head { margin-bottom: 22px; }
+        .event-head h1 { font-size: 30px; }
+        .event-head p, .subtitle { font-size: 15px; }
+        .content { padding: 26px 18px; }
+        .poster { padding: 14px; }
+        .poster img { width: min(84vw, 305px); border-radius: 16px; }
+        .brand-mark span { font-size: 24px; }
+        .event-title { font-size: 38px; }
       }
     </style>
   </head>
   <body>
-    <div class="page-shell">
-      <nav class="site-nav" aria-label="Navegacion principal">
-        <a class="nav-logo" href="./index.html?v=events1">
-          <img src="./prfwb-logo-cropped-v2.png" alt="PRFWB" />
-          <span>PRFWB</span>
-        </a>
-        <div class="nav-links">
-          <a href="./index.html?v=events1">Home</a>
-          <a href="./who-we-are.html?v=events1">Who We Are</a>
-          <a class="active" href="./eventos.html?v=events1">Eventos</a>
-          <a href="./recursos.html?v=events1">Recursos</a>
-          <a href="./oracion.html?v=events1">Oración</a>
-          <a href="./crece.html?v=events1">CRECE</a>
-        </div>
-      </nav>
+    <nav class="site-nav" aria-label="Navegacion principal">
+      <a class="nav-logo" href="./index.html?v=eventapp1">
+        <img src="./prfwb-logo-cropped-v2.png" alt="PRFWB" />
+        <span>PRFWB</span>
+      </a>
+      <div class="nav-links">
+        <a href="./index.html?v=eventapp1">Home</a>
+        <a href="./who-we-are.html?v=eventapp1">Who We Are</a>
+        <a class="active" href="./eventos.html?v=eventapp1">Eventos</a>
+        <a href="./recursos.html?v=eventapp1">Recursos</a>
+        <a href="./oracion.html?v=eventapp1">Oración</a>
+        <a href="./crece.html?v=eventapp1">CRECE</a>
+      </div>
+    </nav>
 
-      <header class="hero">
-        <div class="hero-content">
-          <div>
-            <span class="eyebrow">Próximos eventos</span>
-            <h1>Convención 2027</h1>
-            <p>
-              Un fin de semana para adorar, recibir visión y ser enviados con propósito
-              junto a la familia de iglesias PRFWB.
-            </p>
-            <div class="hero-actions">
-              <a
-                class="button"
-                href="https://www.prfwb.com/events/prfwb-2027-state-convention-2027-02-19-19-00"
-                target="_blank"
-                rel="noopener"
-              >
-                Registrarme ahora
-              </a>
-              <a class="button secondary" href="./recursos.html?v=events1">Ver recursos</a>
-            </div>
-          </div>
-          <aside class="event-poster" aria-label="Afiche Convencion 2027">
-            <img src="./prfwb-logo-cropped-v2.png" alt="PRFWB" />
-            <div class="poster-subtitle">Convención estatal</div>
-            <div class="poster-title">Enviados <span>2027</span></div>
-          </aside>
-        </div>
-      </header>
+    <section class="event-wrap" aria-label="Próximos eventos PRFWB">
+      <div class="event-shell">
+        <header class="event-head">
+          <div class="eyebrow">Próximos eventos</div>
+          <h1>Convención 2027</h1>
+          <p>Un fin de semana para adorar, recibir visión y ser enviados con propósito.</p>
+        </header>
 
-      <main class="section">
-        <article class="event-card">
-          <div class="event-art" aria-hidden="true">
-            <div class="event-art-inner">
-              <strong>2027</strong>
-              <span>Enviados</span>
-              <p>PRFWB State Convention</p>
-            </div>
+        <article class="feature">
+          <div class="poster">
+            <img src="./files/convencion-2027-enviados.jpg" alt="Programa de la Convención 2027 Enviados" />
           </div>
-          <div class="event-details">
-            <h2>PRFWB 2027 State Convention</h2>
-            <p>
-              Reunión anual para líderes, iglesias, familias y ministerios. Esta página queda lista
-              para añadir más eventos usando el mismo formato.
+
+          <div class="content">
+            <div class="brand-mark">
+              <span>PRFWB</span>
+              <small>Puerto Rico Free Will Baptists</small>
+            </div>
+            <div class="tag">Convención estatal</div>
+            <h2 class="event-title">Enviados <span>2027</span></h2>
+            <p class="subtitle">
+              Regístrate aquí mismo para que el equipo de PRFWB pueda organizar la asistencia y dar seguimiento.
             </p>
+
             <div class="facts">
-              <div class="fact">
-                <b>19 feb.</b>
-                <span>Fecha de inicio</span>
-              </div>
-              <div class="fact">
-                <b>Registro</b>
-                <span>Disponible en PRFWB</span>
-              </div>
-              <div class="fact">
-                <b>PRFWB</b>
-                <span>Evento oficial</span>
-              </div>
+              <div class="fact"><b>Feb. 19</b><span>Inicio</span></div>
+              <div class="fact"><b>2027</b><span>Convención</span></div>
+              <div class="fact"><b>En línea</b><span>Registro interno</span></div>
             </div>
+
             <div class="schedule">
-              <div class="schedule-item">
-                <strong>Convención 2027</strong>
-                <span>Adoración, visión, compañerismo y llamado a servir.</span>
+              <div class="day">
+                <strong>Viernes</strong>
+                <p>Inicio de la convención, adoración y visión ministerial. <span>Detalles oficiales por confirmar.</span></p>
               </div>
-              <div class="schedule-item">
-                <strong>Más detalles</strong>
-                <span>La información oficial y cupos se manejan desde la página de registro.</span>
+              <div class="day">
+                <strong>Sábado</strong>
+                <p>Sesiones, compañerismo y oportunidades de conexión para iglesias y líderes.</p>
               </div>
             </div>
-            <div class="hero-actions">
-              <a
-                class="button"
-                href="https://www.prfwb.com/events/prfwb-2027-state-convention-2027-02-19-19-00"
-                target="_blank"
-                rel="noopener"
-              >
-                Abrir registro oficial
-              </a>
-            </div>
-            <p class="note">Después podemos conectar esta página a Firebase para manejar varios eventos desde el panel.</p>
+
+            <section class="registration-panel" aria-label="Registro para Convención 2027">
+              <h2>Registro</h2>
+              <p>Completa la información y quedará guardada en Firebase para seguimiento.</p>
+              <form id="eventRegistrationForm">
+                <div class="form-grid">
+                  <label>
+                    Nombre completo
+                    <input id="nameInput" name="name" maxlength="120" required placeholder="Tu nombre" />
+                  </label>
+                  <label>
+                    Correo electrónico
+                    <input id="emailInput" name="email" type="email" maxlength="140" required placeholder="correo@ejemplo.com" />
+                  </label>
+                  <label>
+                    Teléfono
+                    <input id="phoneInput" name="phone" maxlength="40" placeholder="Opcional" />
+                  </label>
+                  <label>
+                    Iglesia
+                    <input id="churchInput" name="church" maxlength="140" placeholder="Nombre de tu iglesia" />
+                  </label>
+                  <label>
+                    Cantidad de personas
+                    <select id="attendeesInput" name="attendees">
+                      <option value="1">1 persona</option>
+                      <option value="2">2 personas</option>
+                      <option value="3">3 personas</option>
+                      <option value="4">4 personas</option>
+                      <option value="5">5 personas</option>
+                      <option value="6+">6 o más</option>
+                    </select>
+                  </label>
+                  <label>
+                    Rol
+                    <select id="roleInput" name="role">
+                      <option value="Miembro">Miembro</option>
+                      <option value="Pastor">Pastor</option>
+                      <option value="Lider">Líder</option>
+                      <option value="Invitado">Invitado</option>
+                    </select>
+                  </label>
+                </div>
+                <label>
+                  Comentarios
+                  <textarea id="notesInput" name="notes" maxlength="600" placeholder="Alguna información adicional"></textarea>
+                </label>
+                <div class="actions">
+                  <button id="submitButton" class="btn btn-primary" type="submit">Enviar registro</button>
+                  <button id="clearButton" class="btn btn-light" type="button">Limpiar</button>
+                </div>
+                <div id="formMessage" class="message"></div>
+              </form>
+            </section>
+
+            <p class="note">Este registro no redirige a Wix. Si Firebase no responde, verás un aviso para intentarlo nuevamente.</p>
           </div>
         </article>
-      </main>
-    </div>
+      </div>
+    </section>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="./firebase-config.js"></script>
+    <script src="./firebase-bridge.js?v=eventapp1"></script>
+    <script>
+      const form = document.getElementById('eventRegistrationForm');
+      const submitButton = document.getElementById('submitButton');
+      const clearButton = document.getElementById('clearButton');
+      const message = document.getElementById('formMessage');
+
+      function showMessage(text, type) {
+        message.textContent = text;
+        message.className = `message ${type}`;
+      }
+
+      function getValue(id) {
+        return document.getElementById(id).value.trim();
+      }
+
+      clearButton.addEventListener('click', () => {
+        form.reset();
+        message.className = 'message';
+        message.textContent = '';
+      });
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        submitButton.disabled = true;
+        submitButton.textContent = 'Enviando...';
+
+        const payload = {
+          eventId: 'convencion-2027',
+          eventTitle: 'Convención 2027 | Enviados',
+          name: getValue('nameInput'),
+          email: getValue('emailInput'),
+          phone: getValue('phoneInput'),
+          church: getValue('churchInput'),
+          attendees: getValue('attendeesInput'),
+          role: getValue('roleInput'),
+          notes: getValue('notesInput'),
+        };
+
+        const saved = await window.discipladoFirebase?.createEventRegistration?.(payload);
+        if (saved) {
+          form.reset();
+          showMessage('Registro recibido. Gracias, te contactaremos con más detalles.', 'success');
+        } else {
+          showMessage('No se pudo enviar ahora. Revisa la conexión o intenta nuevamente.', 'error');
+        }
+
+        submitButton.disabled = false;
+        submitButton.textContent = 'Enviar registro';
+      });
+    </script>
   </body>
 </html>
