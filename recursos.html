@@ -54,11 +54,12 @@
       .nav-links a.active { background: #12384d; color: white; }
       .hero {
         display: grid;
-        grid-template-columns: 1fr auto;
-        gap: 1rem;
+        grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+        gap: clamp(1.25rem, 4vw, 3rem);
         align-items: start;
         color: white;
-        padding: 70px max(1rem, calc((100vw - 1180px) / 2));
+        min-height: 360px;
+        padding: 76px max(1rem, calc((100vw - 1180px) / 2)) 88px;
         background:
           linear-gradient(90deg, rgba(33, 71, 63, 0.88), rgba(14, 59, 81, 0.94) 48%, rgba(53, 61, 74, 0.88)),
           linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
@@ -88,6 +89,30 @@
       }
       .hero h1 { margin: 0.35rem 0 0.55rem; font-size: clamp(2rem, 5vw, 3.1rem); line-height: 1.06; }
       .hero p { max-width: 720px; margin: 0; }
+      .hero-panel {
+        display: grid;
+        gap: 0.8rem;
+        padding: 1rem;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        box-shadow: 0 24px 60px rgba(3, 24, 39, 0.22);
+      }
+      .hero-panel strong { font-size: 1.1rem; }
+      .hero-panel p { color: #f8fbfb; font-size: 0.94rem; }
+      .hero-metrics {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.55rem;
+      }
+      .hero-metric {
+        min-height: 78px;
+        padding: 0.7rem;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.12);
+      }
+      .hero-metric b { display: block; color: #f1c84b; font-size: 1.35rem; line-height: 1; }
+      .hero-metric span { display: block; margin-top: 0.3rem; font-size: 0.75rem; font-weight: 800; }
       .button,
       .hero-action {
         text-decoration: none;
@@ -176,14 +201,16 @@
       .quick-card {
         display: grid;
         gap: 0.45rem;
-        min-height: 135px;
-        padding: 1rem;
+        min-height: 150px;
+        padding: 1.1rem;
         border-radius: 8px;
-        background: #f8f5ea;
+        background: linear-gradient(135deg, #ffffff, #f8f5ea);
         color: #12384d;
         text-decoration: none;
         border: 1px solid #e5e2d4;
       }
+      .quick-card:nth-child(2n) { background: linear-gradient(135deg, #ffffff, #eef7f9); }
+      .quick-card:nth-child(3n) { background: linear-gradient(135deg, #ffffff, #fff6d6); }
       .quick-card strong { font-size: 1.05rem; }
       .quick-card span { color: #5c6a6c; font-size: 0.92rem; }
       .resource-count { color: #5c6a6c; font-weight: 800; }
@@ -196,10 +223,11 @@
         display: grid;
         overflow: hidden;
         min-height: 100%;
+        border: 1px solid #e6eef1;
       }
       .resource-card img {
         width: 100%;
-        height: 145px;
+        height: 168px;
         min-height: 0;
         object-fit: cover;
       }
@@ -258,7 +286,9 @@
         .site-nav { padding: 0.75rem 1rem; }
         .nav-links { width: 100%; display: grid; grid-template-columns: 1fr; }
         .nav-links a { border: 1px solid #dbe7ec; }
-        .hero { padding: 34px 18px 48px; }
+        .hero { min-height: auto; padding: 34px 18px 58px; }
+        .hero-panel { width: 100%; }
+        .hero-metrics { grid-template-columns: 1fr; }
         .brand-lockup { align-items: flex-start; flex-direction: column; gap: 0.75rem; }
         .logo-badge { width: min(210px, 100%); height: 79px; }
         .hero-action, .button { width: 100%; }
@@ -272,7 +302,7 @@
         .section { margin-top: 0; padding: 1rem; }
         .quick-grid { grid-template-columns: 1fr; }
         .card-grid { grid-template-columns: 1fr; }
-        .resource-card img { height: 165px; }
+        .resource-card img { height: 180px; }
       }
     </style>
   </head>
@@ -284,11 +314,11 @@
           <span>PRFWB</span>
         </a>
         <div class="nav-links">
-          <a href="./index.html?v=wide1">Home</a>
-          <a href="./who-we-are.html?v=wide1">Who We Are</a>
-          <a class="active" href="./recursos.html?v=wide1">Recursos</a>
-          <a href="./oracion.html?v=wide1">Oración</a>
-          <a href="./crece.html?v=wide1">CRECE</a>
+          <a href="./index.html?v=wide2">Home</a>
+          <a href="./who-we-are.html?v=wide2">Who We Are</a>
+          <a class="active" href="./recursos.html?v=wide2">Recursos</a>
+          <a href="./oracion.html?v=wide2">Oración</a>
+          <a href="./crece.html?v=wide2">CRECE</a>
         </div>
       </nav>
       <header class="hero">
@@ -303,7 +333,16 @@
           <h1>Recursos para formar discípulos</h1>
           <p>Encuentra guías, estudios, clases y materiales listos para usar en la iglesia.</p>
         </div>
-        <a id="adminToggle" href="./admin.html" class="hero-action">Panel admin</a>
+        <aside class="hero-panel" aria-label="Resumen del centro de recursos">
+          <strong>Biblioteca viva para la iglesia</strong>
+          <p>Accesos directos, filtros y materiales organizados para maestros, líderes y nuevos creyentes.</p>
+          <div class="hero-metrics">
+            <div class="hero-metric"><b>12</b><span>semanas de discipulado</span></div>
+            <div class="hero-metric"><b>10</b><span>clases de liderazgo</span></div>
+            <div class="hero-metric"><b>1</b><span>muro de oración</span></div>
+          </div>
+          <a id="adminToggle" href="./admin.html" class="hero-action">Panel admin</a>
+        </aside>
       </header>
 
       <section class="toolbar" aria-label="Filtros de recursos">
@@ -330,15 +369,15 @@
           </div>
         </div>
         <div class="quick-grid">
-          <a class="quick-card" href="./discipulado.html?v=wide1">
+          <a class="quick-card" href="./discipulado.html?v=wide2">
             <strong>Guía de 12 semanas</strong>
             <span>Formando discípulos que forman discípulos.</span>
           </a>
-          <a class="quick-card" href="./liderazgo.html?v=1">
+          <a class="quick-card" href="./liderazgo.html?v=wide2">
             <strong>Escuela del Carácter</strong>
             <span>El carácter del líder organizado por clases.</span>
           </a>
-          <a class="quick-card" href="./oracion.html?v=wide1">
+          <a class="quick-card" href="./oracion.html?v=wide2">
             <strong>Muro de Oración</strong>
             <span>Peticiones revisadas y comunidad orando.</span>
           </a>
