@@ -33,7 +33,7 @@
         line-height: 1.55;
       }
       * { box-sizing: border-box; }
-      html, body { width: 100%; margin: 0; overflow-x: hidden; background: var(--soft); }
+      html, body { width: 100%; margin: 0; overflow: hidden; background: var(--soft); }
       a { color: inherit; text-decoration: none; }
       img { display: block; max-width: 100%; }
       button, input, select, textarea { font: inherit; }
@@ -72,14 +72,14 @@
       .nav-links a.donate-link:hover { transform: translateY(-2px); }
       .event-wrap {
         width: 100%;
-        padding: 54px max(1rem, calc((100vw - 1180px) / 2)) 64px;
+        padding: 28px max(12px, calc((100vw - 1040px) / 2)) 36px;
         background:
           radial-gradient(circle at 14% 10%, rgba(199, 145, 43, .16), transparent 28%),
           radial-gradient(circle at 90% 12%, rgba(15, 97, 112, .13), transparent 30%),
           linear-gradient(180deg, #fff 0%, var(--soft) 100%);
       }
-      .event-shell { width: 100%; max-width: 1180px; margin: 0 auto; }
-      .event-head { text-align: center; margin: 0 auto 30px; max-width: 760px; }
+      .event-shell { width: 100%; max-width: 1040px; margin: 0 auto; }
+      .event-head { text-align: center; margin: 0 auto 18px; max-width: 760px; }
       .eyebrow {
         display: inline-flex;
         align-items: center;
@@ -108,7 +108,7 @@
       .feature {
         overflow: hidden;
         display: grid;
-        grid-template-columns: .92fr 1.08fr;
+        grid-template-columns: .78fr 1.22fr;
         border: 1px solid var(--line);
         border-radius: 28px;
         background: var(--white);
@@ -119,13 +119,13 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 24px;
+        padding: 18px;
         background: linear-gradient(180deg, #f6efe3, #ead9bd);
       }
       .poster img {
-        width: min(100%, 430px);
+        width: min(100%, 315px);
         height: auto;
-        max-height: 760px;
+        max-height: 500px;
         object-fit: contain;
         border-radius: 20px;
         box-shadow: 0 18px 42px rgba(11, 37, 48, .18);
@@ -133,7 +133,7 @@
       .content {
         position: relative;
         overflow: hidden;
-        padding: clamp(28px, 4vw, 46px);
+        padding: clamp(22px, 3vw, 34px);
         background: linear-gradient(135deg, rgba(255, 255, 255, .96), rgba(246, 239, 227, .78));
       }
       .content::before {
@@ -150,7 +150,7 @@
       .brand-mark {
         display: inline-flex;
         flex-direction: column;
-        margin-bottom: 18px;
+        margin-bottom: 12px;
         color: var(--deep);
         line-height: 1;
       }
@@ -167,7 +167,7 @@
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        margin-bottom: 20px;
+        margin-bottom: 14px;
         padding: 8px 13px;
         border: 1px solid rgba(15, 97, 112, .18);
         border-radius: 999px;
@@ -186,16 +186,16 @@
         font-weight: 900;
       }
       .event-title span { color: var(--gold); }
-      .subtitle { margin: 0 0 28px; max-width: 560px; color: var(--muted); font-size: 18px; }
+      .subtitle { margin: 0 0 20px; max-width: 560px; color: var(--muted); font-size: 16px; }
       .facts {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 12px;
-        margin: 0 0 28px;
+        margin: 0 0 18px;
       }
       .fact {
         min-width: 0;
-        padding: 16px 14px;
+        padding: 12px;
         border: 1px solid var(--line);
         border-radius: 18px;
         background: rgba(255, 255, 255, .76);
@@ -209,13 +209,13 @@
         text-transform: uppercase;
         letter-spacing: .8px;
       }
-      .schedule { display: grid; gap: 10px; margin: 0 0 30px; }
+      .schedule { display: grid; gap: 8px; margin: 0 0 18px; }
       .day {
         display: grid;
         grid-template-columns: 96px minmax(0, 1fr);
         gap: 14px;
         align-items: start;
-        padding: 14px;
+        padding: 12px;
         border-left: 4px solid var(--gold);
         border-radius: 16px;
         background: rgba(18, 56, 77, .06);
@@ -254,8 +254,8 @@
       body[data-lang="es"] [data-lang="en"],
       body[data-lang="en"] [data-lang="es"] { display: none !important; }
       .registration-panel {
-        margin-top: 22px;
-        padding: 18px;
+        margin-top: 18px;
+        padding: 16px;
         border: 1px solid rgba(18, 56, 77, .16);
         border-radius: 22px;
         background: var(--white);
@@ -346,7 +346,7 @@
       .message.error { display: block; background: #fff1ef; color: #9c2f28; }
       .calendar-panel {
         margin-top: 34px;
-        padding: clamp(18px, 3vw, 28px);
+        padding: 18px;
         border: 1px solid var(--line);
         border-radius: 28px;
         background: var(--white);
@@ -392,8 +392,8 @@
       }
       .calendar-frame {
         width: 100%;
-        min-height: 720px;
-        height: 85vh;
+        min-height: 420px;
+        height: 520px;
         overflow: hidden;
         border: 1px solid rgba(18, 56, 77, .12);
         border-radius: 20px;
@@ -408,25 +408,25 @@
         .site-nav { align-items: flex-start; flex-direction: column; padding: .75rem 1rem; }
         .nav-links { width: 100%; display: grid; grid-template-columns: 1fr; }
         .nav-links a { border: 1px solid #dbe7ec; }
-        .event-wrap { padding: 44px 14px 52px; }
+        .event-wrap { padding: 24px 12px 32px; }
         .feature { grid-template-columns: 1fr; border-radius: 22px; }
         .poster { padding: 18px; }
-        .poster img { width: min(82vw, 340px); max-height: none; margin: 0 auto; border-radius: 18px; }
-        .content { padding: 32px 22px; }
+        .poster img { width: min(78vw, 285px); max-height: 430px; margin: 0 auto; border-radius: 18px; }
+        .content { padding: 26px 18px; }
         .facts, .form-grid, .attendee-grid, .day-options { grid-template-columns: 1fr; }
         .day { grid-template-columns: 1fr; gap: 4px; }
         .btn { width: 100%; min-height: 46px; }
-        .calendar-frame { min-height: 660px; height: 80vh; border-radius: 16px; }
+        .calendar-frame { min-height: 380px; height: 480px; border-radius: 16px; }
         .calendar-toggle-row { justify-content: stretch; align-items: stretch; }
       }
       @media (max-width: 390px) {
-        .event-wrap { padding: 34px 12px 42px; }
-        .event-head { margin-bottom: 22px; }
+        .event-wrap { padding: 20px 10px 28px; }
+        .event-head { margin-bottom: 16px; }
         .event-head h1 { font-size: 30px; }
         .event-head p, .subtitle { font-size: 15px; }
-        .content { padding: 26px 18px; }
+        .content { padding: 22px 16px; }
         .poster { padding: 14px; }
-        .poster img { width: min(84vw, 305px); border-radius: 16px; }
+        .poster img { width: min(76vw, 260px); border-radius: 16px; }
         .brand-mark span { font-size: 24px; }
         .event-title { font-size: 38px; }
       }
