@@ -87,6 +87,40 @@
       .admin-content { display: grid; gap: 1rem; }
       .admin-actions { display: flex; justify-content: end; }
       .admin-table { display: grid; gap: 0.8rem; }
+      .admin-accordion {
+        padding: 0;
+        overflow: hidden;
+      }
+      .admin-accordion summary {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        cursor: pointer;
+        font-weight: 900;
+        color: #123d4f;
+        list-style: none;
+      }
+      .admin-accordion summary::-webkit-details-marker { display: none; }
+      .admin-accordion summary::after {
+        content: "+";
+        width: 34px;
+        height: 34px;
+        display: grid;
+        place-items: center;
+        border-radius: 999px;
+        background: #fff4cc;
+        color: #123d4f;
+        font-size: 20px;
+        line-height: 1;
+      }
+      .admin-accordion[open] summary::after { content: "-"; }
+      .accordion-body {
+        display: grid;
+        gap: 1rem;
+        padding: 0 1rem 1rem;
+      }
       .admin-row { padding: 1rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
       .admin-row small { display: block; color: #5c6a6c; }
       .row-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
@@ -151,7 +185,23 @@
         </div>
 
         <div id="adminView" style="display:none" class="admin-content">
-          <div class="admin-actions">
+<section class="panel-card">
+            <div class="section-header">
+              <div>
+                <h2>Peticiones de oración</h2>
+                <p class="help-text">Aprueba, marca urgente o cierra peticiones antes de que aparezcan en el muro.</p>
+              </div>
+              <button id="refreshPrayerButton" type="button" class="ghost-button">Actualizar</button>
+            </div>
+            <div id="adminPrayerList" class="admin-table"></div>
+          </section>
+          <details id="resourcesPanel" class="panel-card admin-accordion">
+            <summary>
+              <span>Recursos: añadir, editar o eliminar</span>
+              <small class="help-text">Abrir solo cuando vayas a administrar materiales.</small>
+            </summary>
+            <div class="accordion-body">
+<div class="admin-actions">
             <button id="newResourceButton">Nuevo recurso</button>
           </div>
 
@@ -201,17 +251,8 @@
           </form>
 
           <div id="adminResourceList" class="admin-table"></div>
-
-          <section class="panel-card">
-            <div class="section-header">
-              <div>
-                <h2>Peticiones de oración</h2>
-                <p class="help-text">Aprueba, marca urgente o cierra peticiones antes de que aparezcan en el muro.</p>
-              </div>
-              <button id="refreshPrayerButton" type="button" class="ghost-button">Actualizar</button>
             </div>
-            <div id="adminPrayerList" class="admin-table"></div>
-          </section>
+          </details>
 
           <section class="panel-card">
             <div class="section-header">
@@ -290,6 +331,7 @@
         passwordInput: document.getElementById('passwordInput'),
         loginButton: document.getElementById('loginButton'),
         logoutButton: document.getElementById('logoutButton'),
+        resourcesPanel: document.getElementById('resourcesPanel'),
         newResourceButton: document.getElementById('newResourceButton'),
         resourceForm: document.getElementById('resourceForm'),
         titleInput: document.getElementById('titleInput'),
@@ -431,6 +473,7 @@
           els.publishedInput.checked = true;
           els.featuredInput.checked = false;
         }
+        if (els.resourcesPanel) els.resourcesPanel.open = true;
         els.resourceForm.style.display = 'grid';
       }
 
