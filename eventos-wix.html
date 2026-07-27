@@ -424,6 +424,79 @@
         .brand-mark span { font-size: 24px; }
         .event-title { font-size: 38px; }
       }
+      .event-head .eyebrow,
+      .event-head p,
+      .brand-mark,
+      .tag,
+      .subtitle,
+      .facts,
+      .schedule,
+      .registration-panel > p,
+      .day-option p,
+      .note { display: none !important; }
+      .event-wrap {
+        min-height: auto;
+        padding: 12px max(10px, calc((100vw - 920px) / 2)) 16px;
+      }
+      .event-shell { max-width: 920px; }
+      .event-head { margin: 0 auto 10px; }
+      .event-head h1 {
+        margin: 0;
+        font-size: clamp(24px, 3.4vw, 38px);
+      }
+      .calendar-toggle-row {
+        margin: 0 0 10px;
+        padding: 10px 12px;
+        gap: 6px;
+        border-radius: 16px;
+      }
+      .calendar-kicker { font-size: 11px; }
+      .calendar-toggle-row .btn {
+        min-height: 40px;
+        min-width: min(100%, 220px);
+        padding: 9px 16px;
+      }
+      .feature { border-radius: 18px; }
+      .content { padding: 14px; }
+      .content::before { display: none; }
+      .event-title {
+        margin: 0 0 12px;
+        font-size: clamp(28px, 4vw, 42px);
+      }
+      .registration-panel {
+        margin: 0;
+        padding: 12px;
+        border-radius: 16px;
+        box-shadow: none;
+      }
+      .registration-panel h2 {
+        margin: 0 0 10px;
+        font-size: clamp(22px, 3vw, 28px);
+      }
+      .lang-switch {
+        margin: 0 0 10px;
+      }
+      .day-options {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+      .day-option {
+        gap: 8px;
+        padding: 12px;
+        border-radius: 14px;
+      }
+      .day-option b { font-size: 18px; }
+      .day-option .btn {
+        min-height: 42px;
+        padding: 9px 12px;
+        font-size: 13px;
+      }
+      @media (max-width: 620px) {
+        .event-wrap { padding: 10px 8px 14px; }
+        .day-options { grid-template-columns: 1fr; }
+        .event-title { font-size: 30px; }
+        .registration-panel h2 { font-size: 22px; }
+      }
     </style>
   </head>
   <body data-lang="es">
