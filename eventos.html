@@ -352,6 +352,12 @@
         background: var(--white);
         box-shadow: var(--shadow);
       }
+      .calendar-panel[hidden] { display: none; }
+      .calendar-toggle-row {
+        display: flex;
+        justify-content: center;
+        margin: 24px 0 0;
+      }
       .calendar-panel h2 {
         margin: 0 0 6px;
         color: var(--deep);
@@ -388,6 +394,7 @@
         .day { grid-template-columns: 1fr; gap: 4px; }
         .btn { width: 100%; min-height: 46px; }
         .calendar-frame { min-height: 660px; height: 80vh; border-radius: 16px; }
+        .calendar-toggle-row { justify-content: stretch; }
       }
       @media (max-width: 390px) {
         .event-wrap { padding: 34px 12px 42px; }
@@ -449,14 +456,14 @@
             </div>
             <h2 class="event-title">Enviados <span>2027</span></h2>
             <p class="subtitle">
-              <span data-lang="es">Escoge el día que vas a asistir y te llevaremos al registro oficial de Wix Events.</span>
-              <span data-lang="en">Choose the day you will attend and we will take you to the official Wix Events registration.</span>
+              <span data-lang="es">Escoge el día que vas a asistir y te llevaremos al registro oficial.</span>
+              <span data-lang="en">Choose the day you will attend and we will take you to the official registration.</span>
             </p>
 
             <div class="facts">
               <div class="fact"><b>Feb. 19</b><span data-lang="es">Inicio</span><span data-lang="en">Opening</span></div>
               <div class="fact"><b>2027</b><span data-lang="es">Convención</span><span data-lang="en">Convention</span></div>
-              <div class="fact"><b>Wix</b><span data-lang="es">Registro oficial</span><span data-lang="en">Official registration</span></div>
+              <div class="fact"><b>Online</b><span data-lang="es">Registro oficial</span><span data-lang="en">Official registration</span></div>
             </div>
 
             <div class="schedule">
@@ -486,8 +493,8 @@
                 <span data-lang="en">Select Your Day</span>
               </h2>
               <p>
-                <span data-lang="es">Cada día tiene su propio registro en Wix Events. Escoge el día correcto para continuar.</span>
-                <span data-lang="en">Each day has its own Wix Events registration. Choose the correct day to continue.</span>
+                <span data-lang="es">Cada día tiene su propio registro. Escoge el día correcto para continuar.</span>
+                <span data-lang="en">Each day has its own registration. Choose the correct day to continue.</span>
               </p>
               <div class="day-options">
                 <article class="day-option">
@@ -519,12 +526,18 @@
               </div>
             </section>
             <p class="note">
-              <span data-lang="es">El registro se completa en Wix Events.</span>
-              <span data-lang="en">Registration is completed through Wix Events.</span>
+              <span data-lang="es">El registro se completa en la plataforma oficial.</span>
+              <span data-lang="en">Registration is completed through the official platform.</span>
             </p>
           </div>
         </article>
-        <section class="calendar-panel" aria-label="Calendario PRFWB">
+        <div class="calendar-toggle-row">
+          <button id="calendarToggle" class="btn btn-light" type="button" aria-expanded="false" aria-controls="calendarPanel">
+            <span data-lang="es">Ver calendario</span>
+            <span data-lang="en">View calendar</span>
+          </button>
+        </div>
+        <section id="calendarPanel" class="calendar-panel" aria-label="Calendario PRFWB" hidden>
           <div class="eyebrow"><span data-lang="es">Calendario</span><span data-lang="en">Calendar</span></div>
           <h2><span data-lang="es">Eventos y actividades</span><span data-lang="en">Events and Activities</span></h2>
           <p>
@@ -552,6 +565,14 @@
             item.classList.toggle('active', item.dataset.setLang === lang);
           });
         });
+      });
+
+      const calendarToggle = document.getElementById('calendarToggle');
+      const calendarPanel = document.getElementById('calendarPanel');
+      calendarToggle?.addEventListener('click', () => {
+        const isOpen = calendarToggle.getAttribute('aria-expanded') === 'true';
+        calendarToggle.setAttribute('aria-expanded', String(!isOpen));
+        calendarPanel.hidden = isOpen;
       });
     </script>
   </body>
