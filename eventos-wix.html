@@ -453,27 +453,11 @@
             <span data-lang="es">Calendario oficial</span>
             <span data-lang="en">Official Calendar</span>
           </div>
-          <button id="calendarToggle" class="btn btn-light" type="button" aria-expanded="false" aria-controls="calendarPanel">
-            <span data-lang="es">Ver calendario</span>
-            <span data-lang="en">View calendar</span>
-          </button>
+          <a class="btn btn-light" href="./eventos-calendario-wix.html?v=calendarpage1" target="_self" rel="noopener">
+            <span data-lang="es">Abrir calendario</span>
+            <span data-lang="en">Open calendar</span>
+          </a>
         </div>
-        <section id="calendarPanel" class="calendar-panel" aria-label="Calendario PRFWB" hidden>
-          <div class="eyebrow"><span data-lang="es">Calendario</span><span data-lang="en">Calendar</span></div>
-          <h2><span data-lang="es">Eventos y actividades</span><span data-lang="en">Events and Activities</span></h2>
-          <p>
-            <span data-lang="es">Consulta las fechas actualizadas directamente desde el calendario oficial.</span>
-            <span data-lang="en">View updated dates directly from the official calendar.</span>
-          </p>
-          <div class="calendar-frame">
-            <iframe
-              title="Calendario PRFWB"
-              src="https://calendar.google.com/calendar/embed?hl=es&ctz=America%2FPuerto_Rico&src=amVlY2NhbGVuZGFyaW9AZ21haWwuY29t&showTabs=1&showNav=1&showDate=1&showPrint=0&showTz=0&mode=AGENDA"
-              frameborder="0"
-              scrolling="no">
-            </iframe>
-          </div>
-        </section>
 
         <article class="feature">
           <div class="poster">
@@ -578,14 +562,6 @@
             item.classList.toggle('active', item.dataset.setLang === lang);
           });
         });
-      });
-
-      const calendarToggle = document.getElementById('calendarToggle');
-      const calendarPanel = document.getElementById('calendarPanel');
-      calendarToggle?.addEventListener('click', () => {
-        const isOpen = calendarToggle.getAttribute('aria-expanded') === 'true';
-        calendarToggle.setAttribute('aria-expanded', String(!isOpen));
-        calendarPanel.hidden = isOpen;
       });
     </script>
   </body>

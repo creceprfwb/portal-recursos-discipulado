@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Calendario PRFWB</title>
+    <style>
+      :root {
+        --ink: #0b2530;
+        --deep: #12384d;
+        --gold: #c7912b;
+        --coral: #d95643;
+        --soft: #f4f8fa;
+        --white: #ffffff;
+        --muted: #60717b;
+        --line: rgba(18, 56, 77, .14);
+        --shadow: 0 22px 60px rgba(11, 37, 48, .14);
+        font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      }
+      * { box-sizing: border-box; }
+      html, body {
+        width: 100%;
+        margin: 0;
+        overflow-x: hidden;
+        background: var(--soft);
+        color: var(--ink);
+        line-height: 1.55;
+      }
+      a { color: inherit; text-decoration: none; }
+      .calendar-wrap {
+        width: 100%;
+        min-height: 100vh;
+        padding: 28px max(12px, calc((100vw - 1040px) / 2)) 36px;
+        background:
+          radial-gradient(circle at 14% 10%, rgba(199, 145, 43, .16), transparent 28%),
+          radial-gradient(circle at 90% 12%, rgba(15, 97, 112, .13), transparent 30%),
+          linear-gradient(180deg, #fff 0%, var(--soft) 100%);
+      }
+      .calendar-shell { width: 100%; max-width: 1040px; margin: 0 auto; }
+      .calendar-head {
+        display: grid;
+        gap: 12px;
+        margin: 0 0 18px;
+        text-align: center;
+      }
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        color: var(--coral);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 2.2px;
+        text-transform: uppercase;
+      }
+      .eyebrow::before, .eyebrow::after {
+        content: "";
+        width: 24px;
+        height: 2px;
+        border-radius: 20px;
+        background: var(--gold);
+      }
+      h1 {
+        margin: 0;
+        color: var(--deep);
+        font-size: clamp(32px, 5vw, 54px);
+        line-height: 1.04;
+      }
+      p { margin: 0; color: var(--muted); font-size: 16px; }
+      .actions {
+        display: flex;
+        justify-content: center;
+        margin: 18px 0;
+      }
+      .btn {
+        min-height: 48px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 22px;
+        border-radius: 999px;
+        border: 1px solid rgba(18, 56, 77, .18);
+        background: #f1c84b;
+        color: var(--deep);
+        font-size: 14px;
+        font-weight: 900;
+        box-shadow: 0 14px 28px rgba(199, 145, 43, .24);
+      }
+      .calendar-card {
+        overflow: hidden;
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background: var(--white);
+        box-shadow: var(--shadow);
+      }
+      .calendar-frame {
+        width: 100%;
+        height: 680px;
+        overflow: hidden;
+        border: 1px solid rgba(18, 56, 77, .12);
+        border-radius: 18px;
+        background: #fff;
+      }
+      .calendar-frame iframe {
+        width: 100%;
+        height: 100%;
+        border: 0;
+      }
+      @media (max-width: 640px) {
+        .calendar-wrap { padding: 22px 10px 28px; }
+        .calendar-card { padding: 12px; border-radius: 18px; }
+        .calendar-frame { height: 600px; border-radius: 14px; }
+        .btn { width: 100%; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="calendar-wrap">
+      <div class="calendar-shell">
+        <header class="calendar-head">
+          <div class="eyebrow">Calendario oficial</div>
+          <h1>Eventos y actividades</h1>
+          <p>Consulta las fechas actualizadas directamente desde el calendario oficial.</p>
+        </header>
+        <div class="actions">
+          <a class="btn" href="./eventos-wix.html?v=calendarpage1" target="_self">Volver a eventos</a>
+        </div>
+        <section class="calendar-card" aria-label="Calendario PRFWB">
+          <div class="calendar-frame">
+            <iframe
+              title="Calendario PRFWB"
+              src="https://calendar.google.com/calendar/embed?hl=es&ctz=America%2FPuerto_Rico&src=amVlY2NhbGVuZGFyaW9AZ21haWwuY29t&showTabs=1&showNav=1&showDate=1&showPrint=0&showTz=0&mode=AGENDA"
+              frameborder="0"
+              scrolling="no">
+            </iframe>
+          </div>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>
