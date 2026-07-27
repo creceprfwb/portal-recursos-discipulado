@@ -294,6 +294,37 @@
       }
       .message.success { display: block; background: #e7f2ec; color: #12607a; }
       .message.error { display: block; background: #fff1ef; color: #9c2f28; }
+      .calendar-panel {
+        margin-top: 34px;
+        padding: clamp(18px, 3vw, 28px);
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        background: var(--white);
+        box-shadow: var(--shadow);
+      }
+      .calendar-panel h2 {
+        margin: 0 0 6px;
+        color: var(--deep);
+        font-size: clamp(26px, 3.2vw, 38px);
+      }
+      .calendar-panel p {
+        margin: 0 0 18px;
+        color: var(--muted);
+      }
+      .calendar-frame {
+        width: 100%;
+        min-height: 720px;
+        height: 85vh;
+        overflow: hidden;
+        border: 1px solid rgba(18, 56, 77, .12);
+        border-radius: 20px;
+        background: #fff;
+      }
+      .calendar-frame iframe {
+        width: 100%;
+        height: 100%;
+        border: 0;
+      }
       @media (max-width: 880px) {
         .site-nav { align-items: flex-start; flex-direction: column; padding: .75rem 1rem; }
         .nav-links { width: 100%; display: grid; grid-template-columns: 1fr; }
@@ -306,6 +337,7 @@
         .facts, .form-grid, .attendee-grid { grid-template-columns: 1fr; }
         .day { grid-template-columns: 1fr; gap: 4px; }
         .btn { width: 100%; min-height: 46px; }
+        .calendar-frame { min-height: 660px; height: 80vh; border-radius: 16px; }
       }
       @media (max-width: 390px) {
         .event-wrap { padding: 34px 12px 42px; }
@@ -431,6 +463,19 @@
             <p class="note">Este registro no redirige a Wix. Si Firebase no responde, verás un aviso para intentarlo nuevamente.</p>
           </div>
         </article>
+        <section class="calendar-panel" aria-label="Calendario PRFWB">
+          <div class="eyebrow">Calendario</div>
+          <h2>Eventos y actividades</h2>
+          <p>Consulta las fechas actualizadas directamente desde el calendario oficial.</p>
+          <div class="calendar-frame">
+            <iframe
+              title="Calendario PRFWB"
+              src="https://calendar.google.com/calendar/embed?hl=es&ctz=America%2FPuerto_Rico&src=amVlY2NhbGVuZGFyaW9AZ21haWwuY29t&showTabs=1&showNav=1&showDate=1&showPrint=0&showTz=0&mode=AGENDA"
+              frameborder="0"
+              scrolling="no">
+            </iframe>
+          </div>
+        </section>
       </div>
     </section>
 
