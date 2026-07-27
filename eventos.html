@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Convención 2027 | PRFWB</title>
-    <meta name="description" content="Registro interno para la Convención 2027 Enviados de PRFWB." />    <script>
+    <meta name="description" content="Registro para la Convención 2027 Enviados de PRFWB." />    <script>
       if (new URLSearchParams(window.location.search).get('embed') === '1') {
         document.documentElement.classList.add('embed-mode');
       }
@@ -229,6 +229,30 @@
       }
       .day p { margin: 0; color: var(--ink); font-size: 14px; }
       .day p span { color: var(--muted); }
+      .lang-switch {
+        position: relative;
+        display: inline-flex;
+        gap: 6px;
+        margin: 0 0 18px;
+        padding: 5px;
+        border: 1px solid rgba(18, 56, 77, .14);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, .75);
+      }
+      .lang-button {
+        min-height: 34px;
+        border: 0;
+        border-radius: 999px;
+        padding: 7px 12px;
+        background: transparent;
+        color: var(--deep);
+        font-size: 12px;
+        font-weight: 900;
+        cursor: pointer;
+      }
+      .lang-button.active { background: var(--deep); color: var(--white); }
+      body[data-lang="es"] [data-lang="en"],
+      body[data-lang="en"] [data-lang="es"] { display: none !important; }
       .registration-panel {
         margin-top: 22px;
         padding: 18px;
@@ -239,6 +263,32 @@
       }
       .registration-panel h2 { margin: 0 0 6px; color: var(--deep); font-size: clamp(24px, 3vw, 34px); }
       .registration-panel p { margin: 0 0 16px; color: var(--muted); }
+      .day-options {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+      .day-option {
+        display: grid;
+        gap: 10px;
+        padding: 18px;
+        border: 1px solid rgba(18, 56, 77, .14);
+        border-radius: 18px;
+        background: linear-gradient(180deg, #ffffff, #f8fbfc);
+      }
+      .day-option b {
+        color: var(--deep);
+        font-size: 22px;
+        line-height: 1.1;
+      }
+      .day-option > span {
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: .8px;
+      }
+      .day-option p { margin: 0; color: var(--muted); font-size: 14px; }
       form { display: grid; gap: 12px; }
       .form-grid, .attendee-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
       .attendee-section {
@@ -334,7 +384,7 @@
         .poster { padding: 18px; }
         .poster img { width: min(82vw, 340px); max-height: none; margin: 0 auto; border-radius: 18px; }
         .content { padding: 32px 22px; }
-        .facts, .form-grid, .attendee-grid { grid-template-columns: 1fr; }
+        .facts, .form-grid, .attendee-grid, .day-options { grid-template-columns: 1fr; }
         .day { grid-template-columns: 1fr; gap: 4px; }
         .btn { width: 100%; min-height: 46px; }
         .calendar-frame { min-height: 660px; height: 80vh; border-radius: 16px; }
@@ -352,7 +402,7 @@
       }
     </style>
   </head>
-  <body>
+  <body data-lang="es">
     <nav class="site-nav" aria-label="Navegacion principal">
       <a class="nav-logo" href="./index.html?v=donate1">
         <img src="./prfwb-logo-main-cropped.png" alt="PRFWB" />
@@ -372,9 +422,15 @@
     <section class="event-wrap" aria-label="Próximos eventos PRFWB">
       <div class="event-shell">
         <header class="event-head">
-          <div class="eyebrow">Próximos eventos</div>
+          <div class="eyebrow">
+            <span data-lang="es">Próximos eventos</span>
+            <span data-lang="en">Upcoming events</span>
+          </div>
           <h1>Convención 2027</h1>
-          <p>Un fin de semana para adorar, recibir visión y ser enviados con propósito.</p>
+          <p>
+            <span data-lang="es">Un fin de semana para adorar, recibir visión y ser enviados con propósito.</span>
+            <span data-lang="en">A weekend to worship, receive vision, and be sent with purpose.</span>
+          </p>
         </header>
 
         <article class="feature">
@@ -387,101 +443,94 @@
               <span>PRFWB</span>
               <small>Puerto Rico Free Will Baptists</small>
             </div>
-            <div class="tag">Convención estatal</div>
+            <div class="tag">
+              <span data-lang="es">Convención estatal</span>
+              <span data-lang="en">State convention</span>
+            </div>
             <h2 class="event-title">Enviados <span>2027</span></h2>
             <p class="subtitle">
-              Regístrate aquí mismo para que el equipo de PRFWB pueda organizar la asistencia y dar seguimiento.
+              <span data-lang="es">Escoge el día que vas a asistir y te llevaremos al registro oficial de Wix Events.</span>
+              <span data-lang="en">Choose the day you will attend and we will take you to the official Wix Events registration.</span>
             </p>
 
             <div class="facts">
-              <div class="fact"><b>Feb. 19</b><span>Inicio</span></div>
-              <div class="fact"><b>2027</b><span>Convención</span></div>
-              <div class="fact"><b>En línea</b><span>Registro interno</span></div>
+              <div class="fact"><b>Feb. 19</b><span data-lang="es">Inicio</span><span data-lang="en">Opening</span></div>
+              <div class="fact"><b>2027</b><span data-lang="es">Convención</span><span data-lang="en">Convention</span></div>
+              <div class="fact"><b>Wix</b><span data-lang="es">Registro oficial</span><span data-lang="en">Official registration</span></div>
             </div>
 
             <div class="schedule">
               <div class="day">
-                <strong>Viernes</strong>
-                <p>Inicio de la convención, adoración y visión ministerial. <span>Detalles oficiales por confirmar.</span></p>
+                <strong><span data-lang="es">Viernes</span><span data-lang="en">Friday</span></strong>
+                <p>
+                  <span data-lang="es">Inicio de la convención, adoración y visión ministerial.</span>
+                  <span data-lang="en">Convention opening, worship, and ministry vision.</span>
+                </p>
               </div>
               <div class="day">
-                <strong>Sábado</strong>
-                <p>Sesiones, compañerismo y oportunidades de conexión para iglesias y líderes.</p>
+                <strong><span data-lang="es">Sábado</span><span data-lang="en">Saturday</span></strong>
+                <p>
+                  <span data-lang="es">Sesiones, compañerismo y oportunidades de conexión para iglesias y líderes.</span>
+                  <span data-lang="en">Sessions, fellowship, and connection opportunities for churches and leaders.</span>
+                </p>
               </div>
             </div>
 
             <section class="registration-panel" aria-label="Registro para Convención 2027">
-              <h2>Registro</h2>
-              <p>Completa la información y quedará guardada en Firebase para seguimiento.</p>
-              <form id="eventRegistrationForm">
-                <div class="form-grid">
-                  <label>
-                    Nombre completo
-                    <input id="nameInput" name="name" maxlength="120" required placeholder="Tu nombre" />
-                  </label>
-                  <label>
-                    Correo electrónico
-                    <input id="emailInput" name="email" type="email" maxlength="140" required placeholder="correo@ejemplo.com" />
-                  </label>
-                  <label>
-                    Teléfono
-                    <input id="phoneInput" name="phone" maxlength="40" placeholder="Opcional" />
-                  </label>
-                  <label>
-                    Iglesia
-                    <input id="churchInput" name="church" maxlength="140" placeholder="Nombre de tu iglesia" />
-                  </label>
-                  <label>
-                    Cantidad de personas
-                    <select id="attendeesInput" name="attendees">
-                      <option value="1">1 persona</option>
-                      <option value="2">2 personas</option>
-                      <option value="3">3 personas</option>
-                      <option value="4">4 personas</option>
-                      <option value="5">5 personas</option>
-                      <option value="6">6 personas</option>
-                      <option value="7">7 personas</option>
-                      <option value="8">8 personas</option>
-                      <option value="9">9 personas</option>
-                      <option value="10">10 personas</option>
-                    </select>
-                  </label>
-                  <label>
-                    Rol
-                    <select id="roleInput" name="role">
-                      <option value="Miembro">Miembro</option>
-                      <option value="Pastor">Pastor</option>
-                      <option value="Lider">Líder</option>
-                      <option value="Invitado">Invitado</option>
-                    </select>
-                  </label>
-                </div>
-                <section class="attendee-section" aria-label="Nombres de asistentes">
-                  <div>
-                    <h3>Nombres de los asistentes</h3>
-                    <p>Escribe el nombre de cada persona que irá en este registro.</p>
-                  </div>
-                  <div id="attendeeNamesGrid" class="attendee-grid"></div>
-                </section>
-                <label>
-                  Comentarios
-                  <textarea id="notesInput" name="notes" maxlength="600" placeholder="Alguna información adicional"></textarea>
-                </label>
-                <div class="actions">
-                  <button id="submitButton" class="btn btn-primary" type="submit">Enviar registro</button>
-                  <button id="clearButton" class="btn btn-light" type="button">Limpiar</button>
-                </div>
-                <div id="formMessage" class="message"></div>
-              </form>
+              <div class="lang-switch" aria-label="Cambiar idioma">
+                <button class="lang-button active" type="button" data-set-lang="es">Español</button>
+                <button class="lang-button" type="button" data-set-lang="en">English</button>
+              </div>
+              <h2>
+                <span data-lang="es">Selecciona tu día</span>
+                <span data-lang="en">Select Your Day</span>
+              </h2>
+              <p>
+                <span data-lang="es">Cada día tiene su propio registro en Wix Events. Escoge el día correcto para continuar.</span>
+                <span data-lang="en">Each day has its own Wix Events registration. Choose the correct day to continue.</span>
+              </p>
+              <div class="day-options">
+                <article class="day-option">
+                  <span data-lang="es">Viernes</span>
+                  <span data-lang="en">Friday</span>
+                  <b>Feb. 19, 2027</b>
+                  <p>
+                    <span data-lang="es">Apertura de la convención.</span>
+                    <span data-lang="en">Convention opening.</span>
+                  </p>
+                  <a class="btn btn-primary" href="https://www.prfwb.com/events/prfwb-2027-state-convention-2027-02-19-19-00" target="_top" rel="noopener">
+                    <span data-lang="es">Registrarme para febrero 19</span>
+                    <span data-lang="en">Register for February 19</span>
+                  </a>
+                </article>
+                <article class="day-option">
+                  <span data-lang="es">Sábado</span>
+                  <span data-lang="en">Saturday</span>
+                  <b>Feb. 20, 2027</b>
+                  <p>
+                    <span data-lang="es">Sesiones y compañerismo.</span>
+                    <span data-lang="en">Sessions and fellowship.</span>
+                  </p>
+                  <a class="btn btn-primary" href="https://www.prfwb.com/events/prfwb-2027-state-convention-2027-02-20-19-00" target="_top" rel="noopener">
+                    <span data-lang="es">Registrarme para febrero 20</span>
+                    <span data-lang="en">Register for February 20</span>
+                  </a>
+                </article>
+              </div>
             </section>
-
-            <p class="note">Este registro no redirige a Wix. Si Firebase no responde, verás un aviso para intentarlo nuevamente.</p>
+            <p class="note">
+              <span data-lang="es">El registro se completa en Wix Events.</span>
+              <span data-lang="en">Registration is completed through Wix Events.</span>
+            </p>
           </div>
         </article>
         <section class="calendar-panel" aria-label="Calendario PRFWB">
-          <div class="eyebrow">Calendario</div>
-          <h2>Eventos y actividades</h2>
-          <p>Consulta las fechas actualizadas directamente desde el calendario oficial.</p>
+          <div class="eyebrow"><span data-lang="es">Calendario</span><span data-lang="en">Calendar</span></div>
+          <h2><span data-lang="es">Eventos y actividades</span><span data-lang="en">Events and Activities</span></h2>
+          <p>
+            <span data-lang="es">Consulta las fechas actualizadas directamente desde el calendario oficial.</span>
+            <span data-lang="en">View updated dates directly from the official calendar.</span>
+          </p>
           <div class="calendar-frame">
             <iframe
               title="Calendario PRFWB"
@@ -494,116 +543,16 @@
       </div>
     </section>
 
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-    <script src="./firebase-config.js"></script>
-    <script src="./firebase-bridge.js?v=prayerfix1"></script>
     <script>
-      const form = document.getElementById('eventRegistrationForm');
-      const submitButton = document.getElementById('submitButton');
-      const clearButton = document.getElementById('clearButton');
-      const message = document.getElementById('formMessage');
-      const nameInput = document.getElementById('nameInput');
-      const attendeesInput = document.getElementById('attendeesInput');
-      const attendeeNamesGrid = document.getElementById('attendeeNamesGrid');
-
-      function showMessage(text, type) {
-        message.textContent = text;
-        message.className = `message ${type}`;
-      }
-
-      function getValue(id) {
-        return document.getElementById(id).value.trim();
-      }
-
-      function renderAttendeeNameFields() {
-        const previousValues = Array.from(attendeeNamesGrid.querySelectorAll('input')).map((input) => input.value.trim());
-        const count = Number(attendeesInput.value || 1);
-        attendeeNamesGrid.innerHTML = '';
-
-        for (let index = 0; index < count; index += 1) {
-          const label = document.createElement('label');
-          const input = document.createElement('input');
-          input.type = 'text';
-          input.required = true;
-          input.maxLength = 120;
-          input.className = 'attendee-name-input';
-          input.placeholder = `Nombre de la persona ${index + 1}`;
-          input.value = previousValues[index] || (index === 0 ? nameInput.value.trim() : '');
-          label.append(`Persona ${index + 1}`);
-          label.appendChild(input);
-          attendeeNamesGrid.appendChild(label);
-        }
-      }
-
-      function getAttendeeNames() {
-        return Array.from(attendeeNamesGrid.querySelectorAll('input'))
-          .map((input) => input.value.trim())
-          .filter(Boolean);
-      }
-
-      clearButton.addEventListener('click', () => {
-        form.reset();
-        renderAttendeeNameFields();
-        message.className = 'message';
-        message.textContent = '';
+      document.querySelectorAll('[data-set-lang]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const lang = button.dataset.setLang;
+          document.body.dataset.lang = lang;
+          document.querySelectorAll('[data-set-lang]').forEach((item) => {
+            item.classList.toggle('active', item.dataset.setLang === lang);
+          });
+        });
       });
-
-      attendeesInput.addEventListener('change', renderAttendeeNameFields);
-      nameInput.addEventListener('input', () => {
-        const firstAttendee = attendeeNamesGrid.querySelector('input');
-        if (firstAttendee && !firstAttendee.dataset.edited) {
-          firstAttendee.value = nameInput.value.trim();
-        }
-      });
-      attendeeNamesGrid.addEventListener('input', (event) => {
-        if (event.target.matches('input')) {
-          event.target.dataset.edited = 'true';
-        }
-      });
-
-      form.addEventListener('submit', async (event) => {
-        event.preventDefault();
-        submitButton.disabled = true;
-        submitButton.textContent = 'Enviando...';
-
-        const attendeeNames = getAttendeeNames();
-
-        const payload = {
-          eventId: 'convencion-2027',
-          eventTitle: 'Convención 2027 | Enviados',
-          name: getValue('nameInput'),
-          email: getValue('emailInput'),
-          phone: getValue('phoneInput'),
-          church: getValue('churchInput'),
-          attendees: getValue('attendeesInput'),
-          attendeeNames,
-          role: getValue('roleInput'),
-          notes: getValue('notesInput'),
-        };
-
-        if (attendeeNames.length !== Number(payload.attendees)) {
-          showMessage('Escribe el nombre de cada asistente antes de enviar.', 'error');
-          submitButton.disabled = false;
-          submitButton.textContent = 'Enviar registro';
-          return;
-        }
-
-        const saved = await window.discipladoFirebase?.createEventRegistration?.(payload);
-        if (saved) {
-          form.reset();
-          renderAttendeeNameFields();
-          showMessage('Registro recibido. Gracias, te contactaremos con más detalles.', 'success');
-        } else {
-          showMessage('No se pudo enviar ahora. Revisa la conexión o intenta nuevamente.', 'error');
-        }
-
-        submitButton.disabled = false;
-        submitButton.textContent = 'Enviar registro';
-      });
-
-      renderAttendeeNameFields();
     </script>
   </body>
 </html>
