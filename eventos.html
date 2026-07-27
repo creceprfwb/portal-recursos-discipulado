@@ -355,8 +355,31 @@
       .calendar-panel[hidden] { display: none; }
       .calendar-toggle-row {
         display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
         justify-content: center;
         margin: 0 0 24px;
+        padding: 18px;
+        border: 1px solid rgba(199, 145, 43, .24);
+        border-radius: 22px;
+        background: linear-gradient(135deg, rgba(246, 239, 227, .88), rgba(255, 255, 255, .78));
+        box-shadow: 0 18px 42px rgba(11, 37, 48, .10);
+      }
+      .calendar-kicker {
+        color: var(--deep);
+        font-size: 13px;
+        font-weight: 900;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+        text-align: center;
+      }
+      .calendar-toggle-row .btn {
+        min-width: min(100%, 280px);
+        background: #f1c84b;
+        color: var(--deep);
+        border: 1px solid rgba(18, 56, 77, .18);
+        box-shadow: 0 14px 28px rgba(199, 145, 43, .28);
       }
       .calendar-panel h2 {
         margin: 0 0 6px;
@@ -394,7 +417,7 @@
         .day { grid-template-columns: 1fr; gap: 4px; }
         .btn { width: 100%; min-height: 46px; }
         .calendar-frame { min-height: 660px; height: 80vh; border-radius: 16px; }
-        .calendar-toggle-row { justify-content: stretch; }
+        .calendar-toggle-row { justify-content: stretch; align-items: stretch; }
       }
       @media (max-width: 390px) {
         .event-wrap { padding: 34px 12px 42px; }
@@ -441,6 +464,10 @@
         </header>
 
         <div class="calendar-toggle-row">
+          <div class="calendar-kicker">
+            <span data-lang="es">Calendario oficial</span>
+            <span data-lang="en">Official Calendar</span>
+          </div>
           <button id="calendarToggle" class="btn btn-light" type="button" aria-expanded="false" aria-controls="calendarPanel">
             <span data-lang="es">Ver calendario</span>
             <span data-lang="en">View calendar</span>
