@@ -142,8 +142,22 @@
       }
       textarea { min-height: 120px; resize: vertical; }
       .checkbox-row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
-      .checkbox-row label { display: flex; flex-direction: row; align-items: center; font-weight: 700; }
-      .checkbox-row input { width: auto; }
+      .checkbox-row label { display: inline-flex; flex-direction: row; align-items: center; gap: 0.45rem; font-weight: 700; }
+      .checkbox-row input { flex: 0 0 auto; width: auto; }
+      .acceptance-row {
+        display: grid;
+        grid-template-columns: 18px minmax(0, 1fr);
+        align-items: start;
+        gap: 0.65rem;
+        margin: 0.1rem 0;
+        font-weight: 800;
+        line-height: 1.35;
+      }
+      .acceptance-row input {
+        width: 18px;
+        height: 18px;
+        margin: 0.1rem 0 0;
+      }
       .toolbar {
         display: grid;
         grid-template-columns: 1fr 170px;
@@ -275,9 +289,9 @@
               <label><input id="urgentInput" type="checkbox" /> Urgente</label>
               <label><input id="notifyInput" type="checkbox" /> Recibir notificaciones</label>
             </div>
-            <label class="checkbox-row">
+            <label class="acceptance-row">
               <input id="privacyAcceptedInput" type="checkbox" required />
-              Acepto que la peticion sea revisada antes de publicarse.
+              <span>Acepto que la peticion sea revisada antes de publicarse.</span>
             </label>
             <button class="primary" type="submit">Enviar peticion</button>
             <div id="formMessage"></div>
