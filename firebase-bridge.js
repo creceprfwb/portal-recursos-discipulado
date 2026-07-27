@@ -189,13 +189,17 @@
       });
 
       if (payload.email || payload.phone || payload.notificationPreference) {
-        await firebaseState.db.collection('prayerContacts').doc(docRef.id).set({
-          requestId: docRef.id,
-          email: payload.email || '',
-          phone: payload.phone || '',
-          notificationPreference: payload.notificationPreference || 'none',
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
+        try {
+          await firebaseState.db.collection('prayerContacts').doc(docRef.id).set({
+            requestId: docRef.id,
+            email: payload.email || '',
+            phone: payload.phone || '',
+            notificationPreference: payload.notificationPreference || 'none',
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        } catch (contactError) {
+          console.warn('La peticion se creo, pero no se pudo guardar el contacto privado:', contactError);
+        }
       }
       return true;
     } catch (error) {
