@@ -344,66 +344,6 @@
       }
       .message.success { display: block; background: #e7f2ec; color: #12607a; }
       .message.error { display: block; background: #fff1ef; color: #9c2f28; }
-      .calendar-panel {
-        margin-top: 34px;
-        padding: clamp(18px, 3vw, 28px);
-        border: 1px solid var(--line);
-        border-radius: 28px;
-        background: var(--white);
-        box-shadow: var(--shadow);
-      }
-      .calendar-panel[hidden] { display: none; }
-      .calendar-toggle-row {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-        justify-content: center;
-        margin: 0 0 24px;
-        padding: 18px;
-        border: 1px solid rgba(199, 145, 43, .24);
-        border-radius: 22px;
-        background: linear-gradient(135deg, rgba(246, 239, 227, .88), rgba(255, 255, 255, .78));
-        box-shadow: 0 18px 42px rgba(11, 37, 48, .10);
-      }
-      .calendar-kicker {
-        color: var(--deep);
-        font-size: 13px;
-        font-weight: 900;
-        letter-spacing: 1.2px;
-        text-transform: uppercase;
-        text-align: center;
-      }
-      .calendar-toggle-row .btn {
-        min-width: min(100%, 280px);
-        background: #f1c84b;
-        color: var(--deep);
-        border: 1px solid rgba(18, 56, 77, .18);
-        box-shadow: 0 14px 28px rgba(199, 145, 43, .28);
-      }
-      .calendar-panel h2 {
-        margin: 0 0 6px;
-        color: var(--deep);
-        font-size: clamp(26px, 3.2vw, 38px);
-      }
-      .calendar-panel p {
-        margin: 0 0 18px;
-        color: var(--muted);
-      }
-      .calendar-frame {
-        width: 100%;
-        min-height: 720px;
-        height: 85vh;
-        overflow: hidden;
-        border: 1px solid rgba(18, 56, 77, .12);
-        border-radius: 20px;
-        background: #fff;
-      }
-      .calendar-frame iframe {
-        width: 100%;
-        height: 100%;
-        border: 0;
-      }
       @media (max-width: 880px) {
         .site-nav { align-items: flex-start; flex-direction: column; padding: .75rem 1rem; }
         .nav-links { width: 100%; display: grid; grid-template-columns: 1fr; }
@@ -416,8 +356,6 @@
         .facts, .form-grid, .attendee-grid, .day-options { grid-template-columns: 1fr; }
         .day { grid-template-columns: 1fr; gap: 4px; }
         .btn { width: 100%; min-height: 46px; }
-        .calendar-frame { min-height: 660px; height: 80vh; border-radius: 16px; }
-        .calendar-toggle-row { justify-content: stretch; align-items: stretch; }
       }
       @media (max-width: 390px) {
         .event-wrap { padding: 34px 12px 42px; }
@@ -462,17 +400,6 @@
             <span data-lang="en">A weekend to worship, receive vision, and be sent with purpose.</span>
           </p>
         </header>
-
-        <div class="calendar-toggle-row">
-          <div class="calendar-kicker">
-            <span data-lang="es">Calendario oficial</span>
-            <span data-lang="en">Official Calendar</span>
-          </div>
-          <a class="btn btn-light" href="./eventos-calendario.html?v=calendarpage1">
-            <span data-lang="es">Abrir calendario</span>
-            <span data-lang="en">Open calendar</span>
-          </a>
-        </div>
 
         <article class="feature">
           <div class="poster">
