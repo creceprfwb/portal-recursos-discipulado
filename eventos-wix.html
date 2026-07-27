@@ -33,7 +33,7 @@
         line-height: 1.55;
       }
       * { box-sizing: border-box; }
-      html, body { width: 100%; margin: 0; overflow-x: hidden; background: transparent; }
+      html, body { width: 100%; margin: 0; overflow: hidden; background: transparent; }
       a { color: inherit; text-decoration: none; }
       img { display: block; max-width: 100%; }
       button, input, select, textarea { font: inherit; }
@@ -493,10 +493,8 @@
       });
 
       function sendEmbedHeight() {
-        const height = Math.ceil(Math.max(
-          document.body.scrollHeight,
-          document.documentElement.scrollHeight
-        ));
+        const eventWrap = document.querySelector('.event-wrap');
+        const height = Math.ceil(eventWrap ? eventWrap.getBoundingClientRect().height : document.body.scrollHeight);
         window.parent.postMessage({ type: 'prfwb-events-height', height }, '*');
       }
 
