@@ -164,7 +164,7 @@
           <h1>Panel de recursos</h1>
           <p>Desde aquí puedes crear, editar, publicar y mantener los contenidos del portal.</p>
         </div>
-        <a href="./index.html" class="hero-action">Volver al portal</a>
+        <a href="./recursos.html?v=adminreturn1" class="hero-action">Volver a recursos</a>
       </header>
 
       <section class="panel-card">
@@ -318,10 +318,10 @@
         renderAdminResources();
       }
 
-      function saveResources() {
+      async function saveResources() {
         localStorage.setItem(storageKey, JSON.stringify(resources));
         if (window.discipladoFirebase?.saveResources) {
-          window.discipladoFirebase.saveResources(resources);
+          await window.discipladoFirebase.saveResources(resources);
         }
       }
 
@@ -515,7 +515,7 @@
       els.newResourceButton.addEventListener('click', () => openForm());
       els.cancelFormButton.addEventListener('click', resetForm);
 
-      els.resourceForm.addEventListener('submit', (event) => {
+      els.resourceForm.addEventListener('submit', async (event) => {
         event.preventDefault();
         const newResource = {
           id: selectedResourceId || `res-${Date.now()}`,
@@ -544,13 +544,14 @@
           resources = [newResource, ...resources];
         }
 
-        saveResources();
+        await saveResources();
         resetForm();
         renderAdminResources();
-        els.errorMessage.textContent = '';
+        els.errorMessage.textContent = 'Recurso guardado. Puedes volver a Recursos para verlo publicado.';
+        if (els.resourcesPanel) els.resourcesPanel.open = true;
       });
 
-      els.adminResourceList.addEventListener('click', (event) => {
+      els.adminResourceList.addEventListener('click', async (event) => {
         const actionElement = event.target.closest('[data-action]');
         if (!actionElement) return;
 
@@ -560,19 +561,20 @@
         if (action === 'delete') {
           if (!window.confirm('¿Eliminar este recurso?')) return;
           resources = resources.filter((resource) => resource.id !== id);
-          saveResources();
+          await saveResources();
           renderAdminResources();
         }
 
         if (action === 'toggle-published') {
           resources = resources.map((resource) => resource.id === id ? { ...resource, isPublished: !resource.isPublished } : resource);
-          saveResources();
+          await saveResources();
           renderAdminResources();
+          els.errorMessage.textContent = 'Estado de publicación actualizado. Vuelve a Recursos para verificarlo.';
         }
 
         if (action === 'toggle-featured') {
           resources = resources.map((resource) => resource.id === id ? { ...resource, isFeatured: !resource.isFeatured } : resource);
-          saveResources();
+          await saveResources();
           renderAdminResources();
         }
 
