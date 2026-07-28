@@ -367,31 +367,36 @@
       @media (max-width: 640px) {
         .event-wrap { padding: 10px; }
         .feature { border-radius: 18px; }
-        .poster { padding: 10px; }
+        .poster { display: none; }
         .poster img { width: min(100%, 280px); max-height: 340px; }
         .content { padding: 18px 14px; }
-        .tag { font-size: 11px; letter-spacing: .8px; padding: 7px 10px; }
-        .event-title { font-size: clamp(30px, 12vw, 42px); line-height: 1; }
-        .subtitle { font-size: 14px; }
-        .facts { gap: 8px; margin-bottom: 12px; }
+        .tag { display: none; }
+        .event-title { margin-bottom: 4px; font-size: clamp(28px, 11vw, 38px); line-height: 1; }
+        .subtitle { margin-bottom: 10px; font-size: 13px; }
+        .facts { display: none; }
         .fact { padding: 9px 10px; border-radius: 14px; }
-        .registration-panel { padding: 12px; border-radius: 18px; }
-        .registration-panel h2 { font-size: 24px; }
-        .day-option { padding: 12px; border-radius: 16px; }
-        .day-option b { font-size: 18px; }
-        .btn { min-height: 44px; padding: 10px 14px; font-size: 13px; }
+        .registration-panel { padding: 10px; border-radius: 16px; box-shadow: none; }
+        .registration-panel h2 { font-size: 22px; }
+        .registration-panel p { margin-bottom: 8px; font-size: 13px; }
+        .day-options { gap: 8px; }
+        .day-option { gap: 5px; padding: 10px; border-radius: 14px; }
+        .day-option b { font-size: 17px; }
+        .day-option p { display: none; }
+        .btn { min-height: 40px; padding: 9px 12px; font-size: 12px; }
+        .note { display: none; }
       }
       @media (max-width: 390px) {
         .event-wrap { padding: 8px; }
         .event-head { margin-bottom: 22px; }
         .event-head h1 { font-size: 30px; }
         .event-head p, .subtitle { font-size: 15px; }
-        .content { padding: 16px 12px; }
+        .content { padding: 12px 10px; }
         .poster { padding: 8px; }
         .poster img { width: min(100%, 250px); max-height: 300px; border-radius: 14px; }
         .brand-mark span { font-size: 24px; }
-        .event-title { font-size: 34px; }
-        .lang-switch { width: 100%; justify-content: center; }
+        .event-title { font-size: 30px; }
+        .lang-switch { width: 100%; justify-content: center; margin-bottom: 8px; }
+        .lang-button { min-height: 30px; padding: 6px 10px; font-size: 11px; }
       }
     </style>
   </head>
