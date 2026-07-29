@@ -1003,7 +1003,9 @@
 
     window.addEventListener("load", () => {
       const popup = document.getElementById("jeecPopup");
-      if (!popup) {
+      const params = new URLSearchParams(window.location.search);
+
+      if (!popup || params.get("popup") === "0") {
         return;
       }
 
