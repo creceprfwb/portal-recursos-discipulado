@@ -348,6 +348,64 @@
     .enlace-iglesia{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:900}
     .enlace-iglesia span{color:var(--coral)}
     .seccion-acciones{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin:-22px 0 42px}
+    .iglesia-acciones{
+      display:grid;
+      gap:10px;
+      margin:0 0 18px;
+    }
+    .iglesia-acciones .boton{
+      width:100%;
+      min-height:43px;
+      padding:11px 14px;
+      font-size:13px;
+    }
+
+    /* JEEC POPUP */
+    .jeec-popup{
+      position:fixed;
+      inset:0;
+      z-index:100;
+      display:grid;
+      place-items:center;
+      padding:18px;
+      background:rgba(6,24,34,.62);
+      backdrop-filter:blur(6px);
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .22s ease;
+    }
+    .jeec-popup.activo{opacity:1;pointer-events:auto}
+    .jeec-popup-card{
+      width:min(920px,100%);
+      display:grid;
+      grid-template-columns:1.02fr .98fr;
+      overflow:hidden;
+      border-radius:24px;
+      background:var(--blanco);
+      color:var(--azul-oscuro);
+      box-shadow:0 30px 90px rgba(0,0,0,.34);
+    }
+    .jeec-popup-copy{padding:38px}
+    .jeec-popup-copy h2{margin:0 0 12px;font-size:clamp(30px,5vw,50px);line-height:1.05}
+    .jeec-popup-copy p{margin:0 0 24px;color:var(--texto);font-size:16px}
+    .jeec-popup-actions{display:flex;flex-wrap:wrap;gap:12px}
+    .jeec-popup-media{min-height:340px;background:#102f40}
+    .jeec-popup-media img{width:100%;height:100%;object-fit:cover}
+    .jeec-popup-close{
+      position:absolute;
+      top:18px;
+      right:18px;
+      width:42px;
+      height:42px;
+      border:0;
+      border-radius:50%;
+      background:var(--blanco);
+      color:var(--azul-oscuro);
+      font-size:24px;
+      font-weight:900;
+      cursor:pointer;
+      box-shadow:0 12px 30px rgba(0,0,0,.18);
+    }
 
     /* CRECE ABOUT */
     .crece-about{
@@ -555,6 +613,10 @@
       .nosotros-frase{padding:32px 25px}
       .iglesias-grid,.crece-cards,.pilares-grid,.ruta-grid{grid-template-columns:1fr}
       .logo-enlace{min-height:185px}
+      .jeec-popup-card{grid-template-columns:1fr;max-height:88vh;overflow:auto}
+      .jeec-popup-copy{padding:30px 22px}
+      .jeec-popup-actions{display:grid}
+      .jeec-popup-media{min-height:220px;order:-1}
       .apoyo-caja{grid-template-columns:1fr;padding:36px 25px}
       .apoyo-boton .boton{width:100%}
     }
@@ -620,6 +682,23 @@
   </style>
 </head>
 <body>
+<div class="jeec-popup" id="jeecPopup" aria-hidden="true">
+  <button class="jeec-popup-close" type="button" onclick="cerrarJeecPopup()" aria-label="Cerrar">×</button>
+  <div class="jeec-popup-card" role="dialog" aria-modal="true" aria-labelledby="jeecPopupTitle">
+    <div class="jeec-popup-copy">
+      <span class="etiqueta">Campaña de edificio</span>
+      <h2 id="jeecPopupTitle">Sé parte del sueño de Jesús es el Centro</h2>
+      <p>Tu ofrenda ayuda a crear un lugar para adorar, discipular y servir a la comunidad.</p>
+      <div class="jeec-popup-actions">
+        <a class="boton boton-principal" href="https://donate.stripe.com/bJe28t5PNdPDgBm0nU63K01" target="_blank" rel="noopener">Donar a JEEC</a>
+        <a class="boton boton-claro" href="./jeec-wix.html?v=popup1" target="_top">Ver campaña</a>
+      </div>
+    </div>
+    <div class="jeec-popup-media">
+      <img src="./files/jeec-edificio-campana.png" alt="Campaña de edificio Jesús es el Centro">
+    </div>
+  </div>
+</div>
 <main class="pagina">
 
   <section class="hero">
@@ -734,10 +813,6 @@
         <h2>Nuestras iglesias</h2>
         <p>Conoce las congregaciones que forman parte de PRFWB y encuentra una comunidad donde crecer, servir y vivir en comunión.</p>
       </div>
-      <div class="seccion-acciones">
-        <a class="boton boton-principal" href="https://creceprfwb.github.io/portal-recursos-discipulado/eventos-calendario-wix.html?v=jeec-calendar1" target="_top">Calendario Jesús es el Centro</a>
-      </div>
-
       <div class="iglesias-grid">
 
         <article class="iglesia-tarjeta">
@@ -750,6 +825,10 @@
             <div class="iglesia-lugar">Guaynabo, Puerto Rico</div>
             <h3>Jesús es el Centro</h3>
             <p>Una iglesia comprometida con predicar a Cristo, discipular familias y servir a la comunidad.</p>
+            <div class="iglesia-acciones">
+              <a class="boton boton-principal" href="https://creceprfwb.github.io/portal-recursos-discipulado/eventos-calendario-wix.html?v=jeec-calendar1" target="_top">Calendario de JEEC</a>
+              <a class="boton boton-claro" href="https://creceprfwb.github.io/portal-recursos-discipulado/jeec-wix.html?v=church-card1" target="_top">Apoyar edificio JEEC</a>
+            </div>
             <a class="enlace-iglesia" href="https://www.facebook.com/jesuseselcentropr" target="_top">Visitar la iglesia <span>→</span></a>
           </div>
         </article>
@@ -894,6 +973,28 @@
 </main>
 
   <script>
+    function cerrarJeecPopup() {
+      const popup = document.getElementById("jeecPopup");
+      if (!popup) {
+        return;
+      }
+
+      popup.classList.remove("activo");
+      popup.setAttribute("aria-hidden", "true");
+    }
+
+    window.addEventListener("load", () => {
+      const popup = document.getElementById("jeecPopup");
+      if (!popup) {
+        return;
+      }
+
+      window.setTimeout(() => {
+        popup.classList.add("activo");
+        popup.setAttribute("aria-hidden", "false");
+      }, 900);
+    });
+
     function irASeccion(id) {
       const destino = document.getElementById(id);
 
