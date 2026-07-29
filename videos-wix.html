@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Videos Educativos y Predicas | PRFWB</title>
+    <meta name="description" content="Biblioteca de videos educativos y predicas para discipulado PRFWB." />
+    <style>
+      :root {
+        font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        --azul: #078ca3;
+        --azul-oscuro: #12384d;
+        --dorado: #f1c84b;
+        --coral: #d95643;
+        --fondo: #f4f8fa;
+        --borde: #dbe7ec;
+        color: #12384d;
+        background: var(--fondo);
+        line-height: 1.5;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-width: 320px; overflow-x: hidden; background: var(--fondo); }
+      .page-shell { width: 100%; margin: 0; padding: 0 0 64px; }
+      .hero {
+        color: white;
+        padding: 62px max(1rem, calc((100vw - 1180px) / 2));
+        background:
+          radial-gradient(circle at 80% 28%, rgba(241, 200, 75, .32), transparent 26%),
+          linear-gradient(125deg, #078fa4 0%, #08778e 42%, #123f60 74%, #102f49 100%);
+      }
+      .eyebrow {
+        display: block;
+        margin-bottom: 0.7rem;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        font-weight: 900;
+        letter-spacing: 0.22em;
+        color: #f1c84b;
+      }
+      h1 { margin: 0 0 0.75rem; font-size: clamp(2rem, 5vw, 3.25rem); line-height: 1.05; }
+      .hero p { max-width: 740px; margin: 0; color: #f8fbfb; font-size: 1.08rem; }
+      .content {
+        width: min(1180px, calc(100% - 2rem));
+        margin: -28px auto 0;
+        position: relative;
+        z-index: 2;
+      }
+      .video-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.65rem;
+        margin-bottom: 1rem;
+      }
+      .video-tabs button {
+        min-height: 42px;
+        border: 1px solid #dbe7ec;
+        border-radius: 999px;
+        padding: 0.65rem 0.95rem;
+        background: white;
+        color: #12384d;
+        cursor: pointer;
+        font: inherit;
+        font-weight: 900;
+      }
+      .video-tabs button.active { background: #12384d; color: white; border-color: #12384d; }
+      .video-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1rem;
+      }
+      .video-card {
+        display: grid;
+        overflow: hidden;
+        min-height: 100%;
+        border: 1px solid var(--borde);
+        border-radius: 8px;
+        background: white;
+        box-shadow: 0 12px 30px rgba(18, 61, 79, 0.08);
+      }
+      .video-thumb {
+        display: grid;
+        min-height: 160px;
+        place-items: center;
+        padding: 1rem;
+        color: white;
+        background:
+          linear-gradient(rgba(18, 56, 77, .18), rgba(18, 56, 77, .46)),
+          linear-gradient(135deg, #078ca3, #12384d);
+      }
+      .video-thumb.predica { background: linear-gradient(135deg, #21473f, #12384d); }
+      .play-icon {
+        display: grid;
+        width: 58px;
+        height: 58px;
+        place-items: center;
+        border-radius: 999px;
+        background: #f1c84b;
+        color: #12384d;
+        font-size: 1.5rem;
+        font-weight: 900;
+        box-shadow: 0 12px 28px rgba(0, 0, 0, .18);
+      }
+      .video-body { display: grid; gap: 0.55rem; padding: 1rem; }
+      .video-body strong { font-size: 1.08rem; line-height: 1.25; }
+      .video-body p { margin: 0; color: #4d5f66; }
+      .tag {
+        width: fit-content;
+        border-radius: 999px;
+        padding: 0.25rem 0.55rem;
+        background: #fff6d6;
+        color: #12384d;
+        font-size: 0.78rem;
+        font-weight: 900;
+      }
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: fit-content;
+        min-height: 42px;
+        margin-top: 0.25rem;
+        padding: 0.7rem 0.95rem;
+        border-radius: 8px;
+        background: #12384d;
+        color: white;
+        font-weight: 900;
+        text-decoration: none;
+      }
+      .note {
+        margin-top: 1rem;
+        padding: 1rem;
+        border: 1px solid #dbe7ec;
+        border-radius: 8px;
+        background: #ffffff;
+        color: #4d5f66;
+      }
+      @media (max-width: 850px) {
+        .video-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      }
+      @media (max-width: 560px) {
+        .hero { padding: 42px 18px 56px; }
+        .content { width: calc(100% - 2rem); margin-top: -20px; }
+        .video-grid { grid-template-columns: 1fr; }
+        .button, .video-tabs button { width: 100%; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <span class="eyebrow">Biblioteca audiovisual</span>
+        <h1>Videos educativos y predicas</h1>
+        <p>Un espacio para reunir enseñanzas, estudios y mensajes que ayuden a formar discipulos y fortalecer la iglesia.</p>
+      </header>
+
+      <main class="content">
+        <div class="video-tabs" aria-label="Filtros de videos">
+          <button class="active" type="button" data-video-filter="all">Todos</button>
+          <button type="button" data-video-filter="educativo">Videos educativos</button>
+          <button type="button" data-video-filter="predica">Predicas</button>
+        </div>
+
+        <section id="videoGrid" class="video-grid"></section>
+
+        <p class="note">
+          Cuando tengas enlaces reales de YouTube, Facebook o Vimeo, se pueden reemplazar estos accesos por los videos oficiales de PRFWB.
+        </p>
+      </main>
+    </div>
+
+    <script>
+      const videos = [
+        {
+          type: 'educativo',
+          title: 'Fundamentos del discipulado',
+          description: 'Videos para explicar crecimiento espiritual, seguimiento de Cristo y vida devocional.',
+          url: 'https://www.youtube.com/results?search_query=discipulado+cristiano+fundamentos'
+        },
+        {
+          type: 'educativo',
+          title: 'Doctrina y vida cristiana',
+          description: 'Enseñanzas para grupos, maestros y nuevos creyentes.',
+          url: 'https://www.youtube.com/results?search_query=doctrina+cristiana+vida+cristiana'
+        },
+        {
+          type: 'predica',
+          title: 'Predicas para la iglesia',
+          description: 'Mensajes para edificar, animar y llamar a la obediencia.',
+          url: 'https://www.youtube.com/results?search_query=predicas+cristianas+evangelicas'
+        },
+        {
+          type: 'predica',
+          title: 'Mensajes evangelisticos',
+          description: 'Predicas centradas en el evangelio, salvacion y llamado a Cristo.',
+          url: 'https://www.youtube.com/results?search_query=predicas+evangelisticas+salvacion'
+        },
+        {
+          type: 'educativo',
+          title: 'Recursos para maestros',
+          description: 'Ideas y herramientas para enseñar la Biblia a niños, jovenes y adultos.',
+          url: 'https://www.youtube.com/results?search_query=como+ensenar+la+biblia+a+ninos+y+jovenes'
+        },
+        {
+          type: 'predica',
+          title: 'Series de edificacion',
+          description: 'Mensajes organizados por temas para crecimiento y liderazgo cristiano.',
+          url: 'https://www.youtube.com/results?search_query=series+de+predicas+cristianas+liderazgo'
+        }
+      ];
+
+      const grid = document.getElementById('videoGrid');
+      const buttons = document.querySelectorAll('[data-video-filter]');
+
+      function getTypeLabel(type) {
+        return type === 'predica' ? 'Predica' : 'Video educativo';
+      }
+
+      function renderVideos(filter = 'all') {
+        const visible = filter === 'all' ? videos : videos.filter((video) => video.type === filter);
+        grid.innerHTML = visible.map((video) => `
+          <article class="video-card">
+            <div class="video-thumb ${video.type}">
+              <span class="play-icon">▶</span>
+            </div>
+            <div class="video-body">
+              <span class="tag">${getTypeLabel(video.type)}</span>
+              <strong>${video.title}</strong>
+              <p>${video.description}</p>
+              <a class="button" href="${video.url}" target="_blank" rel="noopener">Abrir videos</a>
+            </div>
+          </article>
+        `).join('');
+      }
+
+      buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+          buttons.forEach((item) => item.classList.remove('active'));
+          button.classList.add('active');
+          renderVideos(button.dataset.videoFilter);
+        });
+      });
+
+      renderVideos();
+    </script>
+  </body>
+</html>
