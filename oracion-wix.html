@@ -68,17 +68,17 @@
       .nav-links a.donate-link:hover { transform: translateY(-2px); }
       .hero {
         color: white;
-        padding: 70px max(1rem, calc((100vw - 1180px) / 2));
+        padding: 58px max(1rem, calc((100vw - 1180px) / 2)) 70px;
         background:
-          radial-gradient(circle at 82% 42%, rgba(49, 219, 240, .50), transparent 25%),
-          radial-gradient(circle at 15% 15%, rgba(255, 255, 255, .12), transparent 28%),
+          radial-gradient(circle at 78% 42%, rgba(241, 200, 75, .28), transparent 24%),
+          radial-gradient(circle at 14% 14%, rgba(255, 255, 255, .14), transparent 26%),
           linear-gradient(125deg, #078fa4 0%, #08778e 40%, #123f60 72%, #102f49 100%);
         background-size: auto;
       }
       .hero-inner {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
-        gap: 1.4rem;
+        grid-template-columns: minmax(0, 1.1fr) minmax(280px, 390px);
+        gap: 1.8rem;
         align-items: center;
       }
       .hero-copy-wrap { min-width: 0; }
@@ -92,13 +92,13 @@
       .prayer-visual img {
         display: block;
         width: 100%;
-        height: 230px;
+        height: 210px;
         object-fit: cover;
       }
       .verse-card {
-        padding: 1.25rem;
+        padding: 1.1rem 1.2rem;
         color: #ffffff;
-        background: #12384d;
+        background: linear-gradient(135deg, #12384d, #0c2f45);
         border-top: 6px solid #f1c84b;
       }
       .verse-card strong {
@@ -137,7 +137,7 @@
         color: #f1c84b;
       }
       h1 { margin: 0.35rem 0 0.55rem; font-size: clamp(2rem, 5vw, 3.1rem); line-height: 1.06; }
-      .hero p { max-width: 760px; margin: 0; color: #f8fbfb; }
+      .hero p { max-width: 720px; margin: 0; color: #f8fbfb; font-size: 1.08rem; }
       .hero-actions, .actions { display: flex; gap: 0.65rem; flex-wrap: wrap; margin-top: 1rem; }
       .button, button {
         display: inline-flex;
@@ -155,13 +155,38 @@
       }
       .button.primary, button.primary { background: #f1c84b; color: #12384d; }
       .button.secondary, button.secondary { background: #fff6d6; color: #12384d; }
+      .button.ghost {
+        background: rgba(255, 255, 255, 0.14);
+        color: #ffffff;
+        border: 1px solid rgba(255, 255, 255, 0.34);
+      }
       button:disabled { cursor: not-allowed; opacity: 0.55; }
+      .prayer-guide {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.7rem;
+        width: min(1180px, calc(100% - 2rem));
+        margin: -34px auto 0;
+        position: relative;
+        z-index: 3;
+      }
+      .guide-card {
+        display: grid;
+        gap: 0.25rem;
+        padding: 1rem;
+        border: 1px solid rgba(219, 231, 236, 0.9);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.96);
+        box-shadow: 0 12px 28px rgba(18, 61, 79, 0.08);
+      }
+      .guide-card strong { color: #12384d; font-size: 0.98rem; }
+      .guide-card span { color: #5c6a6c; font-size: 0.92rem; }
       .layout {
         display: grid;
         grid-template-columns: minmax(320px, 0.9fr) minmax(0, 1.4fr);
         gap: 1rem;
         width: min(1180px, calc(100% - 2rem));
-        margin: -28px auto 0;
+        margin: 1rem auto 0;
         position: relative;
         z-index: 2;
       }
@@ -170,8 +195,24 @@
         border-radius: 8px;
         box-shadow: 0 12px 30px rgba(18, 61, 79, 0.08);
       }
-      .panel { padding: 1rem; }
+      .panel { padding: 1.15rem; }
       .panel h2 { margin: 0 0 0.7rem; }
+      .panel-header {
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 0.75rem;
+      }
+      .panel-header h2 { margin: 0; }
+      .panel-header p { margin: 0.25rem 0 0; }
+      .leader-link {
+        flex: 0 0 auto;
+        color: #12607a;
+        font-size: 0.86rem;
+        font-weight: 900;
+        text-decoration: none;
+      }
       form { display: grid; gap: 0.8rem; }
       label { display: grid; gap: 0.35rem; font-weight: 800; }
       input, select, textarea {
@@ -252,8 +293,9 @@
       .small-note { margin: 0; color: #5c6a6c; font-size: 0.9rem; }
       @media (max-width: 850px) {
         .site-nav { align-items: flex-start; flex-direction: column; }
-        .layout, .toolbar, .hero-inner { grid-template-columns: 1fr; }
+        .layout, .toolbar, .hero-inner, .prayer-guide { grid-template-columns: 1fr; }
         .prayer-visual img { height: 180px; }
+        .prayer-guide { margin-top: -24px; }
       }
       @media (max-width: 520px) {
         .page-shell { width: 100%; padding: 0 0 32px; }
@@ -271,6 +313,9 @@
         .request-list { padding: 0 1rem; }
         .button, button { width: 100%; }
         .hero-actions { width: 100%; }
+        .prayer-guide { width: calc(100% - 2rem); }
+        .panel-header { flex-direction: column; }
+        .leader-link { align-self: flex-start; }
         .request-card { border-radius: 8px; }
         .request-card h3 { font-size: 1.08rem; line-height: 1.25; }
         .request-card p { font-size: 0.95rem; }
@@ -284,14 +329,15 @@
       <header class="hero">
         <div class="hero-inner">
           <div class="hero-copy-wrap">
-            <span class="eyebrow">Ministerio de Oracion</span>
+            <span class="eyebrow">Ministerio de oracion</span>
             <h1>Oremos unos por otros</h1>
             <p>
-              Comparte una peticion, publica de forma anonima si lo deseas, y acompaña a otros
-              marcando que estas orando por ellos.
+              Comparte tu peticion con confianza. Nuestro equipo la revisara antes de publicarla
+              y caminara contigo en oracion.
             </p>
             <div class="hero-actions">
-              <a class="button secondary" href="./admin-oracion-wix.html">Panel admin</a>
+              <a class="button primary" href="#prayerForm">Enviar peticion</a>
+              <a class="button ghost" href="#requestList">Ver peticiones</a>
             </div>
           </div>
           <aside class="prayer-visual" aria-label="Versiculo de oracion">
@@ -304,12 +350,32 @@
         </div>
       </header>
 
+      <section class="prayer-guide" aria-label="Como funciona el muro de oracion">
+        <div class="guide-card">
+          <strong>1. Escribe tu peticion</strong>
+          <span>Puedes publicarla con tu nombre o de forma anonima.</span>
+        </div>
+        <div class="guide-card">
+          <strong>2. El equipo la revisa</strong>
+          <span>Las peticiones se aprueban antes de aparecer publicas.</span>
+        </div>
+        <div class="guide-card">
+          <strong>3. Oramos juntos</strong>
+          <span>La iglesia puede marcar que esta orando contigo.</span>
+        </div>
+      </section>
+
       <main class="layout">
         <section class="panel">
-          <h2>Enviar peticion</h2>
-          <p class="small-note">
-            Las peticiones se revisan antes de publicarse. No publiques telefonos, direcciones ni informacion extremadamente privada en la descripcion.
-          </p>
+          <div class="panel-header">
+            <div>
+              <h2>Enviar peticion</h2>
+              <p class="small-note">
+                No publiques telefonos, direcciones ni informacion extremadamente privada en la descripcion.
+              </p>
+            </div>
+            <a class="leader-link" href="./admin-oracion-wix.html">Acceso lideres</a>
+          </div>
           <form id="prayerForm">
             <label>
               Nombre
