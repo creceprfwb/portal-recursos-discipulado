@@ -987,7 +987,7 @@
       const popup = document.getElementById("jeecPopup");
       const params = new URLSearchParams(window.location.search);
 
-      if (!popup || params.get("popup") === "0") {
+      if (!popup || params.get("popup") === "0" || params.get("embed") === "1") {
         return;
       }
 
