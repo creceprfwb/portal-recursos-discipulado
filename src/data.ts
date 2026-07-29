@@ -62,6 +62,7 @@ export const initialResources: Resource[] = [
 export const categoryOptions = [
   'Nuevo creyente',
   'Discipulado',
+  'Bautistas Libres',
   'Estudios bíblicos',
   'Oración',
   'Devocionales',
