@@ -567,23 +567,6 @@
   </style>
 </head>
 <body>
-<div class="jeec-popup" id="jeecPopup" aria-hidden="true">
-  <button class="jeec-popup-close" type="button" onclick="cerrarJeecPopup()" aria-label="Cerrar">×</button>
-  <div class="jeec-popup-card" role="dialog" aria-modal="true" aria-labelledby="jeecPopupTitle">
-    <div class="jeec-popup-copy">
-      <span class="etiqueta">Campaña de edificio</span>
-      <h2 id="jeecPopupTitle">Sé parte del sueño de Jesús es el Centro</h2>
-      <p>Tu ofrenda ayuda a crear un lugar para adorar, discipular y servir a la comunidad.</p>
-      <div class="jeec-popup-actions">
-        <a class="boton boton-principal" href="https://donate.stripe.com/bJe28t5PNdPDgBm0nU63K01" target="_blank" rel="noopener">Donar a JEEC</a>
-        <a class="boton boton-claro" href="./jeec-wix.html?v=popup1" target="_top">Ver campaña</a>
-      </div>
-    </div>
-    <div class="jeec-popup-media">
-      <img src="./files/jeec-edificio-campana.png" alt="Campaña de edificio Jesús es el Centro">
-    </div>
-  </div>
-</div>
 <main class="pagina">
 
   <section class="hero">
@@ -617,11 +600,6 @@
              target="_top"
              rel="noopener">
             Conoce el proyecto CRECE
-          </a>
-          <a class="boton boton-principal"
-             href="./jeec-wix.html"
-             rel="noopener">
-            Apoya a Jesús es el Centro
           </a>
         </div>
       </div>
@@ -658,8 +636,7 @@
             discipulado y servicio a la comunidad.
           </p>
           <div class="jeec-actions">
-            <a class="boton boton-principal" href="./jeec-wix.html">Ver campana JEEC</a>
-            <a class="boton boton-claro" href="https://donate.stripe.com/bJe28t5PNdPDgBm0nU63K01" target="_blank" rel="noopener">Donar a JEEC</a>
+            <a class="boton boton-principal" href="https://www.prfwb.com/jeec" target="_top" rel="noopener">Apoyar Jesús es el Centro</a>
           </div>
         </div>
         <div class="jeec-media">
@@ -718,7 +695,6 @@
             <p>Una iglesia comprometida con predicar a Cristo, discipular familias y servir a la comunidad.</p>
             <div class="iglesia-acciones">
               <a class="boton boton-principal" href="https://creceprfwb.github.io/portal-recursos-discipulado/eventos-calendario-wix.html?v=jeec-calendar1" target="_top">Calendario de JEEC</a>
-              <a class="boton boton-claro" href="https://creceprfwb.github.io/portal-recursos-discipulado/jeec-wix.html?v=church-card1" target="_top">Apoyar edificio JEEC</a>
             </div>
             <a class="enlace-iglesia" href="https://www.facebook.com/jesuseselcentropr" target="_top">Visitar la iglesia <span>→</span></a>
           </div>
@@ -807,30 +783,6 @@
 </main>
 
   <script>
-    function cerrarJeecPopup() {
-      const popup = document.getElementById("jeecPopup");
-      if (!popup) {
-        return;
-      }
-
-      popup.classList.remove("activo");
-      popup.setAttribute("aria-hidden", "true");
-    }
-
-    window.addEventListener("load", () => {
-      const popup = document.getElementById("jeecPopup");
-      const params = new URLSearchParams(window.location.search);
-
-      if (!popup || params.get("popup") === "0" || params.get("embed") === "1") {
-        return;
-      }
-
-      window.setTimeout(() => {
-        popup.classList.add("activo");
-        popup.setAttribute("aria-hidden", "false");
-      }, 900);
-    });
-
     function irASeccion(id) {
       const destino = document.getElementById(id);
 
