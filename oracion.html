@@ -75,6 +75,43 @@
           linear-gradient(125deg, #078fa4 0%, #08778e 40%, #123f60 72%, #102f49 100%);
         background-size: auto;
       }
+      .hero-inner {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(280px, 420px);
+        gap: 1.4rem;
+        align-items: center;
+      }
+      .hero-copy-wrap { min-width: 0; }
+      .prayer-visual {
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.12);
+        box-shadow: 0 22px 55px rgba(9, 38, 55, 0.26);
+      }
+      .prayer-visual img {
+        display: block;
+        width: 100%;
+        height: 230px;
+        object-fit: cover;
+      }
+      .verse-card {
+        padding: 1rem;
+        color: #12384d;
+        background: #fff6d6;
+      }
+      .verse-card strong {
+        display: block;
+        margin-bottom: 0.35rem;
+        font-size: 0.82rem;
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
+      .verse-card p {
+        margin: 0;
+        color: #12384d;
+        font-weight: 900;
+      }
       .brand-lockup { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
       .logo-badge {
         width: 210px;
@@ -167,6 +204,19 @@
       }
       .request-list { display: grid; gap: 0.9rem; }
       .request-card { padding: 1rem; border-left: 4px solid #12607a; }
+      .request-art {
+        overflow: hidden;
+        height: 120px;
+        margin: -1rem -1rem 0.85rem;
+        border-radius: 8px 8px 0 0;
+        background: #e7f2ec;
+      }
+      .request-art img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
       .request-card.urgent { border-left-color: #d95643; }
       .request-card.answered { border-left-color: #f1c84b; }
       .request-top { display: flex; justify-content: space-between; align-items: start; gap: 0.75rem; }
@@ -197,7 +247,8 @@
       .small-note { margin: 0; color: #5c6a6c; font-size: 0.9rem; }
       @media (max-width: 850px) {
         .site-nav { align-items: flex-start; flex-direction: column; }
-        .layout, .toolbar { grid-template-columns: 1fr; }
+        .layout, .toolbar, .hero-inner { grid-template-columns: 1fr; }
+        .prayer-visual img { height: 180px; }
       }
       @media (max-width: 520px) {
         .page-shell { width: 100%; padding: 0 0 32px; }
@@ -234,15 +285,25 @@
         </div>
       </nav>
       <header class="hero">
-        <span class="eyebrow">Ministerio de Oracion</span>
-        <h1>Oremos unos por otros</h1>
-        <p>
-          Comparte una peticion, publica de forma anonima si lo deseas, y acompaña a otros
-          marcando que estas orando por ellos.
-        </p>
-        <div class="hero-actions">
-          <a class="button primary" href="./recursos.html?v=donate1">Ir a recursos</a>
-          <a class="button secondary" href="./admin-oracion.html">Panel admin</a>
+        <div class="hero-inner">
+          <div class="hero-copy-wrap">
+            <span class="eyebrow">Ministerio de Oracion</span>
+            <h1>Oremos unos por otros</h1>
+            <p>
+              Comparte una peticion, publica de forma anonima si lo deseas, y acompaña a otros
+              marcando que estas orando por ellos.
+            </p>
+            <div class="hero-actions">
+              <a class="button secondary" href="./admin-oracion.html">Panel admin</a>
+            </div>
+          </div>
+          <aside class="prayer-visual" aria-label="Versiculo de oracion">
+            <img src="https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=900&q=80" alt="Personas orando juntas" />
+            <div class="verse-card">
+              <strong>Filipenses 4:6</strong>
+              <p>Presenten sus peticiones delante de Dios en toda oracion y ruego, con accion de gracias.</p>
+            </div>
+          </aside>
         </div>
       </header>
 
@@ -290,6 +351,10 @@
               <label><input id="notifyInput" type="checkbox" /> Recibir notificaciones</label>
             </div>
             <label class="acceptance-row">
+              <input id="whatsappConsentInput" type="checkbox" />
+              <span>Acepto que el equipo pastoral me contacte por WhatsApp sobre esta peticion.</span>
+            </label>
+            <label class="acceptance-row">
               <input id="privacyAcceptedInput" type="checkbox" required />
               <span>Acepto que la peticion sea revisada antes de publicarse.</span>
             </label>
@@ -336,6 +401,7 @@
         urgentInput: document.getElementById('urgentInput'),
         notifyInput: document.getElementById('notifyInput'),
         privacyAcceptedInput: document.getElementById('privacyAcceptedInput'),
+        whatsappConsentInput: document.getElementById('whatsappConsentInput'),
         formMessage: document.getElementById('formMessage'),
         searchInput: document.getElementById('searchInput'),
         filterInput: document.getElementById('filterInput'),
@@ -373,6 +439,22 @@
         return date.toLocaleDateString('es-US', { month: 'short', day: 'numeric', year: 'numeric' });
       }
 
+      function getPrayerImage(category) {
+        const images = {
+          Familia: 'https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=900&q=80',
+          Salud: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=900&q=80',
+          Salvacion: 'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?auto=format&fit=crop&w=900&q=80',
+          Matrimonio: 'https://images.unsplash.com/photo-1529634597503-139d3726fed5?auto=format&fit=crop&w=900&q=80',
+          Trabajo: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80',
+          Finanzas: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=900&q=80',
+          Iglesia: 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=900&q=80',
+          Jovenes: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=900&q=80',
+          Duelo: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80',
+          Otra: 'https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=900&q=80'
+        };
+        return images[category] || images.Otra;
+      }
+
       function getFilteredRequests() {
         const query = els.searchInput.value.toLowerCase().trim();
         return requests
@@ -387,6 +469,9 @@
           const statusClass = request.status === 'answered' ? 'answered' : request.urgent ? 'urgent' : '';
           return `
             <article class="request-card ${statusClass}">
+              <div class="request-art">
+                <img src="${getPrayerImage(request.category)}" alt="" loading="lazy" />
+              </div>
               <div class="request-top">
                 <div>
                   <span class="tag">${escapeHtml(request.category)}</span>
@@ -427,6 +512,12 @@
           return;
         }
 
+        if (els.phoneInput.value.trim() && !els.whatsappConsentInput.checked) {
+          els.formMessage.className = 'message error';
+          els.formMessage.textContent = 'Si incluyes telefono, confirma si aceptas contacto por WhatsApp.';
+          return;
+        }
+
         const created = await window.discipladoFirebase?.createPrayerRequest?.({
           name: els.nameInput.value.trim(),
           email: els.emailInput.value.trim(),
@@ -438,7 +529,8 @@
           anonymous: els.anonymousInput.checked,
           urgent: els.urgentInput.checked,
           allowEncouragement: true,
-          notificationPreference: els.notifyInput.checked ? 'email' : 'none'
+          allowWhatsAppContact: els.whatsappConsentInput.checked,
+          notificationPreference: els.whatsappConsentInput.checked ? 'whatsapp' : els.notifyInput.checked ? 'email' : 'none'
         });
 
         if (created) {

@@ -135,7 +135,7 @@
     const localRequests = JSON.parse(localStorage.getItem(prayerStorageKey) || 'null') || [];
 
     if (!firebaseState.isConfigured || !firebaseState.db) {
-      return localRequests;
+      return includePending ? localRequests : localRequests.map(({ phone, email, notificationPreference, allowWhatsAppContact, ...request }) => request);
     }
 
     try {
@@ -144,9 +144,28 @@
         query = query.where('approved', '==', true).where('privacy', '==', 'public');
       }
       const snapshot = await query.limit(80).get();
-      const remoteRequests = snapshot.docs
-        .map(sanitizePrayerRequest)
-        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      let remoteRequests = snapshot.docs.map(sanitizePrayerRequest);
+
+      if (includePending && firebaseState.auth?.currentUser) {
+        remoteRequests = await Promise.all(remoteRequests.map(async (request) => {
+          try {
+            const contactDoc = await firebaseState.db.collection('prayerContacts').doc(request.id).get();
+            const contact = contactDoc.exists ? contactDoc.data() : {};
+            return {
+              ...request,
+              email: contact.email || '',
+              phone: contact.phone || '',
+              notificationPreference: contact.notificationPreference || 'none',
+              allowWhatsAppContact: contact.notificationPreference === 'whatsapp'
+            };
+          } catch (contactError) {
+            console.warn('No se pudo leer el contacto privado de la peticion:', contactError);
+            return request;
+          }
+        }));
+      }
+
+      remoteRequests = remoteRequests.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       if (!includePending) {
         localStorage.setItem(prayerStorageKey, JSON.stringify(remoteRequests));
       }
@@ -177,7 +196,13 @@
 
     if (!firebaseState.isConfigured || !firebaseState.db) {
       const localRequests = JSON.parse(localStorage.getItem(prayerStorageKey) || 'null') || [];
-      localStorage.setItem(prayerStorageKey, JSON.stringify([{ id: `prayer-${Date.now()}`, ...request }, ...localRequests]));
+      localStorage.setItem(prayerStorageKey, JSON.stringify([{
+        id: `prayer-${Date.now()}`,
+        ...request,
+        email: payload.email || '',
+        phone: payload.phone || '',
+        notificationPreference: payload.notificationPreference || 'none'
+      }, ...localRequests]));
       return true;
     }
 
