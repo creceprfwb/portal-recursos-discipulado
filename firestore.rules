@@ -51,6 +51,68 @@ service cloud.firestore {
       allow read, update, delete: if request.auth != null;
     }
 
+    match /forumPosts/{postId} {
+      allow read: if resource.data.status == "approved";
+      allow read: if request.auth != null;
+
+      allow create: if request.resource.data.keys().hasOnly([
+          "name",
+          "message",
+          "parentId",
+          "resourceId",
+          "resourceTitle",
+          "status",
+          "createdAt",
+          "updatedAt"
+        ])
+        && request.resource.data.name is string
+        && request.resource.data.message is string
+        && request.resource.data.message.size() > 0
+        && request.resource.data.resourceId is string
+        && request.resource.data.status == "pending";
+
+      allow update, delete: if request.auth != null;
+    }
+
+    match /forumContacts/{postId} {
+      allow create: if request.resource.data.keys().hasOnly([
+          "postId",
+          "email",
+          "createdAt"
+        ]);
+      allow read, update, delete: if request.auth != null;
+    }
+
+    match /subscribers/{subscriberId} {
+      allow create: if request.resource.data.keys().hasOnly([
+          "name",
+          "email",
+          "phone",
+          "church",
+          "purpose",
+          "createdAt"
+        ])
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.email is string
+        && request.resource.data.email.size() > 0
+        && request.resource.data.church is string
+        && request.resource.data.church.size() > 0;
+      allow read, update, delete: if request.auth != null;
+    }
+
+    match /resourceDownloads/{downloadId} {
+      allow create: if request.resource.data.keys().hasOnly([
+          "subscriberId",
+          "resourceId",
+          "resourceTitle",
+          "createdAt"
+        ])
+        && request.resource.data.subscriberId is string
+        && request.resource.data.resourceId is string;
+      allow read, update, delete: if request.auth != null;
+    }
+
     match /eventRegistrations/{registrationId} {
       allow create: if request.resource.data.keys().hasOnly([
           "eventId",

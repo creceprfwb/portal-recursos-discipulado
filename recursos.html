@@ -294,6 +294,96 @@
       .card-actions a { min-height: 38px; padding: 0.55rem 0.75rem; }
       .admin-section { margin-top: 1.5rem; padding: 1rem; }
       .empty-state { padding: 1rem; background: #f8f5ea; border-radius: 8px; color: #48617e; }
+      .forum-form {
+        display: grid;
+        gap: 0.75rem;
+        padding: 1rem;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 12px 30px rgba(18, 61, 79, 0.08);
+      }
+      .forum-form textarea {
+        width: 100%;
+        min-height: 90px;
+        resize: vertical;
+        border: 1px solid #d7dedf;
+        border-radius: 8px;
+        padding: 0.75rem 0.85rem;
+        background: #fdfefe;
+        color: #12384d;
+        font: inherit;
+      }
+      .forum-reply-banner {
+        display: none;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.6rem 0.85rem;
+        background: #fff6d6;
+        border-radius: 8px;
+        font-weight: 800;
+        font-size: 0.88rem;
+      }
+      .forum-reply-banner.active { display: flex; }
+      .forum-message { font-weight: 800; font-size: 0.9rem; }
+      .forum-message.success { color: #21473f; }
+      .forum-message.error { color: #d95643; }
+      .forum-list { display: grid; gap: 0.75rem; margin-top: 1rem; }
+      .forum-post {
+        background: white;
+        border-radius: 8px;
+        border: 1px solid #e6eef1;
+        padding: 1rem;
+      }
+      .forum-post.is-reply { margin-left: clamp(1rem, 5vw, 2.25rem); border-left: 3px solid var(--azul); }
+      .forum-post-meta { color: #5c6a6c; font-size: 0.82rem; font-weight: 800; }
+      .forum-post-message { margin: 0.4rem 0 0.6rem; color: #24343a; }
+      .forum-post-actions button {
+        border: 1px solid #d7dedf;
+        background: white;
+        color: #12384d;
+        border-radius: 999px;
+        padding: 0.35rem 0.75rem;
+        font-weight: 800;
+        font-size: 0.82rem;
+        cursor: pointer;
+      }
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 50;
+        background: rgba(18, 56, 77, 0.55);
+        padding: 1rem;
+        align-items: center;
+        justify-content: center;
+      }
+      .modal-overlay.active { display: flex; }
+      .modal-card {
+        width: min(480px, 100%);
+        max-height: calc(100vh - 2rem);
+        overflow-y: auto;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 24px 60px rgba(3, 24, 39, 0.32);
+        padding: 1.25rem;
+        display: grid;
+        gap: 0.75rem;
+      }
+      .modal-card h3 { margin: 0; }
+      .modal-card p { margin: 0; color: #5c6a6c; font-size: 0.92rem; }
+      .modal-card textarea {
+        width: 100%;
+        min-height: 70px;
+        resize: vertical;
+        border: 1px solid #d7dedf;
+        border-radius: 8px;
+        padding: 0.75rem 0.85rem;
+        background: #fdfefe;
+        color: #12384d;
+        font: inherit;
+      }
+      .modal-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
       @media (max-width: 850px) {
         .site-nav { align-items: flex-start; flex-direction: column; }
         .hero,
@@ -446,6 +536,66 @@
         <div id="recentList" class="card-grid"></div>
       </section>
 
+      <section class="section" id="forumSection">
+        <div class="section-header">
+          <div>
+            <h2>Preguntas y comentarios</h2>
+            <p>¿Tienes una pregunta sobre algún recurso? Escríbela aquí, un líder te responderá.</p>
+          </div>
+        </div>
+        <form id="forumForm" class="forum-form">
+          <div id="forumReplyBanner" class="forum-reply-banner">
+            <span id="forumReplyText"></span>
+            <button type="button" id="forumCancelReply">Cancelar</button>
+          </div>
+          <label>
+            ¿Sobre qué recurso es tu pregunta?
+            <select id="forumResourceSelect" required></select>
+          </label>
+          <label>
+            Tu pregunta o comentario
+            <textarea id="forumMessageInput" required></textarea>
+          </label>
+          <button class="button" type="submit">Enviar</button>
+          <p id="forumMessage" class="forum-message"></p>
+        </form>
+        <div id="forumList" class="forum-list"></div>
+      </section>
+
+      <div id="subscribeModal" class="modal-overlay" aria-label="Suscripción para continuar">
+        <div class="modal-card">
+          <h3>Suscríbete para continuar</h3>
+          <p>Completa tus datos para abrir recursos y participar en preguntas y comentarios. Solo se te pedirá una vez en este dispositivo.</p>
+          <form id="subscribeForm">
+            <label>
+              Nombre
+              <input id="subscribeNameInput" required />
+            </label>
+            <label>
+              Email
+              <input id="subscribeEmailInput" type="email" required />
+            </label>
+            <label>
+              Teléfono <span style="font-weight: 400;">(opcional)</span>
+              <input id="subscribePhoneInput" type="tel" />
+            </label>
+            <label>
+              Iglesia o congregación
+              <input id="subscribeChurchInput" required />
+            </label>
+            <label>
+              Propósito <span style="font-weight: 400;">(opcional)</span>
+              <textarea id="subscribePurposeInput"></textarea>
+            </label>
+            <div class="modal-actions">
+              <button class="button" type="submit">Continuar</button>
+              <button class="button secondary" type="button" id="subscribeCancelButton">Cancelar</button>
+            </div>
+            <p id="subscribeMessage" class="forum-message"></p>
+          </form>
+        </div>
+      </div>
+
       <section class="admin-section">
         <div class="section-header">
           <div>
@@ -511,6 +661,7 @@
         resources = firebaseResources?.length ? firebaseResources : JSON.parse(localStorage.getItem(storageKey) || 'null') || initialResources;
         localStorage.setItem(storageKey, JSON.stringify(resources));
         renderPublicResources();
+        populateForumResourceSelect();
       }
 
       const els = {
@@ -588,7 +739,7 @@
               <p>${resource.description}</p>
               <div class="card-meta"><span>${resource.type}</span><span>${resource.author || 'Sin autor'}</span></div>
               <div class="card-actions">
-                <a class="button" href="${getResourceHref(resource)}" target="_blank" rel="noreferrer noopener">Abrir</a>
+                <button type="button" class="button" data-open-resource="${resource.id}">Abrir</button>
               </div>
             </div>
           </article>
@@ -615,6 +766,238 @@
       populateSelect(els.typeFilter, typeOptions, 'Todos');
       renderCategoryChips();
       initializeResources();
+
+      const subscriberStorageKey = 'discipulado-subscriber-v1';
+
+      function getSubscriberProfile() {
+        return JSON.parse(localStorage.getItem(subscriberStorageKey) || 'null');
+      }
+
+      function setSubscriberProfile(profile) {
+        localStorage.setItem(subscriberStorageKey, JSON.stringify(profile));
+      }
+
+      const subscribeEls = {
+        overlay: document.getElementById('subscribeModal'),
+        form: document.getElementById('subscribeForm'),
+        nameInput: document.getElementById('subscribeNameInput'),
+        emailInput: document.getElementById('subscribeEmailInput'),
+        phoneInput: document.getElementById('subscribePhoneInput'),
+        churchInput: document.getElementById('subscribeChurchInput'),
+        purposeInput: document.getElementById('subscribePurposeInput'),
+        message: document.getElementById('subscribeMessage'),
+        cancelButton: document.getElementById('subscribeCancelButton')
+      };
+      let pendingAction = null;
+
+      function openSubscribeModal() {
+        subscribeEls.message.className = 'forum-message';
+        subscribeEls.message.textContent = '';
+        subscribeEls.overlay.classList.add('active');
+      }
+
+      function closeSubscribeModal() {
+        subscribeEls.overlay.classList.remove('active');
+        subscribeEls.form.reset();
+        pendingAction = null;
+      }
+
+      subscribeEls.cancelButton.addEventListener('click', closeSubscribeModal);
+
+      subscribeEls.form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        subscribeEls.message.className = 'forum-message';
+        subscribeEls.message.textContent = '';
+
+        const name = subscribeEls.nameInput.value.trim();
+        const email = subscribeEls.emailInput.value.trim();
+        const church = subscribeEls.churchInput.value.trim();
+        if (!name || !email || !church) {
+          subscribeEls.message.className = 'forum-message error';
+          subscribeEls.message.textContent = 'Completa tu nombre, tu email y tu iglesia o congregación.';
+          return;
+        }
+
+        const preOpenedWindow = pendingAction?.type === 'open' ? window.open('', '_blank') : null;
+
+        const subscriberId = await window.discipladoFirebase?.createSubscriber?.({
+          name,
+          email,
+          phone: subscribeEls.phoneInput.value.trim(),
+          church,
+          purpose: subscribeEls.purposeInput.value.trim()
+        });
+
+        if (!subscriberId) {
+          preOpenedWindow?.close();
+          subscribeEls.message.className = 'forum-message error';
+          subscribeEls.message.textContent = 'No se pudo enviar. Intenta otra vez.';
+          return;
+        }
+
+        const profile = { id: subscriberId, name, email };
+        setSubscriberProfile(profile);
+        const action = pendingAction;
+        subscribeEls.overlay.classList.remove('active');
+        subscribeEls.form.reset();
+        pendingAction = null;
+
+        if (action?.type === 'open') {
+          openResourceForSubscriber(action, profile, preOpenedWindow);
+        } else if (action?.type === 'forum') {
+          await submitForumPost(action, profile);
+        }
+      });
+
+      function openResourceForSubscriber(action, profile, targetWindow) {
+        window.discipladoFirebase?.logResourceDownload?.({
+          subscriberId: profile.id,
+          resourceId: action.resourceId,
+          resourceTitle: action.resourceTitle
+        });
+        if (targetWindow) {
+          targetWindow.location.href = action.href;
+        } else {
+          window.open(action.href, '_blank', 'noopener,noreferrer');
+        }
+      }
+
+      document.addEventListener('click', (event) => {
+        const button = event.target.closest('[data-open-resource]');
+        if (!button) return;
+        const resource = resources.find((item) => item.id === button.getAttribute('data-open-resource'));
+        if (!resource) return;
+
+        const action = { type: 'open', resourceId: resource.id, resourceTitle: resource.title, href: getResourceHref(resource) };
+        const profile = getSubscriberProfile();
+        if (profile) {
+          openResourceForSubscriber(action, profile);
+        } else {
+          pendingAction = action;
+          openSubscribeModal();
+        }
+      });
+
+      function populateForumResourceSelect() {
+        const select = document.getElementById('forumResourceSelect');
+        if (!select) return;
+        const published = resources.filter((resource) => resource.isPublished);
+        select.innerHTML = '<option value="">Selecciona un recurso</option>' + published.map((resource) => `<option value="${resource.id}">${resource.title}</option>`).join('');
+      }
+
+      const forumEls = {
+        form: document.getElementById('forumForm'),
+        resourceSelect: document.getElementById('forumResourceSelect'),
+        messageInput: document.getElementById('forumMessageInput'),
+        message: document.getElementById('forumMessage'),
+        list: document.getElementById('forumList'),
+        replyBanner: document.getElementById('forumReplyBanner'),
+        replyText: document.getElementById('forumReplyText'),
+        cancelReply: document.getElementById('forumCancelReply')
+      };
+      let forumPosts = [];
+      let forumReplyTarget = null;
+
+      function formatForumDate(value) {
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return '';
+        return date.toLocaleDateString('es', { day: 'numeric', month: 'short', year: 'numeric' });
+      }
+
+      function setForumReplyTarget(post) {
+        forumReplyTarget = post ? post.id : null;
+        forumEls.replyBanner.classList.toggle('active', Boolean(post));
+        forumEls.replyText.textContent = post ? `Respondiendo a ${post.name}: "${post.message.slice(0, 60)}${post.message.length > 60 ? '…' : ''}"` : '';
+        if (post) forumEls.messageInput.focus();
+      }
+
+      function renderForumPosts() {
+        const topLevel = forumPosts.filter((post) => !post.parentId);
+        if (!topLevel.length) {
+          forumEls.list.innerHTML = '<div class="empty-state">Todavía no hay preguntas. Sé el primero en comentar.</div>';
+          return;
+        }
+        forumEls.list.innerHTML = topLevel.map((post) => {
+          const replies = forumPosts.filter((reply) => reply.parentId === post.id);
+          return `
+            <article class="forum-post" data-id="${post.id}">
+              <div class="forum-post-meta">${post.name} · ${post.resourceTitle || ''} · ${formatForumDate(post.createdAt)}</div>
+              <p class="forum-post-message">${post.message}</p>
+              <div class="forum-post-actions"><button type="button" data-reply-id="${post.id}">Responder</button></div>
+            </article>
+            ${replies.map((reply) => `
+              <article class="forum-post is-reply" data-id="${reply.id}">
+                <div class="forum-post-meta">${reply.name} · ${formatForumDate(reply.createdAt)}</div>
+                <p class="forum-post-message">${reply.message}</p>
+              </article>
+            `).join('')}
+          `;
+        }).join('');
+      }
+
+      async function loadForumPosts() {
+        forumPosts = await window.discipladoFirebase?.getForumPosts?.() || [];
+        renderForumPosts();
+      }
+
+      forumEls.list.addEventListener('click', (event) => {
+        const button = event.target.closest('[data-reply-id]');
+        if (!button) return;
+        const post = forumPosts.find((item) => item.id === button.getAttribute('data-reply-id'));
+        if (post) setForumReplyTarget(post);
+      });
+
+      forumEls.cancelReply.addEventListener('click', () => setForumReplyTarget(null));
+
+      async function submitForumPost(action, profile) {
+        const created = await window.discipladoFirebase?.createForumPost?.({
+          name: profile.name,
+          email: profile.email,
+          message: action.message,
+          parentId: action.parentId,
+          resourceId: action.resourceId,
+          resourceTitle: action.resourceTitle
+        });
+
+        if (created) {
+          forumEls.message.className = 'forum-message success';
+          forumEls.message.textContent = 'Gracias, tu mensaje quedará visible después de ser revisado.';
+          forumEls.form.reset();
+          setForumReplyTarget(null);
+          await loadForumPosts();
+          populateForumResourceSelect();
+        } else {
+          forumEls.message.className = 'forum-message error';
+          forumEls.message.textContent = 'No se pudo enviar. Intenta otra vez.';
+        }
+      }
+
+      forumEls.form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        forumEls.message.className = 'forum-message';
+        forumEls.message.textContent = '';
+
+        const resourceId = forumEls.resourceSelect.value;
+        const message = forumEls.messageInput.value.trim();
+        if (!resourceId || !message) {
+          forumEls.message.className = 'forum-message error';
+          forumEls.message.textContent = 'Selecciona un recurso y escribe tu pregunta o comentario.';
+          return;
+        }
+
+        const resourceTitle = forumEls.resourceSelect.options[forumEls.resourceSelect.selectedIndex]?.textContent || '';
+        const action = { type: 'forum', resourceId, resourceTitle, message, parentId: forumReplyTarget };
+        const profile = getSubscriberProfile();
+
+        if (profile) {
+          await submitForumPost(action, profile);
+        } else {
+          pendingAction = action;
+          openSubscribeModal();
+        }
+      });
+
+      loadForumPosts();
     </script>
   </body>
 </html>

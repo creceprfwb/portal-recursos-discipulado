@@ -2,6 +2,9 @@
   const resourcesStorageKey = 'discipulado-resources-v1';
   const prayerStorageKey = 'discipulado-prayer-requests-v1';
   const eventRegistrationsStorageKey = 'discipulado-event-registrations-v1';
+  const forumStorageKey = 'discipulado-forum-posts-v1';
+  const subscribersStorageKey = 'discipulado-subscribers-v1';
+  const resourceDownloadsStorageKey = 'discipulado-resource-downloads-v1';
   const authStorageKey = 'discipulado-admin-session-v1';
   const config = window.firebaseConfig || {};
   const hasRealConfig = Boolean(
@@ -350,6 +353,255 @@
     }
   }
 
+  function sanitizeForumPost(doc) {
+    const data = doc.data ? doc.data() : doc;
+    return {
+      id: doc.id || data.id,
+      name: data.name || '',
+      message: data.message || '',
+      parentId: data.parentId || null,
+      resourceId: data.resourceId || '',
+      resourceTitle: data.resourceTitle || '',
+      status: data.status || 'pending',
+      createdAt: data.createdAt?.toDate ? data.createdAt.toDate().toISOString() : data.createdAt || new Date().toISOString(),
+      updatedAt: data.updatedAt?.toDate ? data.updatedAt.toDate().toISOString() : data.updatedAt || ''
+    };
+  }
+
+  async function getForumPosts({ includePending = false } = {}) {
+    const localPosts = JSON.parse(localStorage.getItem(forumStorageKey) || 'null') || [];
+
+    if (!firebaseState.isConfigured || !firebaseState.db) {
+      return includePending ? localPosts : localPosts.filter((post) => post.status === 'approved').map(({ email, ...post }) => post);
+    }
+
+    try {
+      let query = firebaseState.db.collection('forumPosts');
+      if (!includePending) {
+        query = query.where('status', '==', 'approved');
+      }
+      const snapshot = await query.limit(200).get();
+      let remotePosts = snapshot.docs.map(sanitizeForumPost);
+
+      if (includePending && firebaseState.auth?.currentUser) {
+        remotePosts = await Promise.all(remotePosts.map(async (post) => {
+          try {
+            const contactDoc = await firebaseState.db.collection('forumContacts').doc(post.id).get();
+            return { ...post, email: contactDoc.exists ? contactDoc.data().email || '' : '' };
+          } catch (contactError) {
+            console.warn('No se pudo leer el contacto privado del foro:', contactError);
+            return post;
+          }
+        }));
+      }
+
+      remotePosts = remotePosts.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+      if (!includePending) {
+        localStorage.setItem(forumStorageKey, JSON.stringify(remotePosts));
+      }
+      return remotePosts;
+    } catch (error) {
+      console.warn('No se pudieron leer las publicaciones del foro:', error);
+      return localPosts;
+    }
+  }
+
+  async function createForumPost(payload) {
+    const now = new Date().toISOString();
+    const post = {
+      name: payload.name || '',
+      message: payload.message || '',
+      parentId: payload.parentId || null,
+      resourceId: payload.resourceId || '',
+      resourceTitle: payload.resourceTitle || '',
+      status: 'pending',
+      createdAt: now,
+      updatedAt: now
+    };
+
+    if (!post.name || !post.message || !post.resourceId) {
+      return false;
+    }
+
+    if (!firebaseState.isConfigured || !firebaseState.db) {
+      const localPosts = JSON.parse(localStorage.getItem(forumStorageKey) || 'null') || [];
+      localStorage.setItem(forumStorageKey, JSON.stringify([
+        ...localPosts,
+        { id: `forum-${Date.now()}`, ...post, email: payload.email || '' }
+      ]));
+      return true;
+    }
+
+    try {
+      const docRef = await firebaseState.db.collection('forumPosts').add({
+        ...post,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      if (payload.email) {
+        try {
+          await firebaseState.db.collection('forumContacts').doc(docRef.id).set({
+            postId: docRef.id,
+            email: payload.email,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        } catch (contactError) {
+          console.warn('La publicación se creó, pero no se pudo guardar el contacto privado:', contactError);
+        }
+      }
+      return docRef.id;
+    } catch (error) {
+      console.warn('No se pudo crear la publicación del foro:', error);
+      return false;
+    }
+  }
+
+  async function updateForumPost(postId, patch) {
+    if (!firebaseState.isConfigured || !firebaseState.db || !firebaseState.auth?.currentUser) {
+      return false;
+    }
+
+    if (patch?.delete) {
+      try {
+        await firebaseState.db.collection('forumPosts').doc(postId).delete();
+        return true;
+      } catch (error) {
+        console.warn('No se pudo eliminar la publicación:', error);
+        return false;
+      }
+    }
+
+    try {
+      await firebaseState.db.collection('forumPosts').doc(postId).update({
+        ...patch,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      return true;
+    } catch (error) {
+      console.warn('No se pudo actualizar la publicación del foro:', error);
+      return false;
+    }
+  }
+
+  async function createSubscriber(payload) {
+    const now = new Date().toISOString();
+    const subscriber = {
+      name: payload.name || '',
+      email: payload.email || '',
+      phone: payload.phone || '',
+      church: payload.church || '',
+      purpose: payload.purpose || '',
+      createdAt: now
+    };
+
+    if (!subscriber.name || !subscriber.email || !subscriber.church) {
+      return false;
+    }
+
+    if (!firebaseState.isConfigured || !firebaseState.db) {
+      const localSubscribers = JSON.parse(localStorage.getItem(subscribersStorageKey) || 'null') || [];
+      const id = `subscriber-${Date.now()}`;
+      localStorage.setItem(subscribersStorageKey, JSON.stringify([...localSubscribers, { id, ...subscriber }]));
+      return id;
+    }
+
+    try {
+      const docRef = await firebaseState.db.collection('subscribers').add({
+        ...subscriber,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      return docRef.id;
+    } catch (error) {
+      console.warn('No se pudo crear el suscriptor:', error);
+      return false;
+    }
+  }
+
+  async function getSubscribers() {
+    const localSubscribers = JSON.parse(localStorage.getItem(subscribersStorageKey) || 'null') || [];
+
+    if (!firebaseState.isConfigured || !firebaseState.db || !firebaseState.auth?.currentUser) {
+      return localSubscribers;
+    }
+
+    try {
+      const snapshot = await firebaseState.db.collection('subscribers').orderBy('createdAt', 'desc').limit(300).get();
+      const remoteSubscribers = snapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          ...data,
+          createdAt: data.createdAt?.toDate ? data.createdAt.toDate().toISOString() : data.createdAt || ''
+        };
+      });
+      localStorage.setItem(subscribersStorageKey, JSON.stringify(remoteSubscribers));
+      return remoteSubscribers;
+    } catch (error) {
+      console.warn('No se pudieron leer los suscriptores:', error);
+      return localSubscribers;
+    }
+  }
+
+  async function logResourceDownload(payload) {
+    const now = new Date().toISOString();
+    const download = {
+      subscriberId: payload.subscriberId || '',
+      resourceId: payload.resourceId || '',
+      resourceTitle: payload.resourceTitle || '',
+      createdAt: now
+    };
+
+    if (!download.subscriberId || !download.resourceId) {
+      return false;
+    }
+
+    if (!firebaseState.isConfigured || !firebaseState.db) {
+      const localDownloads = JSON.parse(localStorage.getItem(resourceDownloadsStorageKey) || 'null') || [];
+      localStorage.setItem(resourceDownloadsStorageKey, JSON.stringify([
+        ...localDownloads,
+        { id: `download-${Date.now()}`, ...download }
+      ]));
+      return true;
+    }
+
+    try {
+      await firebaseState.db.collection('resourceDownloads').add({
+        ...download,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      return true;
+    } catch (error) {
+      console.warn('No se pudo registrar la descarga:', error);
+      return false;
+    }
+  }
+
+  async function getResourceDownloads() {
+    const localDownloads = JSON.parse(localStorage.getItem(resourceDownloadsStorageKey) || 'null') || [];
+
+    if (!firebaseState.isConfigured || !firebaseState.db || !firebaseState.auth?.currentUser) {
+      return localDownloads;
+    }
+
+    try {
+      const snapshot = await firebaseState.db.collection('resourceDownloads').orderBy('createdAt', 'desc').limit(300).get();
+      const remoteDownloads = snapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          ...data,
+          createdAt: data.createdAt?.toDate ? data.createdAt.toDate().toISOString() : data.createdAt || ''
+        };
+      });
+      localStorage.setItem(resourceDownloadsStorageKey, JSON.stringify(remoteDownloads));
+      return remoteDownloads;
+    } catch (error) {
+      console.warn('No se pudieron leer las descargas:', error);
+      return localDownloads;
+    }
+  }
+
   window.discipladoFirebase = {
     ...firebaseState,
     init: initFirebase,
@@ -361,6 +613,13 @@
     updatePrayerRequest,
     createEventRegistration,
     getEventRegistrations,
+    getForumPosts,
+    createForumPost,
+    updateForumPost,
+    createSubscriber,
+    getSubscribers,
+    logResourceDownload,
+    getResourceDownloads,
     signIn,
     signOut
   };

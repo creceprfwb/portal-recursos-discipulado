@@ -266,6 +266,37 @@
             </div>
             <div id="adminEventList" class="admin-table"></div>
           </section>
+
+          <section id="forumAdminSection" class="panel-card">
+            <div class="section-header">
+              <div>
+                <h2>Preguntas y comentarios de Recursos</h2>
+                <p class="help-text">Aprueba, responde o rechaza las preguntas enviadas desde la página de Recursos.</p>
+              </div>
+              <button id="refreshForumButton" type="button" class="ghost-button">Actualizar</button>
+            </div>
+            <div id="adminForumList" class="admin-table"></div>
+          </section>
+
+          <details id="subscribersPanel" class="panel-card admin-accordion">
+            <summary>
+              <span>Suscriptores y descargas</span>
+              <small class="help-text">Personas que se suscribieron y qué recursos han abierto.</small>
+            </summary>
+            <div class="accordion-body">
+              <div class="section-header">
+                <h3>Suscriptores</h3>
+                <button id="refreshSubscribersButton" type="button" class="ghost-button">Actualizar</button>
+              </div>
+              <div id="adminSubscribersList" class="admin-table"></div>
+
+              <div class="section-header">
+                <h3>Descargas de recursos</h3>
+                <button id="refreshDownloadsButton" type="button" class="ghost-button">Actualizar</button>
+              </div>
+              <div id="adminDownloadsList" class="admin-table"></div>
+            </div>
+          </details>
         </div>
       </section>
     </div>
@@ -310,6 +341,9 @@
       let resources = [];
       let prayerRequests = [];
       let eventRegistrations = [];
+      let forumPosts = [];
+      let subscribers = [];
+      let resourceDownloads = [];
       let selectedResourceId = null;
       let isAdmin = localStorage.getItem(authStorageKey) === 'authenticated';
 
@@ -356,6 +390,12 @@
       els.refreshPrayerButton = document.getElementById('refreshPrayerButton');
       els.adminEventList = document.getElementById('adminEventList');
       els.refreshEventButton = document.getElementById('refreshEventButton');
+      els.adminForumList = document.getElementById('adminForumList');
+      els.refreshForumButton = document.getElementById('refreshForumButton');
+      els.adminSubscribersList = document.getElementById('adminSubscribersList');
+      els.refreshSubscribersButton = document.getElementById('refreshSubscribersButton');
+      els.adminDownloadsList = document.getElementById('adminDownloadsList');
+      els.refreshDownloadsButton = document.getElementById('refreshDownloadsButton');
 
       function populateSelect(select, options, placeholder = 'Selecciona') {
         select.innerHTML = '<option value="">' + placeholder + '</option>';
@@ -451,6 +491,74 @@
         `).join('') : '<div class="admin-row"><div><strong>No hay registros todavía.</strong><small>Cuando alguien se registre aparecerá aquí.</small></div></div>';
       }
 
+      async function loadAdminForumPosts() {
+        forumPosts = await window.discipladoFirebase?.getForumPosts?.({ includePending: true }) || [];
+        renderAdminForumPosts();
+      }
+
+      function renderAdminForumPosts() {
+        if (!els.adminForumList) return;
+        const topLevel = forumPosts.filter((post) => !post.parentId);
+        els.adminForumList.innerHTML = topLevel.length ? topLevel.map((post) => {
+          const replies = forumPosts.filter((reply) => reply.parentId === post.id);
+          return `
+            <div class="admin-row">
+              <div>
+                <strong>${post.name}</strong>
+                <small>${post.email || 'Sin email'} · ${post.resourceTitle || 'Sin recurso'} · ${post.status}</small>
+                <small>${post.message}</small>
+                ${replies.map((reply) => `<small>↳ ${reply.name}: ${reply.message}</small>`).join('')}
+              </div>
+              <div class="row-actions">
+                <button type="button" data-forum-action="approve" data-id="${post.id}">Aprobar</button>
+                <button type="button" data-forum-action="reply" data-id="${post.id}">Responder</button>
+                <button type="button" data-forum-action="reject" data-id="${post.id}">Rechazar</button>
+                <button type="button" class="danger-button" data-forum-action="delete" data-id="${post.id}">Eliminar</button>
+              </div>
+            </div>
+          `;
+        }).join('') : '<div class="admin-row"><div><strong>No hay preguntas todavía.</strong><small>Cuando alguien pregunte desde Recursos aparecerá aquí.</small></div></div>';
+      }
+
+      async function loadAdminSubscribers() {
+        subscribers = await window.discipladoFirebase?.getSubscribers?.() || [];
+        renderAdminSubscribers();
+      }
+
+      function renderAdminSubscribers() {
+        if (!els.adminSubscribersList) return;
+        els.adminSubscribersList.innerHTML = subscribers.length ? subscribers.map((subscriber) => `
+          <div class="admin-row">
+            <div>
+              <strong>${subscriber.name}</strong>
+              <small>${subscriber.email} · ${subscriber.phone || 'Sin teléfono'}</small>
+              <small>${subscriber.church || 'Sin iglesia'}</small>
+              <small>${subscriber.purpose || ''}</small>
+            </div>
+          </div>
+        `).join('') : '<div class="admin-row"><div><strong>No hay suscriptores todavía.</strong></div></div>';
+      }
+
+      async function loadAdminDownloads() {
+        resourceDownloads = await window.discipladoFirebase?.getResourceDownloads?.() || [];
+        renderAdminDownloads();
+      }
+
+      function renderAdminDownloads() {
+        if (!els.adminDownloadsList) return;
+        els.adminDownloadsList.innerHTML = resourceDownloads.length ? resourceDownloads.map((download) => {
+          const subscriber = subscribers.find((item) => item.id === download.subscriberId);
+          return `
+            <div class="admin-row">
+              <div>
+                <strong>${download.resourceTitle || 'Recurso'}</strong>
+                <small>${subscriber ? `${subscriber.name} · ${subscriber.email}` : 'Suscriptor desconocido'}</small>
+              </div>
+            </div>
+          `;
+        }).join('') : '<div class="admin-row"><div><strong>No hay descargas todavía.</strong></div></div>';
+      }
+
       function resetForm() {
         selectedResourceId = null;
         els.resourceForm.style.display = 'none';
@@ -504,6 +612,8 @@
           renderAdminResources();
           loadAdminPrayerRequests();
           loadAdminEventRegistrations();
+          loadAdminForumPosts();
+          loadAdminSubscribers().then(loadAdminDownloads);
         }
       }
 
@@ -622,6 +732,50 @@
         await window.discipladoFirebase?.updatePrayerRequest?.(id, patches[action]);
         await loadAdminPrayerRequests();
       });
+
+      els.refreshForumButton?.addEventListener('click', loadAdminForumPosts);
+
+      els.adminForumList?.addEventListener('click', async (event) => {
+        const actionElement = event.target.closest('[data-forum-action]');
+        if (!actionElement) return;
+        const id = actionElement.getAttribute('data-id');
+        const action = actionElement.getAttribute('data-forum-action');
+        const post = forumPosts.find((item) => item.id === id);
+        if (!post) return;
+
+        if (action === 'approve') {
+          await window.discipladoFirebase?.updateForumPost?.(id, { status: 'approved' });
+        }
+
+        if (action === 'reject') {
+          await window.discipladoFirebase?.updateForumPost?.(id, { status: 'rejected' });
+        }
+
+        if (action === 'delete') {
+          if (!window.confirm('¿Eliminar esta publicación?')) return;
+          await window.discipladoFirebase?.updateForumPost?.(id, { delete: true });
+        }
+
+        if (action === 'reply') {
+          const replyMessage = window.prompt(`Respuesta para ${post.name}:`, '');
+          if (!replyMessage || !replyMessage.trim()) return;
+          const newId = await window.discipladoFirebase?.createForumPost?.({
+            name: 'Equipo PRFWB',
+            message: replyMessage.trim(),
+            parentId: post.id,
+            resourceId: post.resourceId,
+            resourceTitle: post.resourceTitle
+          });
+          if (newId) {
+            await window.discipladoFirebase?.updateForumPost?.(newId, { status: 'approved' });
+          }
+        }
+
+        await loadAdminForumPosts();
+      });
+
+      els.refreshSubscribersButton?.addEventListener('click', loadAdminSubscribers);
+      els.refreshDownloadsButton?.addEventListener('click', () => loadAdminSubscribers().then(loadAdminDownloads));
 
       populateSelect(els.categoryInput, categoryOptions, 'Selecciona');
       populateSelect(els.typeInput, typeOptions, 'Selecciona');
