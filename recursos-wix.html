@@ -80,10 +80,13 @@
         min-height: 360px;
         padding: 76px max(1rem, calc((100vw - 1180px) / 2)) 88px;
         background:
-          radial-gradient(circle at 82% 42%, rgba(49, 219, 240, .50), transparent 25%),
-          radial-gradient(circle at 15% 15%, rgba(255, 255, 255, .12), transparent 28%),
-          linear-gradient(125deg, #078fa4 0%, #08778e 40%, #123f60 72%, #102f49 100%);
-        background-size: auto;
+          radial-gradient(circle at 82% 42%, rgba(49, 219, 240, .45), transparent 25%),
+          radial-gradient(circle at 15% 15%, rgba(255, 255, 255, .10), transparent 28%),
+          linear-gradient(125deg, rgba(7, 143, 164, .90) 0%, rgba(8, 119, 142, .90) 40%, rgba(18, 63, 96, .93) 72%, rgba(16, 47, 73, .95) 100%),
+          url('./recursos-hero.png');
+        background-size: auto, auto, auto, cover;
+        background-position: center, center, center, center;
+        background-repeat: no-repeat;
       }
       .brand-lockup { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
       .logo-badge {
@@ -108,6 +111,15 @@
       }
       .hero h1 { margin: 0.35rem 0 0.55rem; font-size: clamp(2rem, 5vw, 3.1rem); line-height: 1.06; }
       .hero p { max-width: 720px; margin: 0; }
+      .hero-badge {
+        display: block;
+        margin-top: 0.6rem;
+        color: rgba(255, 255, 255, 0.78);
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-decoration: none;
+      }
+      .hero-badge:hover { color: #ffffff; }
       .hero-panel {
         display: grid;
         gap: 0.8rem;
@@ -436,6 +448,7 @@
           <span class="eyebrow">Portal de Recursos</span>
           <h1>Recursos para formar discípulos</h1>
           <p>Encuentra guías, estudios, clases y materiales listos para usar en la iglesia.</p>
+          <span class="hero-badge">Un producto de CRECE</span>
         </div>
         <aside class="hero-panel" aria-label="Resumen del centro de recursos">
           <strong>Biblioteca viva para la iglesia</strong>
@@ -481,7 +494,7 @@
             <strong>Escuela del Carácter</strong>
             <span>El carácter del líder organizado por clases.</span>
           </a>
-          <a class="quick-card" href="https://www.prfwb.com/estudios" target="_top">
+          <a class="quick-card" href="./videos-wix.html?v=donate1">
             <strong>Videos educativos y prédicas</strong>
             <span>Enseñanzas, estudios y mensajes para la iglesia.</span>
           </a>
@@ -609,7 +622,8 @@
         'Niños',
         'Liderazgo',
         'Recursos para líderes',
-        'Predicaciones'
+        'Predicaciones',
+        'Doctrina'
       ];
       const typeOptions = ['pdf', 'video', 'audio', 'link', 'study', 'devotional', 'course', 'document'];
       const defaultResourceImages = {
@@ -624,7 +638,8 @@
         'Niños': 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=900&q=80',
         'Liderazgo': 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80',
         'Recursos para líderes': 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=80',
-        'Predicaciones': 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=900&q=80'
+        'Predicaciones': 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=900&q=80',
+        'Doctrina': 'https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&w=900&q=80'
       };
 
       function normalizeCategory(category) {

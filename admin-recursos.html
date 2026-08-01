@@ -205,6 +205,7 @@
             <div class="accordion-body">
 <div class="admin-actions">
             <button id="newResourceButton">Nuevo recurso</button>
+            <button id="seedVideosButton" type="button" class="ghost-button">Sembrar videos iniciales</button>
           </div>
 
           <form id="resourceForm" class="resource-form" style="display:none">
@@ -319,7 +320,8 @@
         'Niños',
         'Liderazgo',
         'Recursos para líderes',
-        'Predicaciones'
+        'Predicaciones',
+        'Doctrina'
       ];
       const typeOptions = ['pdf', 'video', 'audio', 'link', 'study', 'devotional', 'course', 'document'];
       const defaultResourceImages = {
@@ -335,7 +337,76 @@
         'Liderazgo': 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80',
         'Recursos para lÃ­deres': 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=80',
         'Predicaciones': 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=900&q=80',
+        'Doctrina': 'https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&w=900&q=80',
       };
+      const videoSeeds = [
+        {
+          id: 'video-caracteristicas-santos',
+          title: 'Características Santos',
+          description: 'Serie de enseñanzas sobre el carácter cristiano y la vida de santidad.',
+          category: 'Discipulado',
+          type: 'video',
+          author: 'PRFWB',
+          externalUrl: 'https://youtube.com/playlist?list=PLoyrKr4Xi6xn6GsOPLQqr2brGoN5LAMbn&si=oYdIGTLLUHgpw4sV',
+          isPublished: true,
+          isFeatured: false
+        },
+        {
+          id: 'video-teologia-sistematica',
+          title: 'Teología Sistemática',
+          description: 'Estudios organizados de teología sistemática para profundizar en la doctrina bíblica.',
+          category: 'Estudios bíblicos',
+          type: 'video',
+          author: 'PRFWB',
+          externalUrl: 'https://youtube.com/playlist?list=PLoyrKr4Xi6xlv17hYQ_eBi8F8aVbBcKSk&si=1XnNJyAeMI9zQ9DK',
+          isPublished: true,
+          isFeatured: false
+        },
+        {
+          id: 'video-estudios-biblicos-jeec',
+          title: 'Estudios Bíblicos JEEC',
+          description: 'Estudios bíblicos grabados por JEEC para el crecimiento espiritual de la iglesia.',
+          category: 'Estudios bíblicos',
+          type: 'video',
+          author: 'JEEC',
+          externalUrl: 'https://youtube.com/playlist?list=PLoyrKr4Xi6xl-foOp_byD5rerSz0MDVvk&si=WzWMp5pUV5xfaK8g',
+          isPublished: true,
+          isFeatured: false
+        },
+        {
+          id: 'video-a-traves-de-la-biblia',
+          title: 'A través de la Biblia',
+          description: 'Un recorrido enseñanza por enseñanza a través de las Escrituras.',
+          category: 'Estudios bíblicos',
+          type: 'video',
+          author: 'PRFWB',
+          externalUrl: 'https://youtube.com/playlist?list=PLoyrKr4Xi6xneWAyR4WyefQPT3DPtpw6I&si=32CqGn5XYwaDsxUr',
+          isPublished: true,
+          isFeatured: false
+        },
+        {
+          id: 'video-predicaciones-jeec',
+          title: 'Predicaciones JEEC',
+          description: 'Mensajes y predicaciones grabadas en JEEC.',
+          category: 'Predicaciones',
+          type: 'video',
+          author: 'JEEC',
+          externalUrl: 'https://youtube.com/playlist?list=PLoyrKr4Xi6xnumUQ2Jv8rxa-06diPrj_o&si=GwdNLr_bmIm4uId7',
+          isPublished: true,
+          isFeatured: false
+        },
+        {
+          id: 'video-doctrina',
+          title: 'Doctrina',
+          description: 'Enseñanzas doctrinales para fortalecer el fundamento de fe de la iglesia.',
+          category: 'Doctrina',
+          type: 'video',
+          author: 'PRFWB',
+          externalUrl: 'https://youtube.com/playlist?list=PLQKXLlfkg-3U&si=89vwQuNdHtamVgwj',
+          isPublished: true,
+          isFeatured: false
+        }
+      ];
       const storageKey = 'discipulado-resources-v1';
       const authStorageKey = 'discipulado-admin-session-v1';
       let resources = [];
@@ -371,6 +442,7 @@
         logoutButton: document.getElementById('logoutButton'),
         resourcesPanel: document.getElementById('resourcesPanel'),
         newResourceButton: document.getElementById('newResourceButton'),
+        seedVideosButton: document.getElementById('seedVideosButton'),
         resourceForm: document.getElementById('resourceForm'),
         titleInput: document.getElementById('titleInput'),
         descriptionInput: document.getElementById('descriptionInput'),
@@ -640,6 +712,27 @@
       });
 
       els.newResourceButton.addEventListener('click', () => openForm());
+
+      els.seedVideosButton?.addEventListener('click', async () => {
+        const existingIds = new Set(resources.map((resource) => resource.id));
+        const missing = videoSeeds.filter((seed) => !existingIds.has(seed.id));
+        if (!missing.length) {
+          els.errorMessage.textContent = 'Los videos iniciales ya estaban agregados.';
+          return;
+        }
+        resources = [
+          ...missing.map((seed, index) => ({
+            ...seed,
+            createdAt: new Date().toISOString(),
+            displayOrder: resources.length + index + 1
+          })),
+          ...resources
+        ];
+        await saveResources();
+        renderAdminResources();
+        els.errorMessage.textContent = `Se agregaron ${missing.length} video(s) inicial(es).`;
+        if (els.resourcesPanel) els.resourcesPanel.open = true;
+      });
       els.cancelFormButton.addEventListener('click', resetForm);
 
       els.resourceForm.addEventListener('submit', async (event) => {

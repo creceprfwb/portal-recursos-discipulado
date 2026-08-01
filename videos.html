@@ -163,6 +163,14 @@
         background: #ffffff;
         color: #4d5f66;
       }
+      .empty-state {
+        padding: 1rem;
+        background: #ffffff;
+        border: 1px solid #dbe7ec;
+        border-radius: 8px;
+        color: #4d5f66;
+        grid-column: 1 / -1;
+      }
       @media (max-width: 850px) {
         .site-nav { align-items: flex-start; flex-direction: column; }
         .video-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -198,96 +206,72 @@
         <span class="eyebrow">Biblioteca audiovisual</span>
         <h1>Videos educativos y predicas</h1>
         <p>Un espacio para reunir enseñanzas, estudios y mensajes que ayuden a formar discipulos y fortalecer la iglesia.</p>
+        <a class="button" href="./recursos.html?v=videos1" style="margin-top: 1rem; background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.32);">← Volver a Recursos</a>
       </header>
 
       <main class="content">
-        <div class="video-tabs" aria-label="Filtros de videos">
-          <button class="active" type="button" data-video-filter="all">Todos</button>
-          <button type="button" data-video-filter="educativo">Videos educativos</button>
-          <button type="button" data-video-filter="predica">Predicas</button>
-        </div>
+        <div id="videoTabs" class="video-tabs" aria-label="Filtros de videos"></div>
 
         <section id="videoGrid" class="video-grid"></section>
-
-        <p class="note">
-          Cuando tengas enlaces reales de YouTube, Facebook o Vimeo, se pueden reemplazar estos accesos por los videos oficiales de PRFWB.
-        </p>
       </main>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="./firebase-config.js"></script>
+    <script src="./firebase-bridge.js?v=prayerfix1"></script>
     <script>
-      const videos = [
-        {
-          type: 'educativo',
-          title: 'Fundamentos del discipulado',
-          description: 'Videos para explicar crecimiento espiritual, seguimiento de Cristo y vida devocional.',
-          url: 'https://www.youtube.com/results?search_query=discipulado+cristiano+fundamentos'
-        },
-        {
-          type: 'educativo',
-          title: 'Doctrina y vida cristiana',
-          description: 'Enseñanzas para grupos, maestros y nuevos creyentes.',
-          url: 'https://www.youtube.com/results?search_query=doctrina+cristiana+vida+cristiana'
-        },
-        {
-          type: 'predica',
-          title: 'Predicas para la iglesia',
-          description: 'Mensajes para edificar, animar y llamar a la obediencia.',
-          url: 'https://www.youtube.com/results?search_query=predicas+cristianas+evangelicas'
-        },
-        {
-          type: 'predica',
-          title: 'Mensajes evangelisticos',
-          description: 'Predicas centradas en el evangelio, salvacion y llamado a Cristo.',
-          url: 'https://www.youtube.com/results?search_query=predicas+evangelisticas+salvacion'
-        },
-        {
-          type: 'educativo',
-          title: 'Recursos para maestros',
-          description: 'Ideas y herramientas para enseñar la Biblia a niños, jovenes y adultos.',
-          url: 'https://www.youtube.com/results?search_query=como+ensenar+la+biblia+a+ninos+y+jovenes'
-        },
-        {
-          type: 'predica',
-          title: 'Series de edificacion',
-          description: 'Mensajes organizados por temas para crecimiento y liderazgo cristiano.',
-          url: 'https://www.youtube.com/results?search_query=series+de+predicas+cristianas+liderazgo'
-        }
-      ];
-
+      let videos = [];
+      let activeCategory = '';
       const grid = document.getElementById('videoGrid');
-      const buttons = document.querySelectorAll('[data-video-filter]');
+      const tabs = document.getElementById('videoTabs');
 
-      function getTypeLabel(type) {
-        return type === 'predica' ? 'Predica' : 'Video educativo';
-      }
-
-      function renderVideos(filter = 'all') {
-        const visible = filter === 'all' ? videos : videos.filter((video) => video.type === filter);
-        grid.innerHTML = visible.map((video) => `
-          <article class="video-card">
-            <div class="video-thumb ${video.type}">
-              <span class="play-icon">▶</span>
-            </div>
-            <div class="video-body">
-              <span class="tag">${getTypeLabel(video.type)}</span>
-              <strong>${video.title}</strong>
-              <p>${video.description}</p>
-              <a class="button" href="${video.url}" target="_blank" rel="noopener">Abrir videos</a>
-            </div>
-          </article>
+      function renderTabs() {
+        const categories = [...new Set(videos.map((video) => video.category).filter(Boolean))];
+        tabs.innerHTML = ['', ...categories].map((category) => `
+          <button type="button" class="${activeCategory === category ? 'active' : ''}" data-video-filter="${category}">${category || 'Todos'}</button>
         `).join('');
       }
 
-      buttons.forEach((button) => {
-        button.addEventListener('click', () => {
-          buttons.forEach((item) => item.classList.remove('active'));
-          button.classList.add('active');
-          renderVideos(button.dataset.videoFilter);
-        });
+      function getThumbStyle(video) {
+        if (!video.imageUrl) return '';
+        return `style="background-image: linear-gradient(rgba(18,56,77,.25), rgba(18,56,77,.55)), url('${video.imageUrl}'); background-size: cover; background-position: center;"`;
+      }
+
+      function renderVideos() {
+        const visible = activeCategory ? videos.filter((video) => video.category === activeCategory) : videos;
+        grid.innerHTML = visible.length ? visible.map((video) => `
+          <article class="video-card">
+            <div class="video-thumb" ${getThumbStyle(video)}></div>
+            <div class="video-body">
+              ${video.category ? `<span class="tag">${video.category}</span>` : ''}
+              <strong>${video.title}</strong>
+              <p>${video.description || ''}</p>
+              <a class="button" href="${video.externalUrl}" target="_blank" rel="noopener">Ver playlist</a>
+            </div>
+          </article>
+        `).join('') : '<div class="empty-state">Todavía no hay videos publicados en esta categoría.</div>';
+      }
+
+      async function loadVideos() {
+        const resources = await window.discipladoFirebase?.getResources?.() || [];
+        videos = resources
+          .filter((resource) => resource.type === 'video' && resource.isPublished)
+          .sort((a, b) => Number(b.displayOrder || 0) - Number(a.displayOrder || 0));
+        renderTabs();
+        renderVideos();
+      }
+
+      tabs.addEventListener('click', (event) => {
+        const button = event.target.closest('[data-video-filter]');
+        if (!button) return;
+        activeCategory = button.getAttribute('data-video-filter');
+        renderTabs();
+        renderVideos();
       });
 
-      renderVideos();
+      loadVideos();
     </script>
   </body>
 </html>
