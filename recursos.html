@@ -367,9 +367,11 @@
         z-index: 50;
         background: rgba(18, 56, 77, 0.55);
         padding: 1rem;
-        align-items: center;
+        align-items: flex-start;
         justify-content: center;
+        overflow-y: auto;
       }
+      .modal-overlay .modal-card { margin-top: 5vh; }
       .modal-overlay.active { display: flex; }
       .modal-card {
         width: min(480px, 100%);
