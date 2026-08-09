@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Romanos 12 | Escuela del Caracter PRFWB</title>
+    <meta
+      name="description"
+      content="Serie Romanos 12 en formato Escuela del Caracter para leer por clase."
+    />    <script>
+      if (new URLSearchParams(window.location.search).get('embed') === '1') {
+        document.documentElement.classList.add('embed-mode');
+      }
+    </script>
+    <style>
+      html.embed-mode .site-nav,
+      html.embed-mode .viewer-header { display: none !important; }
+      html.embed-mode body { background: #f4f8fa; }
+    </style>
+    <style>
+      :root {
+        font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        --azul: #078ca3;
+        --azul-oscuro: #12384d;
+        --verde: #21473f;
+        --dorado: #f1c84b;
+        --coral: #d95643;
+        --fondo: #f4f8fa;
+        --borde: #dbe7ec;
+        color: var(--azul-oscuro);
+        background: var(--fondo);
+        line-height: 1.55;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-width: 320px; background: var(--fondo); overflow-x: hidden; }
+      button, select { font: inherit; }
+      .page-shell { width: 100%; margin: 0; padding: 0 0 64px; }
+      .site-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 18px;
+        padding: 0.7rem max(1rem, calc((100vw - 1180px) / 2));
+        border-bottom: 1px solid var(--borde);
+        background: #ffffff;
+      }
+      .nav-logo { display: flex; align-items: center; gap: 10px; color: var(--azul-oscuro); text-decoration: none; font-weight: 900; letter-spacing: .4px; }
+      .nav-logo img { width: 118px; height: 44px; object-fit: contain; }
+      .nav-links { display: flex; gap: 8px; flex-wrap: wrap; }
+      .nav-links a {
+        min-height: 42px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 9px 15px;
+        border-radius: 999px;
+        color: var(--azul-oscuro);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 900;
+      }
+      .nav-links a.active { background: var(--azul-oscuro); color: #ffffff; }
+            .site-tabs a.donate-link,
+      .nav-links a.donate-link {
+        background: #f1c84b;
+        color: #12384d;
+        border: 1px solid rgba(18, 56, 77, .12);
+        box-shadow: 0 8px 18px rgba(18, 56, 77, .12);
+      }
+      .site-tabs a.donate-link:hover,
+      .nav-links a.donate-link:hover { transform: translateY(-2px); }
+      .hero {
+        color: white;
+        padding: 74px max(1rem, calc((100vw - 1180px) / 2)) 88px;
+        background:
+          linear-gradient(90deg, rgba(33, 71, 63, 0.9), rgba(14, 59, 81, 0.95) 50%, rgba(53, 61, 74, 0.9)),
+          linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+        background-size: auto, 48px 48px, 48px 48px;
+      }
+      .brand-lockup { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+      .logo-badge {
+        width: 220px;
+        height: 82px;
+        border-radius: 8px;
+        display: grid;
+        place-items: center;
+        background: rgba(7, 29, 53, 0.32);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        overflow: hidden;
+      }
+      .logo-badge img { width: 100%; height: 100%; object-fit: contain; display: block; }
+      .eyebrow {
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        font-weight: 900;
+        letter-spacing: 0.26em;
+        color: #e44b41;
+      }
+      h1 { margin: 0.4rem 0 0.7rem; font-size: clamp(2rem, 5vw, 3.25rem); line-height: 1.06; }
+      .hero p { max-width: 760px; margin: 0; color: #f8fbfb; }
+      .hero-actions { display: flex; gap: 0.65rem; flex-wrap: wrap; margin-top: 1.2rem; }
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        border: 0;
+        background: #ffca2f;
+        color: #123d4f;
+        cursor: pointer;
+        font-weight: 900;
+        text-decoration: none;
+      }
+      .button.secondary { background: #fff4cc; }
+      .toolbar,
+      .lesson-shell,
+      .lesson-nav,
+      .lesson-card {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 12px 30px rgba(18, 61, 79, 0.08);
+      }
+      .toolbar {
+        display: grid;
+        grid-template-columns: minmax(260px, 1fr) auto auto;
+        gap: 0.8rem;
+        align-items: end;
+        margin: -28px auto 0;
+        padding: 1rem;
+        position: relative;
+        z-index: 2;
+      }
+      .toolbar,
+      .lesson-shell {
+        width: min(1180px, calc(100% - 2rem));
+        margin-left: auto;
+        margin-right: auto;
+      }
+      label { display: grid; gap: 0.4rem; font-weight: 800; }
+      select {
+        width: 100%;
+        border: 1px solid #d7dedf;
+        border-radius: 8px;
+        padding: 0.75rem 0.85rem;
+        background: #fdfefe;
+        color: #123d4f;
+        font-weight: 700;
+      }
+      .lesson-shell {
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        gap: 1rem;
+        margin-top: 1.1rem;
+        padding: 1rem;
+      }
+      .lesson-nav {
+        box-shadow: none;
+        border: 1px solid #e5e2d4;
+        overflow: hidden;
+        align-self: start;
+      }
+      .lesson-nav button {
+        width: 100%;
+        display: block;
+        text-align: left;
+        padding: 0.85rem;
+        border: 0;
+        border-bottom: 1px solid #e5e2d4;
+        background: white;
+        color: #123d4f;
+        cursor: pointer;
+        font-weight: 900;
+      }
+      .lesson-nav button:last-child { border-bottom: 0; }
+      .lesson-nav button.active { background: #123d4f; color: white; }
+      .lesson-card {
+        box-shadow: none;
+        border: 1px solid #e5e2d4;
+        padding: clamp(1rem, 3vw, 2rem);
+      }
+      .lesson-meta {
+        display: inline-flex;
+        margin-bottom: 1rem;
+        padding: 0.24rem 0.65rem;
+        border-radius: 999px;
+        background: #fff4cc;
+        color: #123d4f;
+        font-size: 0.82rem;
+        font-weight: 900;
+      }
+      .lesson-card h2 {
+        margin: 0 0 0.7rem;
+        font-size: clamp(1.65rem, 3.6vw, 2.45rem);
+        line-height: 1.1;
+      }
+      .subtitle {
+        margin: 0 0 1.1rem;
+        padding: 1rem;
+        border-left: 4px solid #ffca2f;
+        background: linear-gradient(90deg, #f8f5ea, #fff8df);
+        color: #24343a;
+        font-weight: 700;
+      }
+      .content-flow { display: grid; gap: 0.75rem; max-width: 900px; }
+      .content-flow h3 {
+        margin: 1rem 0 0.1rem;
+        color: #123d4f;
+        font-size: 1.15rem;
+      }
+      .content-flow p { margin: 0; color: #24343a; }
+      .content-flow ul,
+      .content-flow ol { margin: 0; padding-left: 1.4rem; color: #24343a; }
+      .content-flow li { margin: 0.25rem 0; }
+      .scripture-box,
+      .activity-box,
+      .principle-box,
+      .question-box {
+        padding: 1rem;
+        border-radius: 8px;
+        border: 1px solid #e5e2d4;
+        background: #f8f5ea;
+      }
+      .scripture-box { border-left: 4px solid #123d4f; }
+      .activity-box { border-left: 4px solid #ffca2f; }
+      .principle-box { border-left: 4px solid #e44b41; }
+      .question-box { background: #fff8df; }
+      .pager {
+        display: flex;
+        justify-content: space-between;
+        gap: 0.75rem;
+        margin-top: 1rem;
+      }
+      @media (max-width: 850px) {
+        .toolbar,
+        .lesson-shell { grid-template-columns: 1fr; }
+        .lesson-nav { display: none; }
+      }
+      @media (max-width: 520px) {
+        .page-shell { width: 100%; padding: 0 0 32px; }
+        .site-nav { align-items: flex-start; flex-direction: column; padding: 0.75rem 1rem; }
+        .nav-links { width: 100%; display: grid; grid-template-columns: 1fr; }
+        .nav-links a { border: 1px solid var(--borde); }
+        .hero { padding: 34px 18px 58px; }
+        .brand-lockup { align-items: flex-start; flex-direction: column; gap: 0.75rem; }
+        .logo-badge { width: min(220px, 100%); height: 82px; }
+        .toolbar,
+        .lesson-shell { width: 100%; border-radius: 0; margin-top: 0; }
+        .button { width: 100%; }
+        .pager { flex-direction: column; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-shell">
+      <nav class="site-nav" aria-label="Navegacion principal">
+        <a class="nav-logo" href="./index-wix.html?v=donate1">
+          <img src="./prfwb-logo-main-cropped.png" alt="PRFWB" />
+        </a>
+        <div class="nav-links">
+          <a href="./index-wix.html?v=donate1">Home</a>
+          <a href="./who-we-are.html?v=donate1">Who We Are</a>
+          
+          <a href="./eventos.html?v=donate1">Eventos</a>
+          <a class="active" href="./recursos-wix.html?v=donate1">Recursos</a>
+          <a href="./oracion-wix.html?v=donate1">Oración</a>
+          <a class="donate-link" href="https://donate.stripe.com/7sY6oJ7XVcLz5WI5Ie63K00" target="_blank" rel="noopener">Donar PRFWB</a>
+
+          <a href="./crece-wix.html?v=donate1">CRECE</a>
+        </div>
+      </nav>
+      <header class="hero">
+        <div class="brand-lockup">
+          <strong>Formacion Biblica Romanos 12</strong>
+        </div>
+        <span class="eyebrow">Escuela del Caracter</span>
+        <h1>Romanos 12: Una vida transformada</h1>
+        <p>
+          Cinco clases organizadas para leer, ensenar y trabajar en grupos pequenos, con acceso al PDF original de cada leccion.
+        </p>
+        <div class="hero-actions">
+          <a class="button" href="./recursos-wix.html?v=donate1">Volver a recursos</a>
+          <a id="downloadPdfBtn" class="button secondary" href="./files/romanos-12/01-una-vida-entregada-a-dios.pdf" target="_blank" rel="noopener">Descargar PDF</a>
+        </div>
+      </header>
+
+      <section class="toolbar" aria-label="Seleccion de clase">
+        <label>
+          Seleccionar clase
+          <select id="lessonSelect"></select>
+        </label>
+        <button id="prevBtn" class="button secondary" type="button">Anterior</button>
+        <button id="nextBtn" class="button" type="button">Siguiente</button>
+      </section>
+
+      <main class="lesson-shell">
+        <nav id="lessonNav" class="lesson-nav" aria-label="Clases"></nav>
+        <article id="lessonCard" class="lesson-card"></article>
+      </main>
+    </div>
+
+    <script src="./romanos-12-data.js?v=1"></script>
+    <script>
+      const lessons = window.romanos12Lessons || [];
+      const select = document.getElementById('lessonSelect');
+      const nav = document.getElementById('lessonNav');
+      const card = document.getElementById('lessonCard');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const downloadPdfBtn = document.getElementById('downloadPdfBtn');
+      let currentIndex = 0;
+
+      const headingLabels = new Set([
+        'Subtitulo',
+        'Subtítulo',
+        'Descripcion de la Clase',
+        'Descripción de la Clase',
+        'Texto Biblico Base',
+        'Texto Bíblico Base',
+        'TEXTO BASE',
+        'OBJETIVO',
+        'Pasajes de Apoyo',
+        'Para descubrir',
+        'Preguntas para conversar',
+        'Versiculo para Memorizar',
+        'Versículo para Memorizar',
+        'Objetivos de Aprendizaje (5 minutos)',
+        'Introduccion (5 minutos)',
+        'Introducción (5 minutos)',
+        'Ilustracion',
+        'Ilustración',
+        'Pregunta para Reflexionar',
+        'Idea Principal',
+        'Desarrollo del Contenido (25 minutos)',
+        'Aplicacion Practica (10 minutos)',
+        'Aplicación Práctica (10 minutos)',
+        'Materiales',
+        'Trabajo en grupos',
+        'Preguntas para Discusion',
+        'Preguntas para Discusión',
+        'Conclusion (5 minutos)',
+        'Conclusión (5 minutos)',
+        'Llamado Final',
+        'Tarea para la Semana',
+      ]);
+
+      const bulletLike = (text) =>
+        text.length < 95 &&
+        !/[.:?]$/.test(text) &&
+        !headingLabels.has(text) &&
+        !/^([IVX]+\.|\\d+\\.)\\s/.test(text);
+
+      const sectionClass = (heading) => {
+        const lower = heading.toLowerCase();
+        if (lower.includes('biblico') || lower.includes('bíblico') || lower.includes('versiculo') || lower.includes('versículo')) return 'scripture-box';
+        if (lower.includes('actividad') || lower.includes('aplicacion') || lower.includes('aplicación') || lower.includes('tarea')) return 'activity-box';
+        if (lower.includes('principio') || lower.includes('idea principal') || lower.includes('llamado')) return 'principle-box';
+        if (lower.includes('pregunta')) return 'question-box';
+        return '';
+      };
+
+      const escapeHtml = (text) =>
+        String(text).replace(/[&<>"']/g, (char) => ({
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#39;',
+        })[char]);
+
+      function renderParagraphs(paragraphs) {
+        let html = '';
+        let listItems = [];
+        let openBox = '';
+
+        const flushList = () => {
+          if (!listItems.length) return;
+          html += `<ul>${listItems.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`;
+          listItems = [];
+        };
+
+        const closeBox = () => {
+          flushList();
+          if (openBox) {
+            html += '</div>';
+            openBox = '';
+          }
+        };
+
+        paragraphs.forEach((text) => {
+          if (text === 'Subtítulo') return;
+          const isHeading = headingLabels.has(text) || /^([IVX]+\\.)\\s/.test(text);
+          if (isHeading) {
+            closeBox();
+            const box = sectionClass(text);
+            if (box) {
+              html += `<div class="${box}"><h3>${escapeHtml(text)}</h3>`;
+              openBox = box;
+            } else {
+              html += `<h3>${escapeHtml(text)}</h3>`;
+            }
+            return;
+          }
+
+          if (bulletLike(text)) {
+            listItems.push(text);
+            return;
+          }
+
+          flushList();
+          html += `<p>${escapeHtml(text)}</p>`;
+        });
+
+        closeBox();
+        return html;
+      }
+
+      function renderLesson(index) {
+        currentIndex = Math.max(0, Math.min(index, lessons.length - 1));
+        const lesson = lessons[currentIndex];
+        select.value = String(currentIndex);
+        prevBtn.disabled = currentIndex === 0;
+        nextBtn.disabled = currentIndex === lessons.length - 1;
+        if (downloadPdfBtn && lesson.pdfUrl) {
+          downloadPdfBtn.href = lesson.pdfUrl;
+          downloadPdfBtn.textContent = `Descargar PDF - ${lesson.label}`;
+        }
+
+        [...nav.querySelectorAll('button')].forEach((button, idx) => {
+          button.classList.toggle('active', idx === currentIndex);
+        });
+
+        card.innerHTML = `
+          <span class="lesson-meta">${escapeHtml(lesson.label)}</span>
+          <h2>${escapeHtml(lesson.title)}</h2>
+          ${lesson.subtitle ? `<p class="subtitle">${escapeHtml(lesson.subtitle)}</p>` : ''}
+          <div class="content-flow">${renderParagraphs(lesson.paragraphs)}</div>
+          <div class="pager">
+            <button class="button secondary" type="button" onclick="renderLesson(currentIndex - 1)" ${currentIndex === 0 ? 'disabled' : ''}>Anterior</button>
+            <button class="button" type="button" onclick="renderLesson(currentIndex + 1)" ${currentIndex === lessons.length - 1 ? 'disabled' : ''}>Siguiente</button>
+          </div>
+        `;
+      }
+
+      function init() {
+        select.innerHTML = lessons
+          .map((lesson, index) => `<option value="${index}">${escapeHtml(lesson.label)} - ${escapeHtml(lesson.title)}</option>`)
+          .join('');
+        nav.innerHTML = lessons
+          .map((lesson, index) => `<button type="button" data-index="${index}">${escapeHtml(lesson.label)}<br><small>${escapeHtml(lesson.title)}</small></button>`)
+          .join('');
+        nav.addEventListener('click', (event) => {
+          const button = event.target.closest('button[data-index]');
+          if (button) renderLesson(Number(button.dataset.index));
+        });
+        select.addEventListener('change', () => renderLesson(Number(select.value)));
+        prevBtn.addEventListener('click', () => renderLesson(currentIndex - 1));
+        nextBtn.addEventListener('click', () => renderLesson(currentIndex + 1));
+        renderLesson(0);
+      }
+
+      init();
+    </script>
+  </body>
+</html>
