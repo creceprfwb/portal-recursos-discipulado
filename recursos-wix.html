@@ -371,7 +371,6 @@
         justify-content: center;
         overflow-y: auto;
       }
-      .modal-overlay .modal-card { margin-top: 5vh; }
       .modal-overlay.active { display: flex; }
       .modal-card {
         width: min(480px, 100%);
@@ -624,6 +623,7 @@
         'Niños',
         'Liderazgo',
         'Recursos para líderes',
+        'Escuela del caracter',
         'Predicaciones',
         'Doctrina'
       ];
@@ -640,6 +640,7 @@
         'Niños': 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=900&q=80',
         'Liderazgo': 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80',
         'Recursos para líderes': 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=80',
+        'Escuela del caracter': 'https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&w=900&q=80',
         'Predicaciones': 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=900&q=80',
         'Doctrina': 'https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&w=900&q=80'
       };
@@ -653,13 +654,95 @@
         return resource.imageUrl || defaultResourceImages[category] || defaultResourceImages.Discipulado;
       }
 
-      const initialResources = [];
+      const roman12Resources = [
+        {
+          id: 'romanos-12-01-vida-entregada',
+          title: '01 - Una vida entregada a Dios',
+          description: 'Clase de la serie Escuela del caracter basada en Romanos 12. Recurso listo para abrir, estudiar y compartir.',
+          category: 'Escuela del caracter',
+          type: 'pdf',
+          author: 'Ministerio CRECE PRFWB',
+          fileUrl: './files/romanos-12/01-una-vida-entregada-a-dios.pdf',
+          externalUrl: '',
+          isFeatured: true,
+          isPublished: true,
+          displayOrder: 905,
+          createdAt: '2026-08-08'
+        },
+        {
+          id: 'romanos-12-02-humildad',
+          title: '02 - Una vida marcada por la humildad',
+          description: 'Leccion sobre la humildad cristiana y la manera en que Dios forma nuestro caracter para servir mejor.',
+          category: 'Escuela del caracter',
+          type: 'pdf',
+          author: 'Ministerio CRECE PRFWB',
+          fileUrl: './files/romanos-12/02-una-vida-marcada-por-la-humildad.pdf',
+          externalUrl: '',
+          isFeatured: true,
+          isPublished: true,
+          displayOrder: 904,
+          createdAt: '2026-08-08'
+        },
+        {
+          id: 'romanos-12-03-servicio-cuerpo',
+          title: '03 - Una vida al servicio del cuerpo',
+          description: 'Clase sobre los dones, el servicio y la importancia de edificar juntos el cuerpo de Cristo.',
+          category: 'Escuela del caracter',
+          type: 'pdf',
+          author: 'Ministerio CRECE PRFWB',
+          fileUrl: './files/romanos-12/03-una-vida-al-servicio-del-cuerpo.pdf',
+          externalUrl: '',
+          isFeatured: true,
+          isPublished: true,
+          displayOrder: 903,
+          createdAt: '2026-08-08'
+        },
+        {
+          id: 'romanos-12-04-amor-genuino',
+          title: '04 - Una vida de amor genuino',
+          description: 'Recurso para ensenar el amor sincero, practico y visible que debe distinguir al discipulo de Jesus.',
+          category: 'Escuela del caracter',
+          type: 'pdf',
+          author: 'Ministerio CRECE PRFWB',
+          fileUrl: './files/romanos-12/04-una-vida-de-amor-genuino.pdf',
+          externalUrl: '',
+          isFeatured: false,
+          isPublished: true,
+          displayOrder: 902,
+          createdAt: '2026-08-08'
+        },
+        {
+          id: 'romanos-12-05-vence-mal-bien',
+          title: '05 - Una vida que vence el mal con el bien',
+          description: 'Clase final de la serie con enfoque en responder al mal con el bien y vivir la fe con madurez.',
+          category: 'Escuela del caracter',
+          type: 'pdf',
+          author: 'Ministerio CRECE PRFWB',
+          fileUrl: './files/romanos-12/05-una-vida-que-vence-el-mal-con-el-bien.pdf',
+          externalUrl: '',
+          isFeatured: false,
+          isPublished: true,
+          displayOrder: 901,
+          createdAt: '2026-08-08'
+        }
+      ];
+      const initialResources = roman12Resources;
       const storageKey = 'discipulado-resources-v1';
       let resources = [];
 
+      function mergeSeedResources(sourceResources, seedResources) {
+        const existingIds = new Set(sourceResources.map((resource) => resource.id));
+        return [
+          ...sourceResources,
+          ...seedResources.filter((resource) => !existingIds.has(resource.id))
+        ];
+      }
+
       async function initializeResources() {
         const firebaseResources = await window.discipladoFirebase?.getResources?.();
-        resources = firebaseResources?.length ? firebaseResources : JSON.parse(localStorage.getItem(storageKey) || 'null') || initialResources;
+        const storedResources = JSON.parse(localStorage.getItem(storageKey) || 'null') || initialResources;
+        const sourceResources = firebaseResources?.length ? firebaseResources : storedResources;
+        resources = mergeSeedResources(sourceResources, roman12Resources);
         localStorage.setItem(storageKey, JSON.stringify(resources));
         renderPublicResources();
         populateForumResourceSelect();
@@ -686,7 +769,7 @@
       }
 
       function renderCategoryChips() {
-        const chips = ['Todas', 'Discipulado', 'Bautistas Libres', 'Niños', 'Jóvenes', 'Estudios bíblicos', 'Liderazgo', 'Nuevo creyente'];
+        const chips = ['Todas', 'Escuela del caracter', 'Discipulado', 'Bautistas Libres', 'Niños', 'Jóvenes', 'Estudios bíblicos', 'Liderazgo', 'Nuevo creyente'];
         els.categoryStrip.innerHTML = chips.map((category) => `
           <button class="category-chip${(!els.categoryFilter.value && category === 'Todas') || els.categoryFilter.value === category ? ' active' : ''}" data-category="${category === 'Todas' ? '' : category}">
             ${category}
@@ -795,6 +878,9 @@
         subscribeEls.message.className = 'forum-message';
         subscribeEls.message.textContent = '';
         subscribeEls.overlay.classList.add('active');
+        subscribeEls.overlay.scrollTop = 0;
+        window.scrollTo(0, 0);
+        setTimeout(() => subscribeEls.nameInput.focus(), 50);
       }
 
       function closeSubscribeModal() {
