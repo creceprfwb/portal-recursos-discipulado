@@ -204,29 +204,52 @@
         color: #24343a;
         font-weight: 700;
       }
-      .content-flow { display: grid; gap: 0.75rem; max-width: 900px; }
-      .content-flow h3 {
-        margin: 1rem 0 0.1rem;
-        color: #123d4f;
-        font-size: 1.15rem;
+      .lesson-top-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.8rem;
+        margin: 1rem 0 1.25rem;
       }
-      .content-flow p { margin: 0; color: #24343a; }
-      .content-flow ul,
-      .content-flow ol { margin: 0; padding-left: 1.4rem; color: #24343a; }
-      .content-flow li { margin: 0.25rem 0; }
-      .scripture-box,
-      .activity-box,
-      .principle-box,
-      .question-box {
+      .lesson-info-card {
+        min-height: 124px;
         padding: 1rem;
         border-radius: 8px;
         border: 1px solid #e5e2d4;
         background: #f8f5ea;
       }
-      .scripture-box { border-left: 4px solid #123d4f; }
-      .activity-box { border-left: 4px solid #ffca2f; }
-      .principle-box { border-left: 4px solid #e44b41; }
-      .question-box { background: #fff8df; }
+      .lesson-info-card strong {
+        display: block;
+        margin-bottom: 0.45rem;
+        color: #123d4f;
+        font-size: 0.78rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .lesson-info-card p { margin: 0; color: #24343a; }
+      .lesson-info-card.scripture { border-left: 5px solid #123d4f; }
+      .lesson-info-card.objective { border-left: 5px solid #ffca2f; }
+      .lesson-info-card.memory { border-left: 5px solid #e44b41; }
+      .content-flow { display: grid; gap: 1rem; max-width: 900px; }
+      .lesson-section {
+        padding: 1.05rem;
+        border-radius: 8px;
+        border: 1px solid #e5e2d4;
+        background: #ffffff;
+      }
+      .lesson-section h3 {
+        margin: 0 0 0.55rem;
+        color: #123d4f;
+        font-size: 1.12rem;
+      }
+      .lesson-section p { margin: 0.45rem 0 0; color: #24343a; }
+      .lesson-section ul { margin: 0.65rem 0 0; padding-left: 1.25rem; color: #24343a; }
+      .lesson-section li { margin: 0.28rem 0; }
+      .lesson-section.principle-box { border-left: 5px solid #e44b41; background: #fff8f4; }
+      .lesson-section.scripture-box { border-left: 5px solid #123d4f; background: #f8f5ea; }
+      .lesson-section.activity-box { border-left: 5px solid #ffca2f; background: #fffaf0; }
+      .lesson-section.question-box { border-left: 5px solid #078ca3; background: #f2fbfd; }
+      .lesson-section.home-box { border-left: 5px solid #21473f; background: #f2fbf5; }
+      .lesson-section.prayer-box { border-left: 5px solid #6b7280; background: #f8fafc; }
       .pager {
         display: flex;
         justify-content: space-between;
@@ -237,6 +260,7 @@
         .toolbar,
         .lesson-shell { grid-template-columns: 1fr; }
         .lesson-nav { display: none; }
+        .lesson-top-grid { grid-template-columns: 1fr; }
       }
       @media (max-width: 520px) {
         .page-shell { width: 100%; padding: 0 0 32px; }
@@ -301,7 +325,7 @@
       </main>
     </div>
 
-    <script src="./romanos-12-data.js?v=1"></script>
+    <script src="./romanos-12-data.js?v=2"></script>
     <script>
       const lessons = window.romanos12Lessons || [];
       const select = document.getElementById('lessonSelect');
@@ -370,6 +394,26 @@
           "'": '&#39;',
         })[char]);
 
+      function renderLessonOverview(lesson) {
+        return `
+          <div class="lesson-top-grid">
+            <div class="lesson-info-card scripture"><strong>Texto base</strong><p>${escapeHtml(lesson.textBase || 'Romanos 12')}</p></div>
+            <div class="lesson-info-card objective"><strong>Objetivo</strong><p>${escapeHtml(lesson.objective || '')}</p></div>
+            <div class="lesson-info-card memory"><strong>Versiculo clave</strong><p>${escapeHtml(lesson.memoryVerse || '')}</p></div>
+          </div>
+        `;
+      }
+
+      function renderSections(sections) {
+        return sections.map((section) => `
+          <section class="lesson-section ${sectionTypeClass(section.type)}">
+            <h3>${escapeHtml(section.title)}</h3>
+            ${(section.body || []).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('')}
+            ${section.bullets?.length ? `<ul>${section.bullets.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>` : ''}
+          </section>
+        `).join('');
+      }
+
       function renderParagraphs(paragraphs) {
         let html = '';
         let listItems = [];
@@ -436,7 +480,8 @@
           <span class="lesson-meta">${escapeHtml(lesson.label)}</span>
           <h2>${escapeHtml(lesson.title)}</h2>
           ${lesson.subtitle ? `<p class="subtitle">${escapeHtml(lesson.subtitle)}</p>` : ''}
-          <div class="content-flow">${renderParagraphs(lesson.paragraphs)}</div>
+          ${renderLessonOverview(lesson)}
+          <div class="content-flow">${lesson.sections ? renderSections(lesson.sections) : renderParagraphs(lesson.paragraphs)}</div>
           <div class="pager">
             <button class="button secondary" type="button" onclick="renderLesson(currentIndex - 1)" ${currentIndex === 0 ? 'disabled' : ''}>Anterior</button>
             <button class="button" type="button" onclick="renderLesson(currentIndex + 1)" ${currentIndex === lessons.length - 1 ? 'disabled' : ''}>Siguiente</button>
