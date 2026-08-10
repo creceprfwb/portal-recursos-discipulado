@@ -11,7 +11,7 @@
   7. Copia la URL terminada en /exec y pegala en la pagina de estacionamiento.
 */
 
-const CALENDAR_ID = 'primary';
+const CALENDAR_ID = 'jeeccalendario@gmail.com';
 const TIME_ZONE = 'America/Puerto_Rico';
 
 function doPost(e) {
