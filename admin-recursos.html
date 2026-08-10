@@ -822,7 +822,11 @@
           reject: { approved: false, status: 'rejected' }
         };
 
-        await window.discipladoFirebase?.updatePrayerRequest?.(id, patches[action]);
+        const updated = await window.discipladoFirebase?.updatePrayerRequest?.(id, patches[action]);
+        if (!updated) {
+          window.alert('No se pudo actualizar la petición. Tu sesión pudo haber expirado; cierra sesión y vuelve a entrar.');
+          return;
+        }
         await loadAdminPrayerRequests();
       });
 
@@ -836,17 +840,19 @@
         const post = forumPosts.find((item) => item.id === id);
         if (!post) return;
 
+        let ok = true;
+
         if (action === 'approve') {
-          await window.discipladoFirebase?.updateForumPost?.(id, { status: 'approved' });
+          ok = await window.discipladoFirebase?.updateForumPost?.(id, { status: 'approved' });
         }
 
         if (action === 'reject') {
-          await window.discipladoFirebase?.updateForumPost?.(id, { status: 'rejected' });
+          ok = await window.discipladoFirebase?.updateForumPost?.(id, { status: 'rejected' });
         }
 
         if (action === 'delete') {
           if (!window.confirm('¿Eliminar esta publicación?')) return;
-          await window.discipladoFirebase?.updateForumPost?.(id, { delete: true });
+          ok = await window.discipladoFirebase?.updateForumPost?.(id, { delete: true });
         }
 
         if (action === 'reply') {
@@ -859,9 +865,15 @@
             resourceId: post.resourceId,
             resourceTitle: post.resourceTitle
           });
+          ok = Boolean(newId);
           if (newId) {
-            await window.discipladoFirebase?.updateForumPost?.(newId, { status: 'approved' });
+            ok = await window.discipladoFirebase?.updateForumPost?.(newId, { status: 'approved' });
           }
+        }
+
+        if (!ok) {
+          window.alert('No se pudo completar la acción. Tu sesión pudo haber expirado; cierra sesión y vuelve a entrar.');
+          return;
         }
 
         await loadAdminForumPosts();

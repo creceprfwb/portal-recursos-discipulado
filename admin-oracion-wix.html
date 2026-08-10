@@ -617,7 +617,11 @@
           reject: { approved: false, status: 'rejected' }
         };
 
-        await window.discipladoFirebase?.updatePrayerRequest?.(id, patches[action]);
+        const updated = await window.discipladoFirebase?.updatePrayerRequest?.(id, patches[action]);
+        if (!updated) {
+          window.alert('No se pudo actualizar la petición. Tu sesión pudo haber expirado; cierra sesión y vuelve a entrar.');
+          return;
+        }
         await loadAdminPrayerRequests();
       });
 
