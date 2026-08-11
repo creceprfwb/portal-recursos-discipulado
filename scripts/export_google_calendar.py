@@ -75,7 +75,7 @@ def parse_events(lines):
             current = {}
             continue
         if line == "END:VEVENT":
-            if current and current.get("title") and current.get("date"):
+            if current and current.get("id") and current.get("title") and current.get("date"):
                 events.append(current)
             current = None
             continue
@@ -85,7 +85,9 @@ def parse_events(lines):
         key_part, value = line.split(":", 1)
         key = key_part.split(";")[0]
 
-        if key == "SUMMARY":
+        if key == "UID":
+            current["id"] = "gcal-" + re.sub(r"[^a-zA-Z0-9_-]", "-", value.strip())
+        elif key == "SUMMARY":
             current["title"] = unescape_text(value)
         elif key == "LOCATION":
             current["location"] = unescape_text(value)

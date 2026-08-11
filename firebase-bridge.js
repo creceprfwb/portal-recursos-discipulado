@@ -746,6 +746,34 @@
     }
   }
 
+  async function saveCalendarEvent(event) {
+    if (!event.id || !event.title || !event.date) {
+      return false;
+    }
+
+    if (!firebaseState.isConfigured || !firebaseState.db || !firebaseState.auth?.currentUser) {
+      return false;
+    }
+
+    try {
+      const { id, ...data } = event;
+      await firebaseState.db.collection('calendarEvents').doc(id).set({
+        title: data.title || '',
+        date: data.date || '',
+        start: data.start || '',
+        end: data.end || '',
+        location: data.location || '',
+        description: data.description || '',
+        category: data.category || 'General',
+        color: data.color || '#078ca3'
+      }, { merge: true });
+      return true;
+    } catch (error) {
+      console.warn('No se pudo guardar el evento del calendario:', error);
+      return false;
+    }
+  }
+
   async function updateCalendarEvent(id, patch) {
     if (!firebaseState.isConfigured || !firebaseState.db || !firebaseState.auth?.currentUser) {
       return false;
@@ -800,6 +828,7 @@
     deleteParkingAssignment,
     getCalendarEvents,
     createCalendarEvent,
+    saveCalendarEvent,
     updateCalendarEvent,
     deleteCalendarEvent,
     signIn,

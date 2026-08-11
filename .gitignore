@@ -13,3 +13,5 @@ work notes chats.docx
 Pagina de recursos_
 .DS_Store
 Thumbs.db
+__pycache__/
+eventos-import.json
