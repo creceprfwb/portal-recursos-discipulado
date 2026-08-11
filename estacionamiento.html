@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Calendario de Estacionamiento | PRFWB</title>
-  <meta name="description" content="Portal para administrar servidores de estacionamiento, asignaciones, WhatsApp y calendario.">
+  <meta name="description" content="Consulta quien sirve en estacionamiento cada semana y descarga el calendario.">
   <script>
     if (new URLSearchParams(window.location.search).get('embed') === '1') {
       document.documentElement.classList.add('embed-mode');
@@ -74,10 +74,11 @@
       width:min(1180px, calc(100% - 2rem));
       margin:auto;
       padding:54px 0 42px;
-      display:grid;
-      grid-template-columns:1.1fr .9fr;
+      display:flex;
+      flex-wrap:wrap;
       gap:28px;
       align-items:end;
+      justify-content:space-between;
     }
     .eyebrow {
       color:var(--dorado);
@@ -88,15 +89,17 @@
     }
     h1 { margin:12px 0 12px; font-size:clamp(36px, 6vw, 66px); line-height:1; }
     .hero p { max-width:680px; margin:0; color:#eaf6f8; font-size:18px; }
-    .hero-card {
-      padding:24px;
-      border:1px solid rgba(255,255,255,.22);
-      border-radius:14px;
-      background:rgba(255,255,255,.1);
-      box-shadow:var(--sombra);
+    .hero-action {
+      display:inline-flex;
+      align-items:center;
+      min-height:44px;
+      padding:10px 18px;
+      border-radius:999px;
+      background:rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.28);
+      color:var(--blanco);
+      font-weight:900;
     }
-    .hero-card strong { display:block; font-size:32px; line-height:1; }
-    .hero-card span { color:#eaf6f8; }
 
     .shell {
       width:min(1180px, calc(100% - 2rem));
@@ -137,19 +140,11 @@
     .btn.gold { background:var(--dorado); color:var(--azul-profundo); }
     .btn.light { background:#eef7f9; color:var(--azul-oscuro); border-color:var(--borde); }
     .btn.green { background:var(--verde); color:var(--blanco); }
-    .btn.danger { background:#fff1ef; color:var(--coral); border-color:#ffd5cf; }
     .btn.small { min-height:34px; padding:7px 10px; font-size:13px; border-radius:8px; }
 
-    .grid {
-      display:grid;
-      grid-template-columns:380px minmax(0, 1fr);
-      gap:18px;
-    }
     .card { padding:20px; }
     .card h2, .card h3 { margin:0 0 12px; line-height:1.15; }
     .muted { color:var(--texto); }
-    .error-text { color:var(--coral); font-weight:800; font-size:13px; }
-    .admin-only { display:none; }
 
     .stats {
       display:grid;
@@ -166,18 +161,6 @@
     }
     .stat strong { display:block; font-size:30px; line-height:1; }
     .stat span { color:var(--texto); font-size:13px; font-weight:800; }
-
-    form { display:grid; gap:12px; }
-    label { display:grid; gap:6px; font-size:13px; font-weight:900; }
-    input, select, textarea {
-      width:100%;
-      border:1px solid var(--borde);
-      border-radius:10px;
-      padding:11px 12px;
-      color:var(--azul-oscuro);
-      background:#fbfdfe;
-    }
-    textarea { min-height:76px; resize:vertical; }
 
     .section-title {
       display:flex;
@@ -232,7 +215,7 @@
     .pill.open { background:#fff1ef; color:var(--coral); }
     .pill.done { background:#eaf7ee; color:#236b3a; }
 
-    .assignment-list, .server-list, .uncovered-list {
+    .assignment-list, .uncovered-list {
       display:grid;
       gap:10px;
     }
@@ -260,7 +243,6 @@
     }
 
     @media (max-width:980px) {
-      .hero-inner, .grid { grid-template-columns:1fr; }
       .stats { grid-template-columns:repeat(2, minmax(0, 1fr)); }
       .calendar { gap:6px; }
       .day { min-height:92px; padding:7px; }
@@ -298,23 +280,18 @@
         <h1>Calendario de Estacionamiento</h1>
         <p>Consulta quien sirve cada semana, envia confirmaciones por WhatsApp y descarga el calendario desde un solo lugar.</p>
       </div>
-      <div class="hero-card">
-        <span>Proximo servicio</span>
-        <strong id="nextServiceText">Sin asignar</strong>
-      </div>
+      <a class="hero-action" href="./admin-estacionamiento.html">Panel admin</a>
     </div>
   </header>
 
   <main class="shell">
     <section class="toolbar" aria-label="Herramientas">
       <div>
-        <strong>Portal de asignaciones</strong>
-        <div class="muted">Los datos se comparten con todo el equipo. Inicia sesion abajo para crear o editar asignaciones.</div>
+        <strong>Horario de estacionamiento</strong>
+        <div class="muted">Para crear o editar asignaciones entra al panel admin.</div>
       </div>
       <div class="actions">
         <button class="btn light" type="button" id="backupBtn">Exportar data</button>
-        <label class="btn light admin-only" for="importFile">Importar data</label>
-        <input id="importFile" type="file" accept="application/json" hidden>
         <button class="btn gold" type="button" id="icsAllBtn">Exportar calendario .ics</button>
       </div>
     </section>
@@ -326,117 +303,31 @@
       <div class="stat"><strong id="statConfirmed">0</strong><span>Confirmados</span></div>
     </section>
 
-    <section class="grid">
-      <aside class="card">
-        <div class="section-title">
-          <h2>Panel de administracion</h2>
-          <button id="logoutButton" class="btn light small" type="button" style="display:none">Cerrar sesion</button>
+    <section class="card">
+      <div class="section-title">
+        <div>
+          <h2>Vista mensual</h2>
+          <div class="muted">Selecciona un dia para ver las asignaciones y enviar confirmaciones.</div>
         </div>
-        <p class="muted">Ver el horario no requiere iniciar sesion. Para crear o editar asignaciones, inicia sesion con tu cuenta de administrador.</p>
-
-        <div id="loginView">
-          <form id="loginForm">
-            <label>Correo
-              <input id="emailInput" type="email" required>
-            </label>
-            <label>Contrasena
-              <input id="passwordInput" type="password" required>
-            </label>
-            <button class="btn gold" type="submit">Iniciar sesion</button>
-            <p id="errorMessage" class="error-text"></p>
-          </form>
+        <div class="month-nav">
+          <button class="btn light small" type="button" id="prevMonth">Anterior</button>
+          <div class="month-title" id="monthTitle"></div>
+          <button class="btn light small" type="button" id="nextMonth">Siguiente</button>
         </div>
+      </div>
+      <div class="calendar" id="calendar"></div>
 
-        <div id="adminView" style="display:none">
-          <h2>Crear asignacion</h2>
-          <p class="muted">Registra el servicio y asigna servidor. Si no hay servidor todavia, queda marcado como sin cubrir.</p>
-
-          <form id="assignmentForm">
-            <label>Fecha
-              <input type="date" id="dateInput" required>
-            </label>
-            <div class="two">
-              <label>Hora inicio
-                <input type="time" id="startInput" value="09:00" required>
-              </label>
-              <label>Hora final
-                <input type="time" id="endInput" value="10:30" required>
-              </label>
-            </div>
-            <label>Servicio
-              <input id="serviceInput" value="Culto dominical" required>
-            </label>
-            <label>Area
-              <select id="roleInput">
-                <option>Entrada principal</option>
-                <option>Flujo de vehiculos</option>
-                <option>Seguridad peatonal</option>
-                <option>Coordinador</option>
-                <option>Apoyo general</option>
-              </select>
-            </label>
-            <label>Servidor
-              <select id="serverSelect"></select>
-            </label>
-            <label>Estado
-              <select id="statusInput">
-                <option value="open">Sin confirmar</option>
-                <option value="confirmed">Confirmado</option>
-                <option value="done">Completado</option>
-              </select>
-            </label>
-            <label>Notas
-              <textarea id="notesInput" placeholder="Ej. traer chaleco, llegar 20 minutos antes..."></textarea>
-            </label>
-            <input type="hidden" id="editingId">
-            <button class="btn gold" type="submit" id="saveAssignmentBtn">Guardar asignacion</button>
-          </form>
-
-          <hr style="border:0;border-top:1px solid var(--borde);margin:22px 0">
-
-          <h2>Servidores</h2>
-          <form id="serverForm">
-            <label>Nombre
-              <input id="serverName" placeholder="Nombre del servidor" required>
-            </label>
-            <label>WhatsApp
-              <input id="serverPhone" placeholder="7875551234" inputmode="tel">
-            </label>
-            <label>Notas de disponibilidad
-              <input id="serverNotes" placeholder="Ej. disponible domingos alternos">
-            </label>
-            <button class="btn" type="submit">Anadir servidor</button>
-          </form>
-          <div class="server-list" id="serverList" style="margin-top:14px"></div>
+      <div style="margin-top:22px" class="two">
+        <div>
+          <h3 id="selectedTitle">Asignaciones del dia</h3>
+          <div class="assignment-list" id="assignmentList"></div>
         </div>
-      </aside>
-
-      <section class="card">
-        <div class="section-title">
-          <div>
-            <h2>Vista mensual</h2>
-            <div class="muted">Selecciona un dia para ver, editar y enviar confirmaciones.</div>
-          </div>
-          <div class="month-nav">
-            <button class="btn light small" type="button" id="prevMonth">Anterior</button>
-            <div class="month-title" id="monthTitle"></div>
-            <button class="btn light small" type="button" id="nextMonth">Siguiente</button>
-          </div>
+        <div>
+          <h3>Servicios sin cubrir</h3>
+          <div class="notice">Todo servicio sin servidor o sin confirmar aparece aqui para que no se quede fuera.</div>
+          <div class="uncovered-list" id="uncoveredList"></div>
         </div>
-        <div class="calendar" id="calendar"></div>
-
-        <div style="margin-top:22px" class="two">
-          <div>
-            <h3 id="selectedTitle">Asignaciones del dia</h3>
-            <div class="assignment-list" id="assignmentList"></div>
-          </div>
-          <div>
-            <h3>Servicios sin cubrir</h3>
-            <div class="notice">Todo servicio sin servidor o sin confirmar aparece aqui para que no se quede fuera.</div>
-            <div class="uncovered-list" id="uncoveredList"></div>
-          </div>
-        </div>
-      </section>
+      </div>
     </section>
   </main>
 
@@ -446,17 +337,14 @@
   <script src="./firebase-config.js"></script>
   <script src="./firebase-bridge.js"></script>
   <script>
-    const authStorageKey = 'discipulado-admin-session-v1';
     const state = {
       monthCursor: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
       selectedDate: toDateInput(new Date()),
       servers: [],
-      assignments: [],
-      isAdmin: localStorage.getItem(authStorageKey) === 'authenticated'
+      assignments: []
     };
 
     const els = {
-      nextServiceText: document.getElementById('nextServiceText'),
       statServers: document.getElementById('statServers'),
       statMonth: document.getElementById('statMonth'),
       statOpen: document.getElementById('statOpen'),
@@ -465,28 +353,13 @@
       monthTitle: document.getElementById('monthTitle'),
       assignmentList: document.getElementById('assignmentList'),
       uncoveredList: document.getElementById('uncoveredList'),
-      selectedTitle: document.getElementById('selectedTitle'),
-      serverSelect: document.getElementById('serverSelect'),
-      serverList: document.getElementById('serverList'),
-      assignmentForm: document.getElementById('assignmentForm'),
-      serverForm: document.getElementById('serverForm'),
-      loginView: document.getElementById('loginView'),
-      adminView: document.getElementById('adminView'),
-      loginForm: document.getElementById('loginForm'),
-      emailInput: document.getElementById('emailInput'),
-      passwordInput: document.getElementById('passwordInput'),
-      logoutButton: document.getElementById('logoutButton'),
-      errorMessage: document.getElementById('errorMessage')
+      selectedTitle: document.getElementById('selectedTitle')
     };
 
     function toDateInput(date) {
       const d = new Date(date);
       d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
       return d.toISOString().slice(0, 10);
-    }
-
-    function uid(prefix) {
-      return `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
     }
 
     async function loadData() {
@@ -496,18 +369,7 @@
       ]);
       state.servers = servers || [];
       state.assignments = assignments || [];
-      document.getElementById('dateInput').value = state.selectedDate;
-      applyAdminVisibility();
       render();
-    }
-
-    function applyAdminVisibility() {
-      els.loginView.style.display = state.isAdmin ? 'none' : 'grid';
-      els.adminView.style.display = state.isAdmin ? 'grid' : 'none';
-      els.logoutButton.style.display = state.isAdmin ? 'inline-flex' : 'none';
-      document.querySelectorAll('.admin-only').forEach((el) => {
-        el.style.display = state.isAdmin ? 'inline-flex' : 'none';
-      });
     }
 
     function getServer(id) {
@@ -516,53 +378,22 @@
 
     function render() {
       renderStats();
-      renderServerOptions();
-      renderServers();
       renderCalendar();
       renderAssignments();
       renderUncovered();
     }
 
     function renderStats() {
-      const today = toDateInput(new Date());
-      const future = state.assignments
-        .filter((item) => item.date >= today)
-        .sort((a, b) => `${a.date} ${a.start}`.localeCompare(`${b.date} ${b.start}`));
-      const next = future[0];
       const currentMonth = state.monthCursor.getMonth();
       const currentYear = state.monthCursor.getFullYear();
       const monthItems = state.assignments.filter((item) => {
         const date = new Date(`${item.date}T00:00:00`);
         return date.getMonth() === currentMonth && date.getFullYear() === currentYear;
       });
-      els.nextServiceText.textContent = next ? `${formatDate(next.date)} ${next.start}` : 'Sin asignar';
       els.statServers.textContent = state.servers.length;
       els.statMonth.textContent = monthItems.length;
       els.statOpen.textContent = state.assignments.filter((item) => isOpen(item)).length;
       els.statConfirmed.textContent = state.assignments.filter((item) => item.status === 'confirmed').length;
-    }
-
-    function renderServerOptions() {
-      els.serverSelect.innerHTML = '<option value="">Sin servidor asignado</option>' + state.servers
-        .map((server) => `<option value="${server.id}">${escapeHtml(server.name)}</option>`)
-        .join('');
-    }
-
-    function renderServers() {
-      els.serverList.innerHTML = state.servers.map((server) => `
-        <div class="row">
-          <div class="row-head">
-            <div>
-              <div class="row-title">${escapeHtml(server.name)}</div>
-              <div class="muted">${escapeHtml(server.notes || 'Sin notas')}</div>
-            </div>
-            <div class="row-actions">
-              ${server.phone ? `<a class="btn green small" href="${whatsAppHref(server.phone, `Saludos ${server.name}, queremos confirmar tu disponibilidad para servir en estacionamiento.`)}" target="_blank" rel="noopener">WhatsApp</a>` : ''}
-              ${state.isAdmin ? `<button class="btn danger small" type="button" onclick="deleteServer('${server.id}')">Borrar</button>` : ''}
-            </div>
-          </div>
-        </div>
-      `).join('') || '<div class="muted">No hay servidores registrados.</div>';
     }
 
     function renderCalendar() {
@@ -622,8 +453,6 @@
           <div class="row-actions">
             ${server?.phone ? `<a class="btn green small" href="${whatsAppHref(server.phone, msg)}" target="_blank" rel="noopener">WhatsApp</a>` : ''}
             <button class="btn light small" type="button" onclick="downloadIcs('${item.id}')">.ics</button>
-            ${state.isAdmin ? `<button class="btn light small" type="button" onclick="editAssignment('${item.id}')">Editar</button>` : ''}
-            ${state.isAdmin ? `<button class="btn danger small" type="button" onclick="deleteAssignment('${item.id}')">Borrar</button>` : ''}
           </div>
         </article>
       `;
@@ -642,48 +471,6 @@
 
     function selectDate(dateKey) {
       state.selectedDate = dateKey;
-      document.getElementById('dateInput').value = dateKey;
-      render();
-    }
-
-    function editAssignment(id) {
-      const item = state.assignments.find((entry) => entry.id === id);
-      if (!item) return;
-      document.getElementById('editingId').value = item.id;
-      document.getElementById('dateInput').value = item.date;
-      document.getElementById('startInput').value = item.start;
-      document.getElementById('endInput').value = item.end;
-      document.getElementById('serviceInput').value = item.service;
-      document.getElementById('roleInput').value = item.role;
-      document.getElementById('serverSelect').value = item.serverId || '';
-      document.getElementById('statusInput').value = item.status;
-      document.getElementById('notesInput').value = item.notes || '';
-      document.getElementById('saveAssignmentBtn').textContent = 'Actualizar asignacion';
-      window.scrollTo({ top: 260, behavior: 'smooth' });
-    }
-
-    async function deleteAssignment(id) {
-      if (!confirm('Quieres borrar esta asignacion?')) return;
-      const ok = await window.discipladoFirebase?.deleteParkingAssignment?.(id);
-      if (!ok) {
-        alert('No se pudo borrar. Verifica que tu sesion siga activa.');
-        return;
-      }
-      state.assignments = state.assignments.filter((item) => item.id !== id);
-      render();
-    }
-
-    async function deleteServer(id) {
-      if (!confirm('Quieres borrar este servidor? Las asignaciones quedaran sin servidor.')) return;
-      const ok = await window.discipladoFirebase?.deleteParkingServer?.(id);
-      if (!ok) {
-        alert('No se pudo borrar. Verifica que tu sesion siga activa.');
-        return;
-      }
-      state.servers = state.servers.filter((server) => server.id !== id);
-      const affected = state.assignments.filter((item) => item.serverId === id);
-      state.assignments = state.assignments.map((item) => item.serverId === id ? { ...item, serverId: '' } : item);
-      await Promise.all(affected.map((item) => window.discipladoFirebase?.saveParkingAssignment?.({ ...item, serverId: '' })));
       render();
     }
 
@@ -754,81 +541,6 @@
       return String(value ?? '').replace(/\\/g, '\\\\').replace(/\n/g, '\\n').replace(/,/g, '\\,').replace(/;/g, '\\;');
     }
 
-    els.loginForm.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      const email = els.emailInput.value.trim();
-      const password = els.passwordInput.value.trim();
-      const ok = await window.discipladoFirebase?.signIn?.(email, password);
-      if (ok) {
-        state.isAdmin = true;
-        localStorage.setItem(authStorageKey, 'authenticated');
-        els.errorMessage.textContent = '';
-        applyAdminVisibility();
-        render();
-      } else {
-        els.errorMessage.textContent = 'Credenciales invalidas. Usa el usuario administrador de Firebase.';
-      }
-    });
-
-    els.logoutButton.addEventListener('click', async () => {
-      await window.discipladoFirebase?.signOut?.();
-      state.isAdmin = false;
-      localStorage.removeItem(authStorageKey);
-      applyAdminVisibility();
-      render();
-    });
-
-    els.assignmentForm.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      const id = document.getElementById('editingId').value || uid('asg');
-      const nextItem = {
-        id,
-        date: document.getElementById('dateInput').value,
-        start: document.getElementById('startInput').value,
-        end: document.getElementById('endInput').value,
-        service: document.getElementById('serviceInput').value.trim(),
-        role: document.getElementById('roleInput').value,
-        serverId: document.getElementById('serverSelect').value,
-        status: document.getElementById('statusInput').value,
-        notes: document.getElementById('notesInput').value.trim()
-      };
-      const ok = await window.discipladoFirebase?.saveParkingAssignment?.(nextItem);
-      if (!ok) {
-        alert('No se pudo guardar. Verifica que tu sesion siga activa.');
-        return;
-      }
-      const index = state.assignments.findIndex((item) => item.id === id);
-      if (index >= 0) state.assignments[index] = nextItem;
-      else state.assignments.push(nextItem);
-      state.selectedDate = nextItem.date;
-      els.assignmentForm.reset();
-      document.getElementById('dateInput').value = state.selectedDate;
-      document.getElementById('startInput').value = '09:00';
-      document.getElementById('endInput').value = '10:30';
-      document.getElementById('serviceInput').value = 'Culto dominical';
-      document.getElementById('editingId').value = '';
-      document.getElementById('saveAssignmentBtn').textContent = 'Guardar asignacion';
-      render();
-    });
-
-    els.serverForm.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      const server = {
-        id: uid('srv'),
-        name: document.getElementById('serverName').value.trim(),
-        phone: document.getElementById('serverPhone').value.trim(),
-        notes: document.getElementById('serverNotes').value.trim()
-      };
-      const ok = await window.discipladoFirebase?.saveParkingServer?.(server);
-      if (!ok) {
-        alert('No se pudo anadir. Verifica que tu sesion siga activa.');
-        return;
-      }
-      state.servers.push(server);
-      els.serverForm.reset();
-      render();
-    });
-
     document.getElementById('prevMonth').addEventListener('click', () => {
       state.monthCursor = new Date(state.monthCursor.getFullYear(), state.monthCursor.getMonth() - 1, 1);
       render();
@@ -851,29 +563,9 @@
       downloadText('calendario-estacionamiento-prfwb.ics', buildIcs(state.assignments), 'text/calendar');
     });
 
-    document.getElementById('importFile').addEventListener('change', async (event) => {
-      const file = event.target.files[0];
-      if (!file) return;
-      const data = JSON.parse(await file.text());
-      const servers = data.servers || [];
-      const assignments = data.assignments || [];
-      for (const server of servers) {
-        await window.discipladoFirebase?.saveParkingServer?.(server);
-      }
-      for (const assignment of assignments) {
-        await window.discipladoFirebase?.saveParkingAssignment?.(assignment);
-      }
-      event.target.value = '';
-      await loadData();
-    });
-
     window.selectDate = selectDate;
-    window.editAssignment = editAssignment;
-    window.deleteAssignment = deleteAssignment;
-    window.deleteServer = deleteServer;
     window.downloadIcs = downloadIcs;
 
-    applyAdminVisibility();
     loadData();
   </script>
 </body>

@@ -1,0 +1,824 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Estacionamiento | PRFWB</title>
+  <meta name="description" content="Panel para administrar servidores, asignaciones y confirmaciones de estacionamiento.">
+  <script>
+    if (new URLSearchParams(window.location.search).get('embed') === '1') {
+      document.documentElement.classList.add('embed-mode');
+    }
+  </script>
+  <style>
+    :root {
+      --azul:#078ca3;
+      --azul-oscuro:#12384d;
+      --azul-profundo:#0d2b3a;
+      --dorado:#f1c84b;
+      --verde:#5da56d;
+      --coral:#d95643;
+      --fondo:#f4f8fa;
+      --borde:#dbe7ec;
+      --texto:#526875;
+      --blanco:#ffffff;
+      --sombra:0 18px 50px rgba(13,43,58,.12);
+      font-family:Arial, Helvetica, sans-serif;
+    }
+
+    * { box-sizing:border-box; }
+    html, body { margin:0; background:var(--fondo); color:var(--azul-oscuro); line-height:1.55; }
+    body { min-height:100vh; }
+    button, input, select, textarea { font:inherit; }
+    a { color:inherit; text-decoration:none; }
+
+    .site-nav {
+      background:var(--blanco);
+      border-bottom:1px solid var(--borde);
+      position:sticky;
+      top:0;
+      z-index:20;
+    }
+    html.embed-mode .site-nav { display:none; }
+    .nav-inner {
+      width:min(1180px, calc(100% - 2rem));
+      margin:auto;
+      min-height:72px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+    }
+    .brand { display:flex; align-items:center; gap:10px; font-weight:900; }
+    .brand img { width:118px; height:44px; object-fit:contain; }
+    .tabs { display:flex; gap:8px; flex-wrap:wrap; }
+    .tabs a {
+      min-height:42px;
+      display:inline-flex;
+      align-items:center;
+      padding:9px 15px;
+      border-radius:999px;
+      color:var(--azul-oscuro);
+      font-size:14px;
+      font-weight:900;
+    }
+
+    .hero {
+      color:var(--blanco);
+      background:
+        radial-gradient(circle at 86% 20%, rgba(241,200,75,.22), transparent 26%),
+        linear-gradient(120deg, var(--azul-profundo), var(--azul-oscuro));
+    }
+    .hero-inner {
+      width:min(1180px, calc(100% - 2rem));
+      margin:auto;
+      padding:54px 0 42px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:18px;
+      align-items:end;
+      justify-content:space-between;
+    }
+    .eyebrow {
+      color:var(--dorado);
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:2px;
+      text-transform:uppercase;
+    }
+    h1 { margin:12px 0 12px; font-size:clamp(30px, 5vw, 50px); line-height:1; }
+    .hero p { max-width:560px; margin:0; color:#eaf6f8; font-size:16px; }
+    .hero-action {
+      display:inline-flex;
+      align-items:center;
+      min-height:44px;
+      padding:10px 18px;
+      border-radius:999px;
+      background:rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.28);
+      color:var(--blanco);
+      font-weight:900;
+    }
+
+    .shell {
+      width:min(1180px, calc(100% - 2rem));
+      margin:-24px auto 60px;
+      position:relative;
+      z-index:2;
+    }
+    .card {
+      background:var(--blanco);
+      border:1px solid var(--borde);
+      border-radius:12px;
+      box-shadow:var(--sombra);
+      padding:20px;
+    }
+    .card h2, .card h3 { margin:0 0 12px; line-height:1.15; }
+    .muted { color:var(--texto); }
+    .error-text { color:var(--coral); font-weight:800; font-size:13px; }
+
+    .btn {
+      min-height:42px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:10px 15px;
+      border:1px solid transparent;
+      border-radius:10px;
+      background:var(--azul-oscuro);
+      color:var(--blanco);
+      font-weight:900;
+      cursor:pointer;
+    }
+    .btn.gold { background:var(--dorado); color:var(--azul-profundo); }
+    .btn.light { background:#eef7f9; color:var(--azul-oscuro); border-color:var(--borde); }
+    .btn.green { background:var(--verde); color:var(--blanco); }
+    .btn.danger { background:#fff1ef; color:var(--coral); border-color:#ffd5cf; }
+    .btn.small { min-height:34px; padding:7px 10px; font-size:13px; border-radius:8px; }
+
+    .toolbar {
+      padding:16px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:18px;
+    }
+    .actions { display:flex; flex-wrap:wrap; gap:10px; }
+
+    .grid {
+      display:grid;
+      grid-template-columns:380px minmax(0, 1fr);
+      gap:18px;
+      margin-top:18px;
+    }
+
+    form { display:grid; gap:12px; }
+    label { display:grid; gap:6px; font-size:13px; font-weight:900; }
+    input, select, textarea {
+      width:100%;
+      border:1px solid var(--borde);
+      border-radius:10px;
+      padding:11px 12px;
+      color:var(--azul-oscuro);
+      background:#fbfdfe;
+    }
+    textarea { min-height:76px; resize:vertical; }
+    .two { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+
+    .section-title {
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:12px;
+    }
+    .month-nav { display:flex; align-items:center; gap:8px; }
+    .month-title { min-width:170px; text-align:center; font-weight:900; }
+
+    .calendar {
+      display:grid;
+      grid-template-columns:repeat(7, minmax(0, 1fr));
+      gap:8px;
+    }
+    .day-name {
+      color:var(--texto);
+      font-size:12px;
+      font-weight:900;
+      text-align:center;
+      text-transform:uppercase;
+    }
+    .day {
+      min-height:100px;
+      padding:9px;
+      border:1px solid var(--borde);
+      border-radius:10px;
+      background:#fbfdfe;
+      display:grid;
+      align-content:start;
+      gap:7px;
+      cursor:pointer;
+    }
+    .day.empty { background:transparent; border-color:transparent; cursor:default; }
+    .day.selected { outline:3px solid rgba(241,200,75,.7); background:#fffaf0; }
+    .day-number { font-weight:900; }
+    .pill {
+      display:inline-flex;
+      width:max-content;
+      max-width:100%;
+      padding:3px 8px;
+      border-radius:999px;
+      background:#eef7f9;
+      color:var(--azul-oscuro);
+      font-size:11px;
+      font-weight:900;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .pill.open { background:#fff1ef; color:var(--coral); }
+    .pill.done { background:#eaf7ee; color:#236b3a; }
+
+    .assignment-list, .server-list, .uncovered-list { display:grid; gap:10px; }
+    .row {
+      padding:12px;
+      border:1px solid var(--borde);
+      border-radius:10px;
+      background:#fbfdfe;
+      display:grid;
+      gap:8px;
+    }
+    .row-head { display:flex; justify-content:space-between; gap:12px; align-items:start; }
+    .row-title { font-weight:900; }
+    .row-actions { display:flex; gap:8px; flex-wrap:wrap; }
+    .notice {
+      padding:14px;
+      border-radius:12px;
+      background:#fff8db;
+      border:1px solid rgba(241,200,75,.6);
+      color:#6f5800;
+      font-weight:800;
+      margin-bottom:14px;
+    }
+
+    @media (max-width:980px) {
+      .grid { grid-template-columns:1fr; }
+      .calendar { gap:6px; }
+      .day { min-height:86px; padding:7px; }
+    }
+    @media (max-width:640px) {
+      .nav-inner, .toolbar, .section-title, .row-head { align-items:stretch; flex-direction:column; }
+      .tabs { width:100%; display:grid; grid-template-columns:1fr; }
+      .two { grid-template-columns:1fr; }
+      .calendar { grid-template-columns:1fr; }
+      .day-name, .day.empty { display:none; }
+      .actions, .row-actions, .month-nav { width:100%; }
+      .btn { width:100%; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav" aria-label="Navegacion principal">
+    <div class="nav-inner">
+      <a class="brand" href="./index.html">
+        <img src="./prfwb-logo-main-cropped.png" alt="PRFWB">
+      </a>
+      <div class="tabs">
+        <a href="./index.html">Inicio</a>
+        <a href="./estacionamiento.html">Estacionamiento</a>
+        <a href="./recursos.html">Recursos</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div>
+        <span class="eyebrow">Jesus es el Centro</span>
+        <h1>Panel de Estacionamiento</h1>
+        <p>Administra servidores, cubre cada servicio y prepara mensajes de confirmacion por WhatsApp.</p>
+      </div>
+      <a class="hero-action" href="./estacionamiento.html">Volver al calendario</a>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="card">
+      <div class="section-title">
+        <h2>Acceso administrativo</h2>
+        <button id="logoutButton" class="btn light small" type="button" style="display:none">Cerrar sesion</button>
+      </div>
+
+      <div id="loginView">
+        <p class="muted">Inicia sesion con tu cuenta de administrador de Firebase para gestionar el estacionamiento.</p>
+        <form id="loginForm" style="max-width:360px">
+          <label>Correo
+            <input id="emailInput" type="email" required>
+          </label>
+          <label>Contrasena
+            <input id="passwordInput" type="password" required>
+          </label>
+          <button class="btn gold" type="submit">Iniciar sesion</button>
+          <p id="errorMessage" class="error-text"></p>
+        </form>
+      </div>
+    </section>
+
+    <div id="adminView" style="display:none">
+      <section class="toolbar" aria-label="Herramientas" style="margin-top:18px">
+        <div>
+          <strong>Portal de asignaciones</strong>
+          <div class="muted">Los datos se comparten con todo el equipo en tiempo real.</div>
+        </div>
+        <div class="actions">
+          <button class="btn light" type="button" id="backupBtn">Exportar data</button>
+          <label class="btn light" for="importFile">Importar data</label>
+          <input id="importFile" type="file" accept="application/json" hidden>
+          <button class="btn gold" type="button" id="icsAllBtn">Exportar calendario .ics</button>
+        </div>
+      </section>
+
+      <section class="grid">
+        <aside class="card">
+          <h2>Crear asignacion</h2>
+          <p class="muted">Registra el servicio y asigna servidor. Si no hay servidor todavia, queda marcado como sin cubrir.</p>
+
+          <form id="assignmentForm">
+            <label>Fecha
+              <input type="date" id="dateInput" required>
+            </label>
+            <div class="two">
+              <label>Hora inicio
+                <input type="time" id="startInput" value="09:00" required>
+              </label>
+              <label>Hora final
+                <input type="time" id="endInput" value="10:30" required>
+              </label>
+            </div>
+            <label>Servicio
+              <input id="serviceInput" value="Culto dominical" required>
+            </label>
+            <label>Area
+              <select id="roleInput">
+                <option>Entrada principal</option>
+                <option>Flujo de vehiculos</option>
+                <option>Seguridad peatonal</option>
+                <option>Coordinador</option>
+                <option>Apoyo general</option>
+              </select>
+            </label>
+            <label>Servidor
+              <select id="serverSelect"></select>
+            </label>
+            <label>Estado
+              <select id="statusInput">
+                <option value="open">Sin confirmar</option>
+                <option value="confirmed">Confirmado</option>
+                <option value="done">Completado</option>
+              </select>
+            </label>
+            <label>Notas
+              <textarea id="notesInput" placeholder="Ej. traer chaleco, llegar 20 minutos antes..."></textarea>
+            </label>
+            <input type="hidden" id="editingId">
+            <button class="btn gold" type="submit" id="saveAssignmentBtn">Guardar asignacion</button>
+          </form>
+
+          <hr style="border:0;border-top:1px solid var(--borde);margin:22px 0">
+
+          <h2>Servidores</h2>
+          <form id="serverForm">
+            <label>Nombre
+              <input id="serverName" placeholder="Nombre del servidor" required>
+            </label>
+            <label>WhatsApp
+              <input id="serverPhone" placeholder="7875551234" inputmode="tel">
+            </label>
+            <label>Notas de disponibilidad
+              <input id="serverNotes" placeholder="Ej. disponible domingos alternos">
+            </label>
+            <button class="btn" type="submit">Anadir servidor</button>
+          </form>
+          <div class="server-list" id="serverList" style="margin-top:14px"></div>
+        </aside>
+
+        <section class="card">
+          <div class="section-title">
+            <div>
+              <h2>Vista mensual</h2>
+              <div class="muted">Selecciona un dia para ver, editar y enviar confirmaciones.</div>
+            </div>
+            <div class="month-nav">
+              <button class="btn light small" type="button" id="prevMonth">Anterior</button>
+              <div class="month-title" id="monthTitle"></div>
+              <button class="btn light small" type="button" id="nextMonth">Siguiente</button>
+            </div>
+          </div>
+          <div class="calendar" id="calendar"></div>
+
+          <div style="margin-top:22px" class="two">
+            <div>
+              <h3 id="selectedTitle">Asignaciones del dia</h3>
+              <div class="assignment-list" id="assignmentList"></div>
+            </div>
+            <div>
+              <h3>Servicios sin cubrir</h3>
+              <div class="notice">Todo servicio sin servidor o sin confirmar aparece aqui para que no se quede fuera.</div>
+              <div class="uncovered-list" id="uncoveredList"></div>
+            </div>
+          </div>
+        </section>
+      </section>
+    </div>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="./firebase-config.js"></script>
+  <script src="./firebase-bridge.js"></script>
+  <script>
+    const authStorageKey = 'discipulado-admin-session-v1';
+    const state = {
+      monthCursor: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+      selectedDate: toDateInput(new Date()),
+      servers: [],
+      assignments: [],
+      isAdmin: localStorage.getItem(authStorageKey) === 'authenticated'
+    };
+
+    const els = {
+      loginView: document.getElementById('loginView'),
+      adminView: document.getElementById('adminView'),
+      loginForm: document.getElementById('loginForm'),
+      emailInput: document.getElementById('emailInput'),
+      passwordInput: document.getElementById('passwordInput'),
+      logoutButton: document.getElementById('logoutButton'),
+      errorMessage: document.getElementById('errorMessage'),
+      calendar: document.getElementById('calendar'),
+      monthTitle: document.getElementById('monthTitle'),
+      assignmentList: document.getElementById('assignmentList'),
+      uncoveredList: document.getElementById('uncoveredList'),
+      selectedTitle: document.getElementById('selectedTitle'),
+      serverSelect: document.getElementById('serverSelect'),
+      serverList: document.getElementById('serverList'),
+      assignmentForm: document.getElementById('assignmentForm'),
+      serverForm: document.getElementById('serverForm')
+    };
+
+    function toDateInput(date) {
+      const d = new Date(date);
+      d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+      return d.toISOString().slice(0, 10);
+    }
+
+    function uid(prefix) {
+      return `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    }
+
+    async function loadData() {
+      const [servers, assignments] = await Promise.all([
+        window.discipladoFirebase?.getParkingServers?.(),
+        window.discipladoFirebase?.getParkingAssignments?.()
+      ]);
+      state.servers = servers || [];
+      state.assignments = assignments || [];
+      document.getElementById('dateInput').value = state.selectedDate;
+      render();
+    }
+
+    function applyAdminVisibility() {
+      els.loginView.style.display = state.isAdmin ? 'none' : 'block';
+      els.adminView.style.display = state.isAdmin ? 'block' : 'none';
+      els.logoutButton.style.display = state.isAdmin ? 'inline-flex' : 'none';
+    }
+
+    function getServer(id) {
+      return state.servers.find((server) => server.id === id);
+    }
+
+    function render() {
+      renderServerOptions();
+      renderServers();
+      renderCalendar();
+      renderAssignments();
+      renderUncovered();
+    }
+
+    function renderServerOptions() {
+      els.serverSelect.innerHTML = '<option value="">Sin servidor asignado</option>' + state.servers
+        .map((server) => `<option value="${server.id}">${escapeHtml(server.name)}</option>`)
+        .join('');
+    }
+
+    function renderServers() {
+      els.serverList.innerHTML = state.servers.map((server) => `
+        <div class="row">
+          <div class="row-head">
+            <div>
+              <div class="row-title">${escapeHtml(server.name)}</div>
+              <div class="muted">${escapeHtml(server.notes || 'Sin notas')}</div>
+            </div>
+            <div class="row-actions">
+              ${server.phone ? `<a class="btn green small" href="${whatsAppHref(server.phone, `Saludos ${server.name}, queremos confirmar tu disponibilidad para servir en estacionamiento.`)}" target="_blank" rel="noopener">WhatsApp</a>` : ''}
+              <button class="btn danger small" type="button" onclick="deleteServer('${server.id}')">Borrar</button>
+            </div>
+          </div>
+        </div>
+      `).join('') || '<div class="muted">No hay servidores registrados.</div>';
+    }
+
+    function renderCalendar() {
+      const year = state.monthCursor.getFullYear();
+      const month = state.monthCursor.getMonth();
+      const firstDay = new Date(year, month, 1);
+      const lastDay = new Date(year, month + 1, 0);
+      const startOffset = firstDay.getDay();
+      const names = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'];
+      els.monthTitle.textContent = firstDay.toLocaleDateString('es-PR', { month:'long', year:'numeric' });
+      let html = names.map((name) => `<div class="day-name">${name}</div>`).join('');
+      for (let i = 0; i < startOffset; i += 1) html += '<div class="day empty"></div>';
+      for (let day = 1; day <= lastDay.getDate(); day += 1) {
+        const dateKey = toDateInput(new Date(year, month, day));
+        const items = state.assignments.filter((item) => item.date === dateKey);
+        const selected = dateKey === state.selectedDate ? ' selected' : '';
+        html += `
+          <button class="day${selected}" type="button" onclick="selectDate('${dateKey}')">
+            <span class="day-number">${day}</span>
+            ${items.slice(0, 3).map((item) => `<span class="pill ${item.status === 'done' ? 'done' : isOpen(item) ? 'open' : ''}">${escapeHtml(item.role)}</span>`).join('')}
+            ${items.length > 3 ? `<span class="pill">+${items.length - 3}</span>` : ''}
+          </button>
+        `;
+      }
+      els.calendar.innerHTML = html;
+    }
+
+    function renderAssignments() {
+      const items = state.assignments
+        .filter((item) => item.date === state.selectedDate)
+        .sort((a, b) => a.start.localeCompare(b.start));
+      els.selectedTitle.textContent = `Asignaciones de ${formatDate(state.selectedDate)}`;
+      els.assignmentList.innerHTML = items.map(renderAssignmentRow).join('') || '<div class="muted">No hay asignaciones para este dia.</div>';
+    }
+
+    function renderUncovered() {
+      const items = state.assignments
+        .filter(isOpen)
+        .sort((a, b) => `${a.date} ${a.start}`.localeCompare(`${b.date} ${b.start}`));
+      els.uncoveredList.innerHTML = items.map(renderAssignmentRow).join('') || '<div class="muted">Todo esta cubierto.</div>';
+    }
+
+    function renderAssignmentRow(item) {
+      const server = getServer(item.serverId);
+      const serverName = server ? server.name : 'Sin servidor';
+      const msg = `Saludos ${serverName}. Confirmamos tu asignacion de estacionamiento: ${item.service}, ${formatDate(item.date)} de ${item.start} a ${item.end}. Area: ${item.role}. Gracias por servir.`;
+      return `
+        <article class="row">
+          <div class="row-head">
+            <div>
+              <div class="row-title">${escapeHtml(item.service)} - ${escapeHtml(item.role)}</div>
+              <div class="muted">${formatDate(item.date)} | ${escapeHtml(item.start)}-${escapeHtml(item.end)} | ${escapeHtml(serverName)}</div>
+              ${item.notes ? `<div>${escapeHtml(item.notes)}</div>` : ''}
+            </div>
+            <span class="pill ${item.status === 'done' ? 'done' : isOpen(item) ? 'open' : ''}">${statusLabel(item)}</span>
+          </div>
+          <div class="row-actions">
+            ${server?.phone ? `<a class="btn green small" href="${whatsAppHref(server.phone, msg)}" target="_blank" rel="noopener">WhatsApp</a>` : ''}
+            <button class="btn light small" type="button" onclick="downloadIcs('${item.id}')">.ics</button>
+            <button class="btn light small" type="button" onclick="editAssignment('${item.id}')">Editar</button>
+            <button class="btn danger small" type="button" onclick="deleteAssignment('${item.id}')">Borrar</button>
+          </div>
+        </article>
+      `;
+    }
+
+    function isOpen(item) {
+      return !item.serverId || item.status === 'open';
+    }
+
+    function statusLabel(item) {
+      if (!item.serverId) return 'Sin servidor';
+      if (item.status === 'confirmed') return 'Confirmado';
+      if (item.status === 'done') return 'Completado';
+      return 'Sin confirmar';
+    }
+
+    function selectDate(dateKey) {
+      state.selectedDate = dateKey;
+      document.getElementById('dateInput').value = dateKey;
+      render();
+    }
+
+    function editAssignment(id) {
+      const item = state.assignments.find((entry) => entry.id === id);
+      if (!item) return;
+      document.getElementById('editingId').value = item.id;
+      document.getElementById('dateInput').value = item.date;
+      document.getElementById('startInput').value = item.start;
+      document.getElementById('endInput').value = item.end;
+      document.getElementById('serviceInput').value = item.service;
+      document.getElementById('roleInput').value = item.role;
+      document.getElementById('serverSelect').value = item.serverId || '';
+      document.getElementById('statusInput').value = item.status;
+      document.getElementById('notesInput').value = item.notes || '';
+      document.getElementById('saveAssignmentBtn').textContent = 'Actualizar asignacion';
+      window.scrollTo({ top: 260, behavior: 'smooth' });
+    }
+
+    async function deleteAssignment(id) {
+      if (!confirm('Quieres borrar esta asignacion?')) return;
+      const ok = await window.discipladoFirebase?.deleteParkingAssignment?.(id);
+      if (!ok) {
+        alert('No se pudo borrar. Verifica que tu sesion siga activa.');
+        return;
+      }
+      state.assignments = state.assignments.filter((item) => item.id !== id);
+      render();
+    }
+
+    async function deleteServer(id) {
+      if (!confirm('Quieres borrar este servidor? Las asignaciones quedaran sin servidor.')) return;
+      const ok = await window.discipladoFirebase?.deleteParkingServer?.(id);
+      if (!ok) {
+        alert('No se pudo borrar. Verifica que tu sesion siga activa.');
+        return;
+      }
+      state.servers = state.servers.filter((server) => server.id !== id);
+      const affected = state.assignments.filter((item) => item.serverId === id);
+      state.assignments = state.assignments.map((item) => item.serverId === id ? { ...item, serverId: '' } : item);
+      await Promise.all(affected.map((item) => window.discipladoFirebase?.saveParkingAssignment?.({ ...item, serverId: '' })));
+      render();
+    }
+
+    function formatDate(dateKey) {
+      return new Date(`${dateKey}T00:00:00`).toLocaleDateString('es-PR', {
+        weekday:'short',
+        day:'numeric',
+        month:'short'
+      });
+    }
+
+    function whatsAppHref(phone, message) {
+      const clean = String(phone || '').replace(/\D/g, '');
+      const withCountry = clean.length === 10 ? `1${clean}` : clean;
+      return `https://wa.me/${withCountry}?text=${encodeURIComponent(message)}`;
+    }
+
+    function calendarStamp(date, time) {
+      return `${date.replaceAll('-', '')}T${time.replace(':', '')}00`;
+    }
+
+    function buildIcs(items) {
+      const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//PRFWB//Estacionamiento//ES'];
+      items.forEach((item) => {
+        const server = getServer(item.serverId);
+        lines.push(
+          'BEGIN:VEVENT',
+          `UID:${item.id}@prfwb`,
+          `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0]}Z`,
+          `DTSTART:${calendarStamp(item.date, item.start)}`,
+          `DTEND:${calendarStamp(item.date, item.end)}`,
+          `SUMMARY:${escapeIcs(`Estacionamiento - ${item.service}`)}`,
+          `LOCATION:${escapeIcs('Jesus es el Centro')}`,
+          `DESCRIPTION:${escapeIcs(`${item.role}\\nServidor: ${server?.name || 'Sin asignar'}\\nNotas: ${item.notes || ''}`)}`,
+          'END:VEVENT'
+        );
+      });
+      lines.push('END:VCALENDAR');
+      return lines.join('\r\n');
+    }
+
+    function downloadText(filename, content, type) {
+      const blob = new Blob([content], { type });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function downloadIcs(id) {
+      const item = state.assignments.find((entry) => entry.id === id);
+      if (item) downloadText(`estacionamiento-${item.date}.ics`, buildIcs([item]), 'text/calendar');
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>"']/g, (char) => ({
+        '&':'&amp;',
+        '<':'&lt;',
+        '>':'&gt;',
+        '"':'&quot;',
+        "'":'&#039;'
+      }[char]));
+    }
+
+    function escapeIcs(value) {
+      return String(value ?? '').replace(/\\/g, '\\\\').replace(/\n/g, '\\n').replace(/,/g, '\\,').replace(/;/g, '\\;');
+    }
+
+    els.loginForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const email = els.emailInput.value.trim();
+      const password = els.passwordInput.value.trim();
+      const ok = await window.discipladoFirebase?.signIn?.(email, password);
+      if (ok) {
+        state.isAdmin = true;
+        localStorage.setItem(authStorageKey, 'authenticated');
+        els.errorMessage.textContent = '';
+        applyAdminVisibility();
+        loadData();
+      } else {
+        els.errorMessage.textContent = 'Credenciales invalidas. Usa el usuario administrador de Firebase.';
+      }
+    });
+
+    els.logoutButton.addEventListener('click', async () => {
+      await window.discipladoFirebase?.signOut?.();
+      state.isAdmin = false;
+      localStorage.removeItem(authStorageKey);
+      applyAdminVisibility();
+    });
+
+    els.assignmentForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const id = document.getElementById('editingId').value || uid('asg');
+      const nextItem = {
+        id,
+        date: document.getElementById('dateInput').value,
+        start: document.getElementById('startInput').value,
+        end: document.getElementById('endInput').value,
+        service: document.getElementById('serviceInput').value.trim(),
+        role: document.getElementById('roleInput').value,
+        serverId: document.getElementById('serverSelect').value,
+        status: document.getElementById('statusInput').value,
+        notes: document.getElementById('notesInput').value.trim()
+      };
+      const ok = await window.discipladoFirebase?.saveParkingAssignment?.(nextItem);
+      if (!ok) {
+        alert('No se pudo guardar. Verifica que tu sesion siga activa.');
+        return;
+      }
+      const index = state.assignments.findIndex((item) => item.id === id);
+      if (index >= 0) state.assignments[index] = nextItem;
+      else state.assignments.push(nextItem);
+      state.selectedDate = nextItem.date;
+      els.assignmentForm.reset();
+      document.getElementById('dateInput').value = state.selectedDate;
+      document.getElementById('startInput').value = '09:00';
+      document.getElementById('endInput').value = '10:30';
+      document.getElementById('serviceInput').value = 'Culto dominical';
+      document.getElementById('editingId').value = '';
+      document.getElementById('saveAssignmentBtn').textContent = 'Guardar asignacion';
+      render();
+    });
+
+    els.serverForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const server = {
+        id: uid('srv'),
+        name: document.getElementById('serverName').value.trim(),
+        phone: document.getElementById('serverPhone').value.trim(),
+        notes: document.getElementById('serverNotes').value.trim()
+      };
+      const ok = await window.discipladoFirebase?.saveParkingServer?.(server);
+      if (!ok) {
+        alert('No se pudo anadir. Verifica que tu sesion siga activa.');
+        return;
+      }
+      state.servers.push(server);
+      els.serverForm.reset();
+      render();
+    });
+
+    document.getElementById('prevMonth').addEventListener('click', () => {
+      state.monthCursor = new Date(state.monthCursor.getFullYear(), state.monthCursor.getMonth() - 1, 1);
+      render();
+    });
+
+    document.getElementById('nextMonth').addEventListener('click', () => {
+      state.monthCursor = new Date(state.monthCursor.getFullYear(), state.monthCursor.getMonth() + 1, 1);
+      render();
+    });
+
+    document.getElementById('backupBtn').addEventListener('click', () => {
+      downloadText('respaldo-estacionamiento-prfwb.json', JSON.stringify({
+        exportedAt: new Date().toISOString(),
+        servers: state.servers,
+        assignments: state.assignments
+      }, null, 2), 'application/json');
+    });
+
+    document.getElementById('icsAllBtn').addEventListener('click', () => {
+      downloadText('calendario-estacionamiento-prfwb.ics', buildIcs(state.assignments), 'text/calendar');
+    });
+
+    document.getElementById('importFile').addEventListener('change', async (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+      const data = JSON.parse(await file.text());
+      const servers = data.servers || [];
+      const assignments = data.assignments || [];
+      for (const server of servers) {
+        await window.discipladoFirebase?.saveParkingServer?.(server);
+      }
+      for (const assignment of assignments) {
+        await window.discipladoFirebase?.saveParkingAssignment?.(assignment);
+      }
+      event.target.value = '';
+      await loadData();
+    });
+
+    window.selectDate = selectDate;
+    window.editAssignment = editAssignment;
+    window.deleteAssignment = deleteAssignment;
+    window.deleteServer = deleteServer;
+    window.downloadIcs = downloadIcs;
+
+    applyAdminVisibility();
+    if (state.isAdmin) loadData();
+  </script>
+</body>
+</html>
