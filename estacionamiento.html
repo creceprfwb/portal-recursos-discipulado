@@ -309,6 +309,19 @@
       <div class="stat"><strong id="statConfirmed">0</strong><span>Confirmados</span></div>
     </section>
 
+    <section class="card" style="margin-bottom:18px">
+      <div class="two">
+        <div>
+          <h3>Proximos 3 asignados</h3>
+          <div class="assignment-list" id="nextAssignedList"></div>
+        </div>
+        <div>
+          <h3>Proximos 3 libres</h3>
+          <div class="uncovered-list" id="nextOpenList"></div>
+        </div>
+      </div>
+    </section>
+
     <section class="card">
       <div class="section-title">
         <div>
@@ -363,7 +376,9 @@
       monthTitle: document.getElementById('monthTitle'),
       assignmentList: document.getElementById('assignmentList'),
       uncoveredList: document.getElementById('uncoveredList'),
-      selectedTitle: document.getElementById('selectedTitle')
+      selectedTitle: document.getElementById('selectedTitle'),
+      nextAssignedList: document.getElementById('nextAssignedList'),
+      nextOpenList: document.getElementById('nextOpenList')
     };
 
     function toDateInput(date) {
@@ -391,6 +406,7 @@
       renderCalendar();
       renderAssignments();
       renderUncovered();
+      renderNextThree();
     }
 
     function renderStats() {
@@ -444,6 +460,19 @@
         .filter(isOpen)
         .sort((a, b) => `${a.date} ${a.start}`.localeCompare(`${b.date} ${b.start}`));
       els.uncoveredList.innerHTML = items.map(renderAssignmentRow).join('') || '<div class="muted">Todo esta cubierto.</div>';
+    }
+
+    function renderNextThree() {
+      const today = toDateInput(new Date());
+      const upcoming = state.assignments
+        .filter((item) => item.date >= today)
+        .sort((a, b) => `${a.date} ${a.start}`.localeCompare(`${b.date} ${b.start}`));
+
+      const nextAssigned = upcoming.filter((item) => !isOpen(item)).slice(0, 3);
+      const nextOpen = upcoming.filter(isOpen).slice(0, 3);
+
+      els.nextAssignedList.innerHTML = nextAssigned.map(renderAssignmentRow).join('') || '<div class="muted">No hay proximas asignaciones cubiertas.</div>';
+      els.nextOpenList.innerHTML = nextOpen.map(renderAssignmentRow).join('') || '<div class="muted">No hay servicios sin cubrir proximos.</div>';
     }
 
     function renderAssignmentRow(item) {
