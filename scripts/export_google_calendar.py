@@ -128,8 +128,6 @@ def parse_raw_events(lines):
 
 
 def build_event(raw, start_dt: datetime, end_dt: datetime, event_id: str, is_recurring: bool) -> dict:
-    description = raw.get("description", "")
-    link = description if re.fullmatch(r"https?://\S+", description.strip()) else ""
     return {
         "id": event_id,
         "title": raw.get("title", ""),
@@ -137,8 +135,8 @@ def build_event(raw, start_dt: datetime, end_dt: datetime, event_id: str, is_rec
         "start": start_dt.strftime("%H:%M") if raw.get("has_time", True) else "",
         "end": end_dt.strftime("%H:%M") if raw.get("has_time", True) else "",
         "location": raw.get("location", ""),
-        "description": description,
-        "link": link,
+        "description": raw.get("description", ""),
+        "link": "",
         "isRecurring": is_recurring,
     }
 
