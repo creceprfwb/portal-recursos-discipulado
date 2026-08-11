@@ -26,6 +26,7 @@
         color: var(--ink);
         line-height: 1.55;
       }
+      button, input { font: inherit; }
       a { color: inherit; text-decoration: none; }
       .calendar-wrap {
         width: 100%;
@@ -70,7 +71,9 @@
       p { margin: 0; color: var(--muted); font-size: 16px; }
       .actions {
         display: flex;
+        flex-wrap: wrap;
         justify-content: center;
+        gap: 10px;
         margin: 18px 0;
       }
       .btn {
@@ -79,14 +82,13 @@
         align-items: center;
         justify-content: center;
         padding: 12px 22px;
-        border-radius: 999px;
         border: 1px solid rgba(18, 56, 77, .18);
-        background: #f1c84b;
-        color: var(--deep);
+        border-radius: 999px;
         font-size: 14px;
         font-weight: 900;
-        box-shadow: 0 14px 28px rgba(199, 145, 43, .24);
       }
+      .btn.primary { background: #f1c84b; color: var(--deep); box-shadow: 0 14px 28px rgba(199, 145, 43, .24); }
+      .btn.ghost { background: var(--white); color: var(--deep); }
       .calendar-card {
         overflow: hidden;
         padding: 18px;
@@ -95,24 +97,73 @@
         background: var(--white);
         box-shadow: var(--shadow);
       }
-      .calendar-frame {
-        width: 100%;
-        height: 680px;
+      .section-title {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 14px;
+        flex-wrap: wrap;
+      }
+      .month-nav { display: flex; align-items: center; gap: 8px; }
+      .month-title { min-width: 170px; text-align: center; font-weight: 900; color: var(--deep); }
+      .calendar {
+        display: grid;
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+        gap: 8px;
+      }
+      .day-name {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 900;
+        text-align: center;
+        text-transform: uppercase;
+      }
+      .day {
+        min-height: 96px;
+        padding: 9px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: #fbfdfe;
+        display: grid;
+        align-content: start;
+        gap: 7px;
+      }
+      .day.empty { background: transparent; border-color: transparent; }
+      .day.has-events { background: #fff8db; }
+      .day-number { font-weight: 900; color: var(--deep); }
+      .pill {
+        display: inline-flex;
+        width: max-content;
+        max-width: 100%;
+        padding: 3px 8px;
+        border-radius: 999px;
+        background: #eef7f9;
+        color: var(--deep);
+        font-size: 11px;
+        font-weight: 900;
+        white-space: nowrap;
         overflow: hidden;
-        border: 1px solid rgba(18, 56, 77, .12);
-        border-radius: 18px;
-        background: #fff;
+        text-overflow: ellipsis;
       }
-      .calendar-frame iframe {
-        width: 100%;
-        height: 100%;
-        border: 0;
+      .upcoming { margin-top: 22px; }
+      .upcoming h2 { margin: 0 0 12px; color: var(--deep); font-size: 20px; }
+      .event-list { display: grid; gap: 10px; }
+      .row {
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: #fbfdfe;
       }
+      .row-title { font-weight: 900; color: var(--deep); }
+      .row-meta { color: var(--muted); font-size: 13px; margin-top: 2px; }
       @media (max-width: 640px) {
         .calendar-wrap { padding: 22px 10px 28px; }
         .calendar-card { padding: 12px; border-radius: 18px; }
-        .calendar-frame { height: 600px; border-radius: 14px; }
+        .calendar { grid-template-columns: 1fr; }
+        .day-name, .day.empty { display: none; }
         .btn { width: 100%; }
+        .actions { flex-direction: column; }
       }
     </style>
   </head>
@@ -122,22 +173,129 @@
         <header class="calendar-head">
           <div class="eyebrow">Jesús es el Centro</div>
           <h1>Calendario de actividades</h1>
-          <p>Consulta las fechas actualizadas directamente desde el calendario oficial de Jesús es el Centro.</p>
+          <p>Consulta las próximas actividades de Jesús es el Centro.</p>
         </header>
         <div class="actions">
-          <a class="btn" href="./index-wix.html?v=jeec-calendar1" target="_self">Volver al inicio</a>
+          <a class="btn primary" href="./index-wix.html?v=jeec-calendar1" target="_self">Volver al inicio</a>
+          <a class="btn ghost" href="./admin-eventos-wix.html">Panel admin</a>
         </div>
         <section class="calendar-card" aria-label="Calendario Jesús es el Centro">
-          <div class="calendar-frame">
-            <iframe
-              title="Calendario Jesús es el Centro"
-              src="https://calendar.google.com/calendar/embed?hl=es&ctz=America%2FPuerto_Rico&src=amVlY2NhbGVuZGFyaW9AZ21haWwuY29t&showTabs=1&showNav=1&showDate=1&showPrint=0&showTz=0&mode=AGENDA"
-              frameborder="0"
-              scrolling="no">
-            </iframe>
+          <div class="section-title">
+            <div class="month-title" id="monthTitle"></div>
+            <div class="month-nav">
+              <button class="btn ghost" type="button" id="prevMonth">Anterior</button>
+              <button class="btn ghost" type="button" id="nextMonth">Siguiente</button>
+            </div>
+          </div>
+          <div class="calendar" id="calendar"></div>
+          <div class="upcoming">
+            <h2>Próximas actividades</h2>
+            <div class="event-list" id="upcomingList"></div>
           </div>
         </section>
       </div>
     </main>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="./firebase-config.js"></script>
+    <script src="./firebase-bridge.js"></script>
+    <script>
+      const state = {
+        monthCursor: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+        events: []
+      };
+
+      const els = {
+        calendar: document.getElementById('calendar'),
+        monthTitle: document.getElementById('monthTitle'),
+        upcomingList: document.getElementById('upcomingList')
+      };
+
+      function toDateInput(date) {
+        const d = new Date(date);
+        d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+        return d.toISOString().slice(0, 10);
+      }
+
+      function escapeHtml(value) {
+        return String(value ?? '').replace(/[&<>"']/g, (char) => ({
+          '&':'&amp;',
+          '<':'&lt;',
+          '>':'&gt;',
+          '"':'&quot;',
+          "'":'&#039;'
+        }[char]));
+      }
+
+      function formatDate(dateKey) {
+        return new Date(`${dateKey}T00:00:00`).toLocaleDateString('es-PR', {
+          weekday:'short',
+          day:'numeric',
+          month:'short'
+        });
+      }
+
+      async function loadData() {
+        state.events = await window.discipladoFirebase?.getCalendarEvents?.() || [];
+        render();
+      }
+
+      function render() {
+        renderCalendar();
+        renderUpcoming();
+      }
+
+      function renderCalendar() {
+        const year = state.monthCursor.getFullYear();
+        const month = state.monthCursor.getMonth();
+        const firstDay = new Date(year, month, 1);
+        const lastDay = new Date(year, month + 1, 0);
+        const startOffset = firstDay.getDay();
+        const names = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'];
+        els.monthTitle.textContent = firstDay.toLocaleDateString('es-PR', { month:'long', year:'numeric' });
+        let html = names.map((name) => `<div class="day-name">${name}</div>`).join('');
+        for (let i = 0; i < startOffset; i += 1) html += '<div class="day empty"></div>';
+        for (let day = 1; day <= lastDay.getDate(); day += 1) {
+          const dateKey = toDateInput(new Date(year, month, day));
+          const items = state.events.filter((item) => item.date === dateKey);
+          html += `
+            <div class="day${items.length ? ' has-events' : ''}">
+              <span class="day-number">${day}</span>
+              ${items.slice(0, 3).map((item) => `<span class="pill">${escapeHtml(item.title)}</span>`).join('')}
+              ${items.length > 3 ? `<span class="pill">+${items.length - 3}</span>` : ''}
+            </div>
+          `;
+        }
+        els.calendar.innerHTML = html;
+      }
+
+      function renderUpcoming() {
+        const today = toDateInput(new Date());
+        const items = state.events
+          .filter((item) => item.date >= today)
+          .sort((a, b) => `${a.date} ${a.start || ''}`.localeCompare(`${b.date} ${b.start || ''}`))
+          .slice(0, 10);
+        els.upcomingList.innerHTML = items.map((item) => `
+          <article class="row">
+            <div class="row-title">${escapeHtml(item.title)}</div>
+            <div class="row-meta">${formatDate(item.date)}${item.start ? ` · ${escapeHtml(item.start)}${item.end ? '-' + escapeHtml(item.end) : ''}` : ''} · ${escapeHtml(item.location || 'Jesus es el Centro')}</div>
+          </article>
+        `).join('') || '<div class="row-meta">No hay actividades próximas registradas.</div>';
+      }
+
+      document.getElementById('prevMonth').addEventListener('click', () => {
+        state.monthCursor = new Date(state.monthCursor.getFullYear(), state.monthCursor.getMonth() - 1, 1);
+        render();
+      });
+
+      document.getElementById('nextMonth').addEventListener('click', () => {
+        state.monthCursor = new Date(state.monthCursor.getFullYear(), state.monthCursor.getMonth() + 1, 1);
+        render();
+      });
+
+      loadData();
+    </script>
   </body>
 </html>

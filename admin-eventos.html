@@ -1,0 +1,614 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Eventos | PRFWB</title>
+  <meta name="description" content="Panel para administrar el calendario general de actividades de Jesus es el Centro.">
+  <script>
+    if (new URLSearchParams(window.location.search).get('embed') === '1') {
+      document.documentElement.classList.add('embed-mode');
+    }
+  </script>
+  <style>
+    :root {
+      --azul:#078ca3;
+      --azul-oscuro:#12384d;
+      --azul-profundo:#0d2b3a;
+      --dorado:#f1c84b;
+      --verde:#5da56d;
+      --coral:#d95643;
+      --fondo:#f4f8fa;
+      --borde:#dbe7ec;
+      --texto:#526875;
+      --blanco:#ffffff;
+      --sombra:0 18px 50px rgba(13,43,58,.12);
+      font-family:Arial, Helvetica, sans-serif;
+    }
+
+    * { box-sizing:border-box; }
+    html, body { margin:0; background:var(--fondo); color:var(--azul-oscuro); line-height:1.55; }
+    body { min-height:100vh; }
+    button, input, select, textarea { font:inherit; }
+    a { color:inherit; text-decoration:none; }
+
+    .site-nav {
+      background:var(--blanco);
+      border-bottom:1px solid var(--borde);
+      position:sticky;
+      top:0;
+      z-index:20;
+    }
+    html.embed-mode .site-nav { display:none; }
+    .nav-inner {
+      width:min(1180px, calc(100% - 2rem));
+      margin:auto;
+      min-height:72px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+    }
+    .brand { display:flex; align-items:center; gap:10px; font-weight:900; }
+    .brand img { width:118px; height:44px; object-fit:contain; }
+    .tabs { display:flex; gap:8px; flex-wrap:wrap; }
+    .tabs a {
+      min-height:42px;
+      display:inline-flex;
+      align-items:center;
+      padding:9px 15px;
+      border-radius:999px;
+      color:var(--azul-oscuro);
+      font-size:14px;
+      font-weight:900;
+    }
+    .tabs a.activo { background:var(--azul-oscuro); color:var(--blanco); }
+
+    .hero {
+      color:var(--blanco);
+      background:
+        radial-gradient(circle at 86% 20%, rgba(241,200,75,.22), transparent 26%),
+        linear-gradient(120deg, var(--azul-profundo), var(--azul-oscuro));
+    }
+    .hero-inner {
+      width:min(1180px, calc(100% - 2rem));
+      margin:auto;
+      padding:54px 0 42px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:18px;
+      align-items:end;
+      justify-content:space-between;
+    }
+    .eyebrow {
+      color:var(--dorado);
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:2px;
+      text-transform:uppercase;
+    }
+    h1 { margin:12px 0 12px; font-size:clamp(30px, 5vw, 50px); line-height:1; }
+    .hero p { max-width:560px; margin:0; color:#eaf6f8; font-size:16px; }
+    .hero-action {
+      display:inline-flex;
+      align-items:center;
+      min-height:44px;
+      padding:10px 18px;
+      border-radius:999px;
+      background:rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.28);
+      color:var(--blanco);
+      font-weight:900;
+    }
+
+    .shell {
+      width:min(1180px, calc(100% - 2rem));
+      margin:-24px auto 60px;
+      position:relative;
+      z-index:2;
+    }
+    .card {
+      background:var(--blanco);
+      border:1px solid var(--borde);
+      border-radius:12px;
+      box-shadow:var(--sombra);
+      padding:20px;
+    }
+    .card h2, .card h3 { margin:0 0 12px; line-height:1.15; }
+    .muted { color:var(--texto); }
+    .error-text { color:var(--coral); font-weight:800; font-size:13px; }
+
+    .btn {
+      min-height:42px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:10px 15px;
+      border:1px solid transparent;
+      border-radius:10px;
+      background:var(--azul-oscuro);
+      color:var(--blanco);
+      font-weight:900;
+      cursor:pointer;
+    }
+    .btn.gold { background:var(--dorado); color:var(--azul-profundo); }
+    .btn.light { background:#eef7f9; color:var(--azul-oscuro); border-color:var(--borde); }
+    .btn.danger { background:#fff1ef; color:var(--coral); border-color:#ffd5cf; }
+    .btn.small { min-height:34px; padding:7px 10px; font-size:13px; border-radius:8px; }
+
+    .grid {
+      display:grid;
+      grid-template-columns:380px minmax(0, 1fr);
+      gap:18px;
+      margin-top:18px;
+    }
+
+    form { display:grid; gap:12px; }
+    label { display:grid; gap:6px; font-size:13px; font-weight:900; }
+    input, select, textarea {
+      width:100%;
+      border:1px solid var(--borde);
+      border-radius:10px;
+      padding:11px 12px;
+      color:var(--azul-oscuro);
+      background:#fbfdfe;
+    }
+    textarea { min-height:76px; resize:vertical; }
+    .two { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+
+    .section-title {
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:12px;
+    }
+    .month-nav { display:flex; align-items:center; gap:8px; }
+    .month-title { min-width:170px; text-align:center; font-weight:900; }
+
+    .calendar {
+      display:grid;
+      grid-template-columns:repeat(7, minmax(0, 1fr));
+      gap:8px;
+    }
+    .day-name {
+      color:var(--texto);
+      font-size:12px;
+      font-weight:900;
+      text-align:center;
+      text-transform:uppercase;
+    }
+    .day {
+      min-height:100px;
+      padding:9px;
+      border:1px solid var(--borde);
+      border-radius:10px;
+      background:#fbfdfe;
+      display:grid;
+      align-content:start;
+      gap:7px;
+      cursor:pointer;
+    }
+    .day.empty { background:transparent; border-color:transparent; cursor:default; }
+    .day.selected { outline:3px solid rgba(241,200,75,.7); background:#fffaf0; }
+    .day-number { font-weight:900; }
+    .pill {
+      display:inline-flex;
+      width:max-content;
+      max-width:100%;
+      padding:3px 8px;
+      border-radius:999px;
+      background:#eef7f9;
+      color:var(--azul-oscuro);
+      font-size:11px;
+      font-weight:900;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .event-list { display:grid; gap:10px; margin-top:14px; }
+    .row {
+      padding:12px;
+      border:1px solid var(--borde);
+      border-radius:10px;
+      background:#fbfdfe;
+      display:grid;
+      gap:8px;
+    }
+    .row-head { display:flex; justify-content:space-between; gap:12px; align-items:start; }
+    .row-title { font-weight:900; }
+    .row-actions { display:flex; gap:8px; flex-wrap:wrap; }
+
+    @media (max-width:980px) {
+      .grid { grid-template-columns:1fr; }
+      .calendar { gap:6px; }
+      .day { min-height:86px; padding:7px; }
+    }
+    @media (max-width:640px) {
+      .nav-inner, .section-title, .row-head { align-items:stretch; flex-direction:column; }
+      .tabs { width:100%; display:grid; grid-template-columns:1fr; }
+      .two { grid-template-columns:1fr; }
+      .calendar { grid-template-columns:1fr; }
+      .day-name, .day.empty { display:none; }
+      .row-actions, .month-nav { width:100%; }
+      .btn { width:100%; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav" aria-label="Navegacion principal">
+    <div class="nav-inner">
+      <a class="brand" href="./index.html">
+        <img src="./prfwb-logo-main-cropped.png" alt="PRFWB">
+      </a>
+      <div class="tabs">
+        <a href="./index.html">Inicio</a>
+        <a href="./eventos-calendario.html">Calendario</a>
+        <a href="./recursos.html">Recursos</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div>
+        <span class="eyebrow">Jesus es el Centro</span>
+        <h1>Panel de Eventos</h1>
+        <p>Crea, edita y administra las actividades que aparecen en el calendario publico de JEEC.</p>
+      </div>
+      <a class="hero-action" href="./eventos-calendario.html">Volver al calendario</a>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="card">
+      <div class="section-title">
+        <h2>Acceso administrativo</h2>
+        <button id="logoutButton" class="btn light small" type="button" style="display:none">Cerrar sesion</button>
+      </div>
+
+      <div id="loginView">
+        <p class="muted">Inicia sesion con tu cuenta de administrador de Firebase para gestionar los eventos.</p>
+        <form id="loginForm" style="max-width:360px">
+          <label>Correo
+            <input id="emailInput" type="email" required>
+          </label>
+          <label>Contrasena
+            <input id="passwordInput" type="password" required>
+          </label>
+          <button class="btn gold" type="submit">Iniciar sesion</button>
+          <p id="errorMessage" class="error-text"></p>
+        </form>
+      </div>
+    </section>
+
+    <div id="adminView" style="display:none">
+      <section class="card" style="margin-top:18px">
+        <div class="section-title">
+          <h2>Importar desde Google Calendar</h2>
+        </div>
+        <p class="muted">Sube el archivo <code>eventos-import.json</code> generado por <code>scripts/export_google_calendar.py</code> para traer los eventos que ya existen en el calendario de Google.</p>
+        <label class="btn light" for="importFile">Elegir archivo</label>
+        <input id="importFile" type="file" accept="application/json" hidden>
+      </section>
+
+      <section class="grid">
+        <aside class="card">
+          <h2 id="formTitle">Crear evento</h2>
+          <form id="eventForm">
+            <label>Titulo
+              <input id="titleInput" required>
+            </label>
+            <label>Fecha
+              <input type="date" id="dateInput" required>
+            </label>
+            <div class="two">
+              <label>Hora inicio
+                <input type="time" id="startInput" value="09:00">
+              </label>
+              <label>Hora final
+                <input type="time" id="endInput" value="10:30">
+              </label>
+            </div>
+            <label>Lugar
+              <input id="locationInput" placeholder="Jesus es el Centro">
+            </label>
+            <label>Descripcion
+              <textarea id="descriptionInput"></textarea>
+            </label>
+            <input type="hidden" id="editingId">
+            <button class="btn gold" type="submit" id="saveEventBtn">Guardar evento</button>
+          </form>
+        </aside>
+
+        <section class="card">
+          <div class="section-title">
+            <div>
+              <h2>Vista mensual</h2>
+              <div class="muted">Selecciona un dia para ver sus eventos.</div>
+            </div>
+            <div class="month-nav">
+              <button class="btn light small" type="button" id="prevMonth">Anterior</button>
+              <div class="month-title" id="monthTitle"></div>
+              <button class="btn light small" type="button" id="nextMonth">Siguiente</button>
+            </div>
+          </div>
+          <div class="calendar" id="calendar"></div>
+
+          <h3 id="selectedTitle" style="margin-top:22px">Eventos del dia</h3>
+          <div class="event-list" id="eventList"></div>
+        </section>
+      </section>
+    </div>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="./firebase-config.js"></script>
+  <script src="./firebase-bridge.js"></script>
+  <script>
+    const authStorageKey = 'discipulado-admin-session-v1';
+    const state = {
+      monthCursor: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+      selectedDate: toDateInput(new Date()),
+      events: [],
+      isAdmin: localStorage.getItem(authStorageKey) === 'authenticated'
+    };
+
+    const els = {
+      loginView: document.getElementById('loginView'),
+      adminView: document.getElementById('adminView'),
+      loginForm: document.getElementById('loginForm'),
+      emailInput: document.getElementById('emailInput'),
+      passwordInput: document.getElementById('passwordInput'),
+      logoutButton: document.getElementById('logoutButton'),
+      errorMessage: document.getElementById('errorMessage'),
+      eventForm: document.getElementById('eventForm'),
+      calendar: document.getElementById('calendar'),
+      monthTitle: document.getElementById('monthTitle'),
+      selectedTitle: document.getElementById('selectedTitle'),
+      eventList: document.getElementById('eventList'),
+      formTitle: document.getElementById('formTitle'),
+      saveEventBtn: document.getElementById('saveEventBtn')
+    };
+
+    function toDateInput(date) {
+      const d = new Date(date);
+      d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+      return d.toISOString().slice(0, 10);
+    }
+
+    function uid(prefix) {
+      return `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>"']/g, (char) => ({
+        '&':'&amp;',
+        '<':'&lt;',
+        '>':'&gt;',
+        '"':'&quot;',
+        "'":'&#039;'
+      }[char]));
+    }
+
+    function formatDate(dateKey) {
+      return new Date(`${dateKey}T00:00:00`).toLocaleDateString('es-PR', {
+        weekday:'short',
+        day:'numeric',
+        month:'short'
+      });
+    }
+
+    async function loadData() {
+      state.events = await window.discipladoFirebase?.getCalendarEvents?.() || [];
+      document.getElementById('dateInput').value = state.selectedDate;
+      render();
+    }
+
+    function applyAdminVisibility() {
+      els.loginView.style.display = state.isAdmin ? 'none' : 'block';
+      els.adminView.style.display = state.isAdmin ? 'block' : 'none';
+      els.logoutButton.style.display = state.isAdmin ? 'inline-flex' : 'none';
+    }
+
+    function render() {
+      renderCalendar();
+      renderEventsForSelectedDate();
+    }
+
+    function renderCalendar() {
+      const year = state.monthCursor.getFullYear();
+      const month = state.monthCursor.getMonth();
+      const firstDay = new Date(year, month, 1);
+      const lastDay = new Date(year, month + 1, 0);
+      const startOffset = firstDay.getDay();
+      const names = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'];
+      els.monthTitle.textContent = firstDay.toLocaleDateString('es-PR', { month:'long', year:'numeric' });
+      let html = names.map((name) => `<div class="day-name">${name}</div>`).join('');
+      for (let i = 0; i < startOffset; i += 1) html += '<div class="day empty"></div>';
+      for (let day = 1; day <= lastDay.getDate(); day += 1) {
+        const dateKey = toDateInput(new Date(year, month, day));
+        const items = state.events.filter((item) => item.date === dateKey);
+        const selected = dateKey === state.selectedDate ? ' selected' : '';
+        html += `
+          <button class="day${selected}" type="button" onclick="selectDate('${dateKey}')">
+            <span class="day-number">${day}</span>
+            ${items.slice(0, 3).map((item) => `<span class="pill">${escapeHtml(item.title)}</span>`).join('')}
+            ${items.length > 3 ? `<span class="pill">+${items.length - 3}</span>` : ''}
+          </button>
+        `;
+      }
+      els.calendar.innerHTML = html;
+    }
+
+    function renderEventsForSelectedDate() {
+      const items = state.events
+        .filter((item) => item.date === state.selectedDate)
+        .sort((a, b) => (a.start || '').localeCompare(b.start || ''));
+      els.selectedTitle.textContent = `Eventos de ${formatDate(state.selectedDate)}`;
+      els.eventList.innerHTML = items.map(renderEventRow).join('') || '<div class="muted">No hay eventos para este dia.</div>';
+    }
+
+    function renderEventRow(item) {
+      return `
+        <article class="row">
+          <div class="row-head">
+            <div>
+              <div class="row-title">${escapeHtml(item.title)}</div>
+              <div class="muted">${item.start ? `${escapeHtml(item.start)}${item.end ? ' - ' + escapeHtml(item.end) : ''} | ` : ''}${escapeHtml(item.location || 'Jesus es el Centro')}</div>
+              ${item.description ? `<div>${escapeHtml(item.description)}</div>` : ''}
+            </div>
+          </div>
+          <div class="row-actions">
+            <button class="btn light small" type="button" onclick="editEvent('${item.id}')">Editar</button>
+            <button class="btn danger small" type="button" onclick="deleteEvent('${item.id}')">Borrar</button>
+          </div>
+        </article>
+      `;
+    }
+
+    function selectDate(dateKey) {
+      state.selectedDate = dateKey;
+      document.getElementById('dateInput').value = dateKey;
+      render();
+    }
+
+    function editEvent(id) {
+      const item = state.events.find((entry) => entry.id === id);
+      if (!item) return;
+      document.getElementById('editingId').value = item.id;
+      document.getElementById('titleInput').value = item.title;
+      document.getElementById('dateInput').value = item.date;
+      document.getElementById('startInput').value = item.start || '';
+      document.getElementById('endInput').value = item.end || '';
+      document.getElementById('locationInput').value = item.location || '';
+      document.getElementById('descriptionInput').value = item.description || '';
+      els.formTitle.textContent = 'Editar evento';
+      els.saveEventBtn.textContent = 'Actualizar evento';
+      window.scrollTo({ top: 260, behavior: 'smooth' });
+    }
+
+    async function deleteEvent(id) {
+      if (!confirm('Quieres borrar este evento?')) return;
+      const ok = await window.discipladoFirebase?.deleteCalendarEvent?.(id);
+      if (!ok) {
+        alert('No se pudo borrar. Verifica que tu sesion siga activa.');
+        return;
+      }
+      state.events = state.events.filter((item) => item.id !== id);
+      render();
+    }
+
+    function resetForm() {
+      els.eventForm.reset();
+      document.getElementById('dateInput').value = state.selectedDate;
+      document.getElementById('editingId').value = '';
+      els.formTitle.textContent = 'Crear evento';
+      els.saveEventBtn.textContent = 'Guardar evento';
+    }
+
+    els.loginForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const email = els.emailInput.value.trim();
+      const password = els.passwordInput.value.trim();
+      const ok = await window.discipladoFirebase?.signIn?.(email, password);
+      if (ok) {
+        state.isAdmin = true;
+        localStorage.setItem(authStorageKey, 'authenticated');
+        els.errorMessage.textContent = '';
+        applyAdminVisibility();
+        loadData();
+      } else {
+        els.errorMessage.textContent = 'Credenciales invalidas. Usa el usuario administrador de Firebase.';
+      }
+    });
+
+    els.logoutButton.addEventListener('click', async () => {
+      await window.discipladoFirebase?.signOut?.();
+      state.isAdmin = false;
+      localStorage.removeItem(authStorageKey);
+      applyAdminVisibility();
+    });
+
+    els.eventForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const id = document.getElementById('editingId').value || uid('evt');
+      const isEditing = Boolean(document.getElementById('editingId').value);
+      const payload = {
+        title: document.getElementById('titleInput').value.trim(),
+        date: document.getElementById('dateInput').value,
+        start: document.getElementById('startInput').value,
+        end: document.getElementById('endInput').value,
+        location: document.getElementById('locationInput').value.trim(),
+        description: document.getElementById('descriptionInput').value.trim()
+      };
+
+      if (isEditing) {
+        const ok = await window.discipladoFirebase?.updateCalendarEvent?.(id, payload);
+        if (!ok) {
+          alert('No se pudo guardar. Verifica que tu sesion siga activa.');
+          return;
+        }
+        const index = state.events.findIndex((item) => item.id === id);
+        if (index >= 0) state.events[index] = { id, ...payload };
+      } else {
+        const newId = await window.discipladoFirebase?.createCalendarEvent?.(payload);
+        if (!newId) {
+          alert('No se pudo guardar. Verifica que tu sesion siga activa.');
+          return;
+        }
+        state.events.push({ id: newId, ...payload });
+      }
+
+      state.selectedDate = payload.date;
+      resetForm();
+      render();
+    });
+
+    document.getElementById('prevMonth').addEventListener('click', () => {
+      state.monthCursor = new Date(state.monthCursor.getFullYear(), state.monthCursor.getMonth() - 1, 1);
+      render();
+    });
+
+    document.getElementById('nextMonth').addEventListener('click', () => {
+      state.monthCursor = new Date(state.monthCursor.getFullYear(), state.monthCursor.getMonth() + 1, 1);
+      render();
+    });
+
+    document.getElementById('importFile').addEventListener('change', async (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+      const data = JSON.parse(await file.text());
+      const events = Array.isArray(data) ? data : data.events || [];
+      let imported = 0;
+      for (const item of events) {
+        const payload = {
+          title: item.title || '',
+          date: item.date || '',
+          start: item.start || '',
+          end: item.end || '',
+          location: item.location || '',
+          description: item.description || ''
+        };
+        if (!payload.title || !payload.date) continue;
+        const newId = await window.discipladoFirebase?.createCalendarEvent?.(payload);
+        if (newId) imported += 1;
+      }
+      event.target.value = '';
+      alert(`Se importaron ${imported} evento(s).`);
+      await loadData();
+    });
+
+    window.selectDate = selectDate;
+    window.editEvent = editEvent;
+    window.deleteEvent = deleteEvent;
+
+    applyAdminVisibility();
+    if (state.isAdmin) loadData();
+  </script>
+</body>
+</html>

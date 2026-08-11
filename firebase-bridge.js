@@ -6,6 +6,9 @@
   const subscribersStorageKey = 'discipulado-subscribers-v1';
   const resourceDownloadsStorageKey = 'discipulado-resource-downloads-v1';
   const authStorageKey = 'discipulado-admin-session-v1';
+  const parkingServersStorageKey = 'prfwb-parking-servers-v1';
+  const parkingAssignmentsStorageKey = 'prfwb-parking-assignments-v1';
+  const calendarEventsStorageKey = 'prfwb-calendar-events-v1';
   const config = window.firebaseConfig || {};
   const hasRealConfig = Boolean(
     config.apiKey &&
@@ -602,6 +605,173 @@
     }
   }
 
+  async function getParkingServers() {
+    const localServers = JSON.parse(localStorage.getItem(parkingServersStorageKey) || 'null') || [];
+
+    if (!firebaseState.isConfigured || !firebaseState.db) {
+      return localServers;
+    }
+
+    try {
+      const snapshot = await firebaseState.db.collection('parkingServers').get();
+      const remoteServers = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      localStorage.setItem(parkingServersStorageKey, JSON.stringify(remoteServers));
+      return remoteServers;
+    } catch (error) {
+      console.warn('No se pudieron leer los servidores de estacionamiento:', error);
+      return localServers;
+    }
+  }
+
+  async function saveParkingServer(server) {
+    if (!firebaseState.isConfigured || !firebaseState.db || !firebaseState.auth?.currentUser) {
+      return false;
+    }
+
+    try {
+      const { id, ...data } = server;
+      await firebaseState.db.collection('parkingServers').doc(id).set(data, { merge: true });
+      return true;
+    } catch (error) {
+      console.warn('No se pudo guardar el servidor de estacionamiento:', error);
+      return false;
+    }
+  }
+
+  async function deleteParkingServer(id) {
+    if (!firebaseState.isConfigured || !firebaseState.db || !firebaseState.auth?.currentUser) {
+      return false;
+    }
+
+    try {
+      await firebaseState.db.collection('parkingServers').doc(id).delete();
+      return true;
+    } catch (error) {
+      console.warn('No se pudo borrar el servidor de estacionamiento:', error);
+      return false;
+    }
+  }
+
+  async function getParkingAssignments() {
+    const localAssignments = JSON.parse(localStorage.getItem(parkingAssignmentsStorageKey) || 'null') || [];
+
+    if (!firebaseState.isConfigured || !firebaseState.db) {
+      return localAssignments;
+    }
+
+    try {
+      const snapshot = await firebaseState.db.collection('parkingAssignments').get();
+      const remoteAssignments = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      localStorage.setItem(parkingAssignmentsStorageKey, JSON.stringify(remoteAssignments));
+      return remoteAssignments;
+    } catch (error) {
+      console.warn('No se pudieron leer las asignaciones de estacionamiento:', error);
+      return localAssignments;
+    }
+  }
+
+  async function saveParkingAssignment(assignment) {
+    if (!firebaseState.isConfigured || !firebaseState.db || !firebaseState.auth?.currentUser) {
+      return false;
+    }
+
+    try {
+      const { id, ...data } = assignment;
+      await firebaseState.db.collection('parkingAssignments').doc(id).set(data, { merge: true });
+      return true;
+    } catch (error) {
+      console.warn('No se pudo guardar la asignación de estacionamiento:', error);
+      return false;
+    }
+  }
+
+  async function deleteParkingAssignment(id) {
+    if (!firebaseState.isConfigured || !firebaseState.db || !firebaseState.auth?.currentUser) {
+      return false;
+    }
+
+    try {
+      await firebaseState.db.collection('parkingAssignments').doc(id).delete();
+      return true;
+    } catch (error) {
+      console.warn('No se pudo borrar la asignación de estacionamiento:', error);
+      return false;
+    }
+  }
+
+  async function getCalendarEvents() {
+    const localEvents = JSON.parse(localStorage.getItem(calendarEventsStorageKey) || 'null') || [];
+
+    if (!firebaseState.isConfigured || !firebaseState.db) {
+      return localEvents;
+    }
+
+    try {
+      const snapshot = await firebaseState.db.collection('calendarEvents').get();
+      const remoteEvents = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      localStorage.setItem(calendarEventsStorageKey, JSON.stringify(remoteEvents));
+      return remoteEvents;
+    } catch (error) {
+      console.warn('No se pudieron leer los eventos del calendario:', error);
+      return localEvents;
+    }
+  }
+
+  async function createCalendarEvent(payload) {
+    const event = {
+      title: payload.title || '',
+      date: payload.date || '',
+      start: payload.start || '',
+      end: payload.end || '',
+      location: payload.location || '',
+      description: payload.description || ''
+    };
+
+    if (!event.title || !event.date) {
+      return false;
+    }
+
+    if (!firebaseState.isConfigured || !firebaseState.db || !firebaseState.auth?.currentUser) {
+      return false;
+    }
+
+    try {
+      const docRef = await firebaseState.db.collection('calendarEvents').add(event);
+      return docRef.id;
+    } catch (error) {
+      console.warn('No se pudo crear el evento del calendario:', error);
+      return false;
+    }
+  }
+
+  async function updateCalendarEvent(id, patch) {
+    if (!firebaseState.isConfigured || !firebaseState.db || !firebaseState.auth?.currentUser) {
+      return false;
+    }
+
+    try {
+      await firebaseState.db.collection('calendarEvents').doc(id).update(patch);
+      return true;
+    } catch (error) {
+      console.warn('No se pudo actualizar el evento del calendario:', error);
+      return false;
+    }
+  }
+
+  async function deleteCalendarEvent(id) {
+    if (!firebaseState.isConfigured || !firebaseState.db || !firebaseState.auth?.currentUser) {
+      return false;
+    }
+
+    try {
+      await firebaseState.db.collection('calendarEvents').doc(id).delete();
+      return true;
+    } catch (error) {
+      console.warn('No se pudo borrar el evento del calendario:', error);
+      return false;
+    }
+  }
+
   window.discipladoFirebase = {
     ...firebaseState,
     init: initFirebase,
@@ -620,6 +790,16 @@
     getSubscribers,
     logResourceDownload,
     getResourceDownloads,
+    getParkingServers,
+    saveParkingServer,
+    deleteParkingServer,
+    getParkingAssignments,
+    saveParkingAssignment,
+    deleteParkingAssignment,
+    getCalendarEvents,
+    createCalendarEvent,
+    updateCalendarEvent,
+    deleteCalendarEvent,
     signIn,
     signOut
   };

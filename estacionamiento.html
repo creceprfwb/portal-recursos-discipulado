@@ -148,20 +148,8 @@
     .card { padding:20px; }
     .card h2, .card h3 { margin:0 0 12px; line-height:1.15; }
     .muted { color:var(--texto); }
-
-    .gcal-card { margin-top:18px; }
-    .gcal-frame {
-      width:100%;
-      height:600px;
-      overflow:hidden;
-      border:1px solid var(--borde);
-      border-radius:12px;
-      background:var(--blanco);
-    }
-    .gcal-frame iframe { width:100%; height:100%; border:0; }
-    @media (max-width:640px) {
-      .gcal-frame { height:480px; }
-    }
+    .error-text { color:var(--coral); font-weight:800; font-size:13px; }
+    .admin-only { display:none; }
 
     .stats {
       display:grid;
@@ -270,18 +258,6 @@
       font-weight:800;
       margin-bottom:14px;
     }
-    .check-row {
-      display:flex;
-      align-items:flex-start;
-      gap:10px;
-      font-size:13px;
-      font-weight:800;
-      color:var(--texto);
-    }
-    .check-row input {
-      width:auto;
-      margin-top:4px;
-    }
 
     @media (max-width:980px) {
       .hero-inner, .grid { grid-template-columns:1fr; }
@@ -320,7 +296,7 @@
       <div>
         <span class="eyebrow">Jesus es el Centro</span>
         <h1>Calendario de Estacionamiento</h1>
-        <p>Administra servidores, cubre cada servicio y prepara mensajes de confirmacion por WhatsApp desde un solo lugar.</p>
+        <p>Consulta quien sirve cada semana, envia confirmaciones por WhatsApp y descarga el calendario desde un solo lugar.</p>
       </div>
       <div class="hero-card">
         <span>Proximo servicio</span>
@@ -333,14 +309,13 @@
     <section class="toolbar" aria-label="Herramientas">
       <div>
         <strong>Portal de asignaciones</strong>
-        <div class="muted">Los datos se guardan en este navegador. Puedes exportar respaldo y calendario.</div>
+        <div class="muted">Los datos se comparten con todo el equipo. Inicia sesion abajo para crear o editar asignaciones.</div>
       </div>
       <div class="actions">
         <button class="btn light" type="button" id="backupBtn">Exportar data</button>
-        <label class="btn light" for="importFile">Importar data</label>
+        <label class="btn light admin-only" for="importFile">Importar data</label>
         <input id="importFile" type="file" accept="application/json" hidden>
         <button class="btn gold" type="button" id="icsAllBtn">Exportar calendario .ics</button>
-        <button class="btn green" type="button" id="syncAllBtn">Sincronizar Google</button>
       </div>
     </section>
 
@@ -353,79 +328,87 @@
 
     <section class="grid">
       <aside class="card">
-        <h2>Crear asignacion</h2>
-        <p class="muted">Registra el servicio y asigna servidor. Si no hay servidor todavia, queda marcado como sin cubrir.</p>
-        <div class="notice" id="syncNotice">Google Calendar: pega la URL de Apps Script para activar sincronizacion automatica.</div>
-        <form id="syncSettingsForm">
-          <label>URL de Google Apps Script
-            <input id="scriptUrlInput" placeholder="https://script.google.com/macros/s/.../exec">
-          </label>
-          <label class="check-row">
-            <input type="checkbox" id="autoSyncInput">
-            Sincronizar automaticamente cuando guarde o borre asignaciones
-          </label>
-          <button class="btn light" type="submit">Guardar conexion</button>
-        </form>
+        <div class="section-title">
+          <h2>Panel de administracion</h2>
+          <button id="logoutButton" class="btn light small" type="button" style="display:none">Cerrar sesion</button>
+        </div>
+        <p class="muted">Ver el horario no requiere iniciar sesion. Para crear o editar asignaciones, inicia sesion con tu cuenta de administrador.</p>
 
-        <hr style="border:0;border-top:1px solid var(--borde);margin:22px 0">
-
-        <form id="assignmentForm">
-          <label>Fecha
-            <input type="date" id="dateInput" required>
-          </label>
-          <div class="two">
-            <label>Hora inicio
-              <input type="time" id="startInput" value="09:00" required>
+        <div id="loginView">
+          <form id="loginForm">
+            <label>Correo
+              <input id="emailInput" type="email" required>
             </label>
-            <label>Hora final
-              <input type="time" id="endInput" value="10:30" required>
+            <label>Contrasena
+              <input id="passwordInput" type="password" required>
             </label>
-          </div>
-          <label>Servicio
-            <input id="serviceInput" value="Culto dominical" required>
-          </label>
-          <label>Area
-            <select id="roleInput">
-              <option>Entrada principal</option>
-              <option>Flujo de vehiculos</option>
-              <option>Seguridad peatonal</option>
-              <option>Coordinador</option>
-              <option>Apoyo general</option>
-            </select>
-          </label>
-          <label>Servidor
-            <select id="serverSelect"></select>
-          </label>
-          <label>Estado
-            <select id="statusInput">
-              <option value="open">Sin confirmar</option>
-              <option value="confirmed">Confirmado</option>
-              <option value="done">Completado</option>
-            </select>
-          </label>
-          <label>Notas
-            <textarea id="notesInput" placeholder="Ej. traer chaleco, llegar 20 minutos antes..."></textarea>
-          </label>
-          <input type="hidden" id="editingId">
-          <button class="btn gold" type="submit" id="saveAssignmentBtn">Guardar asignacion</button>
-        </form>
+            <button class="btn gold" type="submit">Iniciar sesion</button>
+            <p id="errorMessage" class="error-text"></p>
+          </form>
+        </div>
 
-        <hr style="border:0;border-top:1px solid var(--borde);margin:22px 0">
+        <div id="adminView" style="display:none">
+          <h2>Crear asignacion</h2>
+          <p class="muted">Registra el servicio y asigna servidor. Si no hay servidor todavia, queda marcado como sin cubrir.</p>
 
-        <h2>Servidores</h2>
-        <form id="serverForm">
-          <label>Nombre
-            <input id="serverName" placeholder="Nombre del servidor" required>
-          </label>
-          <label>WhatsApp
-            <input id="serverPhone" placeholder="7875551234" inputmode="tel">
-          </label>
-          <label>Notas de disponibilidad
-            <input id="serverNotes" placeholder="Ej. disponible domingos alternos">
-          </label>
-          <button class="btn" type="submit">Anadir servidor</button>
-        </form>
-        <div class="server-list" id="serverList" style="margin-top:14px"></div>
+          <form id="assignmentForm">
+            <label>Fecha
+              <input type="date" id="dateInput" required>
+            </label>
+            <div class="two">
+              <label>Hora inicio
+                <input type="time" id="startInput" value="09:00" required>
+              </label>
+              <label>Hora final
+                <input type="time" id="endInput" value="10:30" required>
+              </label>
+            </div>
+            <label>Servicio
+              <input id="serviceInput" value="Culto dominical" required>
+            </label>
+            <label>Area
+              <select id="roleInput">
+                <option>Entrada principal</option>
+                <option>Flujo de vehiculos</option>
+                <option>Seguridad peatonal</option>
+                <option>Coordinador</option>
+                <option>Apoyo general</option>
+              </select>
+            </label>
+            <label>Servidor
+              <select id="serverSelect"></select>
+            </label>
+            <label>Estado
+              <select id="statusInput">
+                <option value="open">Sin confirmar</option>
+                <option value="confirmed">Confirmado</option>
+                <option value="done">Completado</option>
+              </select>
+            </label>
+            <label>Notas
+              <textarea id="notesInput" placeholder="Ej. traer chaleco, llegar 20 minutos antes..."></textarea>
+            </label>
+            <input type="hidden" id="editingId">
+            <button class="btn gold" type="submit" id="saveAssignmentBtn">Guardar asignacion</button>
+          </form>
+
+          <hr style="border:0;border-top:1px solid var(--borde);margin:22px 0">
+
+          <h2>Servidores</h2>
+          <form id="serverForm">
+            <label>Nombre
+              <input id="serverName" placeholder="Nombre del servidor" required>
+            </label>
+            <label>WhatsApp
+              <input id="serverPhone" placeholder="7875551234" inputmode="tel">
+            </label>
+            <label>Notas de disponibilidad
+              <input id="serverNotes" placeholder="Ej. disponible domingos alternos">
+            </label>
+            <button class="btn" type="submit">Anadir servidor</button>
+          </form>
+          <div class="server-list" id="serverList" style="margin-top:14px"></div>
+        </div>
       </aside>
 
       <section class="card">
@@ -455,33 +438,21 @@
         </div>
       </section>
     </section>
-
-    <section class="card gcal-card" aria-label="Calendario de Google de estacionamiento">
-      <h2>Calendario de Google (JEEC)</h2>
-      <p class="muted">Vista en vivo del calendario publico de Jesus es el Centro. Los servicios sincronizados con "Sincronizar Google" aparecen aqui.</p>
-      <div class="gcal-frame">
-        <iframe
-          title="Calendario de Google de estacionamiento"
-          src="https://calendar.google.com/calendar/embed?hl=es&ctz=America%2FPuerto_Rico&src=amVlY2NhbGVuZGFyaW9AZ21haWwuY29t&showTabs=1&showNav=1&showDate=1&showPrint=0&showTz=0&mode=AGENDA"
-          frameborder="0"
-          scrolling="no">
-        </iframe>
-      </div>
-    </section>
   </main>
 
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="./firebase-config.js"></script>
+  <script src="./firebase-bridge.js"></script>
   <script>
-    const storageKey = 'prfwb-parking-schedule-v1';
-    const settingsKey = 'prfwb-parking-sync-settings-v1';
+    const authStorageKey = 'discipulado-admin-session-v1';
     const state = {
       monthCursor: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
       selectedDate: toDateInput(new Date()),
       servers: [],
       assignments: [],
-      settings: {
-        scriptUrl: '',
-        autoSync: false
-      }
+      isAdmin: localStorage.getItem(authStorageKey) === 'authenticated'
     };
 
     const els = {
@@ -499,10 +470,13 @@
       serverList: document.getElementById('serverList'),
       assignmentForm: document.getElementById('assignmentForm'),
       serverForm: document.getElementById('serverForm'),
-      syncSettingsForm: document.getElementById('syncSettingsForm'),
-      syncNotice: document.getElementById('syncNotice'),
-      scriptUrlInput: document.getElementById('scriptUrlInput'),
-      autoSyncInput: document.getElementById('autoSyncInput')
+      loginView: document.getElementById('loginView'),
+      adminView: document.getElementById('adminView'),
+      loginForm: document.getElementById('loginForm'),
+      emailInput: document.getElementById('emailInput'),
+      passwordInput: document.getElementById('passwordInput'),
+      logoutButton: document.getElementById('logoutButton'),
+      errorMessage: document.getElementById('errorMessage')
     };
 
     function toDateInput(date) {
@@ -515,38 +489,25 @@
       return `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
     }
 
-    function load() {
-      const saved = JSON.parse(localStorage.getItem(storageKey) || 'null');
-      if (saved) {
-        state.servers = saved.servers || [];
-        state.assignments = saved.assignments || [];
-      } else {
-        state.servers = [
-          { id: uid('srv'), name: 'Servidor por asignar', phone: '', notes: 'Usa este perfil temporero hasta registrar el equipo.' }
-        ];
-      }
-      state.settings = JSON.parse(localStorage.getItem(settingsKey) || 'null') || state.settings;
-      els.scriptUrlInput.value = state.settings.scriptUrl || '';
-      els.autoSyncInput.checked = Boolean(state.settings.autoSync);
+    async function loadData() {
+      const [servers, assignments] = await Promise.all([
+        window.discipladoFirebase?.getParkingServers?.(),
+        window.discipladoFirebase?.getParkingAssignments?.()
+      ]);
+      state.servers = servers || [];
+      state.assignments = assignments || [];
       document.getElementById('dateInput').value = state.selectedDate;
+      applyAdminVisibility();
       render();
     }
 
-    function save() {
-      localStorage.setItem(storageKey, JSON.stringify({
-        servers: state.servers,
-        assignments: state.assignments
-      }));
-      render();
-    }
-
-    function saveSettings() {
-      state.settings = {
-        scriptUrl: els.scriptUrlInput.value.trim(),
-        autoSync: els.autoSyncInput.checked
-      };
-      localStorage.setItem(settingsKey, JSON.stringify(state.settings));
-      renderSyncNotice('Conexion guardada. Las proximas asignaciones pueden sincronizarse con Google Calendar.');
+    function applyAdminVisibility() {
+      els.loginView.style.display = state.isAdmin ? 'none' : 'grid';
+      els.adminView.style.display = state.isAdmin ? 'grid' : 'none';
+      els.logoutButton.style.display = state.isAdmin ? 'inline-flex' : 'none';
+      document.querySelectorAll('.admin-only').forEach((el) => {
+        el.style.display = state.isAdmin ? 'inline-flex' : 'none';
+      });
     }
 
     function getServer(id) {
@@ -555,22 +516,11 @@
 
     function render() {
       renderStats();
-      renderSyncNotice();
       renderServerOptions();
       renderServers();
       renderCalendar();
       renderAssignments();
       renderUncovered();
-    }
-
-    function renderSyncNotice(message) {
-      if (message) {
-        els.syncNotice.textContent = message;
-        return;
-      }
-      els.syncNotice.textContent = state.settings.scriptUrl
-        ? `Google Calendar conectado${state.settings.autoSync ? ' con sincronizacion automatica.' : '. Usa el boton Sincronizar Google cuando quieras.'}`
-        : 'Google Calendar: pega la URL de Apps Script para activar sincronizacion automatica.';
     }
 
     function renderStats() {
@@ -586,7 +536,7 @@
         return date.getMonth() === currentMonth && date.getFullYear() === currentYear;
       });
       els.nextServiceText.textContent = next ? `${formatDate(next.date)} ${next.start}` : 'Sin asignar';
-      els.statServers.textContent = state.servers.filter((server) => server.name !== 'Servidor por asignar').length;
+      els.statServers.textContent = state.servers.length;
       els.statMonth.textContent = monthItems.length;
       els.statOpen.textContent = state.assignments.filter((item) => isOpen(item)).length;
       els.statConfirmed.textContent = state.assignments.filter((item) => item.status === 'confirmed').length;
@@ -608,7 +558,7 @@
             </div>
             <div class="row-actions">
               ${server.phone ? `<a class="btn green small" href="${whatsAppHref(server.phone, `Saludos ${server.name}, queremos confirmar tu disponibilidad para servir en estacionamiento.`)}" target="_blank" rel="noopener">WhatsApp</a>` : ''}
-              <button class="btn danger small" type="button" onclick="deleteServer('${server.id}')">Borrar</button>
+              ${state.isAdmin ? `<button class="btn danger small" type="button" onclick="deleteServer('${server.id}')">Borrar</button>` : ''}
             </div>
           </div>
         </div>
@@ -670,12 +620,10 @@
             <span class="pill ${item.status === 'done' ? 'done' : isOpen(item) ? 'open' : ''}">${statusLabel(item)}</span>
           </div>
           <div class="row-actions">
-            <button class="btn light small" type="button" onclick="editAssignment('${item.id}')">Editar</button>
             ${server?.phone ? `<a class="btn green small" href="${whatsAppHref(server.phone, msg)}" target="_blank" rel="noopener">WhatsApp</a>` : ''}
-            <a class="btn gold small" href="${googleCalendarHref(item)}" target="_blank" rel="noopener">Google Calendar</a>
-            <button class="btn green small" type="button" onclick="syncAssignmentById('${item.id}')">Sincronizar</button>
             <button class="btn light small" type="button" onclick="downloadIcs('${item.id}')">.ics</button>
-            <button class="btn danger small" type="button" onclick="deleteAssignment('${item.id}')">Borrar</button>
+            ${state.isAdmin ? `<button class="btn light small" type="button" onclick="editAssignment('${item.id}')">Editar</button>` : ''}
+            ${state.isAdmin ? `<button class="btn danger small" type="button" onclick="deleteAssignment('${item.id}')">Borrar</button>` : ''}
           </div>
         </article>
       `;
@@ -714,21 +662,29 @@
       window.scrollTo({ top: 260, behavior: 'smooth' });
     }
 
-    function deleteAssignment(id) {
+    async function deleteAssignment(id) {
       if (!confirm('Quieres borrar esta asignacion?')) return;
-      const item = state.assignments.find((entry) => entry.id === id);
-      state.assignments = state.assignments.filter((item) => item.id !== id);
-      save();
-      if (state.settings.autoSync && item) {
-        syncToGoogle('delete', item, false);
+      const ok = await window.discipladoFirebase?.deleteParkingAssignment?.(id);
+      if (!ok) {
+        alert('No se pudo borrar. Verifica que tu sesion siga activa.');
+        return;
       }
+      state.assignments = state.assignments.filter((item) => item.id !== id);
+      render();
     }
 
-    function deleteServer(id) {
+    async function deleteServer(id) {
       if (!confirm('Quieres borrar este servidor? Las asignaciones quedaran sin servidor.')) return;
+      const ok = await window.discipladoFirebase?.deleteParkingServer?.(id);
+      if (!ok) {
+        alert('No se pudo borrar. Verifica que tu sesion siga activa.');
+        return;
+      }
       state.servers = state.servers.filter((server) => server.id !== id);
+      const affected = state.assignments.filter((item) => item.serverId === id);
       state.assignments = state.assignments.map((item) => item.serverId === id ? { ...item, serverId: '' } : item);
-      save();
+      await Promise.all(affected.map((item) => window.discipladoFirebase?.saveParkingAssignment?.({ ...item, serverId: '' })));
+      render();
     }
 
     function formatDate(dateKey) {
@@ -743,12 +699,6 @@
       const clean = String(phone || '').replace(/\D/g, '');
       const withCountry = clean.length === 10 ? `1${clean}` : clean;
       return `https://wa.me/${withCountry}?text=${encodeURIComponent(message)}`;
-    }
-
-    function googleCalendarHref(item) {
-      const title = `Estacionamiento - ${item.service}`;
-      const details = `${item.role}\nServidor: ${(getServer(item.serverId)?.name || 'Sin asignar')}\nNotas: ${item.notes || ''}`;
-      return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${calendarStamp(item.date, item.start)}/${calendarStamp(item.date, item.end)}&details=${encodeURIComponent(details)}&location=${encodeURIComponent('Jesus es el Centro')}`;
     }
 
     function calendarStamp(date, time) {
@@ -790,55 +740,6 @@
       if (item) downloadText(`estacionamiento-${item.date}.ics`, buildIcs([item]), 'text/calendar');
     }
 
-    async function syncAssignmentById(id) {
-      const item = state.assignments.find((entry) => entry.id === id);
-      if (!item) return;
-      await syncToGoogle('upsert', item, true);
-    }
-
-    async function syncToGoogle(action, item, showAlert) {
-      if (!state.settings.scriptUrl) {
-        alert('Primero pega la URL de Google Apps Script y guarda la conexion.');
-        return;
-      }
-
-      const server = getServer(item.serverId);
-      const payload = {
-        action,
-        assignment: {
-          ...item,
-          serverName: server?.name || '',
-          serverPhone: server?.phone || '',
-          location: 'Jesus es el Centro'
-        }
-      };
-
-      try {
-        await fetch(state.settings.scriptUrl, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify(payload)
-        });
-        renderSyncNotice('Solicitud enviada a Google Calendar. Verifica el calendario en unos segundos.');
-        if (showAlert) alert('Solicitud enviada a Google Calendar.');
-      } catch (error) {
-        console.warn('No se pudo sincronizar:', error);
-        alert('No se pudo enviar a Google Calendar. Revisa la URL de Apps Script.');
-      }
-    }
-
-    async function syncAllToGoogle() {
-      if (!state.assignments.length) {
-        alert('No hay asignaciones para sincronizar.');
-        return;
-      }
-      for (const item of state.assignments) {
-        await syncToGoogle('upsert', item, false);
-      }
-      alert('Asignaciones enviadas a Google Calendar.');
-    }
-
     function escapeHtml(value) {
       return String(value ?? '').replace(/[&<>"']/g, (char) => ({
         '&':'&amp;',
@@ -853,7 +754,31 @@
       return String(value ?? '').replace(/\\/g, '\\\\').replace(/\n/g, '\\n').replace(/,/g, '\\,').replace(/;/g, '\\;');
     }
 
-    els.assignmentForm.addEventListener('submit', (event) => {
+    els.loginForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const email = els.emailInput.value.trim();
+      const password = els.passwordInput.value.trim();
+      const ok = await window.discipladoFirebase?.signIn?.(email, password);
+      if (ok) {
+        state.isAdmin = true;
+        localStorage.setItem(authStorageKey, 'authenticated');
+        els.errorMessage.textContent = '';
+        applyAdminVisibility();
+        render();
+      } else {
+        els.errorMessage.textContent = 'Credenciales invalidas. Usa el usuario administrador de Firebase.';
+      }
+    });
+
+    els.logoutButton.addEventListener('click', async () => {
+      await window.discipladoFirebase?.signOut?.();
+      state.isAdmin = false;
+      localStorage.removeItem(authStorageKey);
+      applyAdminVisibility();
+      render();
+    });
+
+    els.assignmentForm.addEventListener('submit', async (event) => {
       event.preventDefault();
       const id = document.getElementById('editingId').value || uid('asg');
       const nextItem = {
@@ -867,6 +792,11 @@
         status: document.getElementById('statusInput').value,
         notes: document.getElementById('notesInput').value.trim()
       };
+      const ok = await window.discipladoFirebase?.saveParkingAssignment?.(nextItem);
+      if (!ok) {
+        alert('No se pudo guardar. Verifica que tu sesion siga activa.');
+        return;
+      }
       const index = state.assignments.findIndex((item) => item.id === id);
       if (index >= 0) state.assignments[index] = nextItem;
       else state.assignments.push(nextItem);
@@ -878,27 +808,25 @@
       document.getElementById('serviceInput').value = 'Culto dominical';
       document.getElementById('editingId').value = '';
       document.getElementById('saveAssignmentBtn').textContent = 'Guardar asignacion';
-      save();
-      if (state.settings.autoSync) {
-        syncToGoogle('upsert', nextItem, false);
-      }
+      render();
     });
 
-    els.syncSettingsForm.addEventListener('submit', (event) => {
+    els.serverForm.addEventListener('submit', async (event) => {
       event.preventDefault();
-      saveSettings();
-    });
-
-    els.serverForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-      state.servers.push({
+      const server = {
         id: uid('srv'),
         name: document.getElementById('serverName').value.trim(),
         phone: document.getElementById('serverPhone').value.trim(),
         notes: document.getElementById('serverNotes').value.trim()
-      });
+      };
+      const ok = await window.discipladoFirebase?.saveParkingServer?.(server);
+      if (!ok) {
+        alert('No se pudo anadir. Verifica que tu sesion siga activa.');
+        return;
+      }
+      state.servers.push(server);
       els.serverForm.reset();
-      save();
+      render();
     });
 
     document.getElementById('prevMonth').addEventListener('click', () => {
@@ -923,16 +851,20 @@
       downloadText('calendario-estacionamiento-prfwb.ics', buildIcs(state.assignments), 'text/calendar');
     });
 
-    document.getElementById('syncAllBtn').addEventListener('click', syncAllToGoogle);
-
     document.getElementById('importFile').addEventListener('change', async (event) => {
       const file = event.target.files[0];
       if (!file) return;
       const data = JSON.parse(await file.text());
-      state.servers = data.servers || [];
-      state.assignments = data.assignments || [];
-      save();
+      const servers = data.servers || [];
+      const assignments = data.assignments || [];
+      for (const server of servers) {
+        await window.discipladoFirebase?.saveParkingServer?.(server);
+      }
+      for (const assignment of assignments) {
+        await window.discipladoFirebase?.saveParkingAssignment?.(assignment);
+      }
       event.target.value = '';
+      await loadData();
     });
 
     window.selectDate = selectDate;
@@ -940,9 +872,9 @@
     window.deleteAssignment = deleteAssignment;
     window.deleteServer = deleteServer;
     window.downloadIcs = downloadIcs;
-    window.syncAssignmentById = syncAssignmentById;
 
-    load();
+    applyAdminVisibility();
+    loadData();
   </script>
 </body>
 </html>
