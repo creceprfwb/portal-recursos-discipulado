@@ -315,6 +315,14 @@
             <label>Lugar
               <input id="locationInput" placeholder="Jesus es el Centro">
             </label>
+            <div class="two">
+              <label>Categoria
+                <input id="categoryInput" placeholder="Ej. Hogares, Estudio Biblico...">
+              </label>
+              <label>Color
+                <select id="colorInput"></select>
+              </label>
+            </div>
             <label>Descripcion
               <textarea id="descriptionInput"></textarea>
             </label>
@@ -351,6 +359,16 @@
   <script src="./firebase-bridge.js"></script>
   <script>
     const authStorageKey = 'discipulado-admin-session-v1';
+    const COLOR_PALETTE = [
+      { name: 'Azul', value: '#078ca3' },
+      { name: 'Dorado', value: '#c7912b' },
+      { name: 'Coral', value: '#d95643' },
+      { name: 'Verde', value: '#5da56d' },
+      { name: 'Morado', value: '#7c5cbf' },
+      { name: 'Rosado', value: '#d9628f' },
+      { name: 'Gris', value: '#60717b' },
+      { name: 'Teal', value: '#0f6170' }
+    ];
     const state = {
       monthCursor: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
       selectedDate: toDateInput(new Date()),
@@ -403,6 +421,17 @@
       });
     }
 
+    function populateColorSelect() {
+      const select = document.getElementById('colorInput');
+      select.innerHTML = COLOR_PALETTE.map((color) => `<option value="${color.value}">${color.name}</option>`).join('');
+    }
+
+    function colorForTitle(title) {
+      let hash = 0;
+      for (let i = 0; i < title.length; i += 1) hash = (hash * 31 + title.charCodeAt(i)) >>> 0;
+      return COLOR_PALETTE[hash % COLOR_PALETTE.length].value;
+    }
+
     async function loadData() {
       state.events = await window.discipladoFirebase?.getCalendarEvents?.() || [];
       document.getElementById('dateInput').value = state.selectedDate;
@@ -437,7 +466,7 @@
         html += `
           <button class="day${selected}" type="button" onclick="selectDate('${dateKey}')">
             <span class="day-number">${day}</span>
-            ${items.slice(0, 3).map((item) => `<span class="pill">${escapeHtml(item.title)}</span>`).join('')}
+            ${items.slice(0, 3).map((item) => `<span class="pill" style="background:${item.color || '#078ca3'};color:#fff">${escapeHtml(item.title)}</span>`).join('')}
             ${items.length > 3 ? `<span class="pill">+${items.length - 3}</span>` : ''}
           </button>
         `;
@@ -458,6 +487,7 @@
         <article class="row">
           <div class="row-head">
             <div>
+              <span class="pill" style="background:${item.color || '#078ca3'};color:#fff">${escapeHtml(item.category || 'General')}</span>
               <div class="row-title">${escapeHtml(item.title)}</div>
               <div class="muted">${item.start ? `${escapeHtml(item.start)}${item.end ? ' - ' + escapeHtml(item.end) : ''} | ` : ''}${escapeHtml(item.location || 'Jesus es el Centro')}</div>
               ${item.description ? `<div>${escapeHtml(item.description)}</div>` : ''}
@@ -486,6 +516,8 @@
       document.getElementById('startInput').value = item.start || '';
       document.getElementById('endInput').value = item.end || '';
       document.getElementById('locationInput').value = item.location || '';
+      document.getElementById('categoryInput').value = item.category || '';
+      document.getElementById('colorInput').value = item.color || COLOR_PALETTE[0].value;
       document.getElementById('descriptionInput').value = item.description || '';
       els.formTitle.textContent = 'Editar evento';
       els.saveEventBtn.textContent = 'Actualizar evento';
@@ -544,6 +576,8 @@
         start: document.getElementById('startInput').value,
         end: document.getElementById('endInput').value,
         location: document.getElementById('locationInput').value.trim(),
+        category: document.getElementById('categoryInput').value.trim() || 'General',
+        color: document.getElementById('colorInput').value,
         description: document.getElementById('descriptionInput').value.trim()
       };
 
@@ -592,7 +626,9 @@
           start: item.start || '',
           end: item.end || '',
           location: item.location || '',
-          description: item.description || ''
+          description: item.description || '',
+          category: 'General',
+          color: colorForTitle(item.title || '')
         };
         if (!payload.title || !payload.date) continue;
         const newId = await window.discipladoFirebase?.createCalendarEvent?.(payload);
@@ -607,6 +643,7 @@
     window.editEvent = editEvent;
     window.deleteEvent = deleteEvent;
 
+    populateColorSelect();
     applyAdminVisibility();
     if (state.isAdmin) loadData();
   </script>

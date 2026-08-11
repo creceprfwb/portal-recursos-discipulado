@@ -263,7 +263,7 @@
           html += `
             <div class="day${items.length ? ' has-events' : ''}">
               <span class="day-number">${day}</span>
-              ${items.slice(0, 3).map((item) => `<span class="pill">${escapeHtml(item.title)}</span>`).join('')}
+              ${items.slice(0, 3).map((item) => `<span class="pill" style="background:${item.color || '#078ca3'};color:#fff">${escapeHtml(item.title)}</span>`).join('')}
               ${items.length > 3 ? `<span class="pill">+${items.length - 3}</span>` : ''}
             </div>
           `;
@@ -279,6 +279,7 @@
           .slice(0, 10);
         els.upcomingList.innerHTML = items.map((item) => `
           <article class="row">
+            <span class="pill" style="background:${item.color || '#078ca3'};color:#fff">${escapeHtml(item.category || 'General')}</span>
             <div class="row-title">${escapeHtml(item.title)}</div>
             <div class="row-meta">${formatDate(item.date)}${item.start ? ` · ${escapeHtml(item.start)}${item.end ? '-' + escapeHtml(item.end) : ''}` : ''} · ${escapeHtml(item.location || 'Jesus es el Centro')}</div>
           </article>

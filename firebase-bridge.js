@@ -724,7 +724,9 @@
       start: payload.start || '',
       end: payload.end || '',
       location: payload.location || '',
-      description: payload.description || ''
+      description: payload.description || '',
+      category: payload.category || 'General',
+      color: payload.color || '#078ca3'
     };
 
     if (!event.title || !event.date) {
