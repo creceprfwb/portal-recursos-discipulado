@@ -121,6 +121,7 @@
       }
       .day {
         min-height: 96px;
+        min-width: 0;
         padding: 9px;
         border: 1px solid var(--line);
         border-radius: 10px;
@@ -136,6 +137,7 @@
         display: inline-flex;
         width: max-content;
         max-width: 100%;
+        min-width: 0;
         padding: 3px 8px;
         border-radius: 999px;
         background: #eef7f9;
@@ -157,6 +159,8 @@
       }
       .row-title { font-weight: 900; color: var(--deep); }
       .row-meta { color: var(--muted); font-size: 13px; margin-top: 2px; }
+      .page-footer { margin-top: 24px; text-align: center; }
+      .page-footer a { color: var(--muted); font-size: 12px; font-weight: 700; text-decoration: underline; }
       @media (max-width: 640px) {
         .calendar-wrap { padding: 22px 10px 28px; }
         .calendar-card { padding: 12px; border-radius: 18px; }
@@ -177,7 +181,6 @@
         </header>
         <div class="actions">
           <a class="btn primary" href="./index-wix.html?v=jeec-calendar1" target="_self">Volver al inicio</a>
-          <a class="btn ghost" href="./admin-eventos-wix.html">Panel admin</a>
         </div>
         <section class="calendar-card" aria-label="Calendario Jesús es el Centro">
           <div class="section-title">
@@ -197,6 +200,9 @@
             <div class="event-list" id="upcomingRecurringList"></div>
           </div>
         </section>
+        <footer class="page-footer">
+          <a href="./admin-eventos-wix.html">Admin</a>
+        </footer>
       </div>
     </main>
 

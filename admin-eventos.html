@@ -184,6 +184,7 @@
     }
     .day {
       min-height:100px;
+      min-width:0;
       padding:9px;
       border:1px solid var(--borde);
       border-radius:10px;
@@ -200,6 +201,7 @@
       display:inline-flex;
       width:max-content;
       max-width:100%;
+      min-width:0;
       padding:3px 8px;
       border-radius:999px;
       background:#eef7f9;
@@ -337,11 +339,20 @@
             </label>
             <label class="check-row" id="recurringRow">
               <input type="checkbox" id="recurringInput">
-              Se repite cada semana
+              Es un evento recurrente
             </label>
-            <label id="recurringUntilRow" style="display:none">Repetir hasta
-              <input type="date" id="recurringUntilInput">
-            </label>
+            <div class="two" id="recurringUntilRow" style="display:none">
+              <label>Frecuencia
+                <select id="recurringFrequencyInput">
+                  <option value="weekly">Semanal</option>
+                  <option value="monthly">Mensual</option>
+                  <option value="yearly">Anual</option>
+                </select>
+              </label>
+              <label>Repetir hasta
+                <input type="date" id="recurringUntilInput">
+              </label>
+            </div>
             <input type="hidden" id="editingId">
             <button class="btn gold" type="submit" id="saveEventBtn">Guardar evento</button>
           </form>
@@ -593,10 +604,18 @@
       document.getElementById('recurringUntilRow').style.display = event.target.checked ? 'grid' : 'none';
     });
 
-    function addWeeks(dateKey, weeks) {
+    function addInterval(dateKey, count, frequency) {
       const d = new Date(`${dateKey}T00:00:00`);
-      d.setDate(d.getDate() + weeks * 7);
+      if (frequency === 'monthly') d.setMonth(d.getMonth() + count);
+      else if (frequency === 'yearly') d.setFullYear(d.getFullYear() + count);
+      else d.setDate(d.getDate() + count * 7);
       return toDateInput(d);
+    }
+
+    function defaultUntil(dateKey, frequency) {
+      if (frequency === 'monthly') return addInterval(dateKey, 24, 'monthly');
+      if (frequency === 'yearly') return addInterval(dateKey, 10, 'yearly');
+      return addInterval(dateKey, 52, 'weekly');
     }
 
     els.eventForm.addEventListener('submit', async (event) => {
@@ -626,20 +645,22 @@
         const index = state.events.findIndex((item) => item.id === id);
         if (index >= 0) state.events[index] = { id, ...basePayload };
       } else if (isRecurring) {
+        const frequency = document.getElementById('recurringFrequencyInput').value;
         const untilInput = document.getElementById('recurringUntilInput').value;
-        const untilDate = untilInput || addWeeks(basePayload.date, 52);
+        const untilDate = untilInput || defaultUntil(basePayload.date, frequency);
         let created = 0;
-        let weekOffset = 0;
+        let offset = 0;
         let occurrenceDate = basePayload.date;
-        while (occurrenceDate <= untilDate) {
-          const occurrence = { id: `${id}-${weekOffset}`, ...basePayload, date: occurrenceDate };
+        const MAX_OCCURRENCES = 500;
+        while (occurrenceDate <= untilDate && offset < MAX_OCCURRENCES) {
+          const occurrence = { id: `${id}-${offset}`, ...basePayload, date: occurrenceDate };
           const ok = await window.discipladoFirebase?.saveCalendarEvent?.(occurrence);
           if (ok) {
             state.events.push(occurrence);
             created += 1;
           }
-          weekOffset += 1;
-          occurrenceDate = addWeeks(basePayload.date, weekOffset);
+          offset += 1;
+          occurrenceDate = addInterval(basePayload.date, offset, frequency);
         }
         if (!created) {
           alert('No se pudo guardar. Verifica que tu sesion siga activa.');
