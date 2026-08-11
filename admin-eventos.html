@@ -136,6 +136,7 @@
     .btn.light { background:#eef7f9; color:var(--azul-oscuro); border-color:var(--borde); }
     .btn.danger { background:#fff1ef; color:var(--coral); border-color:#ffd5cf; }
     .btn.small { min-height:34px; padding:7px 10px; font-size:13px; border-radius:8px; }
+    .actions { display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
 
     .grid {
       display:grid;
@@ -290,8 +291,11 @@
           <h2>Importar desde Google Calendar</h2>
         </div>
         <p class="muted">Sube el archivo <code>eventos-import.json</code> generado por <code>scripts/export_google_calendar.py</code> para traer los eventos que ya existen en el calendario de Google.</p>
-        <label class="btn light" for="importFile">Elegir archivo</label>
-        <input id="importFile" type="file" accept="application/json" hidden>
+        <div class="actions">
+          <label class="btn light" for="importFile">Elegir archivo</label>
+          <input id="importFile" type="file" accept="application/json" hidden>
+          <button class="btn danger" type="button" id="clearAllBtn">Borrar todos los eventos</button>
+        </div>
       </section>
 
       <section class="grid">
@@ -611,6 +615,23 @@
     document.getElementById('nextMonth').addEventListener('click', () => {
       state.monthCursor = new Date(state.monthCursor.getFullYear(), state.monthCursor.getMonth() + 1, 1);
       render();
+    });
+
+    document.getElementById('clearAllBtn').addEventListener('click', async () => {
+      if (!state.events.length) {
+        alert('No hay eventos que borrar.');
+        return;
+      }
+      if (!confirm(`Vas a borrar los ${state.events.length} eventos del calendario. Esta accion no se puede deshacer. Continuar?`)) return;
+      if (!confirm('Confirma de nuevo: esto borra TODOS los eventos, no solo los duplicados.')) return;
+
+      let deleted = 0;
+      for (const item of [...state.events]) {
+        const ok = await window.discipladoFirebase?.deleteCalendarEvent?.(item.id);
+        if (ok) deleted += 1;
+      }
+      alert(`Se borraron ${deleted} de ${state.events.length} evento(s).`);
+      await loadData();
     });
 
     document.getElementById('importFile').addEventListener('change', async (event) => {
