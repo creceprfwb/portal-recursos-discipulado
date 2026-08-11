@@ -189,8 +189,12 @@
           </div>
           <div class="calendar" id="calendar"></div>
           <div class="upcoming">
-            <h2>Próximas actividades</h2>
+            <h2>Próximas actividades especiales</h2>
             <div class="event-list" id="upcomingList"></div>
+          </div>
+          <div class="upcoming">
+            <h2>Actividades recurrentes</h2>
+            <div class="event-list" id="upcomingRecurringList"></div>
           </div>
         </section>
       </div>
@@ -210,7 +214,8 @@
       const els = {
         calendar: document.getElementById('calendar'),
         monthTitle: document.getElementById('monthTitle'),
-        upcomingList: document.getElementById('upcomingList')
+        upcomingList: document.getElementById('upcomingList'),
+        upcomingRecurringList: document.getElementById('upcomingRecurringList')
       };
 
       function toDateInput(date) {
@@ -263,7 +268,7 @@
           html += `
             <div class="day${items.length ? ' has-events' : ''}">
               <span class="day-number">${day}</span>
-              ${items.slice(0, 3).map((item) => `<span class="pill" style="background:${item.color || '#078ca3'};color:#fff">${escapeHtml(item.title)}</span>`).join('')}
+              ${items.slice(0, 3).map((item) => `<span class="pill" style="background:${item.isRecurring ? '#94a3b8' : (item.color || '#078ca3')};color:#fff">${escapeHtml(item.title)}</span>`).join('')}
               ${items.length > 3 ? `<span class="pill">+${items.length - 3}</span>` : ''}
             </div>
           `;
@@ -271,19 +276,32 @@
         els.calendar.innerHTML = html;
       }
 
-      function renderUpcoming() {
-        const today = toDateInput(new Date());
-        const items = state.events
-          .filter((item) => item.date >= today)
-          .sort((a, b) => `${a.date} ${a.start || ''}`.localeCompare(`${b.date} ${b.start || ''}`))
-          .slice(0, 10);
-        els.upcomingList.innerHTML = items.map((item) => `
+      function eventRow(item) {
+        return `
           <article class="row">
-            <span class="pill" style="background:${item.color || '#078ca3'};color:#fff">${escapeHtml(item.category || 'General')}</span>
+            <span class="pill" style="background:${item.isRecurring ? '#94a3b8' : (item.color || '#078ca3')};color:#fff">${escapeHtml(item.category || 'General')}</span>
             <div class="row-title">${escapeHtml(item.title)}</div>
             <div class="row-meta">${formatDate(item.date)}${item.start ? ` · ${escapeHtml(item.start)}${item.end ? '-' + escapeHtml(item.end) : ''}` : ''} · ${escapeHtml(item.location || 'Jesus es el Centro')}</div>
+            ${item.link ? `<div class="row-meta"><a href="${escapeHtml(item.link)}" target="_blank" rel="noopener">${escapeHtml(item.link)}</a></div>` : ''}
           </article>
-        `).join('') || '<div class="row-meta">No hay actividades próximas registradas.</div>';
+        `;
+      }
+
+      function renderUpcoming() {
+        const today = toDateInput(new Date());
+        const upcoming = state.events
+          .filter((item) => item.date >= today)
+          .sort((a, b) => `${a.date} ${a.start || ''}`.localeCompare(`${b.date} ${b.start || ''}`));
+
+        const special = upcoming.filter((item) => !item.isRecurring).slice(0, 10);
+        els.upcomingList.innerHTML = special.map(eventRow).join('') || '<div class="row-meta">No hay actividades especiales próximas registradas.</div>';
+
+        const recurring = upcoming.filter((item) => item.isRecurring);
+        const nextByTitle = new Map();
+        recurring.forEach((item) => {
+          if (!nextByTitle.has(item.title)) nextByTitle.set(item.title, item);
+        });
+        els.upcomingRecurringList.innerHTML = [...nextByTitle.values()].map(eventRow).join('') || '<div class="row-meta">No hay actividades recurrentes registradas.</div>';
       }
 
       document.getElementById('prevMonth').addEventListener('click', () => {

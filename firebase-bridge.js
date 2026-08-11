@@ -726,7 +726,9 @@
       location: payload.location || '',
       description: payload.description || '',
       category: payload.category || 'General',
-      color: payload.color || '#078ca3'
+      color: payload.color || '#078ca3',
+      link: payload.link || '',
+      isRecurring: Boolean(payload.isRecurring)
     };
 
     if (!event.title || !event.date) {
@@ -765,7 +767,9 @@
         location: data.location || '',
         description: data.description || '',
         category: data.category || 'General',
-        color: data.color || '#078ca3'
+        color: data.color || '#078ca3',
+        link: data.link || '',
+        isRecurring: Boolean(data.isRecurring)
       }, { merge: true });
       return true;
     } catch (error) {

@@ -137,6 +137,8 @@
     .btn.danger { background:#fff1ef; color:var(--coral); border-color:#ffd5cf; }
     .btn.small { min-height:34px; padding:7px 10px; font-size:13px; border-radius:8px; }
     .actions { display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+    .check-row { display:flex; align-items:flex-start; gap:10px; font-size:13px; font-weight:800; color:var(--texto); }
+    .check-row input { width:auto; margin-top:4px; }
 
     .grid {
       display:grid;
@@ -327,8 +329,18 @@
                 <select id="colorInput"></select>
               </label>
             </div>
+            <label>Enlace (opcional)
+              <input id="linkInput" type="url" placeholder="https://...">
+            </label>
             <label>Descripcion
               <textarea id="descriptionInput"></textarea>
+            </label>
+            <label class="check-row" id="recurringRow">
+              <input type="checkbox" id="recurringInput">
+              Se repite cada semana
+            </label>
+            <label id="recurringUntilRow" style="display:none">Repetir hasta
+              <input type="date" id="recurringUntilInput">
             </label>
             <input type="hidden" id="editingId">
             <button class="btn gold" type="submit" id="saveEventBtn">Guardar evento</button>
@@ -470,7 +482,7 @@
         html += `
           <button class="day${selected}" type="button" onclick="selectDate('${dateKey}')">
             <span class="day-number">${day}</span>
-            ${items.slice(0, 3).map((item) => `<span class="pill" style="background:${item.color || '#078ca3'};color:#fff">${escapeHtml(item.title)}</span>`).join('')}
+            ${items.slice(0, 3).map((item) => `<span class="pill" style="background:${item.isRecurring ? '#94a3b8' : (item.color || '#078ca3')};color:#fff">${escapeHtml(item.title)}</span>`).join('')}
             ${items.length > 3 ? `<span class="pill">+${items.length - 3}</span>` : ''}
           </button>
         `;
@@ -492,9 +504,11 @@
           <div class="row-head">
             <div>
               <span class="pill" style="background:${item.color || '#078ca3'};color:#fff">${escapeHtml(item.category || 'General')}</span>
+              ${item.isRecurring ? '<span class="pill" style="background:#94a3b8;color:#fff">Recurrente</span>' : ''}
               <div class="row-title">${escapeHtml(item.title)}</div>
               <div class="muted">${item.start ? `${escapeHtml(item.start)}${item.end ? ' - ' + escapeHtml(item.end) : ''} | ` : ''}${escapeHtml(item.location || 'Jesus es el Centro')}</div>
               ${item.description ? `<div>${escapeHtml(item.description)}</div>` : ''}
+              ${item.link ? `<div><a href="${escapeHtml(item.link)}" target="_blank" rel="noopener">${escapeHtml(item.link)}</a></div>` : ''}
             </div>
           </div>
           <div class="row-actions">
@@ -522,7 +536,10 @@
       document.getElementById('locationInput').value = item.location || '';
       document.getElementById('categoryInput').value = item.category || '';
       document.getElementById('colorInput').value = item.color || COLOR_PALETTE[0].value;
+      document.getElementById('linkInput').value = item.link || '';
       document.getElementById('descriptionInput').value = item.description || '';
+      document.getElementById('recurringRow').style.display = 'none';
+      document.getElementById('recurringUntilRow').style.display = 'none';
       els.formTitle.textContent = 'Editar evento';
       els.saveEventBtn.textContent = 'Actualizar evento';
       window.scrollTo({ top: 260, behavior: 'smooth' });
@@ -543,6 +560,8 @@
       els.eventForm.reset();
       document.getElementById('dateInput').value = state.selectedDate;
       document.getElementById('editingId').value = '';
+      document.getElementById('recurringRow').style.display = 'flex';
+      document.getElementById('recurringUntilRow').style.display = 'none';
       els.formTitle.textContent = 'Crear evento';
       els.saveEventBtn.textContent = 'Guardar evento';
     }
@@ -570,11 +589,22 @@
       applyAdminVisibility();
     });
 
+    document.getElementById('recurringInput').addEventListener('change', (event) => {
+      document.getElementById('recurringUntilRow').style.display = event.target.checked ? 'grid' : 'none';
+    });
+
+    function addWeeks(dateKey, weeks) {
+      const d = new Date(`${dateKey}T00:00:00`);
+      d.setDate(d.getDate() + weeks * 7);
+      return toDateInput(d);
+    }
+
     els.eventForm.addEventListener('submit', async (event) => {
       event.preventDefault();
       const id = document.getElementById('editingId').value || uid('evt');
       const isEditing = Boolean(document.getElementById('editingId').value);
-      const payload = {
+      const isRecurring = !isEditing && document.getElementById('recurringInput').checked;
+      const basePayload = {
         title: document.getElementById('titleInput').value.trim(),
         date: document.getElementById('dateInput').value,
         start: document.getElementById('startInput').value,
@@ -582,27 +612,49 @@
         location: document.getElementById('locationInput').value.trim(),
         category: document.getElementById('categoryInput').value.trim() || 'General',
         color: document.getElementById('colorInput').value,
-        description: document.getElementById('descriptionInput').value.trim()
+        link: document.getElementById('linkInput').value.trim(),
+        description: document.getElementById('descriptionInput').value.trim(),
+        isRecurring
       };
 
       if (isEditing) {
-        const ok = await window.discipladoFirebase?.updateCalendarEvent?.(id, payload);
+        const ok = await window.discipladoFirebase?.updateCalendarEvent?.(id, basePayload);
         if (!ok) {
           alert('No se pudo guardar. Verifica que tu sesion siga activa.');
           return;
         }
         const index = state.events.findIndex((item) => item.id === id);
-        if (index >= 0) state.events[index] = { id, ...payload };
+        if (index >= 0) state.events[index] = { id, ...basePayload };
+      } else if (isRecurring) {
+        const untilInput = document.getElementById('recurringUntilInput').value;
+        const untilDate = untilInput || addWeeks(basePayload.date, 52);
+        let created = 0;
+        let weekOffset = 0;
+        let occurrenceDate = basePayload.date;
+        while (occurrenceDate <= untilDate) {
+          const occurrence = { id: `${id}-${weekOffset}`, ...basePayload, date: occurrenceDate };
+          const ok = await window.discipladoFirebase?.saveCalendarEvent?.(occurrence);
+          if (ok) {
+            state.events.push(occurrence);
+            created += 1;
+          }
+          weekOffset += 1;
+          occurrenceDate = addWeeks(basePayload.date, weekOffset);
+        }
+        if (!created) {
+          alert('No se pudo guardar. Verifica que tu sesion siga activa.');
+          return;
+        }
       } else {
-        const newId = await window.discipladoFirebase?.createCalendarEvent?.(payload);
+        const newId = await window.discipladoFirebase?.createCalendarEvent?.(basePayload);
         if (!newId) {
           alert('No se pudo guardar. Verifica que tu sesion siga activa.');
           return;
         }
-        state.events.push({ id: newId, ...payload });
+        state.events.push({ id: newId, ...basePayload });
       }
 
-      state.selectedDate = payload.date;
+      state.selectedDate = basePayload.date;
       resetForm();
       render();
     });
@@ -650,6 +702,8 @@
           end: item.end || '',
           location: item.location || '',
           description: item.description || '',
+          link: item.link || '',
+          isRecurring: Boolean(item.isRecurring),
           category: 'General',
           color: colorForTitle(item.title || '')
         };

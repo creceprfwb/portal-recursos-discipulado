@@ -127,7 +127,9 @@ def parse_raw_events(lines):
     return raw_events
 
 
-def build_event(raw, start_dt: datetime, end_dt: datetime, event_id: str) -> dict:
+def build_event(raw, start_dt: datetime, end_dt: datetime, event_id: str, is_recurring: bool) -> dict:
+    description = raw.get("description", "")
+    link = description if re.fullmatch(r"https?://\S+", description.strip()) else ""
     return {
         "id": event_id,
         "title": raw.get("title", ""),
@@ -135,7 +137,9 @@ def build_event(raw, start_dt: datetime, end_dt: datetime, event_id: str) -> dic
         "start": start_dt.strftime("%H:%M") if raw.get("has_time", True) else "",
         "end": end_dt.strftime("%H:%M") if raw.get("has_time", True) else "",
         "location": raw.get("location", ""),
-        "description": raw.get("description", ""),
+        "description": description,
+        "link": link,
+        "isRecurring": is_recurring,
     }
 
 
@@ -155,7 +159,7 @@ def expand_events(raw_events):
             start_dt = parse_ics_datetime(override["dtstart_raw"])
             end_dt = parse_ics_datetime(override["dtend_raw"]) if override.get("dtend_raw") else start_dt
             slot_dt = parse_ics_datetime(override["recurrence_id_raw"])
-            events.append(build_event(override, start_dt, end_dt, f"{sanitize_id(uid)}-{slot_dt.strftime('%Y%m%d')}"))
+            events.append(build_event(override, start_dt, end_dt, f"{sanitize_id(uid)}-{slot_dt.strftime('%Y%m%d')}", True))
 
         for master in masters:
             start_dt = parse_ics_datetime(master["dtstart_raw"])
@@ -171,13 +175,13 @@ def expand_events(raw_events):
             }
 
             if not rrule:
-                events.append(build_event(master, start_dt, end_dt, base_id))
+                events.append(build_event(master, start_dt, end_dt, base_id, False))
                 continue
 
             if rrule.get("FREQ") != "WEEKLY":
                 # Only weekly recurrence shows up in this calendar today; fall
                 # back to a single event so nothing is silently dropped.
-                events.append(build_event(master, start_dt, end_dt, base_id))
+                events.append(build_event(master, start_dt, end_dt, base_id, True))
                 continue
 
             until_dt = parse_ics_datetime(rrule["UNTIL"]) if "UNTIL" in rrule else horizon
@@ -187,7 +191,7 @@ def expand_events(raw_events):
             while occurrence <= until_dt:
                 if occurrence.strftime("%Y%m%d") not in excluded:
                     occ_end = occurrence + duration
-                    events.append(build_event(master, occurrence, occ_end, f"{base_id}-{occurrence.strftime('%Y%m%d')}"))
+                    events.append(build_event(master, occurrence, occ_end, f"{base_id}-{occurrence.strftime('%Y%m%d')}", True))
                 occurrence += timedelta(days=7)
 
     return [e for e in events if e["title"] and e["date"]]
