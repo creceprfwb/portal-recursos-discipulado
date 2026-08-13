@@ -419,6 +419,7 @@
       renderAssignments();
       renderUncovered();
       renderNextThree();
+      window.parent?.postMessage({ type: 'DISCIPLESHIP_APP_HEIGHT', height: document.documentElement.scrollHeight }, '*');
     }
 
     function renderStats() {
