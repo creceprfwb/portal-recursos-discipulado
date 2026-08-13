@@ -799,6 +799,13 @@
         block: "start"
       });
     }
+
+    function reportHeightToWix() {
+      window.parent?.postMessage({ type: 'DISCIPLESHIP_APP_HEIGHT', height: document.documentElement.scrollHeight }, '*');
+    }
+
+    window.addEventListener('load', reportHeightToWix);
+    window.addEventListener('resize', reportHeightToWix);
   </script>
 
 </body>
