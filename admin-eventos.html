@@ -195,6 +195,7 @@
       text-align:center;
       text-transform:uppercase;
     }
+    .day-name-short { display:none; }
     .day {
       min-height:100px;
       min-width:0;
@@ -249,8 +250,22 @@
       .nav-inner, .section-title, .row-head { align-items:stretch; flex-direction:column; }
       .tabs { width:100%; display:grid; grid-template-columns:1fr; }
       .two { grid-template-columns:1fr; }
-      .calendar { grid-template-columns:1fr; }
-      .day-name, .day.empty { display:none; }
+      .calendar { gap:3px; }
+      .day { min-height:52px; padding:3px; border-radius:6px; gap:3px; }
+      .day-number { font-size:11px; }
+      .day-name-full { display:none; }
+      .day-name-short { display:block; }
+      .calendar .day .pill {
+        width:6px;
+        height:6px;
+        min-width:0;
+        max-width:none;
+        padding:0;
+        border-radius:50%;
+        font-size:0;
+        line-height:0;
+        overflow:hidden;
+      }
       .row-actions, .month-nav { width:100%; }
       .btn { width:100%; }
     }
@@ -501,7 +516,7 @@
       const startOffset = firstDay.getDay();
       const names = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'];
       els.monthTitle.textContent = firstDay.toLocaleDateString('es-PR', { month:'long', year:'numeric' });
-      let html = names.map((name) => `<div class="day-name">${name}</div>`).join('');
+      let html = names.map((name) => `<div class="day-name"><span class="day-name-full">${name}</span><span class="day-name-short">${name[0]}</span></div>`).join('');
       for (let i = 0; i < startOffset; i += 1) html += '<div class="day empty"></div>';
       for (let day = 1; day <= lastDay.getDate(); day += 1) {
         const dateKey = toDateInput(new Date(year, month, day));
