@@ -434,8 +434,36 @@
       renderAssignments();
       renderUncovered();
       renderNextThree();
-      window.parent?.postMessage({ type: 'DISCIPLESHIP_APP_HEIGHT', height: document.documentElement.scrollHeight }, '*');
+      reportHeightToWix();
     }
+
+    // Cuando el widget de Wix le da a esta pagina un ancho fijo de escritorio
+    // (no responde al tamano real del telefono), esto encoge visualmente todo
+    // el contenido para que quepa sin scroll horizontal.
+    function fitToDeviceWidth() {
+      const deviceWidth = window.screen?.width || window.innerWidth;
+      document.body.style.transform = '';
+      document.body.style.width = '';
+      const contentWidth = document.documentElement.scrollWidth;
+
+      if (!deviceWidth || contentWidth <= deviceWidth + 20) {
+        return 1;
+      }
+
+      const scale = deviceWidth / contentWidth;
+      document.body.style.transformOrigin = 'top left';
+      document.body.style.width = `${contentWidth}px`;
+      document.body.style.transform = `scale(${scale})`;
+      return scale;
+    }
+
+    function reportHeightToWix() {
+      const scale = fitToDeviceWidth();
+      const height = document.documentElement.scrollHeight * scale;
+      window.parent?.postMessage({ type: 'DISCIPLESHIP_APP_HEIGHT', height }, '*');
+    }
+
+    window.addEventListener('resize', reportHeightToWix);
 
     function renderStats() {
       const currentMonth = state.monthCursor.getMonth();
