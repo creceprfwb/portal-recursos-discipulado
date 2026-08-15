@@ -10,7 +10,7 @@
     try { embedded = window.self !== window.top; } catch (error) { embedded = true; }
     if (embedded || new URLSearchParams(location.search).get('embed') === '1') document.documentElement.classList.add('embed-mode');
   </script>
-  <link rel="stylesheet" href="./en-la-palabra.css?v=1">
+  <link rel="stylesheet" href="./en-la-palabra.css?v=2">
 </head>
 <body>
   <main class="page">
@@ -86,7 +86,7 @@
     </section>
   </main>
 
-  <script src="./en-la-palabra-data.js?v=1"></script>
+  <script src="./en-la-palabra-data.js?v=2"></script>
   <script>
     const data = window.enLaPalabraData;
     const readings = data.readings;
@@ -104,6 +104,9 @@
     function monthFor(reading) { return data.months.find((month) => month.theme === reading.monthTheme) || data.months[0]; }
     function weekFor(reading) { return monthFor(reading).weeks.find((week) => reading.date >= week.start && reading.date <= week.end) || monthFor(reading).weeks[0]; }
     function formatDate(key, opts = {}) { return parseDate(key).toLocaleDateString('es-PR', { weekday:'long', day:'numeric', month:'long', year:'numeric', ...opts }); }
+    function normalizeText(value) {
+      return String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    }
     function nextSunday(fromDate) {
       const d = parseDate(fromDate);
       const day = d.getDay();
@@ -189,8 +192,8 @@
       }).join('');
     }
     function renderSearch() {
-      const query = document.getElementById('searchInput').value.trim().toLowerCase();
-      const results = query ? readings.filter((reading) => [reading.reference, reading.title, reading.monthTheme, reading.weekTheme, ...(reading.keywords || [])].join(' ').toLowerCase().includes(query)).slice(0, 12) : [];
+      const query = normalizeText(document.getElementById('searchInput').value.trim());
+      const results = query ? readings.filter((reading) => normalizeText([reading.reference, reading.title, reading.monthTheme, reading.weekTheme, ...(reading.keywords || [])].join(' ')).includes(query)).slice(0, 12) : [];
       document.getElementById('searchResults').innerHTML = results.map((reading) => `
         <a class="day-row" href="./en-la-palabra.html?fecha=${reading.date}">
           <strong>${formatDate(reading.date, { year: undefined })}</strong>

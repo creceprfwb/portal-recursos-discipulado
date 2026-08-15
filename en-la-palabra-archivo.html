@@ -10,7 +10,7 @@
     try { embedded = window.self !== window.top; } catch (error) { embedded = true; }
     if (embedded || new URLSearchParams(location.search).get('embed') === '1') document.documentElement.classList.add('embed-mode');
   </script>
-  <link rel="stylesheet" href="./en-la-palabra.css?v=1">
+  <link rel="stylesheet" href="./en-la-palabra.css?v=2">
 </head>
 <body>
   <main class="page">
@@ -45,11 +45,14 @@
       </div>
     </section>
   </main>
-  <script src="./en-la-palabra-data.js?v=1"></script>
+  <script src="./en-la-palabra-data.js?v=2"></script>
   <script>
     const data = window.enLaPalabraData;
     const readings = data.readings;
     document.getElementById('archiveCount').textContent = `${readings.length} lecturas`;
+    function normalizeText(value) {
+      return String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    }
     function formatDate(key) { return new Date(`${key}T00:00:00`).toLocaleDateString('es-PR', { weekday:'short', day:'numeric', month:'short' }); }
     function renderArchive() {
       document.getElementById('archiveGrid').innerHTML = data.months.map((month) => `
@@ -69,8 +72,8 @@
       `).join('');
     }
     function renderResults() {
-      const query = document.getElementById('archiveSearch').value.trim().toLowerCase();
-      const results = (query ? readings.filter((reading) => [reading.reference, reading.title, reading.monthTheme, reading.weekTheme, ...(reading.keywords || [])].join(' ').toLowerCase().includes(query)) : readings).slice(0, 60);
+      const query = normalizeText(document.getElementById('archiveSearch').value.trim());
+      const results = (query ? readings.filter((reading) => normalizeText([reading.reference, reading.title, reading.monthTheme, reading.weekTheme, ...(reading.keywords || [])].join(' ')).includes(query)) : readings).slice(0, 60);
       document.getElementById('archiveResults').innerHTML = results.map((reading) => `
         <a class="day-row" href="./en-la-palabra.html?fecha=${reading.date}${document.documentElement.classList.contains('embed-mode') ? '&embed=1' : ''}">
           <strong>${formatDate(reading.date)}</strong>

@@ -10,7 +10,7 @@
     try { embedded = window.self !== window.top; } catch (error) { embedded = true; }
     if (embedded || new URLSearchParams(location.search).get('embed') === '1') document.documentElement.classList.add('embed-mode');
   </script>
-  <link rel="stylesheet" href="./en-la-palabra.css?v=1">
+  <link rel="stylesheet" href="./en-la-palabra.css?v=2">
 </head>
 <body>
   <main class="page" id="pageRoot">
@@ -38,7 +38,7 @@
     </section>
   </main>
 
-  <script src="./en-la-palabra-data.js?v=1"></script>
+  <script src="./en-la-palabra-data.js?v=2"></script>
   <script>
     const params = new URLSearchParams(location.search);
     const data = window.enLaPalabraData;
