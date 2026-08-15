@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>En la Palabra | Lectura Congregacional PRFWB</title>
+  <meta name="description" content="Lectura congregacional dominical de PRFWB.">
+  <script>
+    let embedded = false;
+    try { embedded = window.self !== window.top; } catch (error) { embedded = true; }
+    if (embedded || new URLSearchParams(location.search).get('embed') === '1') document.documentElement.classList.add('embed-mode');
+  </script>
+  <link rel="stylesheet" href="./en-la-palabra.css?v=1">
+</head>
+<body>
+  <main class="page" id="pageRoot">
+    <nav class="site-nav" aria-label="Navegacion principal">
+      <a class="nav-logo" href="./index.html"><img src="./prfwb-logo-main-cropped.png" alt="PRFWB"></a>
+      <div class="nav-links">
+        <a href="./recursos.html">Recursos</a>
+        <a class="active" href="./en-la-palabra.html">En la Palabra</a>
+      </div>
+    </nav>
+
+    <section class="toolbar" style="width:min(1180px, calc(100% - 2rem)); margin:1rem auto">
+      <div>
+        <strong>Lectura congregacional</strong>
+        <div class="muted">Optimizada para culto y proyeccion.</div>
+      </div>
+      <div class="actions">
+        <a class="button secondary" id="backLink" href="./en-la-palabra.html">Volver</a>
+        <button class="button dark projection-toggle" type="button" id="projectionBtn">Modo proyeccion</button>
+      </div>
+    </section>
+
+    <section class="presentation">
+      <article class="presentation-card" id="sundayView"></article>
+    </section>
+  </main>
+
+  <script src="./en-la-palabra-data.js?v=1"></script>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const data = window.enLaPalabraData;
+    const sundays = data.months.flatMap((month) => month.weeks.map((week) => week.sunday));
+    const date = params.get('fecha') || getSundayDate();
+    const sunday = sundays.find((item) => item.date === date) || sundays[0];
+    function getPuertoRicoDate(dateValue = new Date()) {
+      const parts = new Intl.DateTimeFormat('en-CA', { timeZone:'America/Puerto_Rico', year:'numeric', month:'2-digit', day:'2-digit' }).formatToParts(dateValue);
+      const map = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+      return `${map.year}-${map.month}-${map.day}`;
+    }
+    function getSundayDate() {
+      const today = new Date(`${getPuertoRicoDate()}T00:00:00`);
+      const add = today.getDay() === 0 ? 0 : 7 - today.getDay();
+      today.setDate(today.getDate() + add);
+      return today.toISOString().slice(0, 10);
+    }
+    function formatDate(key) {
+      return new Date(`${key}T00:00:00`).toLocaleDateString('es-PR', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+    }
+    document.title = `En la Palabra | Domingo ${formatDate(sunday.date)} | PRFWB`;
+    document.getElementById('backLink').href = `./en-la-palabra.html?fecha=${sunday.date}${document.documentElement.classList.contains('embed-mode') ? '&embed=1' : ''}`;
+    document.getElementById('sundayView').innerHTML = `
+      <div class="brand">PRFWB - En la Palabra</div>
+      <h1>${sunday.theme}</h1>
+      <div class="scripture">${sunday.reference} <span style="color:#f1c84b">(${sunday.version})</span></div>
+      <div class="truth">${sunday.mainTruth}</div>
+      <div class="bible-placeholder" style="font-size:clamp(1.25rem, 2.4vw, 2.4rem)">
+        ${sunday.bibleText || `Lee ${sunday.reference} en tu Biblia (${sunday.version}).`}
+      </div>
+    `;
+    document.getElementById('projectionBtn').addEventListener('click', async () => {
+      document.body.classList.toggle('projection');
+      if (document.body.classList.contains('projection') && document.documentElement.requestFullscreen) {
+        try { await document.documentElement.requestFullscreen(); } catch (error) {}
+      }
+    });
+  </script>
+</body>
+</html>
