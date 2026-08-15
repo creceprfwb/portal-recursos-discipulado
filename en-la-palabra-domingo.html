@@ -44,7 +44,7 @@
     const data = window.enLaPalabraData;
     const sundays = data.months.flatMap((month) => month.weeks.map((week) => week.sunday));
     const date = params.get('fecha') || getSundayDate();
-    const sunday = sundays.find((item) => item.date === date) || sundays[0];
+    const sunday = [...sundays].reverse().find((item) => item.date === date) || sundays[0];
     function getPuertoRicoDate(dateValue = new Date()) {
       const parts = new Intl.DateTimeFormat('en-CA', { timeZone:'America/Puerto_Rico', year:'numeric', month:'2-digit', day:'2-digit' }).formatToParts(dateValue);
       const map = Object.fromEntries(parts.map((part) => [part.type, part.value]));

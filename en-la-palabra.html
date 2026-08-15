@@ -113,8 +113,10 @@
     }
     function sundayFor(date) {
       const sundayDate = nextSunday(date);
+      const currentWeekSunday = weekFor(readingFor(date)).sunday;
+      if (currentWeekSunday?.date === sundayDate) return currentWeekSunday;
       return data.months.flatMap((month) => month.weeks.map((week) => week.sunday)).find((sunday) => sunday.date === sundayDate)
-        || weekFor(readingFor(date)).sunday;
+        || currentWeekSunday;
     }
     function bibleBlock(reading) {
       return reading.bibleText
