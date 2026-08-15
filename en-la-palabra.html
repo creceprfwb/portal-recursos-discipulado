@@ -10,7 +10,7 @@
     try { embedded = window.self !== window.top; } catch (error) { embedded = true; }
     if (embedded || new URLSearchParams(location.search).get('embed') === '1') document.documentElement.classList.add('embed-mode');
   </script>
-  <link rel="stylesheet" href="./en-la-palabra.css?v=2">
+  <link rel="stylesheet" href="./en-la-palabra.css?v=3">
 </head>
 <body>
   <main class="page">
@@ -86,7 +86,7 @@
     </section>
   </main>
 
-  <script src="./en-la-palabra-data.js?v=2"></script>
+  <script src="./en-la-palabra-data.js?v=3"></script>
   <script>
     const data = window.enLaPalabraData;
     const readings = data.readings;
@@ -107,6 +107,12 @@
     function normalizeText(value) {
       return String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
     }
+    function bibleGatewayUrl(reference) {
+      return `https://www.biblegateway.com/passage/?search=${encodeURIComponent(reference)}&version=RVA`;
+    }
+    function sourceNote(reference, source) {
+      return `<span class="source-note">${source || 'Texto basado en Reina-Valera 1909, dominio publico. Edicion de lectura PRFWB.'} <a href="${bibleGatewayUrl(reference)}" target="_blank" rel="noopener">Ver en BibleGateway</a></span>`;
+    }
     function nextSunday(fromDate) {
       const d = parseDate(fromDate);
       const day = d.getDay();
@@ -123,8 +129,8 @@
     }
     function bibleBlock(reading) {
       return reading.bibleText
-        ? `<div class="bible-placeholder">${reading.bibleText}</div>`
-        : `<div class="bible-placeholder">Lee ${reading.reference} en tu Biblia (${reading.version}).</div>`;
+        ? `<div class="bible-placeholder"><div class="bible-text">${reading.bibleText}</div>${sourceNote(reading.reference, reading.bibleTextSource)}</div>`
+        : `<div class="bible-placeholder">Lee ${reading.reference} en tu Biblia (${reading.version}).${sourceNote(reading.reference, reading.bibleTextSource)}</div>`;
     }
     function renderReading() {
       const reading = readingFor(selectedDate);
@@ -168,6 +174,7 @@
         <p class="reference">${sunday.reference} <span class="muted">(${sunday.version})</span></p>
         <p>${sunday.introduction}</p>
         <p><strong>Verdad principal:</strong> ${sunday.mainTruth}</p>
+        <div class="bible-placeholder">${sunday.bibleText ? `<div class="bible-text">${sunday.bibleText}</div>` : `Lee ${sunday.reference} en tu Biblia (${sunday.version}).`}${sourceNote(sunday.reference, sunday.bibleTextSource)}</div>
         <a class="button dark" href="./en-la-palabra-domingo.html?fecha=${sunday.date}${document.documentElement.classList.contains('embed-mode') ? '&embed=1' : ''}">Ver lectura del domingo</a>
       `;
     }

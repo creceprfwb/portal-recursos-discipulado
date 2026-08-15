@@ -44,6 +44,9 @@ h1 { margin:.45rem 0 .7rem; font-size:clamp(2.25rem, 6vw, 4.6rem); line-height:1
 .reading-title { margin:.1rem 0 .3rem; font-size:clamp(1.75rem, 4vw, 3rem); line-height:1.08; }
 .reference { margin:.4rem 0 1.1rem; color:var(--elp-verde); font-size:1.18rem; font-weight:900; }
 .bible-placeholder { padding:1rem; border-left:4px solid var(--elp-coral); border-radius:8px; background:#fff8db; color:#53410a; font-weight:800; }
+.bible-text { white-space:pre-line; font-weight:700; }
+.source-note { display:block; margin-top:.65rem; color:var(--elp-texto); font-size:.82rem; font-weight:800; }
+.source-note a { color:var(--elp-azul); text-decoration:underline; text-underline-offset:3px; }
 .content-grid { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:12px; margin-top:1rem; }
 .content-box { padding:1rem; border:1px solid var(--elp-borde); border-radius:8px; background:#fbfdfe; }
 .content-box h3 { margin:0 0 .45rem; color:var(--elp-azul-profundo); }

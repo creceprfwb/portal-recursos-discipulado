@@ -1,4 +1,17 @@
 (function () {
+  const BIBLE_VERSION = 'RV1909 - Edicion de lectura PRFWB';
+  const bibleTextSource = 'Texto basado en Reina-Valera 1909, dominio publico. Edicion de lectura PRFWB con actualizacion minima de ortografia/vocabulario.';
+  const sundayTexts = {
+    'Mateo 6:9-13': `Ustedes, pues, oren asi:
+
+Padre nuestro que estas en los cielos, santificado sea tu nombre.
+Venga tu reino. Sea hecha tu voluntad, como en el cielo, asi tambien en la tierra.
+Danos hoy nuestro pan cotidiano.
+Y perdonanos nuestras deudas, como tambien nosotros perdonamos a nuestros deudores.
+Y no nos metas en tentacion, mas libranos del mal:
+porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amen.`
+  };
+
   const september = {
     year: 2026,
     month: 9,
@@ -15,8 +28,9 @@
           date: '2026-09-06',
           theme: 'Dios nos ha hablado por su Palabra',
           reference: 'Hebreos 1:1-4',
-          version: 'RVR1960',
-          bibleText: '',
+          version: BIBLE_VERSION,
+          bibleText: sundayTexts['Hebreos 1:1-4'] || '',
+          bibleTextSource,
           introduction: 'Durante la semana hemos recordado que Dios no permanece en silencio. El Dios que creo por su palabra, sostiene su verdad y llama a su pueblo a escuchar, tambien se ha revelado de manera suprema en su Hijo. Esta lectura congregacional nos invita a recibir la Palabra de Dios con reverencia, fe y obediencia.',
           mainTruth: 'Dios nos ha hablado fielmente, y su revelacion culmina en Jesucristo, a quien debemos escuchar y obedecer.'
         }
@@ -29,8 +43,9 @@
           date: '2026-09-13',
           theme: 'Transformados por la Palabra',
           reference: 'Romanos 12:1-2',
-          version: 'RVR1960',
-          bibleText: '',
+          version: BIBLE_VERSION,
+          bibleText: sundayTexts['Romanos 12:1-2'] || '',
+          bibleTextSource,
           introduction: 'PLACEHOLDER: Introduccion pastoral para la congregacion.',
           mainTruth: 'PLACEHOLDER: La Palabra renueva nuestra mente para vivir conforme a la voluntad de Dios.'
         }
@@ -43,8 +58,9 @@
           date: '2026-09-20',
           theme: 'Las Escrituras nos conducen a Cristo',
           reference: 'Lucas 24:25-27',
-          version: 'RVR1960',
-          bibleText: '',
+          version: BIBLE_VERSION,
+          bibleText: sundayTexts['Lucas 24:25-27'] || '',
+          bibleTextSource,
           introduction: 'PLACEHOLDER: Introduccion pastoral para dirigir la mirada de la iglesia a Cristo.',
           mainTruth: 'PLACEHOLDER: Toda la Escritura apunta al plan redentor de Dios cumplido en Cristo.'
         }
@@ -57,8 +73,9 @@
           date: '2026-09-27',
           theme: 'Obedecer la Palabra',
           reference: 'Santiago 1:22-25',
-          version: 'RVR1960',
-          bibleText: '',
+          version: BIBLE_VERSION,
+          bibleText: sundayTexts['Santiago 1:22-25'] || '',
+          bibleTextSource,
           introduction: 'PLACEHOLDER: Introduccion pastoral para llamar a obediencia gozosa.',
           mainTruth: 'PLACEHOLDER: La fe viva escucha la Palabra y responde con obediencia.'
         }
@@ -71,8 +88,9 @@
           date: '2026-10-04',
           theme: 'Permanecer firmes en la verdad',
           reference: '2 Timoteo 3:14-17',
-          version: 'RVR1960',
-          bibleText: '',
+          version: BIBLE_VERSION,
+          bibleText: sundayTexts['2 Timoteo 3:14-17'] || '',
+          bibleTextSource,
           introduction: 'PLACEHOLDER: Introduccion pastoral para cerrar el enfasis mensual.',
           mainTruth: 'PLACEHOLDER: Las Escrituras preparan al pueblo de Dios para toda buena obra.'
         }
@@ -96,8 +114,9 @@
           date: '2026-10-04',
           theme: 'Senor, ensenanos a orar',
           reference: 'Mateo 6:9-13',
-          version: 'RVR1960',
-          bibleText: '',
+          version: BIBLE_VERSION,
+          bibleText: sundayTexts['Mateo 6:9-13'] || '',
+          bibleTextSource,
           introduction: 'Durante esta primera semana hemos visto que Dios invita a su pueblo a buscarle con sinceridad, confianza y reverencia. La oracion no es una repeticion vacia ni un intento de impresionar a otros; es comunion con el Padre que nos escucha. Al leer juntos el modelo de oracion que Jesus enseno, recordamos que toda oracion cristiana comienza con Dios, su nombre, su reino y su voluntad.',
           mainTruth: 'Jesus nos ensena a orar buscando primero al Padre, su reino y su voluntad.'
         }
@@ -110,8 +129,9 @@
           date: '2026-10-11',
           theme: 'El Padre escucha a sus hijos',
           reference: 'Lucas 11:1-13',
-          version: 'RVR1960',
-          bibleText: '',
+          version: BIBLE_VERSION,
+          bibleText: sundayTexts['Lucas 11:1-13'] || '',
+          bibleTextSource,
           introduction: 'PLACEHOLDER: Introduccion pastoral para la lectura congregacional.',
           mainTruth: 'PLACEHOLDER: Dios llama a sus hijos a acercarse con confianza y dependencia.'
         }
@@ -124,8 +144,9 @@
           date: '2026-10-18',
           theme: 'La oracion eficaz del justo',
           reference: 'Santiago 5:13-18',
-          version: 'RVR1960',
-          bibleText: '',
+          version: BIBLE_VERSION,
+          bibleText: sundayTexts['Santiago 5:13-18'] || '',
+          bibleTextSource,
           introduction: 'PLACEHOLDER: Introduccion pastoral para la lectura congregacional.',
           mainTruth: 'PLACEHOLDER: La iglesia ora confiando en la gracia, el poder y la fidelidad de Dios.'
         }
@@ -138,8 +159,9 @@
           date: '2026-10-25',
           theme: 'Una iglesia que ora con valentia',
           reference: 'Hechos 4:23-31',
-          version: 'RVR1960',
-          bibleText: '',
+          version: BIBLE_VERSION,
+          bibleText: sundayTexts['Hechos 4:23-31'] || '',
+          bibleTextSource,
           introduction: 'PLACEHOLDER: Introduccion pastoral para la lectura congregacional.',
           mainTruth: 'PLACEHOLDER: Una iglesia llena del Espiritu ora y proclama la Palabra con valentia.'
         }
@@ -152,8 +174,9 @@
           date: '2026-11-01',
           theme: 'Orar para que corra la Palabra',
           reference: '2 Tesalonicenses 3:1-5',
-          version: 'RVR1960',
-          bibleText: '',
+          version: BIBLE_VERSION,
+          bibleText: sundayTexts['2 Tesalonicenses 3:1-5'] || '',
+          bibleTextSource,
           introduction: 'PLACEHOLDER: Introduccion pastoral para conectar oracion y mision.',
           mainTruth: 'PLACEHOLDER: La oracion impulsa a la iglesia a vivir y servir en la mision de Dios.'
         }
@@ -329,8 +352,9 @@
       weekTheme: week.title,
       title: approvedReadings[date]?.title || `${title} (PLACEHOLDER)`,
       reference,
-      version: 'RVR1960',
+      version: BIBLE_VERSION,
       bibleText: '',
+      bibleTextSource,
       explanation: approvedReadings[date]?.explanation || 'PLACEHOLDER: Explicacion biblica breve de 70 a 130 palabras. Este espacio sera reemplazado por contenido pastoral revisado antes de publicarse como definitivo.',
       reflectionQuestion: approvedReadings[date]?.reflectionQuestion || 'PLACEHOLDER: Pregunta breve para meditar en el pasaje.',
       application: approvedReadings[date]?.application || 'PLACEHOLDER: Aplicacion practica para vivir esta verdad hoy.',
