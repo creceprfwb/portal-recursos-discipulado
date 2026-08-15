@@ -2,6 +2,43 @@
   const BIBLE_VERSION = 'RV1909 - Edicion de lectura PRFWB';
   const bibleTextSource = 'Texto basado en Reina-Valera 1909, dominio publico. Edicion de lectura PRFWB con actualizacion minima de ortografia/vocabulario.';
   const sundayTexts = {
+    'Isaias 6:1-8': `En el ano que murio el rey Uzias vi yo al Senor sentado sobre un trono alto y sublime, y sus faldas llenaban el templo.
+Y encima de el estaban serafines; cada uno tenia seis alas: con dos cubrian sus rostros, con dos cubrian sus pies, y con dos volaban.
+Y el uno al otro daba voces, diciendo: Santo, santo, santo, Jehova de los ejercitos: toda la tierra esta llena de su gloria.
+Y los quiciales de las puertas se estremecieron con la voz del que clamaba, y la casa se lleno de humo.
+Entonces dije: Ay de mi! que soy muerto; porque siendo hombre inmundo de labios, y habitando en medio de pueblo que tiene labios inmundos, han visto mis ojos al Rey, Jehova de los ejercitos.
+Y volo hacia mi uno de los serafines, teniendo en su mano un carbon encendido, tomado del altar con unas tenazas.
+Y tocando con el sobre mi boca, dijo: He aqui que esto toco tus labios, y es quitada tu culpa, y limpio tu pecado.
+Despues oi la voz del Senor, que decia: A quien enviare, y quien ira por nosotros? Entonces respondi yo: Heme aqui, enviame a mi.`,
+    '2 Corintios 5:17-21': `De modo que si alguno esta en Cristo, nueva criatura es: las cosas viejas pasaron; he aqui todas son hechas nuevas.
+Y todo esto es de Dios, el cual nos reconcilio consigo por Cristo, y nos dio el ministerio de la reconciliacion.
+Porque ciertamente Dios estaba en Cristo reconciliando el mundo consigo, no imputandoles sus pecados, y puso en nosotros la palabra de la reconciliacion.
+Asi que somos embajadores en nombre de Cristo, como si Dios rogase por medio de nosotros; les rogamos en nombre de Cristo: Reconciliense con Dios.
+Al que no conocio pecado, por nosotros lo hizo pecado, para que nosotros fuesemos hechos justicia de Dios en el.`,
+    'Efesios 4:11-16': `Y el mismo dio unos, ciertamente apostoles; y otros, profetas; y otros, evangelistas; y otros, pastores y maestros;
+para perfeccion de los santos, para la obra del ministerio, para edificacion del cuerpo de Cristo;
+hasta que todos lleguemos a la unidad de la fe y del conocimiento del Hijo de Dios, a un varon perfecto, a la medida de la edad de la plenitud de Cristo.
+Que ya no seamos ninos fluctuantes, llevados por doquiera de todo viento de doctrina, por estratagema de hombres que, para enganar, emplean con astucia los artificios del error.
+Antes siguiendo la verdad en amor, crezcamos en todas cosas en aquel que es la cabeza, a saber, Cristo;
+del cual todo el cuerpo, bien concertado y unido entre si por todas las coyunturas que se ayudan mutuamente, segun la operacion propia de cada miembro, recibe su crecimiento para ir edificandose en amor.`,
+    'Filipenses 2:1-11': `Por tanto, si hay alguna consolacion en Cristo, si algun consuelo de amor, si alguna comunion del Espiritu, si algun afecto y misericordia,
+cumplan mi gozo, que sientan lo mismo, teniendo el mismo amor, unanimes, sintiendo una misma cosa.
+Nada hagan por contienda o por vanagloria; antes bien con humildad, estimando cada uno a los demas como superiores a si mismo.
+No mire cada uno a lo suyo propio, sino cada cual tambien a lo de los otros.
+Haya, pues, en ustedes este sentir que hubo tambien en Cristo Jesus:
+el cual, siendo en forma de Dios, no estimo como cosa a que aferrarse el ser igual a Dios;
+sino que se despojo a si mismo, tomando forma de siervo, hecho semejante a los hombres;
+y hallado en la condicion como hombre, se humillo a si mismo, hecho obediente hasta la muerte, y muerte de cruz.
+Por lo cual Dios tambien le ensalzo soberanamente, y le dio un nombre que es sobre todo nombre;
+para que en el nombre de Jesus se doble toda rodilla de los que estan en los cielos, y de los que estan en la tierra, y de los que estan debajo de la tierra;
+y toda lengua confiese que Jesucristo es el Senor, a la gloria de Dios Padre.`,
+    'Hechos 13:44-49': `Y el sabado siguiente se junto casi toda la ciudad a oir la palabra de Dios.
+Pero los judios, viendo la multitud, se llenaron de celos, y se oponian a lo que Pablo decia, contradiciendo y blasfemando.
+Entonces Pablo y Bernabe, usando de libertad, dijeron: A ustedes a la verdad era menester que se hablase primero la palabra de Dios; mas porque la desechan, y se juzgan indignos de la vida eterna, he aqui, nos volvemos a los gentiles.
+Porque asi nos ha mandado el Senor, diciendo: Te he puesto para luz de los gentiles, para que seas salvacion hasta lo postrero de la tierra.
+Y los gentiles, oyendo esto, se gozaban, y glorificaban la palabra del Senor; y creyeron todos los que estaban ordenados para vida eterna.
+Y la palabra del Senor era sembrada por toda aquella provincia.`,
+    '1 Corintios 15:58': `Asi que, hermanos mios amados, esten firmes y constantes, creciendo en la obra del Senor siempre, sabiendo que su trabajo en el Senor no es vano.`,
     'Mateo 6:9-13': `Ustedes, pues, oren asi:
 
 Padre nuestro que estas en los cielos, santificado sea tu nombre.
@@ -186,6 +223,109 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amen.`
 
   const months = [september, october];
 
+  const november = {
+    year: 2026,
+    month: 11,
+    monthKey: '2026-11',
+    monthName: 'Noviembre',
+    theme: 'Una Iglesia en Mision',
+    description: 'Durante noviembre, PRFWB sera animada a recordar que la iglesia existe para glorificar a Dios proclamando a Cristo, haciendo discipulos y sirviendo como testigo fiel del evangelio en su comunidad y hasta lo ultimo de la tierra.',
+    weeks: [
+      {
+        title: 'Dios envia a su pueblo',
+        start: '2026-11-01',
+        end: '2026-11-01',
+        sunday: {
+          date: '2026-11-01',
+          theme: 'Heme aqui, enviame a mi',
+          reference: 'Isaias 6:1-8',
+          version: BIBLE_VERSION,
+          bibleText: sundayTexts['Isaias 6:1-8'] || '',
+          bibleTextSource,
+          introduction: 'La mision comienza con una vision correcta de Dios. Isaias no se ofrece a servir porque se cree suficiente, sino porque ha visto la santidad del Senor, ha reconocido su pecado y ha recibido gracia. Solo un pueblo perdonado puede responder al llamado de Dios con humildad y disponibilidad.',
+          mainTruth: 'Dios envia a los que primero han sido confrontados por su santidad y limpiados por su gracia.'
+        }
+      },
+      {
+        title: 'Proclamamos a Cristo',
+        start: '2026-11-02',
+        end: '2026-11-08',
+        sunday: {
+          date: '2026-11-08',
+          theme: 'Embajadores de Cristo',
+          reference: '2 Corintios 5:17-21',
+          version: BIBLE_VERSION,
+          bibleText: sundayTexts['2 Corintios 5:17-21'] || '',
+          bibleTextSource,
+          introduction: 'Durante esta semana hemos recordado que la iglesia no anuncia ideas humanas ni proyectos personales; proclamamos a Cristo. El evangelio nos reconcilia con Dios y nos convierte en mensajeros de reconciliacion. Somos enviados como embajadores, llamando a otros a responder a la gracia de Dios en Cristo.',
+          mainTruth: 'La iglesia proclama a Cristo porque Dios nos reconcilio consigo y nos dio el ministerio de la reconciliacion.'
+        }
+      },
+      {
+        title: 'Hacemos discipulos',
+        start: '2026-11-09',
+        end: '2026-11-15',
+        sunday: {
+          date: '2026-11-15',
+          theme: 'Edificar el cuerpo de Cristo',
+          reference: 'Efesios 4:11-16',
+          version: BIBLE_VERSION,
+          bibleText: sundayTexts['Efesios 4:11-16'] || '',
+          bibleTextSource,
+          introduction: 'Durante esta semana hemos visto que la mision tambien incluye formar discipulos maduros. Cristo no deja a su iglesia sin recursos; El equipa a su pueblo por medio de dones, liderazgo, verdad y amor. La iglesia crece cuando cada miembro sirve bajo la direccion de Cristo, la cabeza del cuerpo.',
+          mainTruth: 'Cristo equipa a su iglesia para crecer en madurez, verdad y amor.'
+        }
+      },
+      {
+        title: 'Servimos a nuestra comunidad',
+        start: '2026-11-16',
+        end: '2026-11-22',
+        sunday: {
+          date: '2026-11-22',
+          theme: 'Servir con la mente de Cristo',
+          reference: 'Filipenses 2:1-11',
+          version: BIBLE_VERSION,
+          bibleText: sundayTexts['Filipenses 2:1-11'] || '',
+          bibleTextSource,
+          introduction: 'Servir a la comunidad requiere mas que buenas ideas; requiere la mente de Cristo. La humildad de Jesus corrige nuestro orgullo y nos ensena a mirar por los demas. Al leer este pasaje, la iglesia recuerda que todo servicio cristiano nace de la obra, el ejemplo y el senorio de Cristo.',
+          mainTruth: 'La iglesia sirve con humildad porque Cristo se humillo por nosotros.'
+        }
+      },
+      {
+        title: 'Hasta lo ultimo de la tierra',
+        start: '2026-11-23',
+        end: '2026-11-29',
+        sunday: {
+          date: '2026-11-29',
+          theme: 'La Palabra del Senor se difundia',
+          reference: 'Hechos 13:44-49',
+          version: BIBLE_VERSION,
+          bibleText: sundayTexts['Hechos 13:44-49'] || '',
+          bibleTextSource,
+          introduction: 'La Palabra de Dios avanza aun en medio de oposicion. En Antioquia vemos rechazo, pero tambien gozo, fe y expansion del evangelio. Esta lectura anima a la iglesia a perseverar en la mision, confiando en que Dios sigue usando su Palabra para llamar a muchos a Cristo.',
+          mainTruth: 'Dios extiende su Palabra para llamar pueblos y naciones a Cristo.'
+        }
+      },
+      {
+        title: 'Firmes en la obra del Senor',
+        start: '2026-11-30',
+        end: '2026-11-30',
+        sunday: {
+          date: '2026-12-06',
+          theme: 'Firmes y constantes',
+          reference: '1 Corintios 15:58',
+          version: BIBLE_VERSION,
+          bibleText: sundayTexts['1 Corintios 15:58'] || '',
+          bibleTextSource,
+          introduction: 'Cerramos el enfoque de mision recordando que la resurreccion de Cristo sostiene nuestro servicio. La iglesia puede trabajar, sembrar y perseverar porque el Senor vive. Nada hecho en Cristo y para Cristo es en vano, aun cuando el fruto no se vea de inmediato.',
+          mainTruth: 'En Cristo, nuestro trabajo en el Senor no es en vano.'
+        }
+      }
+    ]
+  };
+
+  months.push(november);
+
   const dailySeeds = [
     ['2026-09-01', 'Dios habla', 'Genesis 1:1-5'],
     ['2026-09-02', 'La palabra de Dios permanece', 'Isaias 40:6-8'],
@@ -247,7 +387,37 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amen.`
     ['2026-10-28', 'Orar antes de enviar', 'Hechos 13:1-3'],
     ['2026-10-29', 'Orar para que corra la Palabra', '2 Tesalonicenses 3:1-5'],
     ['2026-10-30', 'Orar en el Espiritu', 'Judas 20-21'],
-    ['2026-10-31', 'Las oraciones delante del Cordero', 'Apocalipsis 5:8-10']
+    ['2026-10-31', 'Las oraciones delante del Cordero', 'Apocalipsis 5:8-10'],
+    ['2026-11-01', 'Heme aqui, enviame a mi', 'Isaias 6:1-8'],
+    ['2026-11-02', 'Hacer discipulos de todas las naciones', 'Mateo 28:16-20'],
+    ['2026-11-03', 'Predicar el evangelio', 'Marcos 16:15-16'],
+    ['2026-11-04', 'Testigos de Cristo', 'Lucas 24:44-49'],
+    ['2026-11-05', 'Enviados por el Senor', 'Juan 20:19-23'],
+    ['2026-11-06', 'Recibir poder para testificar', 'Hechos 1:6-8'],
+    ['2026-11-07', 'No avergonzarnos del evangelio', 'Romanos 1:14-17'],
+    ['2026-11-08', 'Embajadores de Cristo', '2 Corintios 5:17-21'],
+    ['2026-11-09', 'Una comunidad que persevera', 'Hechos 2:42-47'],
+    ['2026-11-10', 'Presentar a todo hombre perfecto en Cristo', 'Colosenses 1:24-29'],
+    ['2026-11-11', 'Encargar a otros fieles', '2 Timoteo 2:1-7'],
+    ['2026-11-12', 'Ensenar sana doctrina', 'Tito 2:1-8'],
+    ['2026-11-13', 'Estimularnos al amor y buenas obras', 'Hebreos 10:19-25'],
+    ['2026-11-14', 'Servir con los dones recibidos', '1 Pedro 4:8-11'],
+    ['2026-11-15', 'Edificar el cuerpo de Cristo', 'Efesios 4:11-16'],
+    ['2026-11-16', 'Sal y luz', 'Mateo 5:13-16'],
+    ['2026-11-17', 'Amar al projimo', 'Lucas 10:25-37'],
+    ['2026-11-18', 'Hacer bien a todos', 'Galatas 6:7-10'],
+    ['2026-11-19', 'Una fe que sirve', 'Santiago 2:14-18'],
+    ['2026-11-20', 'Amar con hechos y verdad', '1 Juan 3:16-18'],
+    ['2026-11-21', 'Buscar el bienestar de la ciudad', 'Jeremias 29:4-7'],
+    ['2026-11-22', 'Servir con la mente de Cristo', 'Filipenses 2:1-11'],
+    ['2026-11-23', 'Que las naciones conozcan a Dios', 'Salmo 67'],
+    ['2026-11-24', 'Luz para las naciones', 'Isaias 49:5-6'],
+    ['2026-11-25', 'Rogar por obreros', 'Mateo 9:35-38'],
+    ['2026-11-26', 'Enviados por el Espiritu', 'Hechos 13:1-3'],
+    ['2026-11-27', 'Hermosos son los pies de los que anuncian', 'Romanos 10:11-15'],
+    ['2026-11-28', 'Una multitud de toda nacion', 'Apocalipsis 7:9-12'],
+    ['2026-11-29', 'La Palabra del Senor se difundia', 'Hechos 13:44-49'],
+    ['2026-11-30', 'Firmes y constantes en la obra del Senor', '1 Corintios 15:58']
   ];
 
   const approvedReadings = {
@@ -330,6 +500,246 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amen.`
       application: 'Ora lentamente usando las peticiones de Mateo 6:9-13 como guia para tu tiempo con Dios.',
       prayer: 'Padre nuestro, ordena mi corazon segun tu reino y tu voluntad. Dame dependencia diaria, perdon y fortaleza para vivir para tu gloria. Amen.',
       keywords: ['padre nuestro', 'mateo 6', 'reino', 'voluntad']
+    },
+    '2026-11-01': {
+      title: 'Heme aqui, enviame a mi',
+      explanation: 'Isaias no comienza su llamado mirando la necesidad del mundo, sino contemplando la santidad de Dios. Antes de ser enviado, es quebrantado por su pecado y limpiado por gracia. La mision cristiana nace de esta misma verdad: Dios envia a personas que han sido alcanzadas por su misericordia. No servimos porque somos suficientes; servimos porque el Rey santo nos perdona, nos levanta y nos llama a participar en su obra.',
+      reflectionQuestion: 'Como la santidad y la gracia de Dios preparan tu corazon para servir?',
+      prayer: 'Senor santo, limpia mi corazon y hazme disponible para tu mision. Que mi servicio nazca de tu gracia y sea para tu gloria. Amen.',
+      application: 'Presentate hoy delante de Dios con disponibilidad sincera: Senor, aqui estoy; usame donde tu quieras.',
+      keywords: ['mision', 'envio', 'isaias', 'santidad', 'gracia']
+    },
+    '2026-11-02': {
+      title: 'Hacer discipulos de todas las naciones',
+      explanation: 'Jesus resucitado envia a su iglesia con una comision clara: hacer discipulos. La mision no es simplemente llenar actividades religiosas, sino llamar personas a seguir a Cristo, bautizarlas y ensenarles a obedecer todo lo que El mando. Esta tarea descansa en la autoridad de Jesus y en su promesa de presencia continua. La iglesia va, ensena y discipula porque Cristo reina y esta con su pueblo todos los dias.',
+      reflectionQuestion: 'A quien estas ayudando, intencionalmente, a seguir y obedecer a Cristo?',
+      application: 'Ora por una persona a quien puedas discipular, animar o invitar a caminar mas cerca de Jesus.',
+      prayer: 'Cristo resucitado, gracias por tu autoridad y tu presencia. Ayudanos a hacer discipulos fieles para tu gloria. Amen.',
+      keywords: ['gran comision', 'discipulos', 'mateo 28', 'naciones']
+    },
+    '2026-11-03': {
+      title: 'Predicar el evangelio',
+      explanation: 'El evangelio es buena noticia que debe ser anunciada. La iglesia no existe para guardar el mensaje en privado, sino para proclamar a Cristo con fidelidad. Predicar el evangelio incluye hablar de la gracia de Dios, el pecado humano, la obra de Cristo y el llamado a responder con fe. Aunque no todos predican desde un pulpito, todo creyente puede dar testimonio de la esperanza que ha recibido en Jesus.',
+      reflectionQuestion: 'Que te impide hablar con mas claridad del evangelio?',
+      application: 'Resume el evangelio en tus propias palabras y preparate para compartirlo con alguien esta semana.',
+      prayer: 'Senor, dame claridad, amor y valentia para anunciar el evangelio de Cristo sin verguenza. Amen.',
+      keywords: ['evangelio', 'predicar', 'marcos', 'testimonio']
+    },
+    '2026-11-04': {
+      title: 'Testigos de Cristo',
+      explanation: 'Jesus muestra que las Escrituras apuntan a su muerte y resurreccion, y luego envia a sus discipulos como testigos. La mision cristiana no se basa en opiniones religiosas, sino en hechos: Cristo padecio, resucito y ahora se proclama en su nombre arrepentimiento y perdon. Ser testigos significa anunciar lo que Dios ha hecho en Cristo y vivir como personas transformadas por esa verdad.',
+      reflectionQuestion: 'Que aspecto de la obra de Cristo necesitas recordar con mas gratitud hoy?',
+      application: 'Comparte con alguien una manera concreta en que Cristo ha traido perdon, esperanza o cambio a tu vida.',
+      prayer: 'Jesus, hazme un testigo fiel de tu muerte, resurreccion y perdon. Que mi vida apunte a ti. Amen.',
+      keywords: ['testigos', 'lucas 24', 'resurreccion', 'perdon']
+    },
+    '2026-11-05': {
+      title: 'Enviados por el Senor',
+      explanation: 'El Cristo resucitado se presenta a sus discipulos con paz y proposito. No solo calma sus temores; tambien los envia. La mision nace de la paz que Jesus da y de la autoridad con que El comisiona. La iglesia no sale al mundo por iniciativa propia, sino como pueblo enviado por su Senor. Nuestra presencia en la comunidad debe reflejar el caracter, la verdad y la gracia de Aquel que nos envio.',
+      reflectionQuestion: 'Como cambia tu manera de servir saber que Jesus mismo envia a su pueblo?',
+      application: 'Piensa en tu trabajo, escuela, vecindario o familia como un lugar donde Cristo te ha enviado a representarlo.',
+      prayer: 'Senor Jesus, gracias por tu paz. Enviame con humildad, amor y fidelidad para representarte donde me has puesto. Amen.',
+      keywords: ['enviados', 'juan 20', 'paz', 'cristo resucitado']
+    },
+    '2026-11-06': {
+      title: 'Recibir poder para testificar',
+      explanation: 'Jesus promete poder para ser testigos. La mision de la iglesia no depende de carisma humano, estrategias perfectas o fuerza propia, sino del poder del Espiritu Santo. El alcance es amplio: cerca y lejos, en nuestra comunidad y hasta lo ultimo de la tierra. Esta lectura nos recuerda que la iglesia debe depender del Espiritu mientras proclama a Cristo con fidelidad y esperanza.',
+      reflectionQuestion: 'Estas intentando servir en tus fuerzas o dependiendo del Espiritu Santo?',
+      application: 'Antes de servir o hablar de Cristo hoy, ora pidiendo al Espiritu Santo poder, sabiduria y amor.',
+      prayer: 'Espiritu Santo, capacitanos para ser testigos fieles de Cristo en nuestra comunidad y hasta lo ultimo de la tierra. Amen.',
+      keywords: ['hechos 1', 'espiritu santo', 'testigos', 'poder']
+    },
+    '2026-11-07': {
+      title: 'No avergonzarnos del evangelio',
+      explanation: 'Pablo declara que no se averguenza del evangelio porque es poder de Dios para salvacion. La iglesia necesita esta conviccion. El evangelio puede parecer debil ante los valores del mundo, pero es el mensaje por el cual Dios salva. No anunciamos a Cristo porque sea popular, sino porque es verdadero y poderoso. Nuestra confianza no esta en nuestra habilidad, sino en el poder de Dios obrando por su Palabra.',
+      reflectionQuestion: 'En que situaciones sientes tentacion de callar o suavizar el evangelio?',
+      application: 'Pide a Dios valentia para identificarte claramente con Cristo y su evangelio esta semana.',
+      prayer: 'Padre, librame de avergonzarme del evangelio. Aumenta mi confianza en tu poder para salvar. Amen.',
+      keywords: ['romanos 1', 'poder de dios', 'salvacion', 'evangelio']
+    },
+    '2026-11-08': {
+      title: 'Embajadores de Cristo',
+      explanation: 'En Cristo somos nueva creacion y hemos sido reconciliados con Dios. Pero esa gracia no termina en nosotros: Dios nos confia el ministerio y la palabra de reconciliacion. La iglesia representa a Cristo ante el mundo, llamando a otros a reconciliarse con Dios. Ser embajadores no es promover nuestra imagen, sino hablar y vivir de tal manera que Cristo sea anunciado con fidelidad, humildad y urgencia.',
+      reflectionQuestion: 'Estas representando a Cristo con tus palabras, decisiones y relaciones?',
+      application: 'Busca una oportunidad concreta para practicar reconciliacion: pedir perdon, perdonar o invitar a alguien a mirar a Cristo.',
+      prayer: 'Senor, gracias por reconciliarme contigo en Cristo. Hazme un embajador fiel de tu gracia y tu verdad. Amen.',
+      keywords: ['embajadores', 'reconciliacion', '2 corintios 5', 'nueva creacion']
+    },
+    '2026-11-09': {
+      title: 'Una comunidad que persevera',
+      explanation: 'La iglesia primitiva perseveraba en la doctrina, la comunion, el partimiento del pan y las oraciones. La mision no se sostiene con eventos aislados, sino con una comunidad formada por la Palabra y unida en Cristo. Cuando la iglesia vive el evangelio en comunion real, su testimonio se vuelve visible. Dios usa una iglesia fiel, sencilla y perseverante para mostrar al mundo la belleza de su gracia.',
+      reflectionQuestion: 'En que practica necesitas perseverar con mas fidelidad junto a tu iglesia?',
+      application: 'Participa esta semana en una accion concreta de comunion, servicio u oracion con otros creyentes.',
+      prayer: 'Senor, forma en nosotros una comunidad perseverante, generosa y fiel a tu Palabra. Amen.',
+      keywords: ['iglesia', 'comunion', 'hechos 2', 'perseverancia']
+    },
+    '2026-11-10': {
+      title: 'Presentar a todo hombre perfecto en Cristo',
+      explanation: 'Pablo describe su ministerio como una labor enfocada en anunciar a Cristo, amonestar y ensenar para presentar a cada creyente maduro en El. El discipulado no es entretenimiento religioso; es formacion espiritual centrada en Cristo. La meta no es que las personas dependan de lideres, sino que crezcan en conocimiento, obediencia y madurez. Toda ensenanza fiel debe apuntar a Cristo como suficiente Salvador y Senor.',
+      reflectionQuestion: 'Tu servicio ayuda a otros a depender mas de Cristo?',
+      application: 'Ora por alguien especifico y busca animarle con una verdad biblica que le ayude a crecer.',
+      prayer: 'Cristo, que todo lo que ensenamos y hacemos lleve a otros a madurar en ti. Amen.',
+      keywords: ['discipulado', 'madurez', 'colosenses', 'cristo']
+    },
+    '2026-11-11': {
+      title: 'Encargar a otros fieles',
+      explanation: 'El discipulado saludable piensa en generaciones. Pablo anima a Timoteo a confiar la verdad a personas fieles que tambien puedan ensenar a otros. La iglesia no debe guardar el ministerio en pocas manos; debe formar, acompanar y levantar obreros fieles. Esta vision requiere paciencia, confianza y responsabilidad. Lo que hemos recibido por gracia debe ser transmitido con fidelidad para que otros tambien sirvan a Cristo.',
+      reflectionQuestion: 'A quien puedes ayudar a prepararse para servir con fidelidad?',
+      application: 'Identifica una persona que puedas animar, entrenar o incluir en un area de servicio.',
+      prayer: 'Senor, danos obreros fieles y corazones dispuestos a formar a otros para tu obra. Amen.',
+      keywords: ['formacion', 'obreros', '2 timoteo', 'fidelidad']
+    },
+    '2026-11-12': {
+      title: 'Ensenar sana doctrina',
+      explanation: 'La sana doctrina produce una vida sana. Tito recibe instrucciones para ensenar de manera que hombres, mujeres, jovenes y toda la comunidad vivan de acuerdo con el evangelio. La mision de la iglesia no separa verdad y conducta. Lo que creemos debe verse en la forma en que hablamos, servimos, amamos y perseveramos. Una iglesia que ensena bien tambien aprende a vivir bien delante de Dios y de los demas.',
+      reflectionQuestion: 'Que verdad biblica necesitas obedecer de manera mas visible?',
+      application: 'Escoge una accion practica que haga visible hoy lo que dices creer.',
+      prayer: 'Padre, que nuestra doctrina sea sana y nuestra conducta honre el evangelio. Amen.',
+      keywords: ['sana doctrina', 'tito', 'conducta', 'ensenanza']
+    },
+    '2026-11-13': {
+      title: 'Estimularnos al amor y buenas obras',
+      explanation: 'Hebreos nos llama a acercarnos a Dios, mantener firme la esperanza y considerarnos unos a otros para estimularnos al amor y a las buenas obras. La vida cristiana no fue disenada para caminarse en soledad. Necesitamos una comunidad que anime, corrija y sostenga. Una iglesia en mision se congrega con proposito: adorar a Cristo y ayudarse mutuamente a vivir para su gloria.',
+      reflectionQuestion: 'A quien puedes animar hoy a seguir firme en Cristo?',
+      application: 'Envia un mensaje, haz una llamada o comparte una palabra biblica de animo con alguien de tu iglesia.',
+      prayer: 'Senor, usanos para animar a otros al amor, la esperanza y las buenas obras. Amen.',
+      keywords: ['comunidad', 'hebreos', 'buenas obras', 'esperanza']
+    },
+    '2026-11-14': {
+      title: 'Servir con los dones recibidos',
+      explanation: 'Pedro ensena que cada creyente ha recibido dones para ministrar a otros como buen administrador de la gracia de Dios. Los dones no son trofeos personales, sino herramientas de servicio. La iglesia crece cuando cada miembro usa lo que Dios le ha dado para bendecir al cuerpo. Servir con los dones recibidos exige amor, hospitalidad, humildad y dependencia de la fuerza que Dios provee.',
+      reflectionQuestion: 'Que don o capacidad puedes usar para servir mejor esta semana?',
+      application: 'Ofrece ayuda concreta en un ministerio, necesidad o persona donde puedas servir con gozo.',
+      prayer: 'Dios de gracia, ayudame a administrar fielmente lo que me has dado para servir a otros. Amen.',
+      keywords: ['dones', 'servicio', '1 pedro', 'gracia']
+    },
+    '2026-11-15': {
+      title: 'Edificar el cuerpo de Cristo',
+      explanation: 'Cristo equipa a su iglesia para que el cuerpo crezca en madurez, verdad y amor. La meta no es solo tener mas actividad, sino parecernos mas a Cristo. Cada miembro tiene una parte en la edificacion del cuerpo. Cuando hablamos la verdad en amor y servimos unidos bajo la cabeza que es Cristo, la iglesia se fortalece y puede cumplir su mision con mayor fidelidad.',
+      reflectionQuestion: 'Estas contribuyendo a la unidad y madurez de tu iglesia?',
+      application: 'Practica hoy hablar la verdad con amor en una conversacion importante.',
+      prayer: 'Cristo, cabeza de la iglesia, edificanos en verdad, amor y madurez para servirte. Amen.',
+      keywords: ['efesios 4', 'cuerpo de cristo', 'madurez', 'unidad']
+    },
+    '2026-11-16': {
+      title: 'Sal y luz',
+      explanation: 'Jesus llama a sus discipulos sal de la tierra y luz del mundo. La mision tambien se vive en la presencia cotidiana del creyente en su comunidad. La sal preserva y da sabor; la luz alumbra y dirige la mirada a Dios. Nuestras buenas obras no deben buscar aplauso personal, sino que otros glorifiquen al Padre. La vida de la iglesia debe hacer visible el caracter del reino.',
+      reflectionQuestion: 'Que parte de tu vida necesita reflejar con mas claridad la luz de Cristo?',
+      application: 'Haz una obra buena en secreto o con humildad, buscando que Dios sea glorificado.',
+      prayer: 'Padre, haznos sal y luz en nuestra comunidad para que otros te glorifiquen. Amen.',
+      keywords: ['sal', 'luz', 'mateo 5', 'testimonio']
+    },
+    '2026-11-17': {
+      title: 'Amar al projimo',
+      explanation: 'La parabola del buen samaritano nos confronta con una pregunta practica: quien esta actuando como projimo? Jesus muestra que el amor verdadero no se queda en teoria, sino que se acerca, se compadece y sirve. La mision local comienza cuando vemos a las personas no como interrupciones, sino como oportunidades para mostrar misericordia. Amar al projimo refleja el corazon de Dios hacia nosotros.',
+      reflectionQuestion: 'A quien te esta llamando Dios a mirar con misericordia?',
+      application: 'Identifica una necesidad cercana y responde con una accion concreta de amor.',
+      prayer: 'Senor, abre mis ojos para ver al projimo y servir con compasion verdadera. Amen.',
+      keywords: ['projimo', 'misericordia', 'lucas 10', 'servicio']
+    },
+    '2026-11-18': {
+      title: 'Hacer bien a todos',
+      explanation: 'Galatas nos recuerda que no debemos cansarnos de hacer el bien. La mision de la iglesia incluye sembrar con paciencia, aun cuando el fruto tarde en verse. Hacer bien a todos, especialmente a la familia de la fe, expresa una vida guiada por el Espiritu. El servicio cristiano requiere perseverancia porque se sostiene en la promesa de Dios, no en resultados inmediatos.',
+      reflectionQuestion: 'Donde te has cansado de hacer el bien?',
+      application: 'Continua una obra buena que habias pensado abandonar, confiando en el tiempo de Dios.',
+      prayer: 'Padre, dame perseverancia para sembrar el bien con fe y amor. Amen.',
+      keywords: ['hacer bien', 'galatas', 'perseverancia', 'servicio']
+    },
+    '2026-11-19': {
+      title: 'Una fe que sirve',
+      explanation: 'Santiago ensena que una fe viva se expresa en obras. Las obras no compran la salvacion, pero muestran que la fe es real. Si vemos necesidad y solo respondemos con palabras vacias, algo esta mal. La mision de la iglesia debe unir proclamacion y compasion. Creemos en Cristo y por eso amamos, compartimos, servimos y respondemos a las necesidades con obediencia practica.',
+      reflectionQuestion: 'Tu fe se esta viendo en acciones concretas de amor?',
+      application: 'Convierte una intencion buena en una accion concreta antes de terminar el dia.',
+      prayer: 'Senor, que mi fe sea viva, humilde y visible en obras de amor. Amen.',
+      keywords: ['fe', 'obras', 'santiago', 'compasion']
+    },
+    '2026-11-20': {
+      title: 'Amar con hechos y verdad',
+      explanation: 'Juan nos llama a amar no solo de palabra, sino con hechos y en verdad. El amor cristiano se mide por el ejemplo de Cristo, quien puso su vida por nosotros. La iglesia no debe conformarse con discursos de compasion; debe practicar el amor sacrificial. Cuando el pueblo de Dios ama con hechos, el evangelio se vuelve tangible ante una comunidad que necesita ver la gracia de Cristo.',
+      reflectionQuestion: 'Que diferencia hay entre decir que amas y amar con hechos?',
+      application: 'Haz una accion especifica que demuestre amor sacrificial hacia alguien en necesidad.',
+      prayer: 'Jesus, ensename a amar como tu amas: con verdad, sacrificio y accion. Amen.',
+      keywords: ['amor', 'hechos', '1 juan', 'sacrificio']
+    },
+    '2026-11-21': {
+      title: 'Buscar el bienestar de la ciudad',
+      explanation: 'Jeremias llama al pueblo en exilio a buscar el bienestar de la ciudad y orar por ella. Aunque el contexto era dificil, Dios queria que su pueblo viviera con responsabilidad y bendicion en el lugar donde estaba. La iglesia tambien esta llamada a orar por su comunidad, trabajar por su bien y dar testimonio de la esperanza de Dios en medio de la sociedad.',
+      reflectionQuestion: 'Como puedes orar y trabajar por el bienestar de tu comunidad?',
+      application: 'Ora hoy por tu barrio, pueblo o ciudad, y piensa en una manera concreta de servirle.',
+      prayer: 'Senor, bendice nuestra comunidad y usanos como instrumentos de paz, verdad y esperanza. Amen.',
+      keywords: ['ciudad', 'jeremias', 'comunidad', 'oracion']
+    },
+    '2026-11-22': {
+      title: 'Servir con la mente de Cristo',
+      explanation: 'Filipenses nos lleva al ejemplo supremo del servicio: Cristo se humillo y obedecio hasta la muerte de cruz. La mision cristiana no puede caminar con orgullo, competencia o vanagloria. Servimos con la mente de Cristo cuando miramos por los demas, preferimos la humildad y buscamos la gloria del Padre. Una iglesia que sirve como Cristo proclama el evangelio con su actitud y sus acciones.',
+      reflectionQuestion: 'En que relacion necesitas practicar la humildad de Cristo?',
+      application: 'Sirve hoy a alguien sin buscar reconocimiento, recordando la humildad de Jesus.',
+      prayer: 'Senor Jesus, forma en nosotros tu mente humilde y obediente para servir con amor. Amen.',
+      keywords: ['filipenses 2', 'humildad', 'servicio', 'cristo']
+    },
+    '2026-11-23': {
+      title: 'Que las naciones conozcan a Dios',
+      explanation: 'El Salmo 67 une bendicion y mision. Dios bendice a su pueblo para que su camino sea conocido en la tierra y su salvacion entre todas las naciones. La gracia recibida no debe encerrarse en nosotros. Cuando pedimos la bendicion de Dios, tambien debemos desear que otros pueblos le conozcan, le alaben y se gocen en su justicia.',
+      reflectionQuestion: 'Tus oraciones incluyen el deseo de que las naciones conozcan a Dios?',
+      application: 'Ora por un pais, misionero o comunidad que necesite escuchar el evangelio.',
+      prayer: 'Dios, haz conocido tu camino en la tierra y tu salvacion entre todas las naciones. Amen.',
+      keywords: ['naciones', 'salmo 67', 'mision', 'bendicion']
+    },
+    '2026-11-24': {
+      title: 'Luz para las naciones',
+      explanation: 'Isaias presenta el proposito de Dios de llevar salvacion hasta lo ultimo de la tierra. La mision no es una idea secundaria; esta en el corazon del plan de Dios. Cristo es la luz prometida, y su iglesia participa anunciando esa salvacion. Esta verdad ensancha nuestra vision: Dios no solo esta obrando en nuestro circulo cercano, sino llamando pueblos a la luz de Cristo.',
+      reflectionQuestion: 'Tu vision de la obra de Dios es local solamente o tambien global?',
+      application: 'Lee o investiga una necesidad misionera y ora por puertas abiertas para el evangelio.',
+      prayer: 'Senor, extiende la luz de Cristo hasta lo ultimo de la tierra y usa nuestras vidas en tu mision. Amen.',
+      keywords: ['isaias', 'luz', 'naciones', 'salvacion']
+    },
+    '2026-11-25': {
+      title: 'Rogar por obreros',
+      explanation: 'Jesus ve a las multitudes con compasion y llama a sus discipulos a rogar al Senor de la mies que envie obreros. La mision comienza con ver como Cristo ve. Las personas no son numeros, problemas o interrupciones; son ovejas necesitadas de pastor. La iglesia debe orar por mas obreros y estar dispuesta a ser parte de la respuesta de Dios a esa oracion.',
+      reflectionQuestion: 'Estas dispuesto a ser parte de la respuesta a la oracion por obreros?',
+      application: 'Ora por maestros, pastores, lideres, evangelistas y nuevos servidores en tu iglesia.',
+      prayer: 'Senor de la mies, envia obreros fieles y danos compasion por las multitudes. Amen.',
+      keywords: ['obreros', 'mateo 9', 'compasion', 'mies']
+    },
+    '2026-11-26': {
+      title: 'Enviados por el Espiritu',
+      explanation: 'En Hechos 13 la iglesia adora, ayuna y escucha la direccion del Espiritu Santo. La mision nace en una comunidad que busca a Dios y obedece su voz. Bernabe y Saulo son apartados y enviados, no por impulso humano, sino por direccion divina. Una iglesia misionera ora, discierne, confirma llamados y envia obreros con dependencia del Espiritu.',
+      reflectionQuestion: 'Como puede tu iglesia discernir y apoyar mejor a quienes Dios llama a servir?',
+      application: 'Ora por alguien que este sirviendo o preparandose para servir en la obra del Senor.',
+      prayer: 'Espiritu Santo, guia a tu iglesia, aparta obreros y envianos en obediencia a Cristo. Amen.',
+      keywords: ['hechos 13', 'espiritu santo', 'enviados', 'iglesia']
+    },
+    '2026-11-27': {
+      title: 'Hermosos son los pies de los que anuncian',
+      explanation: 'Romanos 10 muestra la necesidad de enviar, predicar, oir y creer. Nadie invoca a Cristo si no ha oido de El. Esta cadena nos recuerda que la mision requiere mensajeros. Dios se complace en usar personas comunes para llevar buenas nuevas. Cada iglesia debe valorar, apoyar y participar en la proclamacion del evangelio para que otros puedan escuchar y creer.',
+      reflectionQuestion: 'Que parte puedes tomar en enviar, apoyar o anunciar el evangelio?',
+      application: 'Apoya hoy la mision con oracion, generosidad o una conversacion evangelistica.',
+      prayer: 'Senor, levanta mensajeros fieles y haznos parte de tu obra de anunciar buenas nuevas. Amen.',
+      keywords: ['romanos 10', 'anunciar', 'evangelio', 'enviar']
+    },
+    '2026-11-28': {
+      title: 'Una multitud de toda nacion',
+      explanation: 'Apocalipsis nos muestra el final glorioso de la mision: una multitud de toda nacion, tribu, pueblo y lengua adorando al Cordero. La obra misionera tiene esperanza porque Dios cumplira su proposito. Cada esfuerzo fiel, cada oracion, cada testimonio y cada envio participa en una historia que termina en adoracion. La meta de la mision es que Cristo sea adorado por todos los pueblos.',
+      reflectionQuestion: 'Como esta vision futura fortalece tu perseverancia en la mision?',
+      application: 'Adora hoy a Cristo recordando que El esta reuniendo un pueblo de todas las naciones.',
+      prayer: 'Cordero de Dios, recibe adoracion de todos los pueblos. Usa nuestras vidas para tu gloria. Amen.',
+      keywords: ['apocalipsis', 'naciones', 'adoracion', 'cordero']
+    },
+    '2026-11-29': {
+      title: 'La Palabra del Senor se difundia',
+      explanation: 'En Hechos 13 vemos oposicion, gozo y expansion de la Palabra. La mision nunca avanza sin resistencia, pero Dios abre puertas y llama a los que responden con fe. Los gentiles se gozaban y glorificaban la Palabra del Senor. Esta lectura anima a la iglesia a no desanimarse ante el rechazo, sino a seguir anunciando a Cristo con confianza en el poder de Dios.',
+      reflectionQuestion: 'Como respondes cuando el evangelio es rechazado o resistido?',
+      application: 'Ora por perseverancia y por puertas abiertas para que la Palabra del Senor siga difundiendose.',
+      prayer: 'Senor, que tu Palabra corra, sea glorificada y produzca fruto en muchos corazones. Amen.',
+      keywords: ['hechos 13', 'palabra', 'mision', 'perseverancia']
+    },
+    '2026-11-30': {
+      title: 'Firmes y constantes en la obra del Senor',
+      explanation: 'Pablo cierra su gran ensenanza sobre la resurreccion llamando a la iglesia a estar firme y constante en la obra del Senor. La mision tiene sentido porque Cristo resucito. Nuestro trabajo no es en vano cuando se hace en El. Aunque a veces el fruto parezca lento, la resurreccion garantiza esperanza. La iglesia puede servir con estabilidad, gozo y perseverancia porque Cristo vive y reina.',
+      reflectionQuestion: 'Que te anima a permanecer firme cuando el servicio parece dificil?',
+      application: 'Renueva hoy tu compromiso con una obra concreta del Senor, confiando en que no es en vano.',
+      prayer: 'Cristo resucitado, afirma nuestro corazon y haznos constantes en tu obra. Amen.',
+      keywords: ['1 corintios 15', 'resurreccion', 'firmeza', 'obra del senor']
     }
   };
 
@@ -366,7 +776,7 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amen.`
   });
 
   window.enLaPalabraData = {
-    version: 'PLACEHOLDER-2026-10',
+    version: 'RV1909-2026-11',
     months,
     readings
   };
