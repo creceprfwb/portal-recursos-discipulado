@@ -670,7 +670,7 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amén.`
     month: 1,
     monthKey: '2027-01',
     monthName: 'Enero',
-    theme: 'Nuevo AÃ±o, Vida Renovada',
+    theme: 'Nuevo Año, Vida Renovada',
     description: 'Durante enero, PRFWB será animada a comenzar el año buscando primero a Cristo, renovando la mente en la Palabra, caminando en oración, viviendo en comunidad y perseverando con esperanza.',
     weeks: [
       {
@@ -808,7 +808,7 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amén.`
     ['2026-09-21', 'Oidores y hacedores', 'Santiago 1:22-25'],
     ['2026-09-22', 'Obedecer por amor', 'Juan 14:21-24'],
     ['2026-09-23', 'Fruto de la Palabra', 'Colosenses 3:12-17'],
-    ['2026-09-24', 'EnseÃ±ar y amonestar', 'Colosenses 3:16'],
+    ['2026-09-24', 'Enseñar y amonestar', 'Colosenses 3:16'],
     ['2026-09-25', 'Practicar la justicia', '1 Juan 3:16-18'],
     ['2026-09-26', 'Perseverar en la doctrina', 'Hechos 2:42-47'],
     ['2026-09-27', 'Obedecer la Palabra', 'Santiago 1:22-25'],
@@ -2040,7 +2040,7 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amén.`
   });
 
   window.enLaPalabraData = {
-    version: 'RV1909-2027-01-rev4',
+    version: 'RV1909-2027-01-rev5',
     months,
     readings
   };

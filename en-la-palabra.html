@@ -4,23 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>En la Palabra | Lecturas bíblicas PRFWB</title>
-  <meta name="description" content="Lectura bíblica diaria de PRFWB. Un pasaje cada dÃ­a. Una iglesia creciendo junta en la Palabra.">
+  <meta name="description" content="Lectura bíblica diaria de PRFWB. Un pasaje cada día. Una iglesia creciendo junta en la Palabra.">
   <script>
     let embedded = false;
     try { embedded = window.self !== window.top; } catch (error) { embedded = true; }
     if (embedded || new URLSearchParams(location.search).get('embed') === '1') document.documentElement.classList.add('embed-mode');
   </script>
-  <link rel="stylesheet" href="./en-la-palabra.css?v=13">
+  <link rel="stylesheet" href="./en-la-palabra.css?v=14">
 </head>
 <body>
   <main class="page">
-    <nav class="site-nav" aria-label="NavegaciÃ³n principal">
+    <nav class="site-nav" aria-label="Navegación principal">
       <a class="nav-logo" href="./index.html"><img src="./prfwb-logo-main-cropped.png" alt="PRFWB"></a>
       <div class="nav-links">
         <a href="./index.html">Home</a>
         <a href="./recursos.html">Recursos</a>
         <a class="active" href="./en-la-palabra.html">En la Palabra</a>
-        <a href="./oracion.html">OraciÃ³n</a>
+        <a href="./oracion.html">Oración</a>
       </div>
     </nav>
 
@@ -29,8 +29,8 @@
         <div>
           <span class="eyebrow">Lecturas bíblicas PRFWB</span>
           <h1>En la Palabra</h1>
-          <p>Un pasaje cada dÃ­a. Una iglesia creciendo junta en la Palabra.</p>
-          <p style="margin-top:.8rem">Una iniciativa de PRFWB para ayudar a nuestras congregaciones a leer la Palabra, conocer a Cristo y crecer juntas como discipulos.</p>
+          <p>Un pasaje cada día. Una iglesia creciendo junta en la Palabra.</p>
+          <p style="margin-top:.8rem">Una iniciativa de PRFWB para ayudar a nuestras congregaciones a leer la Palabra, conocer a Cristo y crecer juntas como discípulos.</p>
         </div>
         <div class="hero-card">
           <span>Tema del mes</span>
@@ -40,15 +40,15 @@
     </header>
 
     <section class="shell">
-      <div class="toolbar" aria-label="NavegaciÃ³n de lectura">
+      <div class="toolbar" aria-label="Navegación de lectura">
         <div>
           <strong id="toolbarDate">Lectura de hoy</strong>
           <div class="muted">Hora de Puerto Rico. Contenido inicial marcado como PLACEHOLDER.</div>
         </div>
         <div class="actions">
-          <button class="button secondary" type="button" id="prevDay">DÃ­a anterior</button>
+          <button class="button secondary" type="button" id="prevDay">Día anterior</button>
           <button class="button" type="button" id="todayBtn">Hoy</button>
-          <button class="button secondary" type="button" id="nextDay">DÃ­a siguiente</button>
+          <button class="button secondary" type="button" id="nextDay">Día siguiente</button>
           <button class="button dark" type="button" id="shareBtn">Compartir lectura</button>
           <a class="button secondary" href="./en-la-palabra-archivo.html">Archivo</a>
         </div>
@@ -80,14 +80,14 @@
         <h2>Buscar lecturas</h2>
         <div class="search-box">
           <label for="searchInput">Busca por referencia, tema, titulo o palabra clave</label>
-          <input id="searchInput" placeholder="Ej. oraciÃ³n, Romanos, Palabra">
+          <input id="searchInput" placeholder="Ej. oración, Romanos, Palabra">
         </div>
         <div class="week-list" id="searchResults"></div>
       </section>
     </section>
   </main>
 
-  <script src="./en-la-palabra-data.js?v=13"></script>
+  <script src="./en-la-palabra-data.js?v=14"></script>
   <script>
     const data = window.enLaPalabraData;
     const readings = data.readings;
