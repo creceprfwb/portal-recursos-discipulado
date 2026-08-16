@@ -92,6 +92,7 @@
     const readings = data.readings;
     const params = new URLSearchParams(location.search);
     let selectedDate = params.get('fecha') || getPuertoRicoDate();
+    const isEmbedMode = () => document.documentElement.classList.contains('embed-mode');
 
     function getPuertoRicoDate(date = new Date()) {
       const parts = new Intl.DateTimeFormat('en-CA', { timeZone:'America/Puerto_Rico', year:'numeric', month:'2-digit', day:'2-digit' }).formatToParts(date);
@@ -163,7 +164,8 @@
       renderWeek(week, reading.date);
       renderMonth(month);
       renderSearch();
-      history.replaceState(null, '', `${location.pathname}?fecha=${reading.date}${document.documentElement.classList.contains('embed-mode') ? '&embed=1' : ''}`);
+      history.replaceState(null, '', `${location.pathname}?fecha=${reading.date}${isEmbedMode() ? '&embed=1' : ''}`);
+      requestEmbedResize();
     }
     function renderSunday(date) {
       const sunday = sundayFor(date);
@@ -175,13 +177,13 @@
         <p>${sunday.introduction}</p>
         <p><strong>Verdad principal:</strong> ${sunday.mainTruth}</p>
         <div class="bible-placeholder">${sunday.bibleText ? `<div class="bible-text">${sunday.bibleText}</div>` : `Lee ${sunday.reference} en tu Biblia (${sunday.version}).`}${sourceNote(sunday.reference, sunday.bibleTextSource)}</div>
-        <a class="button dark" href="./en-la-palabra-domingo.html?fecha=${sunday.date}${document.documentElement.classList.contains('embed-mode') ? '&embed=1' : ''}">Ver lectura del domingo</a>
+        <a class="button dark" href="./en-la-palabra-domingo.html?fecha=${sunday.date}${isEmbedMode() ? '&embed=1' : ''}">Ver lectura del domingo</a>
       `;
     }
     function renderWeek(week, currentDate) {
       const items = readings.filter((reading) => reading.date >= week.start && reading.date <= week.end);
       document.getElementById('weekList').innerHTML = items.map((reading) => `
-        <a class="day-row ${reading.date === currentDate ? 'current' : ''}" href="./en-la-palabra.html?fecha=${reading.date}${document.documentElement.classList.contains('embed-mode') ? '&embed=1' : ''}">
+        <a class="day-row ${reading.date === currentDate ? 'current' : ''}" href="./en-la-palabra.html?fecha=${reading.date}${isEmbedMode() ? '&embed=1' : ''}">
           <strong>${parseDate(reading.date).toLocaleDateString('es-PR', { weekday:'long' })}</strong>
           <span><strong>${reading.reference}</strong><br>${reading.title}</span>
         </a>
@@ -194,7 +196,7 @@
           <h3>${week.title}</h3>
           <p class="muted">${formatDate(week.start, { weekday: undefined })} - ${formatDate(week.end, { weekday: undefined })}</p>
           <p><strong>Domingo:</strong> ${week.sunday.reference}</p>
-          <ul>${items.map((item) => `<li><a href="./en-la-palabra.html?fecha=${item.date}">${item.reference}</a></li>`).join('')}</ul>
+          <ul>${items.map((item) => `<li><a href="./en-la-palabra.html?fecha=${item.date}${isEmbedMode() ? '&embed=1' : ''}">${item.reference}</a></li>`).join('')}</ul>
         </article>`;
       }).join('');
     }
@@ -202,7 +204,7 @@
       const query = normalizeText(document.getElementById('searchInput').value.trim());
       const results = query ? readings.filter((reading) => normalizeText([reading.reference, reading.title, reading.monthTheme, reading.weekTheme, ...(reading.keywords || [])].join(' ')).includes(query)).slice(0, 12) : [];
       document.getElementById('searchResults').innerHTML = results.map((reading) => `
-        <a class="day-row" href="./en-la-palabra.html?fecha=${reading.date}">
+        <a class="day-row" href="./en-la-palabra.html?fecha=${reading.date}${isEmbedMode() ? '&embed=1' : ''}">
           <strong>${formatDate(reading.date, { year: undefined })}</strong>
           <span><strong>${reading.reference}</strong><br>${reading.title}</span>
         </a>
@@ -221,6 +223,18 @@
       if (navigator.share) await navigator.share(shareData);
       else { await navigator.clipboard.writeText(url); alert('Enlace copiado.'); }
     };
+    function requestEmbedResize() {
+      if (!isEmbedMode()) return;
+      window.requestAnimationFrame(() => {
+        const height = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+        window.parent.postMessage({ source: 'en-la-palabra-prfwb', type: 'resize', height }, '*');
+      });
+    }
+    if (window.ResizeObserver) {
+      new ResizeObserver(requestEmbedResize).observe(document.body);
+    }
+    window.addEventListener('load', requestEmbedResize);
+    window.addEventListener('resize', requestEmbedResize);
     renderReading();
   </script>
 </body>

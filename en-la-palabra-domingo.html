@@ -45,6 +45,7 @@
     const sundays = data.months.flatMap((month) => month.weeks.map((week) => week.sunday));
     const date = params.get('fecha') || getSundayDate();
     const sunday = [...sundays].reverse().find((item) => item.date === date) || sundays[0];
+    const isEmbedMode = () => document.documentElement.classList.contains('embed-mode');
     function getPuertoRicoDate(dateValue = new Date()) {
       const parts = new Intl.DateTimeFormat('en-CA', { timeZone:'America/Puerto_Rico', year:'numeric', month:'2-digit', day:'2-digit' }).formatToParts(dateValue);
       const map = Object.fromEntries(parts.map((part) => [part.type, part.value]));
@@ -63,7 +64,7 @@
       return `https://www.biblegateway.com/passage/?search=${encodeURIComponent(reference)}&version=RVA`;
     }
     document.title = `En la Palabra | Domingo ${formatDate(sunday.date)} | PRFWB`;
-    document.getElementById('backLink').href = `./en-la-palabra.html?fecha=${sunday.date}${document.documentElement.classList.contains('embed-mode') ? '&embed=1' : ''}`;
+    document.getElementById('backLink').href = `./en-la-palabra.html?fecha=${sunday.date}${isEmbedMode() ? '&embed=1' : ''}`;
     document.getElementById('sundayView').innerHTML = `
       <div class="brand">PRFWB - En la Palabra</div>
       <h1>${sunday.theme}</h1>
@@ -80,6 +81,19 @@
         try { await document.documentElement.requestFullscreen(); } catch (error) {}
       }
     });
+    function requestEmbedResize() {
+      if (!isEmbedMode()) return;
+      window.requestAnimationFrame(() => {
+        const height = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+        window.parent.postMessage({ source: 'en-la-palabra-prfwb', type: 'resize', height }, '*');
+      });
+    }
+    if (window.ResizeObserver) {
+      new ResizeObserver(requestEmbedResize).observe(document.body);
+    }
+    window.addEventListener('load', requestEmbedResize);
+    window.addEventListener('resize', requestEmbedResize);
+    requestEmbedResize();
   </script>
 </body>
 </html>
