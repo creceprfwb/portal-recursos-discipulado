@@ -83,6 +83,39 @@ Y yo Juan vi la santa ciudad, Jerusalem nueva, que descendia del cielo, de Dios,
 Y oi una gran voz del cielo que decia: He aqui el tabernaculo de Dios con los hombres, y morara con ellos; y ellos seran su pueblo, y el mismo Dios sera su Dios con ellos.
 Y limpiara Dios toda lagrima de los ojos de ellos; y la muerte no sera mas; y no habra mas llanto, ni clamor, ni dolor; porque las primeras cosas son pasadas.
 Y el que estaba sentado en el trono dijo: He aqui, yo hago nuevas todas las cosas.`,
+    'Colosenses 3:1-17': `Si pues han resucitado con Cristo, busquen las cosas de arriba, donde esta Cristo sentado a la diestra de Dios.
+Pongan la mira en las cosas de arriba, no en las de la tierra.
+Porque muertos son, y su vida esta escondida con Cristo en Dios.
+Cuando Cristo, nuestra vida, se manifestare, entonces ustedes tambien seran manifestados con el en gloria.
+Hagan morir, pues, lo terrenal en ustedes.
+Vestanse, pues, como escogidos de Dios, santos y amados, de entranas de misericordia, de benignidad, de humildad, de mansedumbre, de paciencia;
+soportandose unos a otros, y perdonandose unos a otros si alguno tuviere queja del otro; de la manera que Cristo les perdono, asi tambien haganlo ustedes.
+Y sobre todas estas cosas vistanse de amor, que es el vinculo de perfeccion.
+Y la paz de Dios gobierne en sus corazones, a la cual asimismo fueron llamados en un cuerpo; y sean agradecidos.
+La palabra de Cristo habite en ustedes abundantemente en toda sabiduria, ensenandose y exhortandose unos a otros con salmos, himnos y canciones espirituales, con gracia cantando en sus corazones al Senor.
+Y todo lo que hagan, sea de palabra o de hecho, haganlo todo en el nombre del Senor Jesus, dando gracias a Dios Padre por el.`,
+    'Salmo 1': `Bienaventurado el varon que no anduvo en consejo de malos, ni estuvo en camino de pecadores, ni en silla de escarnecedores se ha sentado;
+antes en la ley de Jehova esta su delicia, y en su ley medita de dia y de noche.
+Y sera como el arbol plantado junto a arroyos de aguas, que da su fruto en su tiempo, y su hoja no cae; y todo lo que hace prosperara.
+No asi los malos: sino como el tamo que arrebata el viento.
+Por tanto no se levantaran los malos en el juicio, ni los pecadores en la congregacion de los justos.
+Porque Jehova conoce el camino de los justos; mas la senda de los malos perecera.`,
+    'Filipenses 4:4-9': `Regocijense en el Senor siempre; otra vez digo: Regocijense.
+Vuestra modestia sea conocida de todos los hombres. El Senor esta cerca.
+Por nada esten afanosos; sino sean conocidas vuestras peticiones delante de Dios en toda oracion y ruego, con accion de gracias.
+Y la paz de Dios, que sobrepuja todo entendimiento, guardara vuestros corazones y vuestros entendimientos en Cristo Jesus.
+Por lo demas, hermanos, todo lo que es verdadero, todo lo honesto, todo lo justo, todo lo puro, todo lo amable, todo lo que es de buen nombre; si hay virtud alguna, si alguna alabanza, en esto piensen.
+Lo que aprendieron, recibieron, oyeron y vieron en mi, esto hagan; y el Dios de paz sera con ustedes.`,
+    'Hebreos 10:19-25': `Asi que, hermanos, teniendo libertad para entrar en el santuario por la sangre de Jesucristo,
+por el camino que el nos consagro nuevo y vivo, por el velo, esto es, por su carne;
+y teniendo un gran sacerdote sobre la casa de Dios,
+lleguemonos con corazon verdadero, en plena certidumbre de fe, purificados los corazones de mala conciencia, y lavados los cuerpos con agua limpia.
+Mantengamos firme la profesion de nuestra esperanza sin fluctuar; que fiel es el que prometio.
+Y consideremonos los unos a los otros para provocarnos al amor y a las buenas obras;
+no dejando nuestra congregacion, como algunos tienen por costumbre, sino exhortandonos; y tanto mas, cuanto ven que aquel dia se acerca.`,
+    'Hebreos 12:1-3': `Por tanto nosotros tambien, teniendo en derredor nuestro una tan grande nube de testigos, dejando todo el peso del pecado que nos rodea, corramos con paciencia la carrera que nos es propuesta,
+puestos los ojos en Jesus, el autor y consumador de la fe, el cual, habiendole sido propuesto gozo, sufrio la cruz, menospreciando la verguenza, y sentose a la diestra del trono de Dios.
+Reduzcan, pues, a vuestro pensamiento a aquel que sufrio tal contradiccion de pecadores contra si mismo, para que no se fatiguen en vuestros animos desmayando.`,
     'Mateo 6:9-13': `Ustedes, pues, oren asi:
 
 Padre nuestro que estas en los cielos, santificado sea tu nombre.
@@ -454,7 +487,93 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amen.`
     ]
   };
 
-  months.push(november, december);
+  const january = {
+    year: 2027,
+    month: 1,
+    monthKey: '2027-01',
+    monthName: 'Enero',
+    theme: 'Nuevo Ano, Vida Renovada',
+    description: 'Durante enero, PRFWB sera animada a comenzar el ano buscando primero a Cristo, renovando la mente en la Palabra, caminando en oracion, viviendo en comunidad y perseverando con esperanza.',
+    weeks: [
+      {
+        title: 'Buscar primero a Cristo',
+        start: '2027-01-01',
+        end: '2027-01-03',
+        sunday: {
+          date: '2027-01-03',
+          theme: 'Cristo, nuestra vida',
+          reference: 'Colosenses 3:1-17',
+          version: BIBLE_VERSION,
+          bibleText: sundayTexts['Colosenses 3:1-17'] || '',
+          bibleTextSource,
+          introduction: 'Comenzamos el ano recordando que la vida cristiana no se define por metas vacias, sino por union con Cristo. Si hemos resucitado con El, nuestra mirada, deseos, palabras y relaciones deben ser renovados. Cristo no es una parte del ano nuevo; El es nuestra vida.',
+          mainTruth: 'Una vida renovada comienza buscando a Cristo y viviendo en su nombre.'
+        }
+      },
+      {
+        title: 'Arraigados en la Palabra',
+        start: '2027-01-04',
+        end: '2027-01-10',
+        sunday: {
+          date: '2027-01-10',
+          theme: 'Plantados junto a la Palabra',
+          reference: 'Salmo 1',
+          version: BIBLE_VERSION,
+          bibleText: sundayTexts['Salmo 1'] || '',
+          bibleTextSource,
+          introduction: 'La Palabra de Dios nos muestra dos caminos. Uno se deja formar por voces que alejan de Dios; el otro se deleita en la ley del Senor y da fruto a su tiempo. Esta semana afirmamos que un ano fructifero comienza con raices profundas en la Palabra.',
+          mainTruth: 'El pueblo de Dios florece cuando se deleita y medita en la Palabra del Senor.'
+        }
+      },
+      {
+        title: 'Caminar en oracion y paz',
+        start: '2027-01-11',
+        end: '2027-01-17',
+        sunday: {
+          date: '2027-01-17',
+          theme: 'La paz de Dios guarda el corazon',
+          reference: 'Filipenses 4:4-9',
+          version: BIBLE_VERSION,
+          bibleText: sundayTexts['Filipenses 4:4-9'] || '',
+          bibleTextSource,
+          introduction: 'La ansiedad puede acompanarnos al mirar responsabilidades, decisiones y cambios. Pero la iglesia aprende a llevar sus peticiones delante de Dios con gratitud. En Cristo, la paz de Dios guarda el corazon y la mente, y nos ensena a pensar y vivir de manera santa.',
+          mainTruth: 'Dios guarda con su paz al pueblo que ora, agradece y piensa en lo que honra a Cristo.'
+        }
+      },
+      {
+        title: 'Crecer juntos en amor',
+        start: '2027-01-18',
+        end: '2027-01-24',
+        sunday: {
+          date: '2027-01-24',
+          theme: 'Consideremonos unos a otros',
+          reference: 'Hebreos 10:19-25',
+          version: BIBLE_VERSION,
+          bibleText: sundayTexts['Hebreos 10:19-25'] || '',
+          bibleTextSource,
+          introduction: 'La vida renovada no se vive en aislamiento. Por la obra de Cristo tenemos acceso a Dios y somos llamados a mantener firme la esperanza, animandonos al amor y a las buenas obras. Enero nos recuerda que necesitamos congregarnos, exhortarnos y caminar juntos.',
+          mainTruth: 'Cristo nos acerca a Dios y nos llama a perseverar juntos en amor, esperanza y buenas obras.'
+        }
+      },
+      {
+        title: 'Perseverar con esperanza',
+        start: '2027-01-25',
+        end: '2027-01-31',
+        sunday: {
+          date: '2027-01-31',
+          theme: 'Puestos los ojos en Jesus',
+          reference: 'Hebreos 12:1-3',
+          version: BIBLE_VERSION,
+          bibleText: sundayTexts['Hebreos 12:1-3'] || '',
+          bibleTextSource,
+          introduction: 'El ano nuevo tambien traera cansancio, tentaciones y pruebas. Hebreos nos llama a correr con paciencia, dejando el pecado y mirando a Jesus. La perseverancia cristiana no nace del esfuerzo vacio, sino de contemplar al Autor y Consumador de la fe.',
+          mainTruth: 'Perseveramos en la carrera cristiana mirando a Jesus, quien sostiene nuestra fe.'
+        }
+      }
+    ]
+  };
+
+  months.push(november, december, january);
 
   const dailySeeds = [
     ['2026-09-01', 'Dios habla', 'Genesis 1:1-5'],
@@ -578,7 +697,38 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amen.`
     ['2026-12-28', 'Mirar atras con gratitud', 'Salmo 103:1-14'],
     ['2026-12-29', 'Confiar el camino al Senor', 'Proverbios 16:1-9'],
     ['2026-12-30', 'Olvidando lo que queda atras', 'Filipenses 3:12-16'],
-    ['2026-12-31', 'Yo hago nuevas todas las cosas', 'Apocalipsis 21:1-5']
+    ['2026-12-31', 'Yo hago nuevas todas las cosas', 'Apocalipsis 21:1-5'],
+    ['2027-01-01', 'Buscar primero el reino', 'Mateo 6:25-34'],
+    ['2027-01-02', 'Nueva criatura en Cristo', '2 Corintios 5:17'],
+    ['2027-01-03', 'Cristo, nuestra vida', 'Colosenses 3:1-17'],
+    ['2027-01-04', 'Meditar dia y noche', 'Salmo 1'],
+    ['2027-01-05', 'Lampara para mis pies', 'Salmo 119:105-112'],
+    ['2027-01-06', 'La Palabra en el corazon', 'Salmo 119:9-16'],
+    ['2027-01-07', 'Renovados en la mente', 'Romanos 12:1-2'],
+    ['2027-01-08', 'Recibir la Palabra con mansedumbre', 'Santiago 1:19-25'],
+    ['2027-01-09', 'Permanecer en Cristo', 'Juan 15:1-8'],
+    ['2027-01-10', 'Plantados junto a la Palabra', 'Salmo 1'],
+    ['2027-01-11', 'Orar con confianza', 'Hebreos 4:14-16'],
+    ['2027-01-12', 'Pedir sabiduria', 'Santiago 1:5-8'],
+    ['2027-01-13', 'Echar la ansiedad sobre Dios', '1 Pedro 5:6-7'],
+    ['2027-01-14', 'Paz en Cristo', 'Juan 14:25-27'],
+    ['2027-01-15', 'Gratitud en toda circunstancia', '1 Tesalonicenses 5:16-18'],
+    ['2027-01-16', 'Pensar en lo que edifica', 'Filipenses 4:8-9'],
+    ['2027-01-17', 'La paz de Dios guarda el corazon', 'Filipenses 4:4-9'],
+    ['2027-01-18', 'Un cuerpo en Cristo', 'Romanos 12:3-8'],
+    ['2027-01-19', 'Amor sin fingimiento', 'Romanos 12:9-18'],
+    ['2027-01-20', 'Sobrellevad las cargas', 'Galatas 6:1-5'],
+    ['2027-01-21', 'Perdonarnos como Cristo', 'Efesios 4:25-32'],
+    ['2027-01-22', 'Servir con amor', '1 Pedro 4:8-11'],
+    ['2027-01-23', 'Estimularnos al amor', 'Hebreos 10:19-25'],
+    ['2027-01-24', 'Consideremonos unos a otros', 'Hebreos 10:19-25'],
+    ['2027-01-25', 'Correr con paciencia', 'Hebreos 12:1-3'],
+    ['2027-01-26', 'No cansarnos de hacer el bien', 'Galatas 6:7-10'],
+    ['2027-01-27', 'Fortalecidos en el Senor', 'Efesios 6:10-18'],
+    ['2027-01-28', 'La buena obra que Dios comenzo', 'Filipenses 1:3-11'],
+    ['2027-01-29', 'Fiel es el que prometio', 'Hebreos 10:23'],
+    ['2027-01-30', 'Firmes hasta el fin', '1 Corintios 15:58'],
+    ['2027-01-31', 'Puestos los ojos en Jesus', 'Hebreos 12:1-3']
   ];
 
   const approvedReadings = {
@@ -1149,6 +1299,254 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amen.`
       application: 'Cierra el ano orando con esperanza y entregando el futuro al Dios que reina.',
       prayer: 'Dios eterno, gracias porque haces nuevas todas las cosas. Mi futuro descansa en ti. Amen.',
       keywords: ['apocalipsis 21', 'esperanza', 'nuevo ano', 'renovacion']
+    },
+    '2027-01-01': {
+      title: 'Buscar primero el reino',
+      explanation: 'Jesus nos llama a comenzar con prioridades eternas. La ansiedad nos empuja a vivir centrados en necesidades, planes y temores, pero el Padre conoce lo que necesitamos. Buscar primero el reino no significa ignorar responsabilidades, sino ordenar el corazon bajo el gobierno de Dios. Un nuevo ano comienza bien cuando Cristo ocupa el primer lugar en deseos, decisiones y confianza.',
+      reflectionQuestion: 'Que prioridad necesita rendirse al reino de Dios este ano?',
+      application: 'Escribe una decision practica que muestre que Cristo sera primero en tu agenda.',
+      prayer: 'Padre, ordena mi corazon para buscar primero tu reino y tu justicia. Amen.',
+      keywords: ['reino', 'prioridades', 'mateo 6', 'nuevo ano']
+    },
+    '2027-01-02': {
+      title: 'Nueva criatura en Cristo',
+      explanation: 'El ano nuevo puede inspirar cambios, pero solo Cristo hace nueva criatura. La renovacion verdadera no nace de fuerza de voluntad, sino de la obra de Dios en el evangelio. En Cristo, lo viejo pierde su dominio y una nueva vida comienza. Esta verdad nos libra de depender de promesas fragiles y nos invita a caminar en la gracia transformadora de Dios.',
+      reflectionQuestion: 'Que aspecto de tu identidad necesitas ver a la luz de Cristo?',
+      application: 'Repite hoy esta verdad: en Cristo soy nueva criatura y vivo por su gracia.',
+      prayer: 'Senor, gracias por hacerme nuevo en Cristo. Forma mi vida conforme a tu gracia. Amen.',
+      keywords: ['nueva criatura', 'cristo', 'identidad', 'gracia']
+    },
+    '2027-01-03': {
+      title: 'Cristo, nuestra vida',
+      explanation: 'Colosenses nos llama a poner la mira en las cosas de arriba porque nuestra vida esta escondida con Cristo en Dios. La fe cristiana no es solo abandonar malos habitos; es vivir desde una nueva union con Cristo. Si El es nuestra vida, entonces nuestras palabras, relaciones, gratitud y obediencia deben llevar su nombre.',
+      reflectionQuestion: 'Que significa para ti vivir hoy como alguien unido a Cristo?',
+      application: 'Haz una tarea ordinaria en el nombre del Senor Jesus, con gratitud.',
+      prayer: 'Cristo, tu eres mi vida. Renueva mis deseos, palabras y acciones. Amen.',
+      keywords: ['colosenses 3', 'vida nueva', 'cristo', 'gratitud']
+    },
+    '2027-01-04': {
+      title: 'Meditar dia y noche',
+      explanation: 'El Salmo 1 presenta al creyente como un arbol plantado junto a aguas. Su fruto no nace de prisa, sino de deleitarse y meditar en la ley del Senor. Enero nos recuerda que la vida espiritual necesita raices. La Palabra no debe ser visita ocasional, sino alimento constante que forma pensamientos, afectos y decisiones.',
+      reflectionQuestion: 'Que ritmo de lectura biblica necesitas cultivar este mes?',
+      application: 'Aparta un horario fijo para leer y meditar en la Palabra durante esta semana.',
+      prayer: 'Senor, planta mi vida en tu Palabra y produce fruto para tu gloria. Amen.',
+      keywords: ['salmo 1', 'meditacion', 'palabra', 'fruto']
+    },
+    '2027-01-05': {
+      title: 'Lampara para mis pies',
+      explanation: 'La Palabra de Dios alumbra el camino paso a paso. No siempre nos muestra todos los detalles del futuro, pero si nos da luz suficiente para obedecer hoy. En un nuevo ano lleno de decisiones, necesitamos mas que intuicion; necesitamos la direccion del Senor. Su Palabra corrige, guia y sostiene al que desea caminar en fidelidad.',
+      reflectionQuestion: 'Que decision necesitas someter a la luz de la Palabra?',
+      application: 'Busca un principio biblico que ilumine una decision concreta de esta semana.',
+      prayer: 'Dios, guia mis pasos con tu Palabra y librame de caminar en mi propia sabiduria. Amen.',
+      keywords: ['salmo 119', 'guia', 'palabra', 'obediencia']
+    },
+    '2027-01-06': {
+      title: 'La Palabra en el corazon',
+      explanation: 'Guardar la Palabra en el corazon es una defensa contra el pecado y una fuente de deleite en Dios. No se trata solo de leer informacion, sino de atesorar verdad. Cuando la Palabra habita en nosotros, moldea lo que amamos y rechazamos. Un corazon lleno de Escritura esta mejor preparado para discernir, resistir y obedecer.',
+      reflectionQuestion: 'Que versiculo necesitas guardar en tu corazon esta semana?',
+      application: 'Memoriza una frase de la lectura y repitela durante el dia.',
+      prayer: 'Senor, pon tu Palabra en mi corazon para vivir en santidad. Amen.',
+      keywords: ['memorizacion', 'corazon', 'salmo 119', 'santidad']
+    },
+    '2027-01-07': {
+      title: 'Renovados en la mente',
+      explanation: 'Romanos 12 nos llama a no conformarnos a este siglo, sino a ser transformados por la renovacion de la mente. La vida renovada comienza cuando Dios cambia nuestra manera de pensar. No podemos vivir para Cristo alimentando la mente solo con las voces del mundo. Necesitamos presentar toda la vida como sacrificio vivo y discernir la voluntad de Dios.',
+      reflectionQuestion: 'Que pensamiento necesita ser renovado por la verdad de Dios?',
+      application: 'Identifica una voz que te esta moldeando y reemplazala hoy con Escritura.',
+      prayer: 'Padre, renueva mi mente para conocer y obedecer tu voluntad. Amen.',
+      keywords: ['romanos 12', 'mente', 'transformacion', 'voluntad']
+    },
+    '2027-01-08': {
+      title: 'Recibir la Palabra con mansedumbre',
+      explanation: 'Santiago ensena que no basta oir la Palabra; debemos recibirla con mansedumbre y practicarla. La Biblia funciona como espejo que revela la condicion del corazon. El peligro es escuchar y olvidar. Dios llama a su pueblo a mirar atentamente su Palabra y responder con obediencia concreta. La bendicion esta en hacer, no solo en saber.',
+      reflectionQuestion: 'Que verdad has oido muchas veces pero necesitas practicar?',
+      application: 'Convierte una ensenanza biblica en una accion especifica antes de terminar el dia.',
+      prayer: 'Senor, hazme humilde para recibir tu Palabra y obedecerla. Amen.',
+      keywords: ['santiago', 'obediencia', 'mansedumbre', 'hacedores']
+    },
+    '2027-01-09': {
+      title: 'Permanecer en Cristo',
+      explanation: 'Jesus usa la imagen de la vid y los pampanos para mostrar nuestra dependencia total de El. Separados de Cristo nada podemos hacer. La vida fructifera no nace de activismo religioso, sino de permanecer en comunion con el Senor. Enero es una buena oportunidad para revisar si estamos intentando producir fruto sin depender diariamente de Cristo.',
+      reflectionQuestion: 'Que practica te ayuda a permanecer en Cristo cada dia?',
+      application: 'Haz una pausa de oracion antes de tus tareas, reconociendo tu dependencia de Jesus.',
+      prayer: 'Jesus, mantenme unido a ti y produce fruto en mi vida. Amen.',
+      keywords: ['juan 15', 'permanecer', 'fruto', 'dependencia']
+    },
+    '2027-01-10': {
+      title: 'Plantados junto a la Palabra',
+      explanation: 'El arbol del Salmo 1 no se mueve con cada viento; esta plantado. Asi es la vida formada por la Palabra. Dios nos llama a echar raices profundas, no a vivir de impulsos espirituales pasajeros. El fruto llega en su tiempo cuando el corazon se deleita en Dios y aprende a rechazar caminos que alejan de El.',
+      reflectionQuestion: 'Estas plantado en la Palabra o movido por cada circunstancia?',
+      application: 'Revisa tu semana y protege un espacio real para la Palabra de Dios.',
+      prayer: 'Senor, plantame en tu Palabra y haz mi vida estable y fructifera. Amen.',
+      keywords: ['salmo 1', 'raices', 'estabilidad', 'palabra']
+    },
+    '2027-01-11': {
+      title: 'Orar con confianza',
+      explanation: 'Hebreos nos invita a acercarnos al trono de la gracia por medio de Cristo. No venimos confiando en meritos propios, sino en nuestro gran Sumo Sacerdote. La oracion cristiana descansa en la obra de Jesus. Podemos acercarnos con libertad para hallar misericordia y gracia en el momento oportuno.',
+      reflectionQuestion: 'Que necesidad debes llevar hoy al trono de la gracia?',
+      application: 'Ora con confianza por una necesidad concreta, descansando en Cristo.',
+      prayer: 'Padre, me acerco por medio de Cristo para recibir misericordia y gracia. Amen.',
+      keywords: ['oracion', 'hebreos 4', 'gracia', 'confianza']
+    },
+    '2027-01-12': {
+      title: 'Pedir sabiduria',
+      explanation: 'Santiago nos anima a pedir sabiduria a Dios, quien da abundantemente y sin reproche. La sabiduria biblica no es solo inteligencia; es vivir delante de Dios con discernimiento, fe y obediencia. Al comenzar el ano, necesitamos reconocer nuestra limitacion y pedir al Senor que guie decisiones, conversaciones y prioridades.',
+      reflectionQuestion: 'En que situacion necesitas sabiduria de Dios ahora mismo?',
+      application: 'Antes de decidir, ora especificamente pidiendo sabiduria y fe.',
+      prayer: 'Dios generoso, dame sabiduria para caminar en tu voluntad. Amen.',
+      keywords: ['sabiduria', 'santiago', 'decision', 'fe']
+    },
+    '2027-01-13': {
+      title: 'Echar la ansiedad sobre Dios',
+      explanation: 'Pedro nos llama a humillarnos bajo la mano poderosa de Dios y echar sobre El toda ansiedad, porque El tiene cuidado de nosotros. La ansiedad muchas veces revela nuestro deseo de controlar. La fe nos invita a entregar cargas al Padre. No porque todo sea facil, sino porque Dios cuida de sus hijos con poder y ternura.',
+      reflectionQuestion: 'Que ansiedad estas cargando como si dependiera solo de ti?',
+      application: 'Nombra esa carga en oracion y entregala conscientemente al cuidado de Dios.',
+      prayer: 'Padre, echo mi ansiedad sobre ti porque tu tienes cuidado de mi. Amen.',
+      keywords: ['ansiedad', '1 pedro', 'cuidado', 'humildad']
+    },
+    '2027-01-14': {
+      title: 'Paz en Cristo',
+      explanation: 'Jesus promete una paz distinta a la del mundo. No es una paz que depende de circunstancias perfectas, sino de su presencia, palabra y victoria. El corazon turbado encuentra descanso cuando recuerda que Cristo no abandona a los suyos. Esta paz nos sostiene aun cuando las responsabilidades del ano parezcan grandes.',
+      reflectionQuestion: 'Estas buscando paz en circunstancias o en Cristo?',
+      application: 'Cuando sientas inquietud hoy, repite la promesa de paz de Jesus.',
+      prayer: 'Jesus, guarda mi corazon en tu paz y librame del temor. Amen.',
+      keywords: ['paz', 'juan 14', 'cristo', 'temor']
+    },
+    '2027-01-15': {
+      title: 'Gratitud en toda circunstancia',
+      explanation: 'Pablo llama a regocijarnos, orar sin cesar y dar gracias en todo. La gratitud cristiana no niega el dolor, pero reconoce la presencia y fidelidad de Dios en medio de todo. Un corazon agradecido resiste la queja y aprende a mirar la vida bajo la gracia de Dios. La gratitud tambien mantiene viva la adoracion diaria.',
+      reflectionQuestion: 'Que motivo de gratitud puedes reconocer aun en una situacion dificil?',
+      application: 'Da gracias por tres evidencias de la fidelidad de Dios hoy.',
+      prayer: 'Senor, ensename a vivir con gozo, oracion y gratitud. Amen.',
+      keywords: ['gratitud', 'oracion', 'gozo', '1 tesalonicenses']
+    },
+    '2027-01-16': {
+      title: 'Pensar en lo que edifica',
+      explanation: 'Filipenses 4 nos llama a dirigir la mente hacia lo verdadero, justo, puro, amable y digno de alabanza. Lo que contemplamos nos forma. La paz de Dios tambien se relaciona con una mente entrenada por la verdad. En un mundo lleno de ruido, el creyente aprende a escoger pensamientos que honran a Cristo y fortalecen la obediencia.',
+      reflectionQuestion: 'Que pensamiento o contenido necesitas dejar de alimentar?',
+      application: 'Reemplaza hoy una fuente de ruido con una verdad biblica o un canto de adoracion.',
+      prayer: 'Dios de paz, ordena mis pensamientos hacia lo que te honra. Amen.',
+      keywords: ['mente', 'filipenses 4', 'pureza', 'paz']
+    },
+    '2027-01-17': {
+      title: 'La paz de Dios guarda el corazon',
+      explanation: 'La paz de Dios guarda el corazon y la mente en Cristo cuando presentamos nuestras peticiones con gratitud. La oracion no siempre cambia inmediatamente la circunstancia, pero cambia nuestra postura delante de Dios. El Senor cercano nos sostiene, dirige nuestros pensamientos y nos ensena a practicar lo que hemos recibido en su Palabra.',
+      reflectionQuestion: 'Que peticion debes presentar hoy con gratitud?',
+      application: 'Ora escribiendo una peticion y una accion de gracias relacionada con ella.',
+      prayer: 'Senor, guarda mi corazon y mi mente con tu paz en Cristo Jesus. Amen.',
+      keywords: ['paz de dios', 'filipenses 4', 'oracion', 'gratitud']
+    },
+    '2027-01-18': {
+      title: 'Un cuerpo en Cristo',
+      explanation: 'Romanos 12 ensena que la iglesia es un cuerpo con muchos miembros y diferentes dones. Nadie lo tiene todo, y nadie es innecesario. La vida renovada incluye pensar de nosotros con humildad y usar lo recibido para servir. Dios edifica su iglesia cuando cada creyente participa fielmente segun la gracia que ha recibido.',
+      reflectionQuestion: 'Como puedes usar tu don para edificar a otros?',
+      application: 'Identifica un area concreta donde puedas servir esta semana.',
+      prayer: 'Senor, usame humildemente como parte del cuerpo de Cristo. Amen.',
+      keywords: ['cuerpo', 'dones', 'romanos 12', 'servicio']
+    },
+    '2027-01-19': {
+      title: 'Amor sin fingimiento',
+      explanation: 'El amor cristiano debe ser sincero. Romanos 12 describe una vida marcada por honra, diligencia, paciencia, hospitalidad, bendicion y paz. No es amor de apariencia, sino una manera completa de tratar a otros bajo la gracia de Cristo. La comunidad de fe se fortalece cuando el amor deja de ser discurso y se vuelve practica diaria.',
+      reflectionQuestion: 'Donde necesitas amar con mas sinceridad y menos apariencia?',
+      application: 'Practica hoy una accion de honra o servicio hacia alguien.',
+      prayer: 'Senor, purifica mi amor y hazlo sincero, paciente y servicial. Amen.',
+      keywords: ['amor', 'romanos 12', 'comunidad', 'honra']
+    },
+    '2027-01-20': {
+      title: 'Sobrellevad las cargas',
+      explanation: 'Galatas llama a restaurar con mansedumbre y sobrellevar las cargas unos de otros. La iglesia no es un lugar para esconder debilidades, sino una familia donde la gracia ayuda a levantar al caido. Esto exige humildad, cuidado y vigilancia del propio corazon. Caminar juntos significa cargar, restaurar y sembrar en el Espiritu.',
+      reflectionQuestion: 'De quien puedes ayudar a llevar una carga esta semana?',
+      application: 'Ofrece ayuda concreta a alguien que este cansado o necesitado.',
+      prayer: 'Padre, danos mansedumbre para restaurar y amor para cargar unos con otros. Amen.',
+      keywords: ['cargas', 'galatas 6', 'restauracion', 'mansedumbre']
+    },
+    '2027-01-21': {
+      title: 'Perdonarnos como Cristo',
+      explanation: 'Efesios nos llama a desechar palabras corruptas, amargura, enojo y malicia, y a vestirnos de benignidad y perdon. La razon es clara: Dios nos perdono en Cristo. El perdon cristiano no minimiza el pecado, pero mira a la cruz como fundamento de una nueva manera de relacionarnos. La comunidad se sana cuando el evangelio gobierna nuestras respuestas.',
+      reflectionQuestion: 'A quien necesitas perdonar o pedir perdon?',
+      application: 'Da un paso humilde hacia reconciliacion, segun sea posible y sabio.',
+      prayer: 'Senor, como me perdonaste en Cristo, ensename a perdonar con gracia. Amen.',
+      keywords: ['perdon', 'efesios 4', 'reconciliacion', 'gracia']
+    },
+    '2027-01-22': {
+      title: 'Servir con amor',
+      explanation: 'Pedro ensena que el amor cubre multitud de pecados y que cada uno debe ministrar a otros segun el don recibido. El servicio cristiano es administracion de la gracia de Dios. No servimos para lucir, sino para que Dios sea glorificado por Jesucristo. Una iglesia saludable es una iglesia donde muchos sirven con amor practico.',
+      reflectionQuestion: 'Tu servicio busca la gloria de Dios o reconocimiento personal?',
+      application: 'Sirve hoy de manera sencilla y sin buscar aplausos.',
+      prayer: 'Dios, que mi servicio administre tu gracia y te glorifique. Amen.',
+      keywords: ['servicio', '1 pedro 4', 'amor', 'dones']
+    },
+    '2027-01-23': {
+      title: 'Estimularnos al amor',
+      explanation: 'Hebreos nos llama a considerarnos unos a otros para estimularnos al amor y a las buenas obras. Esto requiere atencion intencional. No basta coexistir en la iglesia; debemos pensar como animar a otros a seguir a Cristo. La comunidad se fortalece cuando cada creyente se convierte en instrumento de aliento, verdad y perseverancia.',
+      reflectionQuestion: 'A quien puedes estimular al amor y buenas obras hoy?',
+      application: 'Envia una palabra de animo biblico a alguien de tu congregacion.',
+      prayer: 'Senor, usame para animar a otros a amar y obedecer. Amen.',
+      keywords: ['hebreos 10', 'animo', 'buenas obras', 'iglesia']
+    },
+    '2027-01-24': {
+      title: 'Consideremonos unos a otros',
+      explanation: 'Por la sangre de Cristo tenemos acceso a Dios y una esperanza firme. Esa seguridad nos mueve hacia la comunidad, no hacia el aislamiento. Congregarnos, exhortarnos y cuidarnos unos a otros es parte de perseverar. La vida renovada reconoce que necesitamos hermanos y hermanas que nos ayuden a mirar a Cristo.',
+      reflectionQuestion: 'Estas caminando la fe en comunidad o aislado?',
+      application: 'Comprometete esta semana a congregarte y animar a alguien personalmente.',
+      prayer: 'Cristo, gracias por acercarnos a Dios y unirnos como tu pueblo. Amen.',
+      keywords: ['comunidad', 'hebreos 10', 'esperanza', 'congregacion']
+    },
+    '2027-01-25': {
+      title: 'Correr con paciencia',
+      explanation: 'Hebreos compara la vida cristiana con una carrera. Para correr bien, debemos dejar pesos y pecado, y hacerlo con paciencia. No todo lo que pesa parece malo al principio, pero puede impedir obediencia. La perseverancia requiere enfoque, disciplina y esperanza. No corremos solos ni sin meta; corremos delante de Dios.',
+      reflectionQuestion: 'Que peso debes dejar para correr con mayor fidelidad?',
+      application: 'Identifica una distraccion que debes limitar para buscar mejor a Cristo.',
+      prayer: 'Senor, ayudame a dejar todo peso y correr con paciencia. Amen.',
+      keywords: ['hebreos 12', 'perseverancia', 'carrera', 'disciplina']
+    },
+    '2027-01-26': {
+      title: 'No cansarnos de hacer el bien',
+      explanation: 'Galatas nos anima a no cansarnos de hacer el bien, porque a su tiempo segaremos si no desmayamos. La obediencia fiel muchas veces parece lenta. Dios llama a su pueblo a sembrar en el Espiritu, confiar en su tiempo y servir aun cuando no vea resultados inmediatos. La perseverancia es una forma de fe.',
+      reflectionQuestion: 'Donde necesitas seguir haciendo el bien aunque estes cansado?',
+      application: 'Renueva una responsabilidad de servicio que has querido abandonar.',
+      prayer: 'Padre, dame fuerzas para sembrar bien y esperar tu fruto. Amen.',
+      keywords: ['galatas 6', 'hacer bien', 'perseverancia', 'fruto']
+    },
+    '2027-01-27': {
+      title: 'Fortalecidos en el Senor',
+      explanation: 'Efesios nos llama a fortalecernos en el Senor y en el poder de su fuerza. La vida cristiana enfrenta lucha espiritual real, por eso necesitamos la armadura de Dios. No resistimos con recursos humanos solamente, sino con verdad, justicia, fe, salvacion, Palabra y oracion. La fortaleza viene del Senor.',
+      reflectionQuestion: 'En que area necesitas depender mas de la fuerza de Dios?',
+      application: 'Ora usando las piezas de la armadura de Dios como guia.',
+      prayer: 'Senor, fortaleceme en tu poder para permanecer firme. Amen.',
+      keywords: ['armadura', 'efesios 6', 'fortaleza', 'oracion']
+    },
+    '2027-01-28': {
+      title: 'La buena obra que Dios comenzo',
+      explanation: 'Pablo confia en que Dios completara la buena obra que comenzo en los creyentes. Nuestra esperanza de crecimiento no descansa en perfeccion personal, sino en la fidelidad de Dios. El mismo que salva tambien santifica. Esto nos anima a perseverar con humildad, sabiendo que Dios sigue obrando en nosotros para el dia de Cristo.',
+      reflectionQuestion: 'Como te anima saber que Dios sigue obrando en ti?',
+      application: 'Agradece a Dios por un area donde has visto crecimiento, aunque sea pequeno.',
+      prayer: 'Dios fiel, completa la buena obra que comenzaste en mi. Amen.',
+      keywords: ['filipenses 1', 'crecimiento', 'fidelidad', 'santificacion']
+    },
+    '2027-01-29': {
+      title: 'Fiel es el que prometio',
+      explanation: 'Hebreos llama a mantener firme la profesion de nuestra esperanza porque fiel es el que prometio. La estabilidad cristiana no se basa en la fuerza de nuestra mano, sino en la fidelidad de Dios. Cuando las emociones fluctuan, sus promesas permanecen. Podemos confesar esperanza porque Dios no falla.',
+      reflectionQuestion: 'Que promesa de Dios necesitas recordar para mantenerte firme?',
+      application: 'Escribe Hebreos 10:23 y colocalo donde puedas verlo hoy.',
+      prayer: 'Senor fiel, afirma mi esperanza en tus promesas. Amen.',
+      keywords: ['fidelidad', 'hebreos 10', 'esperanza', 'promesa']
+    },
+    '2027-01-30': {
+      title: 'Firmes hasta el fin',
+      explanation: 'Pablo llama a estar firmes y constantes, creciendo en la obra del Senor, porque nuestro trabajo en El no es vano. Esta verdad conecta resurreccion y servicio. Nada hecho para Cristo se pierde. Al terminar enero, somos animados a seguir sirviendo con estabilidad, gozo y esperanza, confiando en el Senor de la obra.',
+      reflectionQuestion: 'Que obra del Senor necesitas continuar con firmeza?',
+      application: 'Anima a alguien que sirve fielmente y recuerdale que su trabajo no es en vano.',
+      prayer: 'Cristo resucitado, haznos firmes y constantes en tu obra. Amen.',
+      keywords: ['firmeza', '1 corintios 15', 'servicio', 'resurreccion']
+    },
+    '2027-01-31': {
+      title: 'Puestos los ojos en Jesus',
+      explanation: 'Hebreos nos llama a mirar a Jesus, autor y consumador de la fe. El sufrio la cruz por el gozo puesto delante de El y ahora esta sentado a la diestra de Dios. Mirar a Jesus nos guarda del cansancio espiritual. No perseveramos mirando solo nuestras fuerzas, sino contemplando al Salvador que completo la carrera y sostiene la nuestra.',
+      reflectionQuestion: 'Que te ha estado distrayendo de mirar a Jesus?',
+      application: 'Aparta un momento para contemplar a Cristo en oracion antes de planificar la semana.',
+      prayer: 'Jesus, autor y consumador de mi fe, sosten mi mirada en ti. Amen.',
+      keywords: ['hebreos 12', 'jesus', 'perseverancia', 'fe']
     }
   };
 
@@ -1185,7 +1583,7 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amen.`
   });
 
   window.enLaPalabraData = {
-    version: 'RV1909-2026-12',
+    version: 'RV1909-2027-01',
     months,
     readings
   };
