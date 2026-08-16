@@ -10,11 +10,11 @@
     try { embedded = window.self !== window.top; } catch (error) { embedded = true; }
     if (embedded || new URLSearchParams(location.search).get('embed') === '1') document.documentElement.classList.add('embed-mode');
   </script>
-  <link rel="stylesheet" href="./en-la-palabra.css?v=11">
+  <link rel="stylesheet" href="./en-la-palabra.css?v=12">
 </head>
 <body>
   <main class="page" id="pageRoot">
-    <nav class="site-nav" aria-label="Navegacion principal">
+    <nav class="site-nav" aria-label="Navegación principal">
       <a class="nav-logo" href="./index.html"><img src="./prfwb-logo-main-cropped.png" alt="PRFWB"></a>
       <div class="nav-links">
         <a href="./recursos.html">Recursos</a>
@@ -38,7 +38,7 @@
     </section>
   </main>
 
-  <script src="./en-la-palabra-data.js?v=11"></script>
+  <script src="./en-la-palabra-data.js?v=12"></script>
   <script>
     const params = new URLSearchParams(location.search);
     const data = window.enLaPalabraData;
@@ -72,7 +72,7 @@
       <div class="truth">${sunday.mainTruth}</div>
       <div class="bible-placeholder" style="font-size:clamp(1.25rem, 2.4vw, 2.4rem)">
         <div class="bible-text">${sunday.bibleText || `Lee ${sunday.reference} en tu Biblia (${sunday.version}).`}</div>
-        <span class="source-note">${sunday.bibleTextSource || 'Texto basado en Reina-Valera 1909, dominio publico. Edicion de lectura PRFWB.'} <a href="${bibleGatewayUrl(sunday.reference)}" target="_blank" rel="noopener">Ver en BibleGateway</a></span>
+        <span class="source-note">${sunday.bibleTextSource || 'Texto basado en Reina-Valera 1909, dominio público. Edición de lectura PRFWB.'} <a href="${bibleGatewayUrl(sunday.reference)}" target="_blank" rel="noopener">Ver en BibleGateway</a></span>
       </div>
     `;
     document.getElementById('projectionBtn').addEventListener('click', async () => {

@@ -4,17 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Archivo | En la Palabra PRFWB</title>
-  <meta name="description" content="Archivo de lecturas biblicas PRFWB por año, mes, semana y dia.">
+  <meta name="description" content="Archivo de lecturas bíblicas PRFWB por año, mes, semana y día.">
   <script>
     let embedded = false;
     try { embedded = window.self !== window.top; } catch (error) { embedded = true; }
     if (embedded || new URLSearchParams(location.search).get('embed') === '1') document.documentElement.classList.add('embed-mode');
   </script>
-  <link rel="stylesheet" href="./en-la-palabra.css?v=11">
+  <link rel="stylesheet" href="./en-la-palabra.css?v=12">
 </head>
 <body>
   <main class="page">
-    <nav class="site-nav" aria-label="Navegacion principal">
+    <nav class="site-nav" aria-label="Navegación principal">
       <a class="nav-logo" href="./index.html"><img src="./prfwb-logo-main-cropped.png" alt="PRFWB"></a>
       <div class="nav-links">
         <a href="./recursos.html">Recursos</a>
@@ -26,7 +26,7 @@
         <div>
           <span class="eyebrow">Archivo</span>
           <h1>Lecturas anteriores</h1>
-          <p>Explora por año, mes, semana y dia. La arquitectura queda lista para añadir años futuros.</p>
+          <p>Explora por año, mes, semana y día. La arquitectura queda lista para añadir años futuros.</p>
         </div>
         <div class="hero-card"><span>Contenido disponible</span><strong id="archiveCount">0 lecturas</strong></div>
       </div>
@@ -45,7 +45,7 @@
       </div>
     </section>
   </main>
-  <script src="./en-la-palabra-data.js?v=11"></script>
+  <script src="./en-la-palabra-data.js?v=12"></script>
   <script>
     const data = window.enLaPalabraData;
     const readings = data.readings;
