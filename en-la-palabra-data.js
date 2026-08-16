@@ -2,6 +2,40 @@
   const BIBLE_VERSION = 'RV1909 - Edicion de lectura PRFWB';
   const bibleTextSource = 'Texto basado en Reina-Valera 1909, dominio publico. Edicion de lectura PRFWB con actualizacion minima de ortografia/vocabulario.';
   const sundayTexts = {
+    'Juan 15:1-8': `Yo soy la vid verdadera, y mi Padre es el labrador.
+Todo pampano que en mi no lleva fruto, le quitara; y todo aquel que lleva fruto, le limpiara, para que lleve mas fruto.
+Ya ustedes son limpios por la palabra que les he hablado.
+Permanezcan en mi, y yo en ustedes. Como el pampano no puede llevar fruto de si mismo, si no permaneciere en la vid; asi ni ustedes, si no permanecen en mi.
+Yo soy la vid, ustedes los pampanos: el que permanece en mi, y yo en el, este lleva mucho fruto; porque sin mi nada pueden hacer.
+En esto es glorificado mi Padre, en que lleven mucho fruto, y sean asi mis discipulos.`,
+    'Efesios 2:1-10': `Y el les dio vida a ustedes, cuando estaban muertos en delitos y pecados.
+Pero Dios, que es rico en misericordia, por su mucho amor con que nos amo,
+aun estando nosotros muertos en pecados, nos dio vida juntamente con Cristo; por gracia son salvos.
+Y juntamente nos resucito, y asimismo nos hizo sentar en los cielos con Cristo Jesus,
+para mostrar en los siglos venideros las abundantes riquezas de su gracia en su bondad para con nosotros en Cristo Jesus.
+Porque por gracia son salvos por la fe; y esto no de ustedes, pues es don de Dios;
+no por obras, para que nadie se glorie.
+Porque somos hechura suya, creados en Cristo Jesus para buenas obras, las cuales Dios preparo para que anduviesemos en ellas.`,
+    'Mateo 11:25-30': `En aquel tiempo, respondiendo Jesus, dijo: Te alabo, Padre, Senor del cielo y de la tierra, que hayas escondido estas cosas de los sabios y entendidos, y las hayas revelado a los ninos.
+Si, Padre, porque asi te agrado.
+Todas las cosas me son entregadas de mi Padre; y nadie conocio al Hijo, sino el Padre; ni al Padre conocio alguno, sino el Hijo, y aquel a quien el Hijo lo quisiere revelar.
+Vengan a mi todos los que estan trabajados y cargados, que yo les hare descansar.
+Lleven mi yugo sobre ustedes, y aprendan de mi, que soy manso y humilde de corazon; y hallaran descanso para sus almas.
+Porque mi yugo es facil, y ligera mi carga.`,
+    'Salmo 23': `Jehova es mi pastor; nada me faltara.
+En lugares de delicados pastos me hara yacer; junto a aguas de reposo me pastoreara.
+Confortara mi alma; me guiara por sendas de justicia por amor de su nombre.
+Aunque ande en valle de sombra de muerte, no temere mal alguno; porque tu estaras conmigo: tu vara y tu cayado me infundiran aliento.
+Aderezaras mesa delante de mi en presencia de mis angustiadores; ungiste mi cabeza con aceite; mi copa esta rebosando.
+Ciertamente el bien y la misericordia me seguiran todos los dias de mi vida; y en la casa de Jehova morare por largos dias.`,
+    'Romanos 8:31-39': `Que, pues, diremos a esto? Si Dios por nosotros, quien contra nosotros?
+El que aun a su propio Hijo no perdono, antes le entrego por todos nosotros, como no nos dara tambien con el todas las cosas?
+Quien acusara a los escogidos de Dios? Dios es el que justifica.
+Quien es el que condenara? Cristo es el que murio; mas aun, el que tambien resucito, quien ademas esta a la diestra de Dios, el que tambien intercede por nosotros.
+Quien nos apartara del amor de Cristo? tribulacion, o angustia, o persecucion, o hambre, o desnudez, o peligro, o espada?
+Antes, en todas estas cosas somos mas que vencedores por medio de aquel que nos amo.
+Por lo cual estoy cierto que ni la muerte, ni la vida, ni angeles, ni principados, ni potestades, ni lo presente, ni lo por venir,
+ni lo alto, ni lo bajo, ni ninguna criatura nos podra apartar del amor de Dios, que es en Cristo Jesus Senor nuestro.`,
     'Hebreos 1:1-4': `Dios, habiendo hablado muchas veces y en muchas maneras en otro tiempo a los padres por los profetas,
 en estos postreros dias nos ha hablado por el Hijo, al cual constituyo heredero de todo, por el cual asimismo hizo el universo.
 El cual, siendo el resplandor de su gloria, y la imagen misma de su sustancia, y sustentando todas las cosas con la palabra de su potencia, habiendo hecho la purificacion de nuestros pecados por si mismo, se sento a la diestra de la Majestad en las alturas,
@@ -167,6 +201,107 @@ Danos hoy nuestro pan cotidiano.
 Y perdonanos nuestras deudas, como tambien nosotros perdonamos a nuestros deudores.
 Y no nos metas en tentacion, mas libranos del mal:
 porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amen.`
+  };
+
+  const august = {
+    year: 2026,
+    month: 8,
+    monthKey: '2026-08',
+    monthName: 'Agosto',
+    theme: 'Jesus, el Centro',
+    description: 'Durante agosto, PRFWB sera animada a comenzar poniendo a Jesus en el centro: permanecer en El, descansar en su gracia, caminar bajo su cuidado y vivir seguros en su amor.',
+    weeks: [
+      {
+        title: 'Permanecer en Cristo',
+        start: '2026-08-01',
+        end: '2026-08-02',
+        sunday: {
+          date: '2026-08-02',
+          theme: 'Separados de mi nada pueden hacer',
+          reference: 'Juan 15:1-8',
+          version: BIBLE_VERSION,
+          bibleText: sundayTexts['Juan 15:1-8'] || '',
+          bibleTextSource,
+          introduction: 'Comenzamos agosto mirando a Jesus como la vid verdadera. La vida cristiana no se sostiene por esfuerzo separado de Cristo, sino por permanecer en El. Todo fruto verdadero nace de la comunion con el Senor, de su Palabra limpiando nuestro corazon y de una dependencia diaria que glorifica al Padre.',
+          mainTruth: 'El discipulo lleva fruto cuando permanece unido a Cristo.'
+        }
+      },
+      {
+        title: 'Salvos por gracia',
+        start: '2026-08-03',
+        end: '2026-08-09',
+        sunday: {
+          date: '2026-08-09',
+          theme: 'Por gracia son salvos',
+          reference: 'Efesios 2:1-10',
+          version: BIBLE_VERSION,
+          bibleText: sundayTexts['Efesios 2:1-10'] || '',
+          bibleTextSource,
+          introduction: 'Efesios nos recuerda que nuestra historia espiritual comienza con muerte, pero Dios interviene con misericordia. La salvacion no es premio por obras, sino regalo de gracia en Cristo. Esa misma gracia nos crea de nuevo para caminar en buenas obras que Dios preparo.',
+          mainTruth: 'Somos salvos por gracia en Cristo y creados para vivir en buenas obras.'
+        }
+      },
+      {
+        title: 'Descansar en Jesus',
+        start: '2026-08-10',
+        end: '2026-08-16',
+        sunday: {
+          date: '2026-08-16',
+          theme: 'Vengan a mi',
+          reference: 'Mateo 11:25-30',
+          version: BIBLE_VERSION,
+          bibleText: sundayTexts['Mateo 11:25-30'] || '',
+          bibleTextSource,
+          introduction: 'Jesus llama a los cansados y cargados a venir a El. No ofrece una carga mas pesada, sino descanso para el alma. Aprender de Cristo significa recibir su mansedumbre, rendir nuestro orgullo y caminar bajo su yugo bueno. El descanso verdadero se encuentra en el Senor.',
+          mainTruth: 'Jesus da descanso verdadero a los que vienen a El con humildad y fe.'
+        }
+      },
+      {
+        title: 'Guiados por el Pastor',
+        start: '2026-08-17',
+        end: '2026-08-23',
+        sunday: {
+          date: '2026-08-23',
+          theme: 'Jehova es mi pastor',
+          reference: 'Salmo 23',
+          version: BIBLE_VERSION,
+          bibleText: sundayTexts['Salmo 23'] || '',
+          bibleTextSource,
+          introduction: 'El Salmo 23 nos lleva a descansar en el cuidado personal del Senor. Dios guia, sustenta, corrige, acompana y consuela a su pueblo. Aun en valles oscuros, el creyente no camina solo. La bondad y misericordia del Pastor sostienen nuestra vida.',
+          mainTruth: 'El Senor cuida, guia y acompana fielmente a su pueblo.'
+        }
+      },
+      {
+        title: 'Seguros en su amor',
+        start: '2026-08-24',
+        end: '2026-08-30',
+        sunday: {
+          date: '2026-08-30',
+          theme: 'Nada nos separara',
+          reference: 'Romanos 8:31-39',
+          version: BIBLE_VERSION,
+          bibleText: sundayTexts['Romanos 8:31-39'] || '',
+          bibleTextSource,
+          introduction: 'Romanos 8 afirma una seguridad profunda: Dios esta por nosotros en Cristo. Ninguna acusacion, condenacion, sufrimiento o poder creado puede separar al creyente del amor de Dios. Esta esperanza no niega las pruebas, pero nos sostiene en medio de ellas.',
+          mainTruth: 'Nada puede separar al creyente del amor de Dios en Cristo Jesus.'
+        }
+      },
+      {
+        title: 'Preparados para escuchar',
+        start: '2026-08-31',
+        end: '2026-08-31',
+        sunday: {
+          date: '2026-09-06',
+          theme: 'Dios nos ha hablado por su Palabra',
+          reference: 'Hebreos 1:1-4',
+          version: BIBLE_VERSION,
+          bibleText: sundayTexts['Hebreos 1:1-4'] || '',
+          bibleTextSource,
+          introduction: 'Agosto cierra preparando el corazon para septiembre: un mes enfocado en la Palabra. El Dios que cuida, salva y sostiene tambien habla. Su revelacion culmina en Cristo, el Hijo, a quien debemos escuchar con reverencia, fe y obediencia.',
+          mainTruth: 'Dios ha hablado plenamente en su Hijo, y su pueblo responde escuchando y obedeciendo.'
+        }
+      }
+    ]
   };
 
   const september = {
@@ -341,7 +476,7 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amen.`
     ]
   };
 
-  const months = [september, october];
+  const months = [august, september, october];
 
   const november = {
     year: 2026,
@@ -619,6 +754,37 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amen.`
   months.push(november, december, january);
 
   const dailySeeds = [
+    ['2026-08-01', 'Jesus, el centro de todo', 'Colosenses 1:15-20'],
+    ['2026-08-02', 'Separados de mi nada pueden hacer', 'Juan 15:1-8'],
+    ['2026-08-03', 'Muertos, pero Dios nos dio vida', 'Efesios 2:1-5'],
+    ['2026-08-04', 'Salvos por gracia', 'Efesios 2:6-10'],
+    ['2026-08-05', 'Justificados por la fe', 'Romanos 5:1-5'],
+    ['2026-08-06', 'Redimidos por su sangre', 'Efesios 1:3-10'],
+    ['2026-08-07', 'Ninguna condenacion', 'Romanos 8:1-4'],
+    ['2026-08-08', 'Adoptados como hijos', 'Romanos 8:14-17'],
+    ['2026-08-09', 'Por gracia son salvos', 'Efesios 2:1-10'],
+    ['2026-08-10', 'Vengan a mi', 'Mateo 11:25-30'],
+    ['2026-08-11', 'Descansar en Dios', 'Salmo 62:1-8'],
+    ['2026-08-12', 'No temas, yo estoy contigo', 'Isaias 41:8-13'],
+    ['2026-08-13', 'Depositar las cargas', '1 Pedro 5:6-7'],
+    ['2026-08-14', 'Paz en medio de la afliccion', 'Juan 16:31-33'],
+    ['2026-08-15', 'El Senor renueva las fuerzas', 'Isaias 40:28-31'],
+    ['2026-08-16', 'Descanso para el alma', 'Mateo 11:25-30'],
+    ['2026-08-17', 'Jehova es mi pastor', 'Salmo 23'],
+    ['2026-08-18', 'El buen Pastor da su vida', 'Juan 10:7-18'],
+    ['2026-08-19', 'Dios guia con su consejo', 'Salmo 73:23-28'],
+    ['2026-08-20', 'El Senor guarda tu salida y entrada', 'Salmo 121'],
+    ['2026-08-21', 'El Pastor busca a la oveja perdida', 'Lucas 15:1-7'],
+    ['2026-08-22', 'Cuidado bajo su poderosa mano', '1 Pedro 5:1-4'],
+    ['2026-08-23', 'El Senor es mi Pastor', 'Salmo 23'],
+    ['2026-08-24', 'Dios es por nosotros', 'Romanos 8:31-34'],
+    ['2026-08-25', 'Nada nos separara', 'Romanos 8:35-39'],
+    ['2026-08-26', 'Guardados por el poder de Dios', '1 Pedro 1:3-9'],
+    ['2026-08-27', 'Fiel para completar su obra', 'Filipenses 1:3-11'],
+    ['2026-08-28', 'El amor perfecto echa fuera el temor', '1 Juan 4:13-19'],
+    ['2026-08-29', 'Seguros en la mano de Cristo', 'Juan 10:27-30'],
+    ['2026-08-30', 'Mas que vencedores', 'Romanos 8:31-39'],
+    ['2026-08-31', 'Preparados para escuchar', 'Hebreos 1:1-4'],
     ['2026-09-01', 'Dios habla', 'Genesis 1:1-5'],
     ['2026-09-02', 'La palabra de Dios permanece', 'Isaias 40:6-8'],
     ['2026-09-03', 'La Palabra es verdad', 'Juan 17:17'],
@@ -775,6 +941,254 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amen.`
   ];
 
   const approvedReadings = {
+    '2026-08-01': {
+      title: 'Jesus, el centro de todo',
+      explanation: 'Colosenses presenta a Cristo como imagen del Dios invisible, Creador, sustentador y cabeza de la iglesia. Antes de comenzar cualquier plan espiritual, necesitamos recordar quien ocupa el centro. La vida cristiana no gira alrededor de nuestras metas, sino de la gloria de Jesus. Todo fue creado por El y para El, y solo en El todas las cosas encuentran su verdadero lugar.',
+      reflectionQuestion: 'Que area de tu vida necesita volver a tener a Cristo en el centro?',
+      application: 'Comienza el mes nombrando una decision que quieres someter al senorio de Jesus.',
+      prayer: 'Cristo, se el centro de mi vida, mi iglesia y mis decisiones. Amen.',
+      keywords: ['cristo', 'centro', 'colosenses', 'senorio']
+    },
+    '2026-08-02': {
+      title: 'Separados de mi nada pueden hacer',
+      explanation: 'Jesus se presenta como la vid verdadera y nos llama a permanecer en El. La rama no produce fruto por esfuerzo propio, sino por su union con la vid. Asi tambien, el discipulo no puede vivir una vida fructifera separado de Cristo. Permanecer en Jesus implica depender de su Palabra, buscar comunion con El y reconocer que todo fruto verdadero viene de su vida obrando en nosotros.',
+      reflectionQuestion: 'Estas intentando producir fruto espiritual sin depender de Cristo?',
+      application: 'Antes de tus tareas de hoy, ora reconociendo: Senor, sin ti nada puedo hacer.',
+      prayer: 'Jesus, mantenme unido a ti y produce fruto que glorifique al Padre. Amen.',
+      keywords: ['juan 15', 'permanecer', 'fruto', 'dependencia']
+    },
+    '2026-08-03': {
+      title: 'Muertos, pero Dios nos dio vida',
+      explanation: 'Efesios describe nuestra condicion sin Cristo con palabras serias: muertos en delitos y pecados. Pero la frase mas hermosa aparece con fuerza: pero Dios. El Senor interviene con misericordia y amor para dar vida juntamente con Cristo. La salvacion comienza en la gracia de Dios, no en nuestra capacidad. Esto produce humildad, gratitud y adoracion.',
+      reflectionQuestion: 'Como cambia tu gratitud recordar de donde Dios te rescato?',
+      application: 'Da gracias hoy por la misericordia de Dios que te dio vida en Cristo.',
+      prayer: 'Dios rico en misericordia, gracias por darme vida cuando estaba muerto en pecado. Amen.',
+      keywords: ['efesios 2', 'misericordia', 'vida', 'gracia']
+    },
+    '2026-08-04': {
+      title: 'Salvos por gracia',
+      explanation: 'La salvacion es por gracia mediante la fe. No nace de nosotros ni de nuestras obras, para que nadie se glorien. Esta verdad humilla el orgullo y fortalece la seguridad. Si la salvacion dependiera de nuestro rendimiento, nunca tendriamos paz. Pero Dios nos salva como regalo y luego nos crea en Cristo para buenas obras preparadas por El.',
+      reflectionQuestion: 'Estas descansando en la gracia o tratando de ganarte el favor de Dios?',
+      application: 'Sirve hoy desde gratitud, no desde culpa ni deseo de impresionar.',
+      prayer: 'Padre, gracias por salvarme por gracia y prepararme para buenas obras. Amen.',
+      keywords: ['gracia', 'fe', 'efesios 2', 'buenas obras']
+    },
+    '2026-08-05': {
+      title: 'Justificados por la fe',
+      explanation: 'Romanos nos anuncia paz con Dios por medio de nuestro Senor Jesucristo. La justificacion no es solo sentirse mejor; es ser declarado justo delante de Dios por la obra de Cristo. Por eso el creyente puede vivir con esperanza aun en tribulacion. La gracia nos coloca de pie y el amor de Dios es derramado en nuestros corazones.',
+      reflectionQuestion: 'Que diferencia hace saber que tienes paz con Dios en Cristo?',
+      application: 'Cuando venga culpa o temor, recuerda que tu paz con Dios descansa en Jesus.',
+      prayer: 'Senor, gracias por justificarme por la fe y darme paz contigo. Amen.',
+      keywords: ['justificacion', 'paz', 'romanos 5', 'fe']
+    },
+    '2026-08-06': {
+      title: 'Redimidos por su sangre',
+      explanation: 'En Cristo tenemos redencion por su sangre y perdon de pecados segun las riquezas de la gracia. Dios no nos bendice de manera superficial; nos escoge, adopta, perdona y une todas las cosas bajo Cristo. La redencion muestra el costo de nuestra salvacion y la abundancia de la gracia divina.',
+      reflectionQuestion: 'Como te mueve a adorar saber que fuiste redimido por Cristo?',
+      application: 'Haz una pausa para alabar a Dios por una bendicion espiritual en Cristo.',
+      prayer: 'Padre, gracias por redimirme y perdonarme en tu Hijo amado. Amen.',
+      keywords: ['redencion', 'perdon', 'efesios 1', 'sangre']
+    },
+    '2026-08-07': {
+      title: 'Ninguna condenacion',
+      explanation: 'Romanos 8 declara una verdad liberadora: ninguna condenacion hay para los que estan en Cristo Jesus. La ley del Espiritu de vida nos libra de la ley del pecado y de la muerte. Esto no produce indiferencia al pecado, sino gratitud y nueva obediencia. En Cristo, el creyente ya no vive bajo sentencia, sino bajo gracia.',
+      reflectionQuestion: 'Que acusacion necesitas responder con la verdad del evangelio?',
+      application: 'Confiesa tu pecado y descansa en que Cristo llevo tu condenacion.',
+      prayer: 'Jesus, gracias porque en ti no hay condenacion para mi. Amen.',
+      keywords: ['romanos 8', 'condenacion', 'libertad', 'gracia']
+    },
+    '2026-08-08': {
+      title: 'Adoptados como hijos',
+      explanation: 'El Espiritu da testimonio de que somos hijos de Dios. La salvacion no solo cambia nuestro destino; cambia nuestra familia e identidad. Ya no vivimos como esclavos del temor, sino como hijos que claman: Abba, Padre. Esta adopcion nos da seguridad, pertenencia y esperanza aun cuando pasamos por sufrimientos.',
+      reflectionQuestion: 'Estas viviendo como hijo amado o como esclavo del temor?',
+      application: 'Ora hoy llamando a Dios Padre, con confianza humilde.',
+      prayer: 'Padre, gracias por adoptarme en Cristo y librarme del temor. Amen.',
+      keywords: ['adopcion', 'romanos 8', 'hijos', 'espiritu']
+    },
+    '2026-08-09': {
+      title: 'Por gracia son salvos',
+      explanation: 'Efesios 2 resume el evangelio con claridad: estabamos muertos, pero Dios nos dio vida; eramos incapaces, pero fuimos salvos por gracia; no teniamos obras que ofrecer, pero ahora somos creados para buenas obras. La gracia no solo nos rescata del pasado, tambien nos dirige hacia una vida nueva preparada por Dios.',
+      reflectionQuestion: 'Que buena obra preparada por Dios puedes caminar esta semana?',
+      application: 'Identifica una oportunidad concreta para servir como respuesta a la gracia.',
+      prayer: 'Senor, que tu gracia me haga humilde, agradecido y dispuesto a servir. Amen.',
+      keywords: ['salvacion', 'gracia', 'efesios 2', 'servicio']
+    },
+    '2026-08-10': {
+      title: 'Vengan a mi',
+      explanation: 'Jesus no llama a los fuertes que pueden con todo, sino a los cansados y cargados. Su invitacion es personal: vengan a mi. El descanso que ofrece no es evadir responsabilidades, sino hallar alivio en su gracia, su mansedumbre y su senorio. El alma encuentra reposo cuando deja de cargar sola y aprende de Cristo.',
+      reflectionQuestion: 'Que carga necesitas traer hoy a Jesus?',
+      application: 'Nombra tu carga en oracion y entregasela al Senor con confianza.',
+      prayer: 'Jesus, vengo a ti con mis cargas. Dame descanso para mi alma. Amen.',
+      keywords: ['descanso', 'mateo 11', 'cargas', 'jesus']
+    },
+    '2026-08-11': {
+      title: 'Descansar en Dios',
+      explanation: 'El Salmo 62 nos llama a esperar solamente en Dios, porque de El viene la salvacion y la esperanza. El alma encuentra reposo cuando deja de depender de estabilidad humana y se apoya en la roca firme del Senor. Podemos derramar delante de El nuestro corazon porque Dios es refugio para su pueblo.',
+      reflectionQuestion: 'En que estas buscando descanso fuera de Dios?',
+      application: 'Derrama tu corazon delante del Senor en una oracion honesta.',
+      prayer: 'Dios, tu eres mi roca y refugio. Haz descansar mi alma en ti. Amen.',
+      keywords: ['salmo 62', 'descanso', 'refugio', 'esperanza']
+    },
+    '2026-08-12': {
+      title: 'No temas, yo estoy contigo',
+      explanation: 'Isaias anuncia la presencia fiel de Dios a su pueblo: no temas, porque yo estoy contigo. La seguridad del creyente no nace de la ausencia de problemas, sino de la presencia del Senor que fortalece, ayuda y sostiene. En momentos de debilidad, Dios no solo da instrucciones; ofrece su mano poderosa.',
+      reflectionQuestion: 'Que temor necesitas enfrentar recordando que Dios esta contigo?',
+      application: 'Cuando sientas temor hoy, responde con una frase de fe: Dios me sostiene.',
+      prayer: 'Senor, sostenme con tu diestra y libra mi corazon del temor. Amen.',
+      keywords: ['no temas', 'isaias 41', 'presencia', 'fortaleza']
+    },
+    '2026-08-13': {
+      title: 'Depositar las cargas',
+      explanation: 'Pedro une humildad y confianza: humillense bajo la mano poderosa de Dios, echando toda ansiedad sobre El. Entregar cargas requiere reconocer que no somos soberanos. Dios cuida de nosotros con poder y ternura. La fe no niega las preocupaciones, pero se niega a cargarlas como si Dios estuviera ausente.',
+      reflectionQuestion: 'Que ansiedad estas cargando sin entregarla al Padre?',
+      application: 'Escribe una preocupacion y ora entregandola al cuidado de Dios.',
+      prayer: 'Padre, echo mi ansiedad sobre ti porque tu tienes cuidado de mi. Amen.',
+      keywords: ['ansiedad', '1 pedro', 'cuidado', 'humildad']
+    },
+    '2026-08-14': {
+      title: 'Paz en medio de la afliccion',
+      explanation: 'Jesus no promete una vida sin afliccion, pero si promete paz en El. El mundo trae presion, dolor y oposicion, pero Cristo ha vencido al mundo. La paz cristiana no depende de que todo este bajo control, sino de pertenecer al Victorioso. Podemos cobrar animo porque la victoria final ya pertenece a Jesus.',
+      reflectionQuestion: 'Como cambia tu animo saber que Cristo ha vencido al mundo?',
+      application: 'Entrega una afliccion a Jesus y recuerda su victoria antes de responder.',
+      prayer: 'Jesus, dame tu paz y animo en medio de la afliccion. Amen.',
+      keywords: ['paz', 'juan 16', 'afliccion', 'victoria']
+    },
+    '2026-08-15': {
+      title: 'El Senor renueva las fuerzas',
+      explanation: 'Isaias nos muestra al Dios eterno que no se cansa ni se fatiga. Nosotros si nos cansamos, pero los que esperan en Jehova reciben nuevas fuerzas. Esperar en Dios no es pasividad vacia; es confianza activa en su caracter. El Senor levanta al debil y sostiene al que reconoce su necesidad.',
+      reflectionQuestion: 'Donde necesitas esperar en Dios en lugar de agotarte solo?',
+      application: 'Haz una pausa hoy para orar antes de seguir empujando en tus fuerzas.',
+      prayer: 'Dios eterno, renueva mis fuerzas mientras espero en ti. Amen.',
+      keywords: ['isaias 40', 'fuerzas', 'esperar', 'debilidad']
+    },
+    '2026-08-16': {
+      title: 'Descanso para el alma',
+      explanation: 'Jesus ofrece descanso a los cansados, pero tambien nos invita a tomar su yugo y aprender de El. Su descanso no es independencia de su autoridad, sino caminar bajo su senorio bueno. Cristo es manso y humilde de corazon; por eso podemos venir sin fingir fortaleza y aprender a vivir desde su gracia.',
+      reflectionQuestion: 'Estas dispuesto a aprender de la mansedumbre y humildad de Jesus?',
+      application: 'Practica hoy una respuesta mansa donde normalmente responderias con dureza.',
+      prayer: 'Jesus, ensename tu mansedumbre y dame descanso verdadero. Amen.',
+      keywords: ['mateo 11', 'descanso', 'mansedumbre', 'humildad']
+    },
+    '2026-08-17': {
+      title: 'Jehova es mi pastor',
+      explanation: 'El Salmo 23 comienza con una afirmacion profundamente personal: Jehova es mi pastor. El creyente no esta abandonado a su propia sabiduria. Dios provee, guia, restaura y acompana. Decir que nada me faltara no significa que tendremos todo lo que queremos, sino que el Pastor dara lo necesario para caminar con El.',
+      reflectionQuestion: 'En que area necesitas confiar mas en el cuidado del Pastor?',
+      application: 'Repite durante el dia: El Senor es mi Pastor; El sabe guiarme.',
+      prayer: 'Pastor fiel, guia mi vida y restaura mi alma. Amen.',
+      keywords: ['salmo 23', 'pastor', 'cuidado', 'guia']
+    },
+    '2026-08-18': {
+      title: 'El buen Pastor da su vida',
+      explanation: 'Jesus se presenta como el buen Pastor que da su vida por las ovejas. Su cuidado no es distante ni contratado; nace de amor sacrificial. El conoce a los suyos y los suyos le conocen. La seguridad del creyente descansa en un Pastor que no huye ante el peligro, sino que entrega su vida para salvar.',
+      reflectionQuestion: 'Como te consuela saber que Jesus conoce y cuida a sus ovejas?',
+      application: 'Descansa hoy en que Cristo no te cuida de lejos; te conoce por nombre.',
+      prayer: 'Buen Pastor, gracias por dar tu vida y cuidar de los tuyos. Amen.',
+      keywords: ['juan 10', 'buen pastor', 'sacrificio', 'ovejas']
+    },
+    '2026-08-19': {
+      title: 'Dios guia con su consejo',
+      explanation: 'El salmista reconoce que Dios le sostiene de la mano y le guia con su consejo. En medio de confusion, envidia o debilidad, la presencia de Dios es el bien supremo. La guia del Senor no es solo informacion para decisiones; es comunion con Aquel que es nuestra porcion para siempre.',
+      reflectionQuestion: 'Buscas solo respuestas de Dios o tambien su presencia?',
+      application: 'Pide guia para una decision, pero comienza adorando a Dios como tu porcion.',
+      prayer: 'Senor, guiame con tu consejo y haz de ti mi mayor bien. Amen.',
+      keywords: ['salmo 73', 'guia', 'presencia', 'porcion']
+    },
+    '2026-08-20': {
+      title: 'El Senor guarda tu salida y entrada',
+      explanation: 'El Salmo 121 dirige la mirada al Creador como nuestro guardador. Dios no duerme ni se descuida. Su cuidado abarca salida y entrada, presente y futuro. Esta promesa no elimina toda dificultad, pero asegura que nuestra vida esta bajo la vigilancia fiel del Senor.',
+      reflectionQuestion: 'Que situacion necesitas confiar al Dios que no duerme?',
+      application: 'Antes de salir o comenzar una tarea, encomienda tu camino al Senor.',
+      prayer: 'Dios guardador, cuida mi vida y dirige mi camino. Amen.',
+      keywords: ['salmo 121', 'proteccion', 'guardar', 'confianza']
+    },
+    '2026-08-21': {
+      title: 'El Pastor busca a la oveja perdida',
+      explanation: 'Jesus muestra el gozo del cielo cuando una oveja perdida es encontrada. El corazon de Dios no es indiferente ante el extraviado. El Pastor busca, carga y celebra. Esta lectura nos llama a recibir la gracia con humildad y a mirar a los perdidos con compasion, no con desprecio.',
+      reflectionQuestion: 'A quien necesitas mirar con la compasion del Pastor?',
+      application: 'Ora por una persona alejada y busca una forma sabia de acercarte con amor.',
+      prayer: 'Senor, gracias por buscarme. Dame compasion por los que estan lejos. Amen.',
+      keywords: ['lucas 15', 'oveja perdida', 'compasion', 'gracia']
+    },
+    '2026-08-22': {
+      title: 'Cuidado bajo su poderosa mano',
+      explanation: 'Pedro llama a los lideres a pastorear con humildad y al pueblo a confiar en el Principe de los pastores. Toda autoridad en la iglesia debe reflejar el cuidado de Cristo. Nadie es dueno del rebanio; la iglesia pertenece al Senor. Esto nos llama a servir, cuidar y someternos a Cristo con humildad.',
+      reflectionQuestion: 'Como puedes reflejar el cuidado de Cristo hacia otros?',
+      application: 'Anima o cuida hoy a alguien de tu congregacion de manera concreta.',
+      prayer: 'Principe de los pastores, ensenanos a cuidar a tu pueblo con humildad. Amen.',
+      keywords: ['1 pedro 5', 'pastores', 'humildad', 'cuidado']
+    },
+    '2026-08-23': {
+      title: 'El Senor es mi Pastor',
+      explanation: 'El Salmo 23 nos lleva desde pastos delicados hasta valles oscuros, y en todo lugar el Pastor esta presente. La confianza biblica no depende de estar siempre en lugares faciles. Podemos no temer mal alguno porque Dios esta con nosotros. Su bondad y misericordia siguen al creyente todos los dias.',
+      reflectionQuestion: 'Que valle necesitas caminar recordando que Dios esta contigo?',
+      application: 'Ora el Salmo 23 en primera persona, entregando tus temores al Pastor.',
+      prayer: 'Jehova, mi Pastor, guia, restaura y acompana mi vida. Amen.',
+      keywords: ['salmo 23', 'pastor', 'valle', 'misericordia']
+    },
+    '2026-08-24': {
+      title: 'Dios es por nosotros',
+      explanation: 'Pablo pregunta: Si Dios es por nosotros, quien contra nosotros? Esta seguridad se basa en la entrega del Hijo. Si Dios no escatimo a Cristo, podemos confiar en su gracia para sostenernos. Las acusaciones pierden su fuerza cuando recordamos que Dios justifica a los suyos en Cristo.',
+      reflectionQuestion: 'Que acusacion o temor necesitas mirar a la luz de la cruz?',
+      application: 'Responde hoy al temor con esta verdad: Dios es por mi en Cristo.',
+      prayer: 'Padre, gracias porque en Cristo estas por nosotros. Amen.',
+      keywords: ['romanos 8', 'seguridad', 'cruz', 'justificacion']
+    },
+    '2026-08-25': {
+      title: 'Nada nos separara',
+      explanation: 'Romanos 8 no promete ausencia de tribulacion, angustia o peligro. Promete algo mas firme: nada puede separarnos del amor de Cristo. El amor de Dios no es fragil ni dependiente de circunstancias. En medio de pruebas, el creyente puede descansar en una union segura con Cristo.',
+      reflectionQuestion: 'Que circunstancia te ha hecho dudar del amor de Dios?',
+      application: 'Lee Romanos 8:38-39 en voz alta y responde con adoracion.',
+      prayer: 'Senor, afirma mi corazon en tu amor inseparable. Amen.',
+      keywords: ['amor de dios', 'romanos 8', 'seguridad', 'cristo']
+    },
+    '2026-08-26': {
+      title: 'Guardados por el poder de Dios',
+      explanation: 'Pedro bendice a Dios por una esperanza viva mediante la resurreccion de Cristo. El creyente es guardado por el poder de Dios, aun en medio de pruebas que refinan la fe. Nuestra esperanza no es debil porque esta basada en una herencia incorruptible y en el Cristo resucitado.',
+      reflectionQuestion: 'Como te sostiene saber que Dios guarda tu fe?',
+      application: 'Da gracias por una prueba en la que Dios esta refinando tu confianza.',
+      prayer: 'Dios, guardame por tu poder y fortalece mi esperanza viva. Amen.',
+      keywords: ['1 pedro 1', 'esperanza', 'resurreccion', 'pruebas']
+    },
+    '2026-08-27': {
+      title: 'Fiel para completar su obra',
+      explanation: 'Pablo confia en que Dios completara la buena obra que comenzo. La vida cristiana no depende de arranques emocionales, sino de la fidelidad perseverante del Senor. Dios no abandona a los suyos a mitad del camino. Esto produce confianza humilde y nos anima a seguir creciendo en amor, discernimiento y fruto.',
+      reflectionQuestion: 'Donde necesitas confiar en que Dios sigue obrando en ti?',
+      application: 'Reconoce un area de crecimiento y pide a Dios que complete su obra.',
+      prayer: 'Senor, completa en mi la obra que comenzaste por tu gracia. Amen.',
+      keywords: ['filipenses 1', 'fidelidad', 'crecimiento', 'obra de dios']
+    },
+    '2026-08-28': {
+      title: 'El amor perfecto echa fuera el temor',
+      explanation: 'Juan ensena que conocemos el amor de Dios porque El nos amo primero. El amor perfecto echa fuera el temor, no porque ignore la santidad de Dios, sino porque descansa en la obra de Cristo. Quien ha recibido el amor de Dios aprende tambien a amar a otros con seguridad, gratitud y verdad.',
+      reflectionQuestion: 'Que temor necesita ser confrontado por el amor de Dios?',
+      application: 'Practica un acto de amor hacia alguien, recordando que Dios te amo primero.',
+      prayer: 'Padre, afirma mi vida en tu amor y libra mi corazon del temor. Amen.',
+      keywords: ['1 juan 4', 'amor', 'temor', 'seguridad']
+    },
+    '2026-08-29': {
+      title: 'Seguros en la mano de Cristo',
+      explanation: 'Jesus dice que sus ovejas oyen su voz, El las conoce y les da vida eterna. Nadie puede arrebatarlas de su mano. Esta seguridad no nos llama a descuido, sino a escuchar y seguir al Pastor con confianza. La mano de Cristo es mas fuerte que nuestras debilidades y temores.',
+      reflectionQuestion: 'Estas escuchando y siguiendo la voz del Pastor?',
+      application: 'Obedece hoy una instruccion clara de Cristo que ya conoces.',
+      prayer: 'Jesus, gracias porque nadie puede arrebatarme de tu mano. Amen.',
+      keywords: ['juan 10', 'seguridad', 'pastor', 'vida eterna']
+    },
+    '2026-08-30': {
+      title: 'Mas que vencedores',
+      explanation: 'Pablo no niega el sufrimiento, pero declara que en todas estas cosas somos mas que vencedores por medio de Aquel que nos amo. La victoria cristiana no siempre se ve como comodidad; muchas veces se ve como fidelidad sostenida en medio de la prueba. El amor de Dios en Cristo es nuestra seguridad final.',
+      reflectionQuestion: 'Como puedes vivir con esperanza en medio de una prueba actual?',
+      application: 'Anima a alguien con la verdad de Romanos 8: nada nos separa del amor de Dios.',
+      prayer: 'Cristo, gracias porque tu amor nos hace mas que vencedores. Amen.',
+      keywords: ['romanos 8', 'vencedores', 'amor', 'esperanza']
+    },
+    '2026-08-31': {
+      title: 'Preparados para escuchar',
+      explanation: 'Hebreos nos recuerda que Dios ha hablado de manera suprema por su Hijo. Despues de mirar a Cristo como centro, gracia, descanso, Pastor y seguridad, estamos listos para entrar a septiembre con hambre por la Palabra. El Dios que salva tambien habla, y su pueblo responde escuchando con fe y obediencia.',
+      reflectionQuestion: 'Como prepararas tu corazon para escuchar la Palabra de Dios este mes?',
+      application: 'Escoge un horario y lugar para leer la Biblia durante septiembre.',
+      prayer: 'Padre, abre mis oidos y mi corazon para escuchar a Cristo en tu Palabra. Amen.',
+      keywords: ['hebreos 1', 'escuchar', 'palabra', 'preparacion']
+    },
     '2026-09-01': {
       title: 'Dios habla',
       explanation: 'La Biblia comienza presentandonos a Dios como Creador y Rey. Antes de que exista orden, luz o vida, Dios habla. Su palabra no es debil ni incierta; cumple lo que manda. Esta lectura nos recuerda que la Palabra de Dios no nace de la opinion humana, sino del Dios vivo que gobierna todo. Si Dios crea por su palabra, tambien puede formar, corregir, sostener y renovar a su pueblo por esa misma Palabra.',
@@ -1626,7 +2040,7 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amen.`
   });
 
   window.enLaPalabraData = {
-    version: 'RV1909-2027-01-rev2',
+    version: 'RV1909-2027-01-rev3',
     months,
     readings
   };
