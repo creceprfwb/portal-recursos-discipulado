@@ -648,7 +648,7 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amen.`
         }
       },
       {
-        title: 'Esperanza para un nuevo ano',
+        title: 'Esperanza para un nuevo año',
         start: '2026-12-28',
         end: '2026-12-31',
         sunday: {
@@ -670,7 +670,7 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amen.`
     month: 1,
     monthKey: '2027-01',
     monthName: 'Enero',
-    theme: 'Nuevo Ano, Vida Renovada',
+    theme: 'Nuevo Año, Vida Renovada',
     description: 'Durante enero, PRFWB sera animada a comenzar el ano buscando primero a Cristo, renovando la mente en la Palabra, caminando en oracion, viviendo en comunidad y perseverando con esperanza.',
     weeks: [
       {
@@ -684,7 +684,7 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amen.`
           version: BIBLE_VERSION,
           bibleText: sundayTexts['Colosenses 3:1-17'] || '',
           bibleTextSource,
-          introduction: 'Comenzamos el ano recordando que la vida cristiana no se define por metas vacias, sino por union con Cristo. Si hemos resucitado con El, nuestra mirada, deseos, palabras y relaciones deben ser renovados. Cristo no es una parte del ano nuevo; El es nuestra vida.',
+          introduction: 'Comenzamos el año recordando que la vida cristiana no se define por metas vacias, sino por union con Cristo. Si hemos resucitado con El, nuestra mirada, deseos, palabras y relaciones deben ser renovados. Cristo no es una parte del año nuevo; El es nuestra vida.',
           mainTruth: 'Una vida renovada comienza buscando a Cristo y viviendo en su nombre.'
         }
       },
@@ -744,7 +744,7 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amen.`
           version: BIBLE_VERSION,
           bibleText: sundayTexts['Hebreos 12:1-3'] || '',
           bibleTextSource,
-          introduction: 'El ano nuevo tambien traera cansancio, tentaciones y pruebas. Hebreos nos llama a correr con paciencia, dejando el pecado y mirando a Jesus. La perseverancia cristiana no nace del esfuerzo vacio, sino de contemplar al Autor y Consumador de la fe.',
+          introduction: 'El año nuevo tambien traera cansancio, tentaciones y pruebas. Hebreos nos llama a correr con paciencia, dejando el pecado y mirando a Jesus. La perseverancia cristiana no nace del esfuerzo vacio, sino de contemplar al Autor y Consumador de la fe.',
           mainTruth: 'Perseveramos en la carrera cristiana mirando a Jesus, quien sostiene nuestra fe.'
         }
       }
@@ -1735,9 +1735,9 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amen.`
     },
     '2026-12-29': {
       title: 'Confiar el camino al Senor',
-      explanation: 'Proverbios nos recuerda que podemos hacer planes, pero el Senor dirige los pasos. Al pensar en un nuevo ano, no necesitamos controlar cada detalle. La sabiduria consiste en encomendar nuestras obras a Dios, buscar su voluntad y caminar con humildad. Nuestros planes son pequenos; la fidelidad del Senor es grande.',
+      explanation: 'Proverbios nos recuerda que podemos hacer planes, pero el Senor dirige los pasos. Al pensar en un nuevo año, no necesitamos controlar cada detalle. La sabiduria consiste en encomendar nuestras obras a Dios, buscar su voluntad y caminar con humildad. Nuestros planes son pequenos; la fidelidad del Senor es grande.',
       reflectionQuestion: 'Que plan necesitas someter a la direccion de Dios?',
-      application: 'Ora por tus planes del nuevo ano y rendelos conscientemente al Senor.',
+      application: 'Ora por tus planes del nuevo año y rendelos conscientemente al Senor.',
       prayer: 'Senor, dirige mis pasos y ordena mis planes segun tu voluntad. Amen.',
       keywords: ['planes', 'proverbios', 'confianza', 'direccion']
     },
@@ -1747,27 +1747,27 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amen.`
       reflectionQuestion: 'Que debes dejar atras para proseguir hacia Cristo?',
       application: 'Entrega a Dios una carga del ano y decide un paso concreto de obediencia.',
       prayer: 'Cristo, ayudame a proseguir hacia ti con fe, humildad y perseverancia. Amen.',
-      keywords: ['filipenses 3', 'meta', 'perseverancia', 'nuevo ano']
+      keywords: ['filipenses 3', 'meta', 'perseverancia', 'nuevo año']
     },
     '2026-12-31': {
       title: 'Yo hago nuevas todas las cosas',
-      explanation: 'Apocalipsis 21 nos muestra una esperanza mas grande que cualquier resolucion de ano nuevo. Dios hara nuevas todas las cosas, habitara con su pueblo y quitara toda lagrima. Esta promesa nos permite cerrar el ano con esperanza firme. No sabemos todo lo que vendra, pero sabemos hacia donde va la historia: hacia la presencia plena de Dios con su pueblo.',
+      explanation: 'Apocalipsis 21 nos muestra una esperanza mas grande que cualquier resolucion de año nuevo. Dios hara nuevas todas las cosas, habitara con su pueblo y quitara toda lagrima. Esta promesa nos permite cerrar el año con esperanza firme. No sabemos todo lo que vendra, pero sabemos hacia donde va la historia: hacia la presencia plena de Dios con su pueblo.',
       reflectionQuestion: 'Como fortalece tu esperanza saber que Dios hara nuevas todas las cosas?',
       application: 'Cierra el ano orando con esperanza y entregando el futuro al Dios que reina.',
       prayer: 'Dios eterno, gracias porque haces nuevas todas las cosas. Mi futuro descansa en ti. Amen.',
-      keywords: ['apocalipsis 21', 'esperanza', 'nuevo ano', 'renovacion']
+      keywords: ['apocalipsis 21', 'esperanza', 'nuevo año', 'renovacion']
     },
     '2027-01-01': {
       title: 'Buscar primero el reino',
-      explanation: 'Jesus nos llama a comenzar con prioridades eternas. La ansiedad nos empuja a vivir centrados en necesidades, planes y temores, pero el Padre conoce lo que necesitamos. Buscar primero el reino no significa ignorar responsabilidades, sino ordenar el corazon bajo el gobierno de Dios. Un nuevo ano comienza bien cuando Cristo ocupa el primer lugar en deseos, decisiones y confianza.',
+      explanation: 'Jesus nos llama a comenzar con prioridades eternas. La ansiedad nos empuja a vivir centrados en necesidades, planes y temores, pero el Padre conoce lo que necesitamos. Buscar primero el reino no significa ignorar responsabilidades, sino ordenar el corazon bajo el gobierno de Dios. Un nuevo año comienza bien cuando Cristo ocupa el primer lugar en deseos, decisiones y confianza.',
       reflectionQuestion: 'Que prioridad necesita rendirse al reino de Dios este ano?',
       application: 'Escribe una decision practica que muestre que Cristo sera primero en tu agenda.',
       prayer: 'Padre, ordena mi corazon para buscar primero tu reino y tu justicia. Amen.',
-      keywords: ['reino', 'prioridades', 'mateo 6', 'nuevo ano']
+      keywords: ['reino', 'prioridades', 'mateo 6', 'nuevo año']
     },
     '2027-01-02': {
       title: 'Nueva criatura en Cristo',
-      explanation: 'El ano nuevo puede inspirar cambios, pero solo Cristo hace nueva criatura. La renovacion verdadera no nace de fuerza de voluntad, sino de la obra de Dios en el evangelio. En Cristo, lo viejo pierde su dominio y una nueva vida comienza. Esta verdad nos libra de depender de promesas fragiles y nos invita a caminar en la gracia transformadora de Dios.',
+      explanation: 'El año nuevo puede inspirar cambios, pero solo Cristo hace nueva criatura. La renovacion verdadera no nace de fuerza de voluntad, sino de la obra de Dios en el evangelio. En Cristo, lo viejo pierde su dominio y una nueva vida comienza. Esta verdad nos libra de depender de promesas fragiles y nos invita a caminar en la gracia transformadora de Dios.',
       reflectionQuestion: 'Que aspecto de tu identidad necesitas ver a la luz de Cristo?',
       application: 'Repite hoy esta verdad: en Cristo soy nueva criatura y vivo por su gracia.',
       prayer: 'Senor, gracias por hacerme nuevo en Cristo. Forma mi vida conforme a tu gracia. Amen.',
@@ -1791,7 +1791,7 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amen.`
     },
     '2027-01-05': {
       title: 'Lampara para mis pies',
-      explanation: 'La Palabra de Dios alumbra el camino paso a paso. No siempre nos muestra todos los detalles del futuro, pero si nos da luz suficiente para obedecer hoy. En un nuevo ano lleno de decisiones, necesitamos mas que intuicion; necesitamos la direccion del Senor. Su Palabra corrige, guia y sostiene al que desea caminar en fidelidad.',
+      explanation: 'La Palabra de Dios alumbra el camino paso a paso. No siempre nos muestra todos los detalles del futuro, pero si nos da luz suficiente para obedecer hoy. En un nuevo año lleno de decisiones, necesitamos mas que intuicion; necesitamos la direccion del Senor. Su Palabra corrige, guia y sostiene al que desea caminar en fidelidad.',
       reflectionQuestion: 'Que decision necesitas someter a la luz de la Palabra?',
       application: 'Busca un principio biblico que ilumine una decision concreta de esta semana.',
       prayer: 'Dios, guia mis pasos con tu Palabra y librame de caminar en mi propia sabiduria. Amen.',

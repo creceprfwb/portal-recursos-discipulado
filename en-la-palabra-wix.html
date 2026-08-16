@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>En la Palabra | PRFWB</title>
-  <meta http-equiv="refresh" content="0; url=./en-la-palabra.html?embed=1&v=10">
+  <meta http-equiv="refresh" content="0; url=./en-la-palabra.html?embed=1&v=11">
   <script>
     const params = new URLSearchParams(location.search);
     const target = new URL('./en-la-palabra.html', location.href);
     target.searchParams.set('embed', '1');
-    target.searchParams.set('v', '10');
+    target.searchParams.set('v', '11');
     if (params.get('fecha')) target.searchParams.set('fecha', params.get('fecha'));
     window.location.replace(target.href);
   </script>
