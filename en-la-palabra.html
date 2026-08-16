@@ -10,7 +10,7 @@
     try { embedded = window.self !== window.top; } catch (error) { embedded = true; }
     if (embedded || new URLSearchParams(location.search).get('embed') === '1') document.documentElement.classList.add('embed-mode');
   </script>
-  <link rel="stylesheet" href="./en-la-palabra.css?v=9">
+  <link rel="stylesheet" href="./en-la-palabra.css?v=10">
 </head>
 <body>
   <main class="page">
@@ -52,6 +52,7 @@
           <button class="button dark" type="button" id="shareBtn">Compartir lectura</button>
           <a class="button secondary" href="./en-la-palabra-archivo.html">Archivo</a>
         </div>
+        <div class="share-panel" id="sharePanel" hidden></div>
       </div>
 
       <div class="layout">
@@ -86,7 +87,7 @@
     </section>
   </main>
 
-  <script src="./en-la-palabra-data.js?v=9"></script>
+  <script src="./en-la-palabra-data.js?v=10"></script>
   <script>
     const data = window.enLaPalabraData;
     const readings = data.readings;
@@ -113,6 +114,12 @@
     }
     function sourceNote(reference, source) {
       return `<span class="source-note">${source || 'Texto basado en Reina-Valera 1909, dominio publico. Edicion de lectura PRFWB.'} <a href="${bibleGatewayUrl(reference)}" target="_blank" rel="noopener">Ver en BibleGateway</a></span>`;
+    }
+    function readingUrl(reading) {
+      return `${location.origin}${location.pathname}?fecha=${reading.date}`;
+    }
+    function shareText(reading) {
+      return `En la Palabra PRFWB\n${formatDate(reading.date)}\n${reading.title}\n${reading.reference}\n${readingUrl(reading)}`;
     }
     function nextSunday(fromDate) {
       const d = parseDate(fromDate);
@@ -164,6 +171,7 @@
       renderWeek(week, reading.date);
       renderMonth(month);
       renderSearch();
+      document.getElementById('sharePanel').hidden = true;
       history.replaceState(null, '', `${location.pathname}?fecha=${reading.date}${isEmbedMode() ? '&embed=1' : ''}`);
       requestEmbedResize();
     }
@@ -218,11 +226,41 @@
     document.getElementById('searchInput').addEventListener('input', renderSearch);
     document.getElementById('shareBtn').onclick = async () => {
       const reading = readingFor(selectedDate);
-      const url = `${location.origin}${location.pathname}?fecha=${reading.date}`;
+      const url = readingUrl(reading);
+      const text = shareText(reading);
       const shareData = { title:`En la Palabra - ${reading.title}`, text:`${reading.reference} (${reading.version})`, url };
-      if (navigator.share) await navigator.share(shareData);
-      else { await navigator.clipboard.writeText(url); alert('Enlace copiado.'); }
+      if (navigator.share) {
+        try {
+          await navigator.share(shareData);
+          return;
+        } catch (error) {
+          if (error.name === 'AbortError') return;
+        }
+      }
+      showSharePanel(reading, text, url);
     };
+    function showSharePanel(reading, text, url) {
+      const panel = document.getElementById('sharePanel');
+      panel.innerHTML = `
+        <strong>Compartir ${reading.reference}</strong>
+        <div class="actions">
+          <a class="button" href="https://wa.me/?text=${encodeURIComponent(text)}" target="_blank" rel="noopener">WhatsApp</a>
+          <button class="button secondary" type="button" id="copyShareLink">Copiar enlace</button>
+          <a class="button secondary" href="${url}" target="_blank" rel="noopener">Abrir lectura</a>
+        </div>
+        <p class="muted">Si estas dentro de Wix y el celular bloquea compartir, usa WhatsApp o copia el enlace.</p>
+      `;
+      panel.hidden = false;
+      document.getElementById('copyShareLink').onclick = async () => {
+        try {
+          await navigator.clipboard.writeText(url);
+          panel.querySelector('.muted').textContent = 'Enlace copiado.';
+        } catch (error) {
+          panel.querySelector('.muted').textContent = url;
+        }
+      };
+      requestEmbedResize();
+    }
     function requestEmbedResize() {
       if (!isEmbedMode()) return;
       window.requestAnimationFrame(() => {

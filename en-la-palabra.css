@@ -39,6 +39,9 @@ h1 { margin:.45rem 0 .7rem; font-size:clamp(2.25rem, 6vw, 4.6rem); line-height:1
 .card, .toolbar, .reading-card { background:#fff; border:1px solid var(--elp-borde); border-radius:10px; box-shadow:var(--elp-sombra); }
 .toolbar { padding:1rem; display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; align-items:center; margin-bottom:1rem; }
 .actions { display:flex; gap:10px; flex-wrap:wrap; }
+.share-panel { flex-basis:100%; display:grid; gap:.75rem; padding:.85rem; border:1px solid var(--elp-borde); border-radius:8px; background:#fbfdfe; }
+.share-panel[hidden] { display:none; }
+.share-panel .muted { margin:0; font-size:.92rem; }
 .button { min-height:44px; display:inline-flex; align-items:center; justify-content:center; gap:.45rem; padding:.72rem 1rem; border:0; border-radius:8px; background:var(--elp-dorado); color:var(--elp-azul-profundo); font-weight:900; cursor:pointer; }
 .button.secondary { background:#eef7f9; color:var(--elp-azul); border:1px solid var(--elp-borde); }
 .button.dark { background:var(--elp-azul); color:#fff; }
