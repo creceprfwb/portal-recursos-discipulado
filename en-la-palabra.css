@@ -21,6 +21,11 @@ button, input, select { font:inherit; }
 .nav-links a { min-height:42px; display:inline-flex; align-items:center; justify-content:center; padding:9px 15px; border-radius:999px; font-size:14px; font-weight:900; }
 .nav-links a.active { background:var(--elp-azul); color:white; }
 .embed-mode .site-nav { display:none; }
+.embed-mode .hero { display:none; }
+.embed-mode .page { padding-bottom:18px; }
+.embed-mode .shell { width:min(100%, 1180px); margin:0 auto; padding:12px; }
+.embed-mode .toolbar { margin-bottom:12px; box-shadow:none; }
+.embed-mode .reading-card, .embed-mode .card { box-shadow:none; }
 .page { padding-bottom:64px; }
 .hero { color:#fff; background:linear-gradient(115deg, rgba(33,71,63,.96), rgba(18,56,77,.96) 55%, rgba(111,47,40,.86)); }
 .hero-inner { width:min(1180px, calc(100% - 2rem)); margin:auto; padding:58px 0 72px; display:grid; grid-template-columns:minmax(0, 1fr) 320px; gap:28px; align-items:end; }
