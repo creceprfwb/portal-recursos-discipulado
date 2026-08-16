@@ -3,33 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>En la Palabra | Lecturas Bíblicas PRFWB</title>
-  <meta name="description" content="Lectura bíblica diaria de PRFWB. Un pasaje cada día. Una iglesia creciendo junta en la Palabra.">
+  <title>En la Palabra | Lecturas bíblicas PRFWB</title>
+  <meta name="description" content="Lectura bíblica diaria de PRFWB. Un pasaje cada dÃ­a. Una iglesia creciendo junta en la Palabra.">
   <script>
     let embedded = false;
     try { embedded = window.self !== window.top; } catch (error) { embedded = true; }
     if (embedded || new URLSearchParams(location.search).get('embed') === '1') document.documentElement.classList.add('embed-mode');
   </script>
-  <link rel="stylesheet" href="./en-la-palabra.css?v=12">
+  <link rel="stylesheet" href="./en-la-palabra.css?v=13">
 </head>
 <body>
   <main class="page">
-    <nav class="site-nav" aria-label="Navegación principal">
+    <nav class="site-nav" aria-label="NavegaciÃ³n principal">
       <a class="nav-logo" href="./index.html"><img src="./prfwb-logo-main-cropped.png" alt="PRFWB"></a>
       <div class="nav-links">
         <a href="./index.html">Home</a>
         <a href="./recursos.html">Recursos</a>
         <a class="active" href="./en-la-palabra.html">En la Palabra</a>
-        <a href="./oracion.html">Oración</a>
+        <a href="./oracion.html">OraciÃ³n</a>
       </div>
     </nav>
 
     <header class="hero">
       <div class="hero-inner">
         <div>
-          <span class="eyebrow">Lecturas Bíblicas PRFWB</span>
+          <span class="eyebrow">Lecturas bíblicas PRFWB</span>
           <h1>En la Palabra</h1>
-          <p>Un pasaje cada día. Una iglesia creciendo junta en la Palabra.</p>
+          <p>Un pasaje cada dÃ­a. Una iglesia creciendo junta en la Palabra.</p>
           <p style="margin-top:.8rem">Una iniciativa de PRFWB para ayudar a nuestras congregaciones a leer la Palabra, conocer a Cristo y crecer juntas como discipulos.</p>
         </div>
         <div class="hero-card">
@@ -40,15 +40,15 @@
     </header>
 
     <section class="shell">
-      <div class="toolbar" aria-label="Navegación de lectura">
+      <div class="toolbar" aria-label="NavegaciÃ³n de lectura">
         <div>
           <strong id="toolbarDate">Lectura de hoy</strong>
           <div class="muted">Hora de Puerto Rico. Contenido inicial marcado como PLACEHOLDER.</div>
         </div>
         <div class="actions">
-          <button class="button secondary" type="button" id="prevDay">Día anterior</button>
+          <button class="button secondary" type="button" id="prevDay">DÃ­a anterior</button>
           <button class="button" type="button" id="todayBtn">Hoy</button>
-          <button class="button secondary" type="button" id="nextDay">Día siguiente</button>
+          <button class="button secondary" type="button" id="nextDay">DÃ­a siguiente</button>
           <button class="button dark" type="button" id="shareBtn">Compartir lectura</button>
           <a class="button secondary" href="./en-la-palabra-archivo.html">Archivo</a>
         </div>
@@ -80,14 +80,14 @@
         <h2>Buscar lecturas</h2>
         <div class="search-box">
           <label for="searchInput">Busca por referencia, tema, titulo o palabra clave</label>
-          <input id="searchInput" placeholder="Ej. oración, Romanos, Palabra">
+          <input id="searchInput" placeholder="Ej. oraciÃ³n, Romanos, Palabra">
         </div>
         <div class="week-list" id="searchResults"></div>
       </section>
     </section>
   </main>
 
-  <script src="./en-la-palabra-data.js?v=12"></script>
+  <script src="./en-la-palabra-data.js?v=13"></script>
   <script>
     const data = window.enLaPalabraData;
     const readings = data.readings;
@@ -116,10 +116,23 @@
       return `<span class="source-note">${source || 'Texto basado en Reina-Valera 1909, dominio público. Edición de lectura PRFWB.'} <a href="${bibleGatewayUrl(reference)}" target="_blank" rel="noopener">Ver en BibleGateway</a></span>`;
     }
     function readingUrl(reading) {
-      return `${location.origin}${location.pathname}?fecha=${reading.date}`;
+      return `https://www.prfwb.com/enlapalabra?fecha=${reading.date}`;
     }
     function shareText(reading) {
-      return `En la Palabra PRFWB\n${formatDate(reading.date)}\n${reading.title}\n${reading.reference}\n${readingUrl(reading)}`;
+      const parts = [
+        'En la Palabra PRFWB',
+        formatDate(reading.date),
+        '',
+        reading.title,
+        reading.reference
+      ];
+      if (reading.bibleText) parts.push('', reading.bibleText);
+      if (reading.explanation) parts.push('', reading.explanation);
+      if (reading.reflectionQuestion) parts.push('', `Pregunta: ${reading.reflectionQuestion}`);
+      if (reading.application) parts.push('', `Para vivirlo: ${reading.application}`);
+      if (reading.prayer) parts.push('', `Oración: ${reading.prayer}`);
+      parts.push('', 'Lee la lectura completa:', readingUrl(reading));
+      return parts.join('\n');
     }
     function nextSunday(fromDate) {
       const d = parseDate(fromDate);
@@ -228,7 +241,7 @@
       const reading = readingFor(selectedDate);
       const url = readingUrl(reading);
       const text = shareText(reading);
-      const shareData = { title:`En la Palabra - ${reading.title}`, text:`${reading.reference} (${reading.version})`, url };
+      const shareData = { title:`En la Palabra - ${reading.title}`, text, url };
       if (navigator.share) {
         try {
           await navigator.share(shareData);
@@ -245,7 +258,7 @@
         <strong>Compartir ${reading.reference}</strong>
         <div class="actions">
           <a class="button" href="https://wa.me/?text=${encodeURIComponent(text)}" target="_blank" rel="noopener">WhatsApp</a>
-          <button class="button secondary" type="button" id="copyShareLink">Copiar enlace</button>
+          <button class="button secondary" type="button" id="copyShareLink">Copiar lectura</button>
           <a class="button secondary" href="${url}" target="_blank" rel="noopener">Abrir lectura</a>
         </div>
         <p class="muted">Si estás dentro de Wix y el celular bloquea compartir, usa WhatsApp o copia el enlace.</p>
@@ -253,8 +266,8 @@
       panel.hidden = false;
       document.getElementById('copyShareLink').onclick = async () => {
         try {
-          await navigator.clipboard.writeText(url);
-          panel.querySelector('.muted').textContent = 'Enlace copiado.';
+          await navigator.clipboard.writeText(text);
+          panel.querySelector('.muted').textContent = 'Lectura copiada.';
         } catch (error) {
           panel.querySelector('.muted').textContent = url;
         }
