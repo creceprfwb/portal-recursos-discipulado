@@ -39,6 +39,50 @@ Porque asi nos ha mandado el Senor, diciendo: Te he puesto para luz de los genti
 Y los gentiles, oyendo esto, se gozaban, y glorificaban la palabra del Senor; y creyeron todos los que estaban ordenados para vida eterna.
 Y la palabra del Senor era sembrada por toda aquella provincia.`,
     '1 Corintios 15:58': `Asi que, hermanos mios amados, esten firmes y constantes, creciendo en la obra del Senor siempre, sabiendo que su trabajo en el Senor no es vano.`,
+    'Lucas 1:26-38': `Y al sexto mes, el angel Gabriel fue enviado de Dios a una ciudad de Galilea, llamada Nazaret,
+a una virgen desposada con un varon que se llamaba Jose, de la casa de David; y el nombre de la virgen era Maria.
+Y entrando el angel a donde ella estaba, dijo: Salve, muy favorecida; el Senor es contigo; bendita tu entre las mujeres.
+Mas ella, cuando le vio, se turbo por sus palabras, y pensaba que salutacion fuese esta.
+Entonces el angel le dijo: Maria, no temas, porque has hallado gracia delante de Dios.
+Y he aqui, concebiras en tu seno, y pariras un hijo, y llamaras su nombre Jesus.
+Este sera grande, y sera llamado Hijo del Altisimo; y le dara el Senor Dios el trono de David su padre.
+Y reinara en la casa de Jacob por siempre; y de su reino no habra fin.
+Entonces Maria dijo al angel: Como sera esto? porque no conozco varon.
+Y respondiendo el angel le dijo: El Espiritu Santo vendra sobre ti, y la virtud del Altisimo te hara sombra; por lo cual tambien lo santo que nacera sera llamado Hijo de Dios.
+Porque ninguna cosa es imposible para Dios.
+Entonces Maria dijo: He aqui la sierva del Senor; hagase a mi conforme a tu palabra. Y el angel se fue de ella.`,
+    'Mateo 1:18-25': `Y el nacimiento de Jesucristo fue asi: que siendo Maria su madre desposada con Jose, antes que se juntasen, se hallo haber concebido del Espiritu Santo.
+Y Jose su marido, como era justo, y no quisiese infamarla, quiso dejarla secretamente.
+Y pensando el en esto, he aqui el angel del Senor le aparece en suenos, diciendo: Jose, hijo de David, no temas recibir a Maria tu mujer, porque lo que en ella es engendrado, del Espiritu Santo es.
+Y parira un hijo, y llamaras su nombre Jesus, porque el salvara a su pueblo de sus pecados.
+Todo esto acontecio para que se cumpliese lo que fue dicho por el Senor por el profeta, que dijo:
+He aqui la virgen concebira y parira un hijo, y llamaras su nombre Emmanuel, que declarado es: Dios con nosotros.
+Y despertando Jose del sueno, hizo como el angel del Senor le habia mandado, y recibio a su mujer.
+Y no la conocio hasta que pario a su hijo primogenito; y llamo su nombre Jesus.`,
+    'Lucas 2:1-20': `Y acontecio en aquellos dias que salio edicto de parte de Augusto Cesar, que toda la tierra fuese empadronada.
+E iban todos para ser empadronados, cada uno a su ciudad.
+Y subio Jose de Galilea, de la ciudad de Nazaret, a Judea, a la ciudad de David, que se llama Belen, por cuanto era de la casa y familia de David;
+para ser empadronado con Maria su mujer, desposada con el, la cual estaba encinta.
+Y acontecio que estando ellos alli, se cumplieron los dias en que ella habia de parir.
+Y pario a su hijo primogenito, y le envolvio en panales, y le acosto en un pesebre, porque no habia lugar para ellos en el meson.
+Y habia pastores en la misma tierra, que velaban y guardaban las vigilias de la noche sobre su ganado.
+Y he aqui el angel del Senor vino sobre ellos, y la claridad de Dios los cerco de resplandor; y tuvieron gran temor.
+Mas el angel les dijo: No teman; porque he aqui les doy nuevas de gran gozo, que sera para todo el pueblo:
+que les ha nacido hoy, en la ciudad de David, un Salvador, que es Cristo el Senor.
+Y esto les sera por senal: hallaran al nino envuelto en panales, echado en un pesebre.
+Y repentinamente fue con el angel una multitud de los ejercitos celestiales, que alababan a Dios, y decian:
+Gloria en las alturas a Dios, y en la tierra paz, buena voluntad para con los hombres.
+Y volvieron los pastores glorificando y alabando a Dios por todas las cosas que habian oido y visto, como les habia sido dicho.`,
+    'Juan 1:1-14': `En el principio era el Verbo, y el Verbo era con Dios, y el Verbo era Dios.
+Este era en el principio con Dios.
+Todas las cosas por el fueron hechas; y sin el nada de lo que es hecho, fue hecho.
+En el estaba la vida, y la vida era la luz de los hombres.
+Y aquel Verbo fue hecho carne, y habito entre nosotros; y vimos su gloria, gloria como del unigenito del Padre, lleno de gracia y de verdad.`,
+    'Apocalipsis 21:1-5': `Y vi un cielo nuevo, y una tierra nueva; porque el primer cielo y la primera tierra se fueron, y el mar ya no es.
+Y yo Juan vi la santa ciudad, Jerusalem nueva, que descendia del cielo, de Dios, dispuesta como una esposa ataviada para su marido.
+Y oi una gran voz del cielo que decia: He aqui el tabernaculo de Dios con los hombres, y morara con ellos; y ellos seran su pueblo, y el mismo Dios sera su Dios con ellos.
+Y limpiara Dios toda lagrima de los ojos de ellos; y la muerte no sera mas; y no habra mas llanto, ni clamor, ni dolor; porque las primeras cosas son pasadas.
+Y el que estaba sentado en el trono dijo: He aqui, yo hago nuevas todas las cosas.`,
     'Mateo 6:9-13': `Ustedes, pues, oren asi:
 
 Padre nuestro que estas en los cielos, santificado sea tu nombre.
@@ -324,7 +368,93 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amen.`
     ]
   };
 
-  months.push(november);
+  const december = {
+    year: 2026,
+    month: 12,
+    monthKey: '2026-12',
+    monthName: 'Diciembre',
+    theme: 'Cristo, Nuestra Esperanza',
+    description: 'Durante diciembre, PRFWB sera animada a contemplar la venida de Cristo, adorar al Salvador prometido, anunciar el gozo del evangelio y cerrar el ano descansando en la esperanza segura del reino de Dios.',
+    weeks: [
+      {
+        title: 'La promesa del Rey',
+        start: '2026-12-01',
+        end: '2026-12-06',
+        sunday: {
+          date: '2026-12-06',
+          theme: 'Nada es imposible para Dios',
+          reference: 'Lucas 1:26-38',
+          version: BIBLE_VERSION,
+          bibleText: sundayTexts['Lucas 1:26-38'] || '',
+          bibleTextSource,
+          introduction: 'Diciembre comienza recordandonos que Dios cumple sus promesas de maneras que superan nuestra imaginacion. El anuncio a Maria no es solo una escena navidena; es la declaracion de que el Hijo del Altisimo viene a reinar para siempre. La respuesta de fe de Maria nos llama a rendirnos a la Palabra de Dios.',
+          mainTruth: 'Dios cumple su promesa enviando a Jesus, el Rey cuyo reino no tendra fin.'
+        }
+      },
+      {
+        title: 'Dios con nosotros',
+        start: '2026-12-07',
+        end: '2026-12-13',
+        sunday: {
+          date: '2026-12-13',
+          theme: 'Jesus salvara a su pueblo',
+          reference: 'Mateo 1:18-25',
+          version: BIBLE_VERSION,
+          bibleText: sundayTexts['Mateo 1:18-25'] || '',
+          bibleTextSource,
+          introduction: 'El nacimiento de Jesus revela el corazon del evangelio: Dios viene a nosotros para salvarnos de nuestros pecados. Jose obedece la Palabra del Senor, y el nombre de Jesus anuncia su mision. Emmanuel no es solo consuelo emocional; es la verdad gloriosa de Dios habitando con su pueblo para redimirlo.',
+          mainTruth: 'Jesus es Dios con nosotros, enviado para salvar a su pueblo de sus pecados.'
+        }
+      },
+      {
+        title: 'Buenas nuevas de gran gozo',
+        start: '2026-12-14',
+        end: '2026-12-20',
+        sunday: {
+          date: '2026-12-20',
+          theme: 'Ha nacido un Salvador',
+          reference: 'Lucas 2:1-20',
+          version: BIBLE_VERSION,
+          bibleText: sundayTexts['Lucas 2:1-20'] || '',
+          bibleTextSource,
+          introduction: 'La noticia del nacimiento de Jesus no fue anunciada primero a los poderosos, sino a pastores en la noche. Dios revela que el Salvador ha nacido para traer gozo verdadero a todo el pueblo. Esta lectura nos invita a recibir, adorar y anunciar a Cristo con la misma alegria de los pastores.',
+          mainTruth: 'El nacimiento de Cristo trae buenas nuevas de gran gozo para todo el pueblo.'
+        }
+      },
+      {
+        title: 'El Verbo hecho carne',
+        start: '2026-12-21',
+        end: '2026-12-27',
+        sunday: {
+          date: '2026-12-27',
+          theme: 'Lleno de gracia y verdad',
+          reference: 'Juan 1:1-14',
+          version: BIBLE_VERSION,
+          bibleText: sundayTexts['Juan 1:1-14'] || '',
+          bibleTextSource,
+          introduction: 'Juan nos lleva al misterio profundo de la Navidad: el Verbo eterno se hizo carne y habito entre nosotros. Jesus no es solo un maestro enviado por Dios; es Dios mismo revelado, lleno de gracia y verdad. Al cerrar la semana de Navidad, adoramos al Hijo que trae vida y luz.',
+          mainTruth: 'El Hijo eterno de Dios se hizo carne para revelarnos la gloria, la gracia y la verdad del Padre.'
+        }
+      },
+      {
+        title: 'Esperanza para un nuevo ano',
+        start: '2026-12-28',
+        end: '2026-12-31',
+        sunday: {
+          date: '2027-01-03',
+          theme: 'Yo hago nuevas todas las cosas',
+          reference: 'Apocalipsis 21:1-5',
+          version: BIBLE_VERSION,
+          bibleText: sundayTexts['Apocalipsis 21:1-5'] || '',
+          bibleTextSource,
+          introduction: 'El cierre del ano no descansa en nostalgia ni temor, sino en la promesa de Dios. La historia camina hacia la renovacion de todas las cosas en Cristo. Mientras esperamos ese dia, vivimos con esperanza, consuelo y fidelidad, sabiendo que Dios morara con su pueblo para siempre.',
+          mainTruth: 'La esperanza cristiana descansa en la promesa de Dios de hacer nuevas todas las cosas.'
+        }
+      }
+    ]
+  };
+
+  months.push(november, december);
 
   const dailySeeds = [
     ['2026-09-01', 'Dios habla', 'Genesis 1:1-5'],
@@ -417,7 +547,38 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amen.`
     ['2026-11-27', 'Hermosos son los pies de los que anuncian', 'Romanos 10:11-15'],
     ['2026-11-28', 'Una multitud de toda nacion', 'Apocalipsis 7:9-12'],
     ['2026-11-29', 'La Palabra del Senor se difundia', 'Hechos 13:44-49'],
-    ['2026-11-30', 'Firmes y constantes en la obra del Senor', '1 Corintios 15:58']
+    ['2026-11-30', 'Firmes y constantes en la obra del Senor', '1 Corintios 15:58'],
+    ['2026-12-01', 'La promesa de la simiente', 'Genesis 3:14-15'],
+    ['2026-12-02', 'Bendicion para todas las familias', 'Genesis 12:1-3'],
+    ['2026-12-03', 'Un nino nos es nacido', 'Isaias 9:1-7'],
+    ['2026-12-04', 'El Renuevo justo', 'Jeremias 23:5-6'],
+    ['2026-12-05', 'El Rey nacido en Belen', 'Miqueas 5:2-5'],
+    ['2026-12-06', 'Nada es imposible para Dios', 'Lucas 1:26-38'],
+    ['2026-12-07', 'El Dios que visita a su pueblo', 'Lucas 1:67-79'],
+    ['2026-12-08', 'La luz en tinieblas', 'Isaias 60:1-3'],
+    ['2026-12-09', 'El Hijo de David', 'Mateo 1:1-17'],
+    ['2026-12-10', 'Dios con nosotros', 'Mateo 1:18-25'],
+    ['2026-12-11', 'Preparar el camino', 'Lucas 3:1-6'],
+    ['2026-12-12', 'El Cordero de Dios', 'Juan 1:29-34'],
+    ['2026-12-13', 'Jesus salvara a su pueblo', 'Mateo 1:18-25'],
+    ['2026-12-14', 'Buenas nuevas para los humildes', 'Lucas 2:8-14'],
+    ['2026-12-15', 'Los pastores adoran', 'Lucas 2:15-20'],
+    ['2026-12-16', 'Simeon espera la consolacion', 'Lucas 2:25-35'],
+    ['2026-12-17', 'Ana habla del Redentor', 'Lucas 2:36-38'],
+    ['2026-12-18', 'La alegria del reino', 'Salmo 98'],
+    ['2026-12-19', 'Venid, adoremos', 'Salmo 95:1-7'],
+    ['2026-12-20', 'Ha nacido un Salvador', 'Lucas 2:1-20'],
+    ['2026-12-21', 'En el principio era el Verbo', 'Juan 1:1-5'],
+    ['2026-12-22', 'La luz verdadera', 'Juan 1:6-13'],
+    ['2026-12-23', 'El Verbo fue hecho carne', 'Juan 1:14-18'],
+    ['2026-12-24', 'Cristo vino en humildad', 'Filipenses 2:5-11'],
+    ['2026-12-25', 'Dios envio a su Hijo', 'Galatas 4:4-7'],
+    ['2026-12-26', 'La gracia de Dios se manifesto', 'Tito 2:11-14'],
+    ['2026-12-27', 'Lleno de gracia y verdad', 'Juan 1:1-14'],
+    ['2026-12-28', 'Mirar atras con gratitud', 'Salmo 103:1-14'],
+    ['2026-12-29', 'Confiar el camino al Senor', 'Proverbios 16:1-9'],
+    ['2026-12-30', 'Olvidando lo que queda atras', 'Filipenses 3:12-16'],
+    ['2026-12-31', 'Yo hago nuevas todas las cosas', 'Apocalipsis 21:1-5']
   ];
 
   const approvedReadings = {
@@ -740,6 +901,254 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amen.`
       application: 'Renueva hoy tu compromiso con una obra concreta del Senor, confiando en que no es en vano.',
       prayer: 'Cristo resucitado, afirma nuestro corazon y haznos constantes en tu obra. Amen.',
       keywords: ['1 corintios 15', 'resurreccion', 'firmeza', 'obra del senor']
+    },
+    '2026-12-01': {
+      title: 'La promesa de la simiente',
+      explanation: 'Desde el comienzo, Dios anuncio esperanza en medio de la caida. Genesis 3:15 apunta a la victoria final de la simiente prometida sobre el mal. Diciembre nos invita a mirar la Navidad no como una tradicion sentimental, sino como el cumplimiento de una promesa antigua. Cristo vino para enfrentar el pecado, vencer al enemigo y traer redencion a un mundo quebrantado.',
+      reflectionQuestion: 'Como te ayuda saber que Dios prometio redencion desde el principio?',
+      application: 'Comienza diciembre adorando a Cristo como el cumplimiento de la promesa de Dios.',
+      prayer: 'Senor, gracias porque desde el principio preparaste salvacion en Cristo. Amen.',
+      keywords: ['promesa', 'genesis', 'redencion', 'cristo']
+    },
+    '2026-12-02': {
+      title: 'Bendicion para todas las familias',
+      explanation: 'La promesa dada a Abraham no era pequena ni privada. Dios anuncio que por medio de su descendencia serian benditas todas las familias de la tierra. Cristo es la respuesta final a esa promesa. En El, Dios trae bendicion, perdon y esperanza a pueblos y naciones. La Navidad nos recuerda que el evangelio tiene alcance mundial y que la iglesia vive para anunciar esa bendicion.',
+      reflectionQuestion: 'Tu gratitud por Cristo te mueve a desear que otros tambien le conozcan?',
+      application: 'Ora hoy por una familia o persona que necesita recibir la bendicion del evangelio.',
+      prayer: 'Dios fiel, bendice a las naciones por medio de Cristo y usa nuestra vida para anunciarlo. Amen.',
+      keywords: ['abraham', 'bendicion', 'naciones', 'evangelio']
+    },
+    '2026-12-03': {
+      title: 'Un nino nos es nacido',
+      explanation: 'Isaias anuncia luz para un pueblo que caminaba en tinieblas. El hijo prometido llevaria nombres gloriosos: Admirable, Consejero, Dios fuerte, Padre eterno y Principe de paz. Esta promesa nos muestra que la esperanza de Dios no llega por poder humano, sino por el Rey dado por gracia. Jesus trae gobierno justo, paz verdadera y luz donde el pecado habia dejado oscuridad.',
+      reflectionQuestion: 'Que area de tu vida necesita la luz y paz del Principe de paz?',
+      application: 'Entrega hoy una preocupacion a Cristo, recordando que su gobierno es bueno y fiel.',
+      prayer: 'Principe de paz, gobierna mi corazon y trae tu luz a mi vida. Amen.',
+      keywords: ['isaias 9', 'paz', 'rey', 'luz']
+    },
+    '2026-12-04': {
+      title: 'El Renuevo justo',
+      explanation: 'Jeremias anuncia un Rey justo de la casa de David. En tiempos de fracaso y corrupcion, Dios promete levantar a uno que reinara con justicia y salvacion. Jesus es ese Renuevo justo. Su venida nos recuerda que Dios no abandona su pacto ni deja a su pueblo sin esperanza. La justicia que necesitamos no nace de nosotros; viene del Senor, nuestra justicia.',
+      reflectionQuestion: 'Estas descansando en tu propia justicia o en la justicia de Cristo?',
+      application: 'Confiesa a Dios tu necesidad de la justicia y salvacion que solo Cristo puede dar.',
+      prayer: 'Senor, tu eres nuestra justicia. Haznos descansar en Cristo y vivir para tu gloria. Amen.',
+      keywords: ['jeremias', 'justicia', 'renuevo', 'david']
+    },
+    '2026-12-05': {
+      title: 'El Rey nacido en Belen',
+      explanation: 'Miqueas anuncia que de Belen saldria un gobernante para Israel, uno cuyos origenes son desde la antiguedad. Dios escoge un lugar pequeno para revelar una gloria inmensa. La Navidad nos ensena que el reino de Dios no sigue los patrones de grandeza humana. El Rey prometido viene con humildad, pero trae paz, pastoreo y autoridad para su pueblo.',
+      reflectionQuestion: 'Como corrige Belen tu idea de grandeza y poder?',
+      application: 'Busca hoy servir con humildad, recordando al Rey que vino de manera sencilla.',
+      prayer: 'Rey Jesus, ensename a valorar tu humildad y a confiar en tu gobierno. Amen.',
+      keywords: ['belen', 'miqueas', 'rey', 'humildad']
+    },
+    '2026-12-06': {
+      title: 'Nada es imposible para Dios',
+      explanation: 'El anuncio a Maria revela que la venida de Cristo es obra de Dios de principio a fin. Maria recibe una promesa imposible desde la perspectiva humana, pero segura porque Dios la ha hablado. Su respuesta muestra fe humilde: hagase conforme a tu palabra. La iglesia tambien aprende a vivir confiando en la Palabra del Dios para quien nada es imposible.',
+      reflectionQuestion: 'Que promesa de Dios necesitas creer con humildad hoy?',
+      application: 'Responde a la Palabra de Dios con obediencia, aun cuando no entiendas todos los detalles.',
+      prayer: 'Dios poderoso, aumenta mi fe y hazme obediente a tu Palabra. Amen.',
+      keywords: ['lucas 1', 'maria', 'fe', 'promesa']
+    },
+    '2026-12-07': {
+      title: 'El Dios que visita a su pueblo',
+      explanation: 'Zacarias bendice a Dios porque ha visitado y redimido a su pueblo. La venida de Cristo no es una idea abstracta; es Dios acercandose para cumplir su pacto y traer salvacion. La misericordia prometida se vuelve realidad. En Cristo, Dios rompe la oscuridad y dirige nuestros pies por camino de paz.',
+      reflectionQuestion: 'Como has visto la misericordia de Dios visitando tu vida?',
+      application: 'Haz una lista breve de razones para bendecir a Dios por su salvacion.',
+      prayer: 'Senor, gracias por visitarnos con misericordia y redencion en Cristo. Amen.',
+      keywords: ['zacararias', 'redencion', 'misericordia', 'paz']
+    },
+    '2026-12-08': {
+      title: 'La luz en tinieblas',
+      explanation: 'Isaias llama al pueblo a levantarse porque la luz de Dios ha venido. La oscuridad no tiene la ultima palabra cuando el Senor manifiesta su gloria. Esta lectura nos prepara para contemplar a Cristo como la luz verdadera. En un mundo cansado y confundido, la iglesia no inventa esperanza; apunta a la luz que Dios ya ha dado en su Hijo.',
+      reflectionQuestion: 'Donde necesitas caminar mas cerca de la luz de Cristo?',
+      application: 'Rechaza hoy una obra de oscuridad y camina en una decision que honre a Cristo.',
+      prayer: 'Senor, alumbra mi vida con tu gloria y hazme reflejar tu luz. Amen.',
+      keywords: ['luz', 'isaias 60', 'gloria', 'esperanza']
+    },
+    '2026-12-09': {
+      title: 'El Hijo de David',
+      explanation: 'La genealogia de Mateo nos recuerda que Jesus entra en una historia real. Dios fue fiel a traves de generaciones, familias complicadas, reyes, exilio y espera. Jesus es el Hijo de David y el Hijo de Abraham, el cumplimiento de las promesas. Esta lista de nombres nos ensena que Dios trabaja con fidelidad aun cuando la historia parece lenta o desordenada.',
+      reflectionQuestion: 'Como te anima saber que Dios obra fielmente a traves del tiempo?',
+      application: 'Confia hoy una situacion lenta o incompleta a la fidelidad de Dios.',
+      prayer: 'Dios fiel, gracias porque cumples tus promesas en Cristo. Amen.',
+      keywords: ['genealogia', 'mateo 1', 'david', 'promesas']
+    },
+    '2026-12-10': {
+      title: 'Dios con nosotros',
+      explanation: 'Mateo anuncia que el nacimiento de Jesus cumple la promesa de Emmanuel: Dios con nosotros. Pero esta presencia viene con una mision clara: Jesus salvara a su pueblo de sus pecados. La Navidad no solo nos dice que Dios se acerca; nos dice por que se acerca. Cristo viene a rescatar, perdonar y restaurar a pecadores por pura gracia.',
+      reflectionQuestion: 'Que significa para ti que Dios este con nosotros para salvar?',
+      application: 'Da gracias hoy por el perdon de Cristo y comparte esa esperanza con alguien.',
+      prayer: 'Emmanuel, gracias por venir a salvarnos de nuestros pecados. Amen.',
+      keywords: ['emmanuel', 'mateo 1', 'salvacion', 'jesus']
+    },
+    '2026-12-11': {
+      title: 'Preparar el camino',
+      explanation: 'Juan el Bautista aparece llamando al pueblo al arrepentimiento y preparando el camino del Senor. La Navidad tambien nos llama a preparar el corazon. No basta celebrar externamente si seguimos resistiendo la voz de Dios. El Rey viene, y su pueblo responde enderezando caminos torcidos, confesando pecado y volviendo al Senor con sinceridad.',
+      reflectionQuestion: 'Que camino torcido necesita ser enderezado delante de Dios?',
+      application: 'Practica arrepentimiento concreto: confiesa, corrige y vuelve al Senor.',
+      prayer: 'Senor, prepara mi corazon para recibirte con arrepentimiento y fe. Amen.',
+      keywords: ['arrepentimiento', 'juan bautista', 'preparar', 'camino']
+    },
+    '2026-12-12': {
+      title: 'El Cordero de Dios',
+      explanation: 'Juan identifica a Jesus como el Cordero de Dios que quita el pecado del mundo. Esta declaracion nos lleva al centro de la mision de Cristo. El nino nacido en Belen vino para ser el sacrificio perfecto por pecadores. La Navidad apunta hacia la cruz. Nuestro gozo es profundo porque Cristo no vino solo a acompanarnos, sino a quitar nuestra culpa.',
+      reflectionQuestion: 'Estas mirando a Cristo como el unico que puede quitar tu pecado?',
+      application: 'Confiesa tu pecado y descansa en el sacrificio suficiente de Jesus.',
+      prayer: 'Cordero de Dios, gracias por quitar nuestro pecado y darnos paz con Dios. Amen.',
+      keywords: ['cordero', 'juan 1', 'pecado', 'cruz']
+    },
+    '2026-12-13': {
+      title: 'Jesus salvara a su pueblo',
+      explanation: 'El nombre Jesus anuncia su obra: El salvara a su pueblo de sus pecados. Esta salvacion es mas profunda que resolver problemas temporales. Cristo viene a tratar la raiz de nuestra separacion de Dios. Jose obedece por fe, y nosotros somos llamados a recibir con reverencia al Salvador prometido. La Navidad es buena noticia porque Dios mismo provee salvacion.',
+      reflectionQuestion: 'De que necesitas ser rescatado por la gracia de Cristo?',
+      application: 'Adora hoy a Jesus no solo como nino nacido, sino como Salvador suficiente.',
+      prayer: 'Jesus, Salvador nuestro, libra nuestro corazon del pecado y haznos tuyos. Amen.',
+      keywords: ['salvador', 'jesus', 'mateo 1', 'pecados']
+    },
+    '2026-12-14': {
+      title: 'Buenas nuevas para los humildes',
+      explanation: 'Los pastores reciben el anuncio celestial en medio de una noche ordinaria. Dios se complace en revelar su gloria a los humildes. Las buenas nuevas no son para una elite espiritual, sino para todo el pueblo. El Salvador ha nacido. Esta noticia rompe el temor y produce gozo, porque Cristo llega a personas comunes con gracia extraordinaria.',
+      reflectionQuestion: 'Como recibes la buena noticia de Cristo: con rutina o con asombro?',
+      application: 'Lee el anuncio de los angeles lentamente y responde con gratitud.',
+      prayer: 'Senor, devuelveme el asombro y el gozo por las buenas nuevas de Cristo. Amen.',
+      keywords: ['pastores', 'gozo', 'lucas 2', 'buenas nuevas']
+    },
+    '2026-12-15': {
+      title: 'Los pastores adoran',
+      explanation: 'Despues de escuchar el anuncio, los pastores van, ven y cuentan lo que les fue dicho. La verdadera adoracion no se queda inmovil; responde. Ellos vuelven glorificando y alabando a Dios. La Navidad nos invita a ese mismo movimiento: escuchar la Palabra, contemplar a Cristo, compartir la noticia y regresar a la vida diaria con alabanza.',
+      reflectionQuestion: 'Tu adoracion te mueve a contar lo que Dios ha hecho?',
+      application: 'Comparte hoy con alguien una razon por la que Cristo es buena noticia.',
+      prayer: 'Dios, haz que mi adoracion se convierta en testimonio alegre. Amen.',
+      keywords: ['adoracion', 'pastores', 'testimonio', 'gloria']
+    },
+    '2026-12-16': {
+      title: 'Simeon espera la consolacion',
+      explanation: 'Simeon esperaba la consolacion de Israel, y el Espiritu le permite ver al Cristo del Senor. Su espera no fue vacia; estaba sostenida por la promesa de Dios. Al tomar al nino Jesus, Simeon reconoce salvacion preparada para todos los pueblos. La fe aprende a esperar porque Dios cumple su Palabra en el tiempo correcto.',
+      reflectionQuestion: 'Que espera necesitas entregar a la fidelidad de Dios?',
+      application: 'Ora con paciencia por una promesa o necesidad que aun no ves cumplida.',
+      prayer: 'Senor, ensename a esperar con fe y a reconocer tu salvacion en Cristo. Amen.',
+      keywords: ['simeon', 'esperanza', 'consolacion', 'salvacion']
+    },
+    '2026-12-17': {
+      title: 'Ana habla del Redentor',
+      explanation: 'Ana perseveraba en adoracion, ayuno y oracion. Al ver a Jesus, da gracias y habla de El a quienes esperaban redencion. Su vida nos recuerda que la edad, la espera y el dolor no cancelan la utilidad espiritual. Quien ha visto la gracia de Dios en Cristo tiene razones para agradecer y hablar del Redentor.',
+      reflectionQuestion: 'A quien puedes hablarle hoy del Redentor?',
+      application: 'Da gracias por Cristo y comparte una palabra de esperanza con alguien que espera consuelo.',
+      prayer: 'Senor, hazme perseverante en adoracion y valiente para hablar de Cristo. Amen.',
+      keywords: ['ana', 'redencion', 'oracion', 'testimonio']
+    },
+    '2026-12-18': {
+      title: 'La alegria del reino',
+      explanation: 'El Salmo 98 llama a cantar al Senor porque ha hecho maravillas y ha mostrado su salvacion. La venida de Cristo es motivo de canto porque Dios ha recordado su misericordia y fidelidad. La creacion entera es invitada a celebrar al Rey. La alegria cristiana no ignora el dolor, pero mira al Senor que viene a juzgar con justicia y restaurar.',
+      reflectionQuestion: 'Que maravilla de Dios necesitas celebrar hoy?',
+      application: 'Canta, lee o comparte un salmo de alabanza como respuesta a la salvacion de Dios.',
+      prayer: 'Senor, llena mi boca de alabanza por tu salvacion y fidelidad. Amen.',
+      keywords: ['salmo 98', 'alegria', 'alabanza', 'reino']
+    },
+    '2026-12-19': {
+      title: 'Venid, adoremos',
+      explanation: 'El Salmo 95 nos llama a cantar, postrarnos y arrodillarnos delante del Senor nuestro Hacedor. La adoracion no es solo emocion; es reconocimiento humilde de quien es Dios. En Navidad, la iglesia no adora una idea tierna, sino al Rey y Pastor de su pueblo. Venimos con gozo porque somos ovejas de su mano.',
+      reflectionQuestion: 'Tu adoracion reconoce a Dios como Rey y Pastor?',
+      application: 'Aparta un momento para adorar sin pedir nada, solo reconociendo la grandeza de Dios.',
+      prayer: 'Senor, eres nuestro Hacedor y Pastor. Recibe nuestra adoracion. Amen.',
+      keywords: ['adoracion', 'salmo 95', 'pastor', 'gozo']
+    },
+    '2026-12-20': {
+      title: 'Ha nacido un Salvador',
+      explanation: 'Lucas presenta el nacimiento de Jesus en humildad, pero rodeado de gloria celestial. El Salvador nace en un pesebre, y los angeles proclaman paz y gozo. Esta escena une sencillez y majestad. Cristo vino a lugares bajos para levantar a pecadores. La respuesta correcta es recibir la noticia, glorificar a Dios y vivir anunciando que el Salvador ha nacido.',
+      reflectionQuestion: 'Como responde tu corazon al Salvador nacido por ti?',
+      application: 'Haz de esta semana una oportunidad para adorar y anunciar a Cristo con claridad.',
+      prayer: 'Cristo el Senor, gracias por venir como Salvador. Recibe gloria en nuestra vida. Amen.',
+      keywords: ['nacimiento', 'salvador', 'lucas 2', 'gloria']
+    },
+    '2026-12-21': {
+      title: 'En el principio era el Verbo',
+      explanation: 'Juan comienza mirando mas alla del pesebre: Jesus es el Verbo eterno, Dios mismo, por quien todas las cosas fueron hechas. La Navidad no comienza en Belen, sino en la eternidad del Hijo. El que vino a nosotros es Creador y vida. Esta verdad aumenta nuestra adoracion: el nino nacido es el Senor eterno que sostiene todo.',
+      reflectionQuestion: 'Como cambia tu adoracion saber que Jesus es el Verbo eterno?',
+      application: 'Adora a Cristo hoy como Creador, Sustentador y vida verdadera.',
+      prayer: 'Verbo eterno, te adoramos como Dios verdadero y fuente de vida. Amen.',
+      keywords: ['verbo', 'juan 1', 'eternidad', 'vida']
+    },
+    '2026-12-22': {
+      title: 'La luz verdadera',
+      explanation: 'Juan declara que la luz verdadera vino al mundo. Algunos le rechazaron, pero a quienes le recibieron les dio potestad de ser hechos hijos de Dios. La Navidad nos confronta con una respuesta: rechazar o recibir a Cristo. Recibirle no es solo admirar su historia, sino confiar en El y descansar en la gracia que nos hace hijos de Dios.',
+      reflectionQuestion: 'Has recibido a Cristo con fe o solo lo conoces de lejos?',
+      application: 'Renueva hoy tu confianza en Cristo como la luz verdadera.',
+      prayer: 'Jesus, luz verdadera, hazme caminar como hijo de Dios por tu gracia. Amen.',
+      keywords: ['luz', 'hijos de dios', 'juan 1', 'fe']
+    },
+    '2026-12-23': {
+      title: 'El Verbo fue hecho carne',
+      explanation: 'El Verbo eterno no solo visito desde lejos; se hizo carne y habito entre nosotros. En Jesus vemos la gloria del Padre llena de gracia y verdad. Dios se revela de manera personal, cercana y salvadora. La encarnacion nos asegura que Dios conoce nuestra debilidad y ha venido a rescatarnos, no con distancia, sino entrando en nuestra historia.',
+      reflectionQuestion: 'Que te ensena la encarnacion sobre la cercania de Dios?',
+      application: 'Acercate a Dios con confianza, recordando que Cristo vino lleno de gracia y verdad.',
+      prayer: 'Padre, gracias por revelarnos tu gloria en Cristo, lleno de gracia y verdad. Amen.',
+      keywords: ['encarnacion', 'gracia', 'verdad', 'juan 1']
+    },
+    '2026-12-24': {
+      title: 'Cristo vino en humildad',
+      explanation: 'Filipenses nos muestra que el Hijo eterno se humillo tomando forma de siervo. La Navidad revela humildad divina: Cristo no vino aferrandose a privilegios, sino entregandose por obediencia hasta la cruz. Celebrar su venida debe formar en nosotros la misma mente: humildad, servicio y obediencia para la gloria del Padre.',
+      reflectionQuestion: 'Que actitud de orgullo necesita ser rendida ante la humildad de Cristo?',
+      application: 'Practica hoy un acto de servicio humilde en honor a Cristo.',
+      prayer: 'Jesus humilde, forma en mi tu mente de servicio y obediencia. Amen.',
+      keywords: ['humildad', 'filipenses 2', 'servicio', 'obediencia']
+    },
+    '2026-12-25': {
+      title: 'Dios envio a su Hijo',
+      explanation: 'Galatas resume la Navidad con claridad: cuando vino el cumplimiento del tiempo, Dios envio a su Hijo para redimirnos y hacernos hijos. Cristo nace bajo la ley para rescatar a quienes estaban bajo condenacion. El regalo de Navidad es adopcion, libertad y comunion con el Padre por medio del Hijo y el Espiritu.',
+      reflectionQuestion: 'Como cambia tu identidad saber que en Cristo eres hijo de Dios?',
+      application: 'Celebra hoy la Navidad dando gracias por la redencion y adopcion en Cristo.',
+      prayer: 'Padre, gracias por enviar a tu Hijo para redimirnos y hacernos tuyos. Amen.',
+      keywords: ['navidad', 'galatas 4', 'adopcion', 'redencion']
+    },
+    '2026-12-26': {
+      title: 'La gracia de Dios se manifesto',
+      explanation: 'Tito declara que la gracia de Dios se manifesto para salvacion y tambien nos ensena a vivir. La gracia no solo perdona; forma un pueblo celoso de buenas obras mientras espera la esperanza bienaventurada. Despues de Navidad, no volvemos a la vida igual. La gracia manifestada en Cristo nos entrena para vivir con piedad, dominio propio y esperanza.',
+      reflectionQuestion: 'Que esta ensenandote la gracia de Dios a cambiar?',
+      application: 'Identifica una practica que debes abandonar y una buena obra que debes abrazar.',
+      prayer: 'Gracia de Dios, salvame, ensename y formame para vivir esperando a Cristo. Amen.',
+      keywords: ['gracia', 'tito 2', 'esperanza', 'buenas obras']
+    },
+    '2026-12-27': {
+      title: 'Lleno de gracia y verdad',
+      explanation: 'Juan nos invita a contemplar la gloria de Cristo, lleno de gracia y verdad. En Jesus no hay gracia sin verdad ni verdad sin gracia. El revela al Padre y trae vida a quienes estaban en tinieblas. Al mirar atras a la semana de Navidad, somos llamados a permanecer maravillados ante el Hijo que vino a habitar entre nosotros.',
+      reflectionQuestion: 'Necesitas recibir hoy mas profundamente la gracia o la verdad de Cristo?',
+      application: 'Lee Juan 1:14 lentamente y responde con adoracion personal.',
+      prayer: 'Cristo, lleno de gracia y verdad, haznos vivir contemplando tu gloria. Amen.',
+      keywords: ['juan 1', 'gracia', 'verdad', 'gloria']
+    },
+    '2026-12-28': {
+      title: 'Mirar atras con gratitud',
+      explanation: 'El Salmo 103 llama al alma a bendecir al Senor y no olvidar sus beneficios. Al acercarnos al final del ano, la gratitud nos ayuda a recordar perdon, misericordia, compasion y fidelidad. No todo habra sido facil, pero Dios ha sostenido a su pueblo. Mirar atras con gratitud prepara el corazon para seguir adelante con confianza.',
+      reflectionQuestion: 'Que beneficios de Dios no quieres olvidar al cerrar el ano?',
+      application: 'Escribe tres evidencias de la misericordia de Dios durante este ano.',
+      prayer: 'Bendice, alma mia, al Senor. Gracias por tu perdon y misericordia. Amen.',
+      keywords: ['gratitud', 'salmo 103', 'misericordia', 'ano']
+    },
+    '2026-12-29': {
+      title: 'Confiar el camino al Senor',
+      explanation: 'Proverbios nos recuerda que podemos hacer planes, pero el Senor dirige los pasos. Al pensar en un nuevo ano, no necesitamos controlar cada detalle. La sabiduria consiste en encomendar nuestras obras a Dios, buscar su voluntad y caminar con humildad. Nuestros planes son pequenos; la fidelidad del Senor es grande.',
+      reflectionQuestion: 'Que plan necesitas someter a la direccion de Dios?',
+      application: 'Ora por tus planes del nuevo ano y rendelos conscientemente al Senor.',
+      prayer: 'Senor, dirige mis pasos y ordena mis planes segun tu voluntad. Amen.',
+      keywords: ['planes', 'proverbios', 'confianza', 'direccion']
+    },
+    '2026-12-30': {
+      title: 'Olvidando lo que queda atras',
+      explanation: 'Pablo no vive atrapado en logros pasados ni derrotas antiguas. Prosigue hacia la meta en Cristo. Cerrar el ano requiere discernimiento: agradecer, aprender, arrepentirse y seguir adelante. La vida cristiana no se define por nostalgia ni culpa, sino por Cristo y su llamado. Seguimos corriendo porque El nos ha tomado por suyo.',
+      reflectionQuestion: 'Que debes dejar atras para proseguir hacia Cristo?',
+      application: 'Entrega a Dios una carga del ano y decide un paso concreto de obediencia.',
+      prayer: 'Cristo, ayudame a proseguir hacia ti con fe, humildad y perseverancia. Amen.',
+      keywords: ['filipenses 3', 'meta', 'perseverancia', 'nuevo ano']
+    },
+    '2026-12-31': {
+      title: 'Yo hago nuevas todas las cosas',
+      explanation: 'Apocalipsis 21 nos muestra una esperanza mas grande que cualquier resolucion de ano nuevo. Dios hara nuevas todas las cosas, habitara con su pueblo y quitara toda lagrima. Esta promesa nos permite cerrar el ano con esperanza firme. No sabemos todo lo que vendra, pero sabemos hacia donde va la historia: hacia la presencia plena de Dios con su pueblo.',
+      reflectionQuestion: 'Como fortalece tu esperanza saber que Dios hara nuevas todas las cosas?',
+      application: 'Cierra el ano orando con esperanza y entregando el futuro al Dios que reina.',
+      prayer: 'Dios eterno, gracias porque haces nuevas todas las cosas. Mi futuro descansa en ti. Amen.',
+      keywords: ['apocalipsis 21', 'esperanza', 'nuevo ano', 'renovacion']
     }
   };
 
@@ -776,7 +1185,7 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amen.`
   });
 
   window.enLaPalabraData = {
-    version: 'RV1909-2026-11',
+    version: 'RV1909-2026-12',
     months,
     readings
   };
