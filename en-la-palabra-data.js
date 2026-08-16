@@ -2,6 +2,49 @@
   const BIBLE_VERSION = 'RV1909 - Edicion de lectura PRFWB';
   const bibleTextSource = 'Texto basado en Reina-Valera 1909, dominio publico. Edicion de lectura PRFWB con actualizacion minima de ortografia/vocabulario.';
   const sundayTexts = {
+    'Hebreos 1:1-4': `Dios, habiendo hablado muchas veces y en muchas maneras en otro tiempo a los padres por los profetas,
+en estos postreros dias nos ha hablado por el Hijo, al cual constituyo heredero de todo, por el cual asimismo hizo el universo.
+El cual, siendo el resplandor de su gloria, y la imagen misma de su sustancia, y sustentando todas las cosas con la palabra de su potencia, habiendo hecho la purificacion de nuestros pecados por si mismo, se sento a la diestra de la Majestad en las alturas,
+hecho tanto mas excelente que los angeles, cuanto alcanzo por herencia mas excelente nombre que ellos.`,
+    'Romanos 12:1-2': `Asi que, hermanos, les ruego por las misericordias de Dios, que presenten sus cuerpos en sacrificio vivo, santo, agradable a Dios, que es vuestro culto racional.
+Y no se conformen a este siglo; mas sean transformados por la renovacion de vuestro entendimiento, para que experimenten cual sea la buena voluntad de Dios, agradable y perfecta.`,
+    'Lucas 24:25-27': `Entonces el les dijo: Oh insensatos, y tardos de corazon para creer todo lo que los profetas han dicho!
+No era necesario que el Cristo padeciera estas cosas, y que entrara en su gloria?
+Y comenzando desde Moises, y de todos los profetas, les declaraba en todas las Escrituras lo que de el decian.`,
+    'Santiago 1:22-25': `Pero sean hacedores de la palabra, y no tan solamente oidores, enganandose a ustedes mismos.
+Porque si alguno oye la palabra, y no la pone por obra, este tal es semejante al hombre que considera en un espejo su rostro natural.
+Porque el se considero a si mismo, y se fue, y luego se olvido que tal era.
+Mas el que mira atentamente en la perfecta ley, que es la de la libertad, y persevera en ella, no siendo oidor olvidadizo, sino hacedor de la obra, este sera bienaventurado en lo que hace.`,
+    '2 Timoteo 3:14-17': `Pero persiste tu en lo que has aprendido y te persuadiste, sabiendo de quien has aprendido;
+y que desde la ninez has sabido las Sagradas Escrituras, las cuales te pueden hacer sabio para la salvacion por la fe que es en Cristo Jesus.
+Toda Escritura es inspirada divinamente y util para ensenar, para redarguir, para corregir, para instruir en justicia;
+para que el hombre de Dios sea perfecto, enteramente instruido para toda buena obra.`,
+    'Lucas 11:1-13': `Y acontecio que estando el orando en un lugar, cuando acabo, uno de sus discipulos le dijo: Senor, ensenanos a orar, como tambien Juan enseno a sus discipulos.
+Y les dijo: Cuando oren, digan: Padre nuestro que estas en los cielos, santificado sea tu nombre. Venga tu reino. Sea hecha tu voluntad, como en el cielo, asi tambien en la tierra.
+Danos hoy nuestro pan cotidiano. Y perdonanos nuestros pecados, porque tambien nosotros perdonamos a todos los que nos deben; y no nos metas en tentacion, mas libranos del mal.
+Y les dijo: Quien de ustedes tendra un amigo, e ira a el a medianoche, y le dira: Amigo, prestame tres panes;
+porque un amigo mio ha venido a mi de camino, y no tengo que ponerle delante;
+y el de dentro respondiendo dijere: No me molestes; la puerta ya esta cerrada, y mis ninos estan conmigo en cama; no puedo levantarme a darte.
+Les digo que aunque no se levante a darle por ser su amigo, cierto por su importunidad se levantara, y le dara todo lo que necesite.
+Y yo les digo: Pidan, y se les dara; busquen, y hallaran; llamen, y se les abrira.
+Porque todo aquel que pide, recibe; y el que busca, halla; y al que llama, se abre.
+Pues si ustedes, siendo malos, saben dar buenas dadivas a sus hijos, cuanto mas vuestro Padre celestial dara el Espiritu Santo a los que se lo pidan?`,
+    'Santiago 5:13-18': `Esta alguno entre ustedes afligido? haga oracion. Esta alguno alegre? cante salmos.
+Esta alguno enfermo entre ustedes? llame a los ancianos de la iglesia, y oren por el, ungiendole con aceite en el nombre del Senor.
+Y la oracion de fe salvara al enfermo, y el Senor lo levantara; y si estuviere en pecados, le seran perdonados.
+Confiesen sus faltas unos a otros, y oren unos por otros, para que sean sanados; la oracion eficaz del justo puede mucho.
+Elias era hombre sujeto a semejantes pasiones que nosotros, y rogo con oracion que no lloviese, y no llovio sobre la tierra por tres anos y seis meses.
+Y otra vez oro, y el cielo dio lluvia, y la tierra produjo su fruto.`,
+    'Hechos 4:23-31': `Y sueltos, vinieron a los suyos, y contaron todo lo que los principes de los sacerdotes y los ancianos les habian dicho.
+Y ellos, habiendolo oido, alzaron unanimes la voz a Dios, y dijeron: Senor, tu eres el Dios que hiciste el cielo y la tierra, el mar y todo lo que en ellos hay.
+Y ahora, Senor, mira sus amenazas, y da a tus siervos que con toda confianza hablen tu palabra;
+extendiendo tu mano a que sanidades, senales y prodigios sean hechos por el nombre de tu santo Hijo Jesus.
+Y como hubieron orado, el lugar en que estaban congregados temblo; y todos fueron llenos del Espiritu Santo, y hablaban la palabra de Dios con confianza.`,
+    '2 Tesalonicenses 3:1-5': `Por lo demas, hermanos, oren por nosotros, que la palabra del Senor corra y sea glorificada, asi como entre ustedes;
+y que seamos librados de hombres importunos y malos; porque no es de todos la fe.
+Mas fiel es el Senor, que les confirmara y guardara del mal.
+Y tenemos confianza de ustedes en el Senor, que hacen y haran lo que les hemos mandado.
+Y el Senor dirija vuestros corazones en el amor de Dios, y en la paciencia de Cristo.`,
     'Isaias 6:1-8': `En el ano que murio el rey Uzias vi yo al Senor sentado sobre un trono alto y sublime, y sus faldas llenaban el templo.
 Y encima de el estaban serafines; cada uno tenia seis alas: con dos cubrian sus rostros, con dos cubrian sus pies, y con dos volaban.
 Y el uno al otro daba voces, diciendo: Santo, santo, santo, Jehova de los ejercitos: toda la tierra esta llena de su gloria.
@@ -132,7 +175,7 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amen.`
     monthKey: '2026-09',
     monthName: 'Septiembre',
     theme: 'Firmes en la Palabra',
-    description: 'PLACEHOLDER: Durante septiembre, las congregaciones de PRFWB seran animadas a conocer, creer, meditar y obedecer la Palabra de Dios, reconociendo que las Escrituras nos conducen a Cristo y forman nuestra vida como discipulos.',
+    description: 'Durante septiembre, PRFWB sera animada a conocer, creer, meditar y obedecer la Palabra de Dios, reconociendo que las Escrituras nos conducen a Cristo y forman nuestra vida como discipulos.',
     weeks: [
       {
         title: 'Dios nos ha hablado',
@@ -160,8 +203,8 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amen.`
           version: BIBLE_VERSION,
           bibleText: sundayTexts['Romanos 12:1-2'] || '',
           bibleTextSource,
-          introduction: 'PLACEHOLDER: Introduccion pastoral para la congregacion.',
-          mainTruth: 'PLACEHOLDER: La Palabra renueva nuestra mente para vivir conforme a la voluntad de Dios.'
+          introduction: 'Durante esta semana hemos meditado en la Palabra que alumbra, discierne y transforma el corazon. Romanos nos llama a responder a las misericordias de Dios con una vida presentada a El. La renovacion verdadera no comienza copiando el molde del mundo, sino dejando que Dios transforme nuestra mente por su verdad.',
+          mainTruth: 'La Palabra renueva nuestra mente para vivir conforme a la voluntad de Dios.'
         }
       },
       {
@@ -175,8 +218,8 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amen.`
           version: BIBLE_VERSION,
           bibleText: sundayTexts['Lucas 24:25-27'] || '',
           bibleTextSource,
-          introduction: 'PLACEHOLDER: Introduccion pastoral para dirigir la mirada de la iglesia a Cristo.',
-          mainTruth: 'PLACEHOLDER: Toda la Escritura apunta al plan redentor de Dios cumplido en Cristo.'
+          introduction: 'Jesus ensena a sus discipulos a leer las Escrituras con ojos abiertos al plan de Dios. Moises, los profetas y toda la historia biblica apuntan hacia el Cristo que padeceria y entraria en su gloria. La iglesia lee la Biblia correctamente cuando la Palabra nos conduce a adorar, confiar y obedecer a Jesus.',
+          mainTruth: 'Toda la Escritura apunta al plan redentor de Dios cumplido en Cristo.'
         }
       },
       {
@@ -190,8 +233,8 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amen.`
           version: BIBLE_VERSION,
           bibleText: sundayTexts['Santiago 1:22-25'] || '',
           bibleTextSource,
-          introduction: 'PLACEHOLDER: Introduccion pastoral para llamar a obediencia gozosa.',
-          mainTruth: 'PLACEHOLDER: La fe viva escucha la Palabra y responde con obediencia.'
+          introduction: 'Santiago nos advierte contra una fe que escucha pero no responde. La Palabra es como espejo que muestra la verdad del corazon, pero Dios no nos llama a mirar y olvidar. La bendicion esta en perseverar como hacedores de la Palabra, obedeciendo con gozo lo que el Senor ha revelado.',
+          mainTruth: 'La fe viva escucha la Palabra y responde con obediencia.'
         }
       },
       {
@@ -205,8 +248,8 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amen.`
           version: BIBLE_VERSION,
           bibleText: sundayTexts['2 Timoteo 3:14-17'] || '',
           bibleTextSource,
-          introduction: 'PLACEHOLDER: Introduccion pastoral para cerrar el enfasis mensual.',
-          mainTruth: 'PLACEHOLDER: Las Escrituras preparan al pueblo de Dios para toda buena obra.'
+          introduction: 'Al cerrar el enfasis de septiembre, recordamos que las Escrituras son inspiradas por Dios y suficientes para formar a su pueblo. La Palabra nos hace sabios para la salvacion en Cristo y nos instruye para vivir en justicia. Una iglesia firme en la verdad sera una iglesia preparada para toda buena obra.',
+          mainTruth: 'Las Escrituras preparan al pueblo de Dios para toda buena obra.'
         }
       }
     ]
@@ -246,8 +289,8 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amen.`
           version: BIBLE_VERSION,
           bibleText: sundayTexts['Lucas 11:1-13'] || '',
           bibleTextSource,
-          introduction: 'PLACEHOLDER: Introduccion pastoral para la lectura congregacional.',
-          mainTruth: 'PLACEHOLDER: Dios llama a sus hijos a acercarse con confianza y dependencia.'
+          introduction: 'Jesus no solo ensena palabras para repetir; forma en sus discipulos una confianza profunda en el Padre. La oracion cristiana se acerca con reverencia, dependencia y perseverancia. Podemos pedir, buscar y llamar porque el Padre escucha a sus hijos y da lo que verdaderamente necesitamos.',
+          mainTruth: 'Dios llama a sus hijos a acercarse con confianza, perseverancia y dependencia.'
         }
       },
       {
@@ -261,8 +304,8 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amen.`
           version: BIBLE_VERSION,
           bibleText: sundayTexts['Santiago 5:13-18'] || '',
           bibleTextSource,
-          introduction: 'PLACEHOLDER: Introduccion pastoral para la lectura congregacional.',
-          mainTruth: 'PLACEHOLDER: La iglesia ora confiando en la gracia, el poder y la fidelidad de Dios.'
+          introduction: 'Santiago presenta la oracion como respuesta natural del pueblo de Dios en toda circunstancia: afliccion, alegria, enfermedad, pecado y necesidad. La iglesia no ora porque controla los resultados, sino porque confia en la gracia y poder del Senor. La oracion eficaz nace de una fe humilde que depende de Dios.',
+          mainTruth: 'La iglesia ora confiando en la gracia, el poder y la fidelidad de Dios.'
         }
       },
       {
@@ -276,8 +319,8 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amen.`
           version: BIBLE_VERSION,
           bibleText: sundayTexts['Hechos 4:23-31'] || '',
           bibleTextSource,
-          introduction: 'PLACEHOLDER: Introduccion pastoral para la lectura congregacional.',
-          mainTruth: 'PLACEHOLDER: Una iglesia llena del Espiritu ora y proclama la Palabra con valentia.'
+          introduction: 'Cuando la iglesia primitiva enfrento amenazas, no respondio primero con temor ni silencio, sino con oracion. Reconocieron al Dios Creador, pidieron valentia y confiaron en el nombre de Jesus. Una iglesia que ora con fe puede proclamar la Palabra con confianza aun en medio de oposicion.',
+          mainTruth: 'Una iglesia llena del Espiritu ora y proclama la Palabra con valentia.'
         }
       },
       {
@@ -291,8 +334,8 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amen.`
           version: BIBLE_VERSION,
           bibleText: sundayTexts['2 Tesalonicenses 3:1-5'] || '',
           bibleTextSource,
-          introduction: 'PLACEHOLDER: Introduccion pastoral para conectar oracion y mision.',
-          mainTruth: 'PLACEHOLDER: La oracion impulsa a la iglesia a vivir y servir en la mision de Dios.'
+          introduction: 'Pablo pide oracion para que la Palabra del Senor corra y sea glorificada. La mision de la iglesia necesita mas que estrategia; necesita dependencia de Dios. Al orar por la expansion del evangelio, nuestros corazones son dirigidos al amor de Dios y a la paciencia de Cristo.',
+          mainTruth: 'La oracion impulsa a la iglesia a vivir y servir en la mision de Dios.'
         }
       }
     ]
@@ -1583,7 +1626,7 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amen.`
   });
 
   window.enLaPalabraData = {
-    version: 'RV1909-2027-01',
+    version: 'RV1909-2027-01-rev2',
     months,
     readings
   };
