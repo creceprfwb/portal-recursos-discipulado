@@ -39,9 +39,19 @@
     }
 
     * { box-sizing:border-box; }
-    html, body { margin:0; background:var(--fondo); color:var(--azul-oscuro); line-height:1.55; overflow-x:hidden; }
+    html, body {
+      width:100%;
+      max-width:100%;
+      margin:0;
+      background:var(--fondo);
+      color:var(--azul-oscuro);
+      line-height:1.55;
+      overflow-x:hidden;
+    }
     body { min-height:100vh; }
+    html.embed-mode, html.embed-mode body { overflow-x:clip; }
     button, input, select, textarea { font:inherit; }
+    img, svg, canvas, video { max-width:100%; }
     a { color:inherit; text-decoration:none; }
 
     .site-nav {
@@ -118,6 +128,13 @@
       margin:-24px auto 60px;
       position:relative;
       z-index:2;
+    }
+    html.embed-mode .hero-inner,
+    html.embed-mode .shell {
+      width:100%;
+      max-width:100%;
+      padding-left:16px;
+      padding-right:16px;
     }
     .card {
       background:var(--blanco);
