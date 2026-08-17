@@ -309,7 +309,7 @@
       <div>
         <img class="eyebrow-logo" src="./jeec-logo-white.png" alt="Jesus es el Centro">
         <h1>Panel de Estacionamiento</h1>
-        <p>Administra servidores, cubre cada servicio y prepara mensajes de confirmacion por WhatsApp.</p>
+        <p>Administra servidores, cubre cada servicio y prepara mensajes de confirmación por WhatsApp.</p>
       </div>
       <div style="display:flex;gap:10px;flex-wrap:wrap">
         <a class="hero-action" href="./estacionamiento.html">Volver al calendario</a>
@@ -322,19 +322,19 @@
     <section class="card">
       <div class="section-title">
         <h2>Acceso administrativo</h2>
-        <button id="logoutButton" class="btn light small" type="button" style="display:none">Cerrar sesion</button>
+        <button id="logoutButton" class="btn light small" type="button" style="display:none">Cerrar sesión</button>
       </div>
 
       <div id="loginView">
-        <p class="muted">Inicia sesion con tu cuenta de administrador de Firebase para gestionar el estacionamiento.</p>
+        <p class="muted">Inicia sesión con tu cuenta de administrador de Firebase para gestionar el estacionamiento.</p>
         <form id="loginForm" style="max-width:360px">
           <label>Correo
             <input id="emailInput" type="email" required>
           </label>
-          <label>Contrasena
+          <label>Contraseña
             <input id="passwordInput" type="password" required>
           </label>
-          <button class="btn gold" type="submit">Iniciar sesion</button>
+          <button class="btn gold" type="submit">Iniciar sesión</button>
           <p id="errorMessage" class="error-text"></p>
         </form>
       </div>
@@ -356,8 +356,8 @@
 
       <section class="grid">
         <aside class="card">
-          <h2>Crear asignacion</h2>
-          <p class="muted">Registra el servicio y asigna servidor. Si no hay servidor todavia, queda marcado como sin cubrir.</p>
+          <h2>Crear asignación</h2>
+          <p class="muted">Registra el servicio y asigna servidor. Si no hay servidor todavía, queda marcado como sin cubrir.</p>
 
           <form id="assignmentForm">
             <label>Fecha
@@ -374,10 +374,10 @@
             <label>Servicio
               <input id="serviceInput" value="Culto dominical" required>
             </label>
-            <label>Area
+            <label>Área
               <select id="roleInput">
                 <option>Estacionamiento</option>
-                <option>Flujo de vehiculos</option>
+                <option>Flujo de vehículos</option>
                 <option>Seguridad peatonal</option>
                 <option>Coordinador</option>
                 <option>Apoyo general</option>
@@ -397,7 +397,7 @@
               <textarea id="notesInput" placeholder="Ej. traer chaleco, llegar 20 minutos antes..."></textarea>
             </label>
             <input type="hidden" id="editingId">
-            <button class="btn gold" type="submit" id="saveAssignmentBtn">Guardar asignacion</button>
+            <button class="btn gold" type="submit" id="saveAssignmentBtn">Guardar asignación</button>
           </form>
 
           <hr style="border:0;border-top:1px solid var(--borde);margin:22px 0">
@@ -413,7 +413,7 @@
             <label>Notas de disponibilidad
               <input id="serverNotes" placeholder="Ej. disponible domingos alternos">
             </label>
-            <button class="btn" type="submit">Anadir servidor</button>
+            <button class="btn" type="submit">Añadir servidor</button>
           </form>
           <div class="server-list" id="serverList" style="margin-top:14px"></div>
         </aside>
@@ -422,7 +422,7 @@
           <div class="section-title">
             <div>
               <h2>Vista mensual</h2>
-              <div class="muted">Selecciona un dia para ver, editar y enviar confirmaciones.</div>
+              <div class="muted">Selecciona un día para ver, editar y enviar confirmaciones.</div>
             </div>
             <div class="month-nav">
               <button class="btn light small" type="button" id="prevMonth">Anterior</button>
@@ -434,12 +434,12 @@
 
           <div style="margin-top:22px" class="two">
             <div>
-              <h3 id="selectedTitle">Asignaciones del dia</h3>
+              <h3 id="selectedTitle">Asignaciones del día</h3>
               <div class="assignment-list" id="assignmentList"></div>
             </div>
             <div>
               <h3>Servicios sin cubrir</h3>
-              <div class="notice">Todo servicio sin servidor o sin confirmar aparece aqui para que no se quede fuera.</div>
+              <div class="notice">Todo servicio sin servidor o sin confirmar aparece aquí para que no se quede fuera.</div>
               <div class="uncovered-list" id="uncoveredList"></div>
             </div>
           </div>
@@ -574,7 +574,7 @@
         .filter((item) => item.date === state.selectedDate)
         .sort((a, b) => a.start.localeCompare(b.start));
       els.selectedTitle.textContent = `Asignaciones de ${formatDate(state.selectedDate)}`;
-      els.assignmentList.innerHTML = items.map(renderAssignmentRow).join('') || '<div class="muted">No hay asignaciones para este dia.</div>';
+      els.assignmentList.innerHTML = items.map(renderAssignmentRow).join('') || '<div class="muted">No hay asignaciones para este día.</div>';
     }
 
     function renderUncovered() {
@@ -587,7 +587,7 @@
     function renderAssignmentRow(item) {
       const server = getServer(item.serverId);
       const serverName = server ? server.name : 'Sin servidor';
-      const msg = `Saludos ${serverName}. Confirmamos tu asignacion de estacionamiento: ${item.service}, ${formatDate(item.date)} de ${item.start} a ${item.end}. Area: ${item.role}. Gracias por servir.`;
+      const msg = `Saludos ${serverName}. Confirmamos tu asignación de estacionamiento: ${item.service}, ${formatDate(item.date)} de ${item.start} a ${item.end}. Área: ${item.role}. Gracias por servir.`;
       return `
         <article class="row">
           <div class="row-head">
@@ -637,15 +637,15 @@
       document.getElementById('serverSelect').value = item.serverId || '';
       document.getElementById('statusInput').value = item.status;
       document.getElementById('notesInput').value = item.notes || '';
-      document.getElementById('saveAssignmentBtn').textContent = 'Actualizar asignacion';
+      document.getElementById('saveAssignmentBtn').textContent = 'Actualizar asignación';
       window.scrollTo({ top: 260, behavior: 'smooth' });
     }
 
     async function deleteAssignment(id) {
-      if (!confirm('Quieres borrar esta asignacion?')) return;
+      if (!confirm('¿Quieres borrar esta asignación?')) return;
       const ok = await window.discipladoFirebase?.deleteParkingAssignment?.(id);
       if (!ok) {
-        alert('No se pudo borrar. Verifica que tu sesion siga activa.');
+        alert('No se pudo borrar. Verifica que tu sesión siga activa.');
         return;
       }
       state.assignments = state.assignments.filter((item) => item.id !== id);
@@ -653,10 +653,10 @@
     }
 
     async function deleteServer(id) {
-      if (!confirm('Quieres borrar este servidor? Las asignaciones quedaran sin servidor.')) return;
+      if (!confirm('¿Quieres borrar este servidor? Las asignaciones quedarán sin servidor.')) return;
       const ok = await window.discipladoFirebase?.deleteParkingServer?.(id);
       if (!ok) {
-        alert('No se pudo borrar. Verifica que tu sesion siga activa.');
+        alert('No se pudo borrar. Verifica que tu sesión siga activa.');
         return;
       }
       state.servers = state.servers.filter((server) => server.id !== id);
@@ -772,7 +772,7 @@
       };
       const ok = await window.discipladoFirebase?.saveParkingAssignment?.(nextItem);
       if (!ok) {
-        alert('No se pudo guardar. Verifica que tu sesion siga activa.');
+        alert('No se pudo guardar. Verifica que tu sesión siga activa.');
         return;
       }
       const index = state.assignments.findIndex((item) => item.id === id);
@@ -785,7 +785,7 @@
       document.getElementById('endInput').value = '10:30';
       document.getElementById('serviceInput').value = 'Culto dominical';
       document.getElementById('editingId').value = '';
-      document.getElementById('saveAssignmentBtn').textContent = 'Guardar asignacion';
+      document.getElementById('saveAssignmentBtn').textContent = 'Guardar asignación';
       render();
     });
 
@@ -799,7 +799,7 @@
       };
       const ok = await window.discipladoFirebase?.saveParkingServer?.(server);
       if (!ok) {
-        alert('No se pudo anadir. Verifica que tu sesion siga activa.');
+        alert('No se pudo añadir. Verifica que tu sesión siga activa.');
         return;
       }
       state.servers.push(server);

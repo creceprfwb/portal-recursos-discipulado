@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Calendario de Estacionamiento | PRFWB</title>
-  <meta name="description" content="Consulta quien sirve en estacionamiento cada semana y descarga el calendario.">
+  <meta name="description" content="Consulta quién sirve en estacionamiento cada semana y descarga el calendario.">
   <script>
     if (new URLSearchParams(window.location.search).get('embed') === '1') {
       document.documentElement.classList.add('embed-mode');
@@ -311,7 +311,7 @@
       <div>
         <img class="eyebrow-logo" src="./jeec-logo-white.png" alt="Jesus es el Centro">
         <h1>Calendario de Estacionamiento</h1>
-        <p>Consulta quien sirve cada semana, envia confirmaciones por WhatsApp y descarga el calendario desde un solo lugar.</p>
+        <p>Consulta quién sirve cada semana, envía confirmaciones por WhatsApp y descarga el calendario desde un solo lugar.</p>
       </div>
       <a class="hero-action" href="https://www.prfwb.com/" target="_top">Volver al inicio</a>
     </div>
@@ -353,7 +353,7 @@
       <div class="section-title">
         <div>
           <h2>Vista mensual</h2>
-          <div class="muted">Selecciona un dia para ver las asignaciones y enviar confirmaciones.</div>
+          <div class="muted">Selecciona un día para ver las asignaciones y enviar confirmaciones.</div>
         </div>
         <div class="month-nav">
           <button class="btn light small" type="button" id="prevMonth">Anterior</button>
@@ -365,12 +365,12 @@
 
       <div style="margin-top:22px" class="two">
         <div>
-          <h3 id="selectedTitle">Asignaciones del dia</h3>
+          <h3 id="selectedTitle">Asignaciones del día</h3>
           <div class="assignment-list" id="assignmentList"></div>
         </div>
         <div>
           <h3>Servicios sin cubrir</h3>
-          <div class="notice">Todo servicio sin servidor o sin confirmar aparece aqui para que no se quede fuera.</div>
+          <div class="notice">Todo servicio sin servidor o sin confirmar aparece aquí para que no se quede fuera.</div>
           <div class="uncovered-list" id="uncoveredList"></div>
         </div>
       </div>
@@ -437,8 +437,8 @@
       reportHeightToWix();
     }
 
-    // Cuando el widget de Wix le da a esta pagina un ancho fijo de escritorio
-    // (no responde al tamano real del telefono), esto encoge visualmente todo
+    // Cuando el widget de Wix le da a esta página un ancho fijo de escritorio
+    // (no responde al tamaño real del teléfono), esto encoge visualmente todo
     // el contenido para que quepa sin scroll horizontal.
     function fitToDeviceWidth() {
       const deviceWidth = window.screen?.width || window.innerWidth;
@@ -508,7 +508,7 @@
         .filter((item) => item.date === state.selectedDate)
         .sort((a, b) => a.start.localeCompare(b.start));
       els.selectedTitle.textContent = `Asignaciones de ${formatDate(state.selectedDate)}`;
-      els.assignmentList.innerHTML = items.map(renderAssignmentRow).join('') || '<div class="muted">No hay asignaciones para este dia.</div>';
+      els.assignmentList.innerHTML = items.map(renderAssignmentRow).join('') || '<div class="muted">No hay asignaciones para este día.</div>';
     }
 
     function renderUncovered() {
@@ -527,14 +527,14 @@
       const nextAssigned = upcoming.filter((item) => !isOpen(item)).slice(0, 3);
       const nextOpen = upcoming.filter(isOpen).slice(0, 3);
 
-      els.nextAssignedList.innerHTML = nextAssigned.map(renderAssignmentRow).join('') || '<div class="muted">No hay proximas asignaciones cubiertas.</div>';
-      els.nextOpenList.innerHTML = nextOpen.map(renderAssignmentRow).join('') || '<div class="muted">No hay servicios sin cubrir proximos.</div>';
+      els.nextAssignedList.innerHTML = nextAssigned.map(renderAssignmentRow).join('') || '<div class="muted">No hay próximas asignaciones cubiertas.</div>';
+      els.nextOpenList.innerHTML = nextOpen.map(renderAssignmentRow).join('') || '<div class="muted">No hay servicios sin cubrir próximos.</div>';
     }
 
     function renderAssignmentRow(item) {
       const server = getServer(item.serverId);
       const serverName = server ? server.name : 'Sin servidor';
-      const msg = `Saludos ${serverName}. Confirmamos tu asignacion de estacionamiento: ${item.service}, ${formatDate(item.date)} de ${item.start} a ${item.end}. Area: ${item.role}. Gracias por servir.`;
+      const msg = `Saludos ${serverName}. Confirmamos tu asignación de estacionamiento: ${item.service}, ${formatDate(item.date)} de ${item.start} a ${item.end}. Área: ${item.role}. Gracias por servir.`;
       return `
         <article class="row">
           <div class="row-head">
