@@ -39,7 +39,7 @@
     }
 
     * { box-sizing:border-box; }
-    html, body { margin:0; background:var(--fondo); color:var(--azul-oscuro); line-height:1.55; }
+    html, body { margin:0; background:var(--fondo); color:var(--azul-oscuro); line-height:1.55; overflow-x:hidden; }
     body { min-height:100vh; }
     button, input, select, textarea { font:inherit; }
     a { color:inherit; text-decoration:none; }
@@ -286,6 +286,7 @@
         overflow:hidden;
       }
       .actions, .row-actions, .month-nav { width:100%; }
+      .actions, .row-actions { display:grid; grid-template-columns:1fr; }
       .btn { width:100%; }
     }
   </style>
