@@ -1113,27 +1113,6 @@
 
   </main>
 
-  <script>
-    function enviarAltura() {
-      const altura = Math.max(
-        document.body.scrollHeight,
-        document.documentElement.scrollHeight
-      );
-
-      window.parent.postMessage(
-        {
-          type: "DISCIPLESHIP_APP_HEIGHT",
-          height: altura
-        },
-        "*"
-      );
-    }
-
-    window.addEventListener("load", enviarAltura);
-    window.addEventListener("resize", enviarAltura);
-
-    setTimeout(enviarAltura, 300);
-    setTimeout(enviarAltura, 1000);
-  </script>
+  <script src="js/wix-embed-resize.js"></script>
 </body>
 </html>

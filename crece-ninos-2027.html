@@ -3,18 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Formando discípulos | PRFWB</title>
+    <title>CRECE Niños 2027 | PRFWB</title>
     <meta
       name="description"
-      content="Guía de discipulado de 12 semanas: formando discípulos que forman discípulos."
-    />    <script>
-      let isEmbedded = false;
-      try {
-        isEmbedded = window.self !== window.top;
-      } catch (error) {
-        isEmbedded = true;
-      }
-      if (new URLSearchParams(window.location.search).get('embed') === '1' || isEmbedded) {
+      content="Biblioteca de clases CRECE 2027 para el grupo de Niños: 52 lecciones dominicales, una por semana."
+    />
+    <script>
+      if (new URLSearchParams(window.location.search).get('embed') === '1') {
         document.documentElement.classList.add('embed-mode');
         window.addEventListener('DOMContentLoaded', function () {
           document.querySelectorAll('a[href]').forEach(function (link) {
@@ -34,6 +29,11 @@
       html.embed-mode .site-nav,
       html.embed-mode .viewer-header { display: none !important; }
       html.embed-mode body { background: #f4f8fa; }
+      @media print {
+        .site-nav, .toolbar, .side-lesson-nav, .lesson-pager, .note, .hero-actions { display: none !important; }
+        .lesson-card { border: 0 !important; box-shadow: none !important; }
+        .lesson-shell { grid-template-columns: 1fr !important; }
+      }
     </style>
     <style>
       :root {
@@ -79,44 +79,30 @@
         font-weight: 900;
       }
       .nav-links a.active { background: var(--azul-oscuro); color: #ffffff; }
-            .site-tabs a.donate-link,
       .nav-links a.donate-link {
         background: #f1c84b;
         color: #12384d;
         border: 1px solid rgba(18, 56, 77, .12);
         box-shadow: 0 8px 18px rgba(18, 56, 77, .12);
       }
-      .site-tabs a.donate-link:hover,
       .nav-links a.donate-link:hover { transform: translateY(-2px); }
       .hero {
         color: white;
         padding: 74px max(1rem, calc((100vw - 1180px) / 2)) 88px;
         background:
-          linear-gradient(90deg, rgba(33, 71, 63, 0.9), rgba(18, 61, 79, 0.95) 55%, rgba(111, 47, 40, 0.82)),
+          linear-gradient(90deg, rgba(7, 140, 163, 0.9), rgba(18, 56, 77, 0.95) 55%, rgba(18, 56, 77, 0.88)),
           linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
           linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
         background-size: auto, 48px 48px, 48px 48px;
       }
       .brand-lockup { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
-      .logo-badge {
-        width: 250px;
-        height: 94px;
-        flex: 0 0 auto;
-        border-radius: 8px;
-        display: grid;
-        place-items: center;
-        background: rgba(7, 29, 53, 0.32);
-        border: 1px solid rgba(255, 255, 255, 0.22);
-        overflow: hidden;
-      }
-      .logo-badge img { width: 100%; height: 100%; object-fit: contain; display: block; }
       .brand-name { font-size: 1.15rem; font-weight: 900; line-height: 1.1; }
       .eyebrow {
         text-transform: uppercase;
         font-size: 0.78rem;
         font-weight: 900;
         letter-spacing: 0.28em;
-        color: #ffca2f;
+        color: #f1c84b;
       }
       h1 { margin: 0.4rem 0 0.8rem; font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.08; }
       .hero p { max-width: 780px; margin: 0; }
@@ -130,8 +116,8 @@
         padding: 0.75rem 1rem;
         border-radius: 8px;
         border: 0;
-        background: #ffca2f;
-        color: #123d4f;
+        background: #f1c84b;
+        color: #12384d;
         cursor: pointer;
         font-weight: 900;
       }
@@ -157,8 +143,7 @@
       }
       .toolbar,
       .lesson-shell,
-      .note,
-      .download-row {
+      .note {
         width: min(1180px, calc(100% - 2rem));
         margin-left: auto;
         margin-right: auto;
@@ -182,24 +167,25 @@
       }
       .side-lesson-nav {
         box-shadow: none;
-        border: 1px solid #eadfd5;
-        overflow: hidden;
+        border: 1px solid var(--borde);
+        overflow-y: auto;
+        max-height: 78vh;
         align-self: start;
       }
       .side-lesson-nav button {
         width: 100%;
         display: block;
         text-align: left;
-        padding: 0.85rem;
+        padding: 0.7rem 0.85rem;
         border: 0;
-        border-bottom: 1px solid #eadfd5;
+        border-bottom: 1px solid var(--borde);
         background: white;
         color: #123d4f;
         cursor: pointer;
         font-weight: 900;
       }
       .side-lesson-nav button:last-child { border-bottom: 0; }
-      .side-lesson-nav button.active { background: #6f2f28; color: white; }
+      .side-lesson-nav button.active { background: var(--azul-oscuro); color: white; }
       .side-lesson-nav small {
         display: block;
         margin-top: 0.2rem;
@@ -210,15 +196,15 @@
       .lesson-card {
         padding: clamp(1rem, 3vw, 2rem);
         box-shadow: none;
-        border: 1px solid #eadfd5;
+        border: 1px solid var(--borde);
       }
       .lesson-meta {
         display: inline-flex;
         margin-bottom: 1.2rem;
         padding: 0.25rem 0.65rem;
         border-radius: 999px;
-        background: #f8e8df;
-        color: #6f2f28;
+        background: #e3f3f6;
+        color: var(--azul-oscuro);
         font-size: 0.82rem;
         font-weight: 900;
       }
@@ -241,102 +227,15 @@
       .lesson-content ul,
       .lesson-content ol { margin: 0; padding-left: 1.4rem; color: #24343a; }
       .lesson-content li { margin: 0.25rem 0; }
-      .overview-table {
-        width: 100%;
-        border-collapse: collapse;
-        overflow: hidden;
-        border-radius: 8px;
-        background: white;
-        box-shadow: inset 0 0 0 1px #e5e2d4;
-      }
-      .overview-table th,
-      .overview-table td {
-        padding: 0.75rem;
-        border-bottom: 1px solid #e5e2d4;
-        text-align: left;
-        vertical-align: top;
-      }
-      .overview-table th {
-        background: #123d4f;
-        color: white;
-        font-size: 0.84rem;
-      }
-      .overview-table tr:last-child td { border-bottom: 0; }
-      .intro-lead {
-        padding: 1rem;
-        border-radius: 8px;
-        background: linear-gradient(90deg, #f8f5ea, #fff8df);
-        border-left: 4px solid #d5684f;
-        font-size: 1.03rem;
-      }
-      .intro-grid,
-      .week-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-        gap: 0.8rem;
-      }
-      .intro-card,
-      .week-card {
-        padding: 1rem;
-        border-radius: 8px;
-        background: #f8f5ea;
-        border: 1px solid #e5e2d4;
-      }
-      .intro-card strong,
-      .week-card strong {
-        display: block;
-        color: #123d4f;
-        margin-bottom: 0.25rem;
-      }
-      .week-card span {
-        display: inline-flex;
-        margin-bottom: 0.5rem;
-        padding: 0.18rem 0.55rem;
-        border-radius: 999px;
-        background: #d5684f;
-        color: #123d4f;
-        font-size: 0.8rem;
-        font-weight: 900;
-      }
-      .week-card small {
-        display: block;
-        margin-top: 0.45rem;
-        color: #5c6a6c;
-        line-height: 1.35;
-      }
-      .agenda-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 0.75rem;
-      }
-      .agenda-item {
-        display: grid;
-        grid-template-columns: auto 1fr;
-        gap: 0.65rem;
-        align-items: start;
-        padding: 0.8rem;
-        border-radius: 8px;
-        background: #f8f5ea;
-      }
-      .agenda-number {
-        display: grid;
-        place-items: center;
-        width: 1.8rem;
-        height: 1.8rem;
-        border-radius: 999px;
-        background: #ffca2f;
-        color: #123d4f;
-        font-weight: 900;
-      }
       .scripture-box,
       .activity-box,
       .challenge-box {
         padding: 0.9rem 1rem;
         border-radius: 8px;
         background: #fff8df;
-        border-left: 4px solid #ffca2f;
+        border-left: 4px solid #f1c84b;
       }
-      .activity-box { background: #f8f5ea; border-left-color: #21473f; }
+      .activity-box { background: #eaf6f8; border-left-color: var(--azul); }
       .challenge-box { background: #fff1ef; border-left-color: #e44b41; }
       .lesson-pager {
         display: flex;
@@ -359,7 +258,6 @@
         .nav-links a { border: 1px solid var(--borde); }
         .hero { padding: 34px 18px 58px; }
         .brand-lockup { align-items: flex-start; flex-direction: column; }
-        .logo-badge { width: min(210px, 100%); height: 79px; }
         h1 { font-size: 1.75rem; }
         .toolbar,
         .lesson-shell { width: 100%; grid-template-columns: 1fr; margin-top: 0; border-radius: 0; box-shadow: none; }
@@ -367,7 +265,7 @@
         .button { width: 100%; }
         .lesson-card { border-radius: 0; box-shadow: none; }
         .lesson-pager { flex-direction: column; }
-        .note, .download-row { width: calc(100% - 2rem); }
+        .note { width: calc(100% - 2rem); }
       }
     </style>
   </head>
@@ -380,38 +278,36 @@
         <div class="nav-links">
           <a href="./index.html?v=donate1">Home</a>
           <a href="./who-we-are.html?v=donate1">Who We Are</a>
-          
           <a href="./eventos.html?v=donate1">Eventos</a>
-          <a class="active" href="./recursos.html?v=donate1">Recursos</a>
+          <a href="./recursos.html?v=donate1">Recursos</a>
           <a href="./oracion.html?v=donate1">Oración</a>
           <a class="donate-link" href="https://donate.stripe.com/7sY6oJ7XVcLz5WI5Ie63K00" target="_blank" rel="noopener">Donar PRFWB</a>
-
-          <a href="./crece.html?v=donate1">CRECE</a>
+          <a class="active" href="./crece.html?v=donate1">CRECE</a>
         </div>
       </nav>
       <header class="hero">
         <div>
           <div class="brand-lockup">
-            <div class="brand-name">Formando discípulos</div>
+            <div class="brand-name">Ministerio CRECE</div>
           </div>
-          <span class="eyebrow">Guía de 12 semanas</span>
-          <h1>Formando discípulos que forman discípulos</h1>
+          <span class="eyebrow">Biblioteca de clases · Grupo Niños</span>
+          <h1>CRECE Niños 2027</h1>
           <p>
-            Un recorrido práctico para líderes, diáconos y creyentes que desean obedecer el
-            llamado de Jesús a hacer discípulos.
+            52 lecciones dominicales para el grupo de Niños, en el formato de la Biblioteca CRECE:
+            versículo clave, objetivo, resumen, inicio dinámico, materiales, recurso visual, dinámica,
+            aplicación, preguntas, reto de la semana y notas pedagógicas.
           </p>
           <div class="hero-actions">
-            <a class="button" href="./recursos.html?v=donate1">Volver a recursos</a>
-            <a class="button secondary" href="./files/formando-discipulos.pdf" target="_blank" rel="noreferrer noopener">
-              Abrir PDF completo
-            </a>
+            <a class="button" href="./crece.html?v=donate1">Volver a CRECE</a>
+            <a class="button secondary" href="./crece-juveniles-2027.html?v=donate1">Ver Juveniles 2027</a>
+            <button class="button secondary" type="button" onclick="window.print()">Imprimir esta lección</button>
           </div>
         </div>
       </header>
 
       <section class="toolbar" aria-label="Navegación de la guía">
         <label>
-          Selecciona una lección
+          Selecciona un domingo
           <select id="sectionSelect"></select>
         </label>
         <button id="previousLesson" class="button secondary" type="button">Anterior</button>
@@ -419,7 +315,7 @@
       </section>
 
       <main class="lesson-shell">
-        <nav id="lessonNav" class="side-lesson-nav" aria-label="Lecciones de discipulado"></nav>
+        <nav id="lessonNav" class="side-lesson-nav" aria-label="Lecciones CRECE Niños 2027"></nav>
         <article class="lesson-card">
           <span id="lessonMeta" class="lesson-meta">Lección</span>
           <h2 id="lessonTitle" class="lesson-title"></h2>
@@ -431,21 +327,16 @@
         </article>
       </main>
 
-      <div class="hero-actions download-row">
-        <a class="button secondary" href="./files/formando-discipulos.pdf" download>
-          Descargar PDF
-        </a>
-      </div>
-
       <p class="note">
-        Esta vista muestra una lección a la vez para que sea más fácil leerla en computadora o teléfono.
-        El PDF completo sigue disponible para abrirlo o descargarlo.
+        Esta vista muestra una lección a la vez para que sea más fácil leerla o imprimirla. El contenido
+        sigue el mismo formato usado en la Biblioteca CRECE (biblioteca.html) para el ciclo 2026, adaptado
+        aquí para el plan de temas 2027 del grupo de Niños.
       </p>
     </div>
 
-    <script src="./discipulado-data.js?v=20260725-2"></script>
+    <script src="./crece-ninos-2027-data.js?v=20260815-1"></script>
     <script>
-      const lessons = window.discipuladoLessons || [];
+      const lessons = window.creceNinos2027Lessons || [];
       const select = document.getElementById('sectionSelect');
       const lessonMeta = document.getElementById('lessonMeta');
       const lessonTitle = document.getElementById('lessonTitle');
@@ -464,16 +355,10 @@
         select.appendChild(option);
       });
 
-      function getNavLabel(index) {
-        if (index === 0) return 'Inicio';
-        if (index >= 1 && index <= 12) return `Semana ${index}`;
-        return 'Recurso';
-      }
-
       lessonNav.innerHTML = lessons.map((lesson, index) => `
         <button type="button" data-index="${index}">
-          ${getNavLabel(index)}
-          <small>${lesson.title}</small>
+          Domingo ${index + 1}
+          <small>${lesson.title.replace(/^\d+\.\s*/, '')}</small>
         </button>
       `).join('');
 
@@ -486,9 +371,9 @@
       }
 
       function getLineType(line) {
-        if (/^(📜|🎯|🗣️|🚩|📄|📝|📔|📌|👌|🛠️|🔧|👥)/.test(line)) return 'heading';
-        if (/^(Lectura Bíblica|Objetivo|Preguntas|Actividad|Versículo|Desafío|Para reproducir)/i.test(line)) return 'heading';
-        if (/^\d+[.\u00a0 ]/.test(line)) return 'ordered';
+        if (/^(📖|✨|🎯|📝|🎬|🧰|🖼️|🎨|🙌|❓|🛠️|📌)/.test(line)) return 'heading';
+        if (/^(Texto Base|Verdad Central|Objetivo Educativo|Resumen|Inicio Dinámico|Materiales|Recurso Visual|Dinámica|Aplicación|Preguntas|Reto de la Semana|Notas Pedagógicas)/i.test(line)) return 'heading';
+        if (/^\d+[.  ]/.test(line)) return 'ordered';
         if (/^[•\-]\s+/.test(line)) return 'unordered';
         return 'paragraph';
       }
@@ -498,78 +383,6 @@
         const html = [];
         let listType = null;
 
-        function renderOverviewTable() {
-          const rows = [
-            ['1', 'El Evangelio', 'Efesios 2:1-10 / Juan 3:16', 'Salvación por gracia'],
-            ['2', 'Qué es un discípulo', 'Mateo 4:19 / Lucas 9:23', 'Negarse a sí mismo'],
-            ['3', 'La Palabra de Dios', '2 Timoteo 3:16-17 / Hebreos 4:12', 'Método H.E.A.R.'],
-            ['4', 'La Oración', 'Mateo 6:5-13 / Filipenses 4:6-7', 'Orar con estructura y fe'],
-            ['5', 'La Iglesia', 'Hechos 2:42-47 / Hebreos 10:24-25', 'Comunidad y servicio'],
-            ['6', 'Tentación y Santidad', '1 Corintios 10:13 / Santiago 4:7', 'Resistir con Palabra y comunidad'],
-            ['7', 'El Espíritu Santo', 'Romanos 8 / Gálatas 5:16-25', 'Fruto del Espíritu'],
-            ['8', 'Servicio', 'Gálatas 5:13 / 1 Pedro 4:10-11', 'Usar dones para edificar'],
-            ['9', 'Evangelismo', 'Mateo 28:18-20 / Romanos 10:9-15', 'Compartir fe activamente'],
-            ['10', 'Rendición de Cuentas', 'Proverbios 27:17 / Hebreos 3:13', 'Apoyo mutuo y transparencia'],
-            ['11', 'Formando Otros Discípulos', '2 Timoteo 2:2 / Juan 15:16', 'Reproducir lo aprendido'],
-            ['12', 'Vida y Misión', 'Hechos 1:8 / Colosenses 3:23-24', 'Vivir con propósito para el Reino']
-          ];
-          return `
-            <h3>Recorrido de 12 semanas</h3>
-            <div class="week-grid">
-              ${rows.map((row) => `
-                <article class="week-card">
-                  <span>Semana ${row[0]}</span>
-                  <strong>${row[1]}</strong>
-                  <small>${row[2]}</small>
-                  <small>${row[3]}</small>
-                </article>
-              `).join('')}
-            </div>
-          `;
-        }
-
-        function renderIntroLead() {
-          return `
-            <p class="intro-lead">
-              El mandato de hacer discípulos no fue dado solo a pastores o líderes, sino a toda la iglesia.
-              Jesucristo llamó a sus seguidores a ir, enseñar y reproducirse espiritualmente
-              <strong>(Mateo 28:18-20)</strong>.
-            </p>
-          `;
-        }
-
-        function renderIntroCards() {
-          const cards = [
-            ['Qué es ser discípulo', 'Ser aprendiz de Cristo: seguirlo, obedecerlo y crecer a su imagen.'],
-            ['Para qué existe esta guía', 'Fortalecer la fe, practicar la obediencia y preparar a cada creyente para enseñar a otros.'],
-            ['La meta', 'Que al finalizar las 12 semanas puedas comenzar este mismo recorrido con otra persona.']
-          ];
-          return `
-            <div class="intro-grid">
-              ${cards.map((card) => `<article class="intro-card"><strong>${card[0]}</strong><p>${card[1]}</p></article>`).join('')}
-            </div>
-          `;
-        }
-
-        function renderAgenda() {
-          const items = [
-            'Oración breve',
-            'Conexión personal',
-            'Lectura bíblica juntos',
-            'Comentario breve del discípulo/a',
-            'Preguntas reflexivas',
-            'Tarea de crecimiento y desafío',
-            'Plan para enseñar este tema',
-            'Oración final'
-          ];
-          return `
-            <h3>Modelo de agenda (45-60 min)</h3>
-            <div class="agenda-grid">
-              ${items.map((item, index) => `<div class="agenda-item"><span class="agenda-number">${index + 1}</span><span>${item}</span></div>`).join('')}
-            </div>
-          `;
-        }
-
         function closeList() {
           if (listType) {
             html.push(listType === 'ordered' ? '</ol>' : '</ul>');
@@ -578,32 +391,8 @@
         }
 
         lines.forEach((line) => {
-          if (line === '::intro-lead::') {
-            closeList();
-            html.push(renderIntroLead());
-            return;
-          }
-
-          if (line === '::intro-cards::') {
-            closeList();
-            html.push(renderIntroCards());
-            return;
-          }
-
-          if (line === '::overview-table::') {
-            closeList();
-            html.push(renderOverviewTable());
-            return;
-          }
-
-          if (line === '::agenda::') {
-            closeList();
-            html.push(renderAgenda());
-            return;
-          }
-
           const type = getLineType(line);
-          const clean = escapeHtml(line.replace(/^[•\-]\s+/, '').replace(/^\d+[.\u00a0 ]+/, ''));
+          const clean = escapeHtml(line.replace(/^[•\-]\s+/, '').replace(/^\d+[.  ]+/, ''));
 
           if (type === 'heading') {
             closeList();
@@ -622,11 +411,11 @@
           }
 
           closeList();
-          const boxClass = /Versículo|Romanos|Efesios|Mateo|Juan|Lucas|Hechos|Salmo|Gálatas|Hebreos|Colosenses|Timoteo|Pedro|Corintios|Santiago|Proverbios/i.test(line)
+          const boxClass = /Génesis|Éxodo|Deuteronomio|Isaías|Daniel|Ester|Apocalipsis|Samuel|Salmo|Romanos|Efesios|Mateo|Juan|Lucas|Hechos|Gálatas|Hebreos|Colosenses|Timoteo|Pedro|Corintios|Santiago|Proverbios/i.test(line)
             ? 'scripture-box'
-            : /Actividad|testimonio|diario|método|escribe|comienza/i.test(line)
+            : /Materiales|Recurso Visual|Dinámica:|actividad/i.test(line)
               ? 'activity-box'
-              : /Desafío|Ora por|Toma una decisión|Aparta|Identifica/i.test(line)
+              : /Reto|Ora por|desafío/i.test(line)
                 ? 'challenge-box'
                 : '';
           html.push(boxClass ? `<p class="${boxClass}">${clean}</p>` : `<p>${clean}</p>`);
@@ -641,7 +430,7 @@
         currentIndex = Math.max(0, Math.min(index, lessons.length - 1));
         const lesson = lessons[currentIndex];
         select.value = String(currentIndex);
-        lessonMeta.textContent = `Lección ${currentIndex + 1} de ${lessons.length}`;
+        lessonMeta.textContent = `Domingo ${currentIndex + 1} de ${lessons.length}`;
         lessonTitle.textContent = lesson.title;
         lessonContent.innerHTML = renderContent(lesson.content);
         previousLesson.disabled = currentIndex === 0;

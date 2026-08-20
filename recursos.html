@@ -759,8 +759,6 @@
         els.recentList.innerHTML = filtered.length ? filtered.map(renderCard).join('') : '<div class="empty-state">No se encontraron recursos. Intenta cambiar los filtros.</div>';
         els.resourceCount.textContent = `${filtered.length} recurso${filtered.length === 1 ? '' : 's'} publicado${filtered.length === 1 ? '' : 's'}`;
         renderCategoryChips();
-
-        window.parent?.postMessage({ type: 'DISCIPLESHIP_APP_HEIGHT', height: document.documentElement.scrollHeight }, '*');
       }
 
       function getResourceHref(resource) {
@@ -1045,5 +1043,6 @@
 
       loadForumPosts();
     </script>
+    <script src="js/wix-embed-resize.js"></script>
   </body>
 </html>

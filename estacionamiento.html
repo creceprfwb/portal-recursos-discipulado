@@ -473,15 +473,7 @@
       renderAssignments();
       renderUncovered();
       renderNextThree();
-      reportHeightToWix();
     }
-
-    function reportHeightToWix() {
-      const height = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
-      window.parent?.postMessage({ type: 'DISCIPLESHIP_APP_HEIGHT', height }, '*');
-    }
-
-    window.addEventListener('resize', reportHeightToWix);
 
     function renderStats() {
       const currentMonth = state.monthCursor.getMonth();
@@ -681,5 +673,6 @@
 
     loadData();
   </script>
+  <script src="js/wix-embed-resize.js"></script>
 </body>
 </html>
