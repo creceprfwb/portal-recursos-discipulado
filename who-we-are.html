@@ -509,6 +509,54 @@
       overflow-wrap: anywhere;
     }
 
+    .estructura {
+      padding: 90px 0;
+      background: var(--azul-claro);
+    }
+
+    .estructura-cuerpo {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 45px;
+      align-items: center;
+    }
+
+    .estructura-texto p {
+      margin: 0 0 18px;
+      color: var(--texto);
+    }
+
+    .flujo-estructura {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin: 28px 0 18px;
+      padding: 18px 20px;
+      border-radius: 14px;
+      background: var(--blanco);
+      box-shadow: 0 10px 28px rgba(13, 43, 58, .06);
+      font-weight: 800;
+      color: var(--azul-oscuro);
+    }
+
+    .flujo-estructura .flecha {
+      color: var(--coral);
+      font-weight: 700;
+    }
+
+    .nota-estructura {
+      font-weight: 700;
+      color: var(--azul-oscuro) !important;
+    }
+
+    .estructura-imagen img {
+      display: block;
+      width: 100%;
+      border-radius: 20px;
+      box-shadow: var(--sombra);
+    }
+
     .conviccion {
       padding: 85px 20px;
       background: var(--blanco);
@@ -653,6 +701,14 @@
 
       .momento-contenido h3 {
         font-size: 21px;
+      }
+
+      .estructura-cuerpo {
+        grid-template-columns: 1fr;
+      }
+
+      .flujo-estructura {
+        font-size: 14px;
       }
 
       .conviccion {
@@ -981,14 +1037,72 @@
       </div>
     </section>
 
+    <section class="estructura">
+      <div class="contenedor">
+        <div class="titulo-seccion">
+          <span>Nuestra estructura</span>
+          <h2>¿Qué es la Asociación Bautista Libre de Puerto Rico?</h2>
+        </div>
+
+        <div class="estructura-cuerpo">
+          <div class="estructura-texto">
+            <p>
+              La Asociación Bautista Libre de Puerto Rico (PRFWB) nace cuando
+              iglesias locales autónomas, unidas por una misma fe y doctrina,
+              deciden voluntariamente trabajar juntas para cumplir la misión
+              de Cristo.
+            </p>
+
+            <p>
+              La Asociación existe porque existen las iglesias; las iglesias
+              no existen porque exista la Asociación.
+            </p>
+
+            <p>
+              Cada iglesia conserva su autonomía, gobierno y liderazgo bajo la
+              autoridad de Jesucristo y las Escrituras. La Asociación no es un
+              concilio ni gobierna las iglesias; existe para servirlas,
+              conectarlas y fortalecer su trabajo conjunto.
+            </p>
+
+            <p>
+              De la misma manera, las asociaciones estatales y regionales
+              cooperan voluntariamente para formar la National Association of
+              Free Will Baptists (NAFWB), ampliando esa colaboración en áreas
+              como misiones, educación y ministerio.
+            </p>
+
+            <div class="flujo-estructura">
+              <span>Cristo</span>
+              <span class="flecha">→</span>
+              <span>Iglesias locales</span>
+              <span class="flecha">→</span>
+              <span>Asociaciones</span>
+              <span class="flecha">→</span>
+              <span>Asociación Nacional</span>
+            </div>
+
+            <p class="nota-estructura">
+              No es una estructura de control, sino una estructura de
+              cooperación.
+            </p>
+          </div>
+
+          <div class="estructura-imagen">
+            <img src="estructura-asociacion.png" alt="Organigrama: Jesucristo como cabeza de la Iglesia, iglesias locales autónomas conectadas a la Asociación Bautista Libre de Puerto Rico (PRFWB), con áreas de cooperación, misiones, educación bíblica, desarrollo y liderazgo, plantación de iglesias, y compañerismo mutuo." />
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="conviccion">
       <div class="caja-conviccion">
         <div class="comillas">“</div>
 
         <p>
-          Los Bautistas Libres combinamos las creencias bautistas tradicionales
-          con una fuerte convicción en el libre albedrío y la responsabilidad
-          humana ante la salvación ofrecida por Dios.
+          Los Bautistas Libres tenemos una fuerte convicción en el libre
+          albedrío y la responsabilidad humana ante la salvación ofrecida
+          por Dios.
         </p>
 
         <div class="firma">
