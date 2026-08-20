@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Calendario de Estacionamiento | PRFWB</title>
-  <meta name="description" content="Consulta quien sirve en estacionamiento cada semana y descarga el calendario.">
+  <meta name="description" content="Consulta quién sirve en estacionamiento cada semana y descarga el calendario.">
   <script>
     if (new URLSearchParams(window.location.search).get('embed') === '1') {
       document.documentElement.classList.add('embed-mode');
@@ -39,9 +39,19 @@
     }
 
     * { box-sizing:border-box; }
-    html, body { margin:0; background:var(--fondo); color:var(--azul-oscuro); line-height:1.55; }
+    html, body {
+      width:100%;
+      max-width:100%;
+      margin:0;
+      background:var(--fondo);
+      color:var(--azul-oscuro);
+      line-height:1.55;
+      overflow-x:hidden;
+    }
     body { min-height:100vh; }
+    html.embed-mode, html.embed-mode body { overflow-x:clip; }
     button, input, select, textarea { font:inherit; }
+    img, svg, canvas, video { max-width:100%; }
     a { color:inherit; text-decoration:none; }
 
     .site-nav {
@@ -121,6 +131,13 @@
       margin:-24px auto 60px;
       position:relative;
       z-index:2;
+    }
+    html.embed-mode .hero-inner,
+    html.embed-mode .shell {
+      width:100%;
+      max-width:100%;
+      padding-left:16px;
+      padding-right:16px;
     }
     .toolbar, .card {
       background:var(--blanco);
@@ -270,6 +287,20 @@
       .nav-inner, .toolbar, .section-title, .row-head { align-items:stretch; flex-direction:column; }
       .tabs { width:100%; display:grid; grid-template-columns:1fr; }
       .stats, .two { grid-template-columns:1fr; }
+      .section-title { gap:16px; }
+      .month-nav {
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:8px;
+      }
+      .month-title {
+        grid-column:1 / -1;
+        min-width:0;
+        order:-1;
+        padding:8px 10px;
+        border-radius:10px;
+        background:#eef7f9;
+      }
       .calendar { gap:3px; }
       .day { min-height:52px; padding:3px; border-radius:6px; gap:3px; }
       .day-number { font-size:11px; }
@@ -287,6 +318,7 @@
         overflow:hidden;
       }
       .actions, .row-actions, .month-nav { width:100%; }
+      .actions, .row-actions { display:grid; grid-template-columns:1fr; }
       .btn { width:100%; }
     }
   </style>
@@ -311,7 +343,7 @@
       <div>
         <img class="eyebrow-logo" src="./jeec-logo-white.png" alt="Jesus es el Centro">
         <h1>Calendario de Estacionamiento</h1>
-        <p>Consulta quien sirve cada semana, envia confirmaciones por WhatsApp y descarga el calendario desde un solo lugar.</p>
+        <p>Consulta quién sirve cada semana, envía confirmaciones por WhatsApp y descarga el calendario desde un solo lugar.</p>
       </div>
       <a class="hero-action" href="https://www.prfwb.com/" target="_top">Volver al inicio</a>
     </div>
@@ -353,7 +385,7 @@
       <div class="section-title">
         <div>
           <h2>Vista mensual</h2>
-          <div class="muted">Selecciona un dia para ver las asignaciones y enviar confirmaciones.</div>
+          <div class="muted">Selecciona un día para ver las asignaciones y enviar confirmaciones.</div>
         </div>
         <div class="month-nav">
           <button class="btn light small" type="button" id="prevMonth">Anterior</button>
@@ -365,12 +397,12 @@
 
       <div style="margin-top:22px" class="two">
         <div>
-          <h3 id="selectedTitle">Asignaciones del dia</h3>
+          <h3 id="selectedTitle">Asignaciones del día</h3>
           <div class="assignment-list" id="assignmentList"></div>
         </div>
         <div>
           <h3>Servicios sin cubrir</h3>
-          <div class="notice">Todo servicio sin servidor o sin confirmar aparece aqui para que no se quede fuera.</div>
+          <div class="notice">Todo servicio sin servidor o sin confirmar aparece aquí para que no se quede fuera.</div>
           <div class="uncovered-list" id="uncoveredList"></div>
         </div>
       </div>
@@ -415,12 +447,19 @@
     }
 
     async function loadData() {
-      const [servers, assignments] = await Promise.all([
-        window.discipladoFirebase?.getParkingServers?.(),
-        window.discipladoFirebase?.getParkingAssignments?.()
-      ]);
-      state.servers = servers || [];
-      state.assignments = assignments || [];
+      render();
+      try {
+        const timeout = new Promise((resolve) => setTimeout(() => resolve([[], []]), 3500));
+        const remoteData = Promise.all([
+          window.discipladoFirebase?.getParkingServers?.(),
+          window.discipladoFirebase?.getParkingAssignments?.()
+        ]);
+        const [servers, assignments] = await Promise.race([remoteData, timeout]);
+        state.servers = servers || [];
+        state.assignments = assignments || [];
+      } catch (error) {
+        console.warn('No se pudo cargar estacionamiento, mostrando calendario vacío:', error);
+      }
       render();
     }
 
@@ -437,29 +476,8 @@
       reportHeightToWix();
     }
 
-    // Cuando el widget de Wix le da a esta pagina un ancho fijo de escritorio
-    // (no responde al tamano real del telefono), esto encoge visualmente todo
-    // el contenido para que quepa sin scroll horizontal.
-    function fitToDeviceWidth() {
-      const deviceWidth = window.screen?.width || window.innerWidth;
-      document.body.style.transform = '';
-      document.body.style.width = '';
-      const contentWidth = document.documentElement.scrollWidth;
-
-      if (!deviceWidth || contentWidth <= deviceWidth + 20) {
-        return 1;
-      }
-
-      const scale = deviceWidth / contentWidth;
-      document.body.style.transformOrigin = 'top left';
-      document.body.style.width = `${contentWidth}px`;
-      document.body.style.transform = `scale(${scale})`;
-      return scale;
-    }
-
     function reportHeightToWix() {
-      const scale = fitToDeviceWidth();
-      const height = document.documentElement.scrollHeight * scale;
+      const height = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
       window.parent?.postMessage({ type: 'DISCIPLESHIP_APP_HEIGHT', height }, '*');
     }
 
@@ -508,14 +526,14 @@
         .filter((item) => item.date === state.selectedDate)
         .sort((a, b) => a.start.localeCompare(b.start));
       els.selectedTitle.textContent = `Asignaciones de ${formatDate(state.selectedDate)}`;
-      els.assignmentList.innerHTML = items.map(renderAssignmentRow).join('') || '<div class="muted">No hay asignaciones para este dia.</div>';
+      els.assignmentList.innerHTML = items.map(renderAssignmentRow).join('') || '<div class="muted">No hay asignaciones para este día.</div>';
     }
 
     function renderUncovered() {
       const items = state.assignments
         .filter(isOpen)
         .sort((a, b) => `${a.date} ${a.start}`.localeCompare(`${b.date} ${b.start}`));
-      els.uncoveredList.innerHTML = items.map(renderAssignmentRow).join('') || '<div class="muted">Todo esta cubierto.</div>';
+      els.uncoveredList.innerHTML = items.map(renderAssignmentRow).join('') || '<div class="muted">Todo está cubierto.</div>';
     }
 
     function renderNextThree() {
@@ -527,14 +545,14 @@
       const nextAssigned = upcoming.filter((item) => !isOpen(item)).slice(0, 3);
       const nextOpen = upcoming.filter(isOpen).slice(0, 3);
 
-      els.nextAssignedList.innerHTML = nextAssigned.map(renderAssignmentRow).join('') || '<div class="muted">No hay proximas asignaciones cubiertas.</div>';
-      els.nextOpenList.innerHTML = nextOpen.map(renderAssignmentRow).join('') || '<div class="muted">No hay servicios sin cubrir proximos.</div>';
+      els.nextAssignedList.innerHTML = nextAssigned.map(renderAssignmentRow).join('') || '<div class="muted">No hay próximas asignaciones cubiertas.</div>';
+      els.nextOpenList.innerHTML = nextOpen.map(renderAssignmentRow).join('') || '<div class="muted">No hay servicios sin cubrir próximos.</div>';
     }
 
     function renderAssignmentRow(item) {
       const server = getServer(item.serverId);
       const serverName = server ? server.name : 'Sin servidor';
-      const msg = `Saludos ${serverName}. Confirmamos tu asignacion de estacionamiento: ${item.service}, ${formatDate(item.date)} de ${item.start} a ${item.end}. Area: ${item.role}. Gracias por servir.`;
+      const msg = `Saludos ${serverName}. Confirmamos tu asignación de estacionamiento: ${item.service}, ${formatDate(item.date)} de ${item.start} a ${item.end}. Área: ${item.role}. Gracias por servir.`;
       return `
         <article class="row">
           <div class="row-head">

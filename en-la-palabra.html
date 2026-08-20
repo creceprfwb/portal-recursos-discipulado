@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>En la Palabra | Lecturas bíblicas PRFWB</title>
+  <meta name="description" content="Lectura bíblica diaria de PRFWB. Un pasaje cada día. Una iglesia creciendo junta en la Palabra.">
+  <script>
+    let embedded = false;
+    try { embedded = window.self !== window.top; } catch (error) { embedded = true; }
+    if (embedded || new URLSearchParams(location.search).get('embed') === '1') document.documentElement.classList.add('embed-mode');
+  </script>
+  <link rel="stylesheet" href="./en-la-palabra.css?v=14">
+</head>
+<body>
+  <main class="page">
+    <nav class="site-nav" aria-label="Navegación principal">
+      <a class="nav-logo" href="./index.html"><img src="./prfwb-logo-main-cropped.png" alt="PRFWB"></a>
+      <div class="nav-links">
+        <a href="./index.html">Home</a>
+        <a href="./recursos.html">Recursos</a>
+        <a class="active" href="./en-la-palabra.html">En la Palabra</a>
+        <a href="./oracion.html">Oración</a>
+      </div>
+    </nav>
+
+    <header class="hero">
+      <div class="hero-inner">
+        <div>
+          <span class="eyebrow">Lecturas bíblicas PRFWB</span>
+          <h1>En la Palabra</h1>
+          <p>Un pasaje cada día. Una iglesia creciendo junta en la Palabra.</p>
+          <p style="margin-top:.8rem">Una iniciativa de PRFWB para ayudar a nuestras congregaciones a leer la Palabra, conocer a Cristo y crecer juntas como discípulos.</p>
+        </div>
+        <div class="hero-card">
+          <span>Tema del mes</span>
+          <strong id="heroMonthTheme">Firmes en la Palabra</strong>
+        </div>
+      </div>
+    </header>
+
+    <section class="shell">
+      <div class="toolbar" aria-label="Navegación de lectura">
+        <div>
+          <strong id="toolbarDate">Lectura de hoy</strong>
+          <div class="muted">Hora de Puerto Rico. Contenido inicial marcado como PLACEHOLDER.</div>
+        </div>
+        <div class="actions">
+          <button class="button secondary" type="button" id="prevDay">Día anterior</button>
+          <button class="button" type="button" id="todayBtn">Hoy</button>
+          <button class="button secondary" type="button" id="nextDay">Día siguiente</button>
+          <button class="button dark" type="button" id="shareBtn">Compartir lectura</button>
+          <a class="button secondary" href="./en-la-palabra-archivo.html">Archivo</a>
+        </div>
+        <div class="share-panel" id="sharePanel" hidden></div>
+      </div>
+
+      <div class="layout">
+        <article class="reading-card" id="todayReading"></article>
+        <aside class="side-stack">
+          <section class="card" id="sundayCard"></section>
+          <section class="card">
+            <h2>Esta semana</h2>
+            <div class="actions" style="margin-bottom:.8rem">
+              <button class="button secondary" type="button" id="prevWeek">Semana anterior</button>
+              <button class="button secondary" type="button" id="nextWeek">Semana siguiente</button>
+            </div>
+            <div class="week-list" id="weekList"></div>
+          </section>
+        </aside>
+      </div>
+
+      <section class="card" style="margin-top:1rem">
+        <h2>Explorar el mes</h2>
+        <p class="muted" id="monthDescription"></p>
+        <div class="month-grid" id="monthGrid"></div>
+      </section>
+
+      <section class="card" style="margin-top:1rem">
+        <h2>Buscar lecturas</h2>
+        <div class="search-box">
+          <label for="searchInput">Busca por referencia, tema, titulo o palabra clave</label>
+          <input id="searchInput" placeholder="Ej. oración, Romanos, Palabra">
+        </div>
+        <div class="week-list" id="searchResults"></div>
+      </section>
+    </section>
+  </main>
+
+  <script src="./en-la-palabra-data.js?v=14"></script>
+  <script>
+    const data = window.enLaPalabraData;
+    const readings = data.readings;
+    const params = new URLSearchParams(location.search);
+    let selectedDate = params.get('fecha') || getPuertoRicoDate();
+    const isEmbedMode = () => document.documentElement.classList.contains('embed-mode');
+
+    function getPuertoRicoDate(date = new Date()) {
+      const parts = new Intl.DateTimeFormat('en-CA', { timeZone:'America/Puerto_Rico', year:'numeric', month:'2-digit', day:'2-digit' }).formatToParts(date);
+      const map = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+      return `${map.year}-${map.month}-${map.day}`;
+    }
+    function parseDate(key) { return new Date(`${key}T00:00:00`); }
+    function shiftDate(key, amount) { const d = parseDate(key); d.setDate(d.getDate() + amount); return d.toISOString().slice(0,10); }
+    function readingFor(date) { return readings.find((item) => item.date === date) || readings[0]; }
+    function monthFor(reading) { return data.months.find((month) => month.theme === reading.monthTheme) || data.months[0]; }
+    function weekFor(reading) { return monthFor(reading).weeks.find((week) => reading.date >= week.start && reading.date <= week.end) || monthFor(reading).weeks[0]; }
+    function formatDate(key, opts = {}) { return parseDate(key).toLocaleDateString('es-PR', { weekday:'long', day:'numeric', month:'long', year:'numeric', ...opts }); }
+    function normalizeText(value) {
+      return String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    }
+    function bibleGatewayUrl(reference) {
+      return `https://www.biblegateway.com/passage/?search=${encodeURIComponent(reference)}&version=RVA`;
+    }
+    function sourceNote(reference, source) {
+      return `<span class="source-note">${source || 'Texto basado en Reina-Valera 1909, dominio público. Edición de lectura PRFWB.'} <a href="${bibleGatewayUrl(reference)}" target="_blank" rel="noopener">Ver en BibleGateway</a></span>`;
+    }
+    function readingUrl(reading) {
+      return `https://www.prfwb.com/enlapalabra?fecha=${reading.date}`;
+    }
+    function shareText(reading) {
+      const parts = [
+        'En la Palabra PRFWB',
+        formatDate(reading.date),
+        '',
+        reading.title,
+        reading.reference
+      ];
+      if (reading.bibleText) parts.push('', reading.bibleText);
+      if (reading.explanation) parts.push('', reading.explanation);
+      if (reading.reflectionQuestion) parts.push('', `Pregunta: ${reading.reflectionQuestion}`);
+      if (reading.application) parts.push('', `Para vivirlo: ${reading.application}`);
+      if (reading.prayer) parts.push('', `Oración: ${reading.prayer}`);
+      parts.push('', 'Lee la lectura completa:', readingUrl(reading));
+      return parts.join('\n');
+    }
+    function nextSunday(fromDate) {
+      const d = parseDate(fromDate);
+      const day = d.getDay();
+      const add = day === 0 ? 0 : 7 - day;
+      d.setDate(d.getDate() + add);
+      return d.toISOString().slice(0,10);
+    }
+    function sundayFor(date) {
+      const sundayDate = nextSunday(date);
+      const currentWeekSunday = weekFor(readingFor(date)).sunday;
+      if (currentWeekSunday?.date === sundayDate) return currentWeekSunday;
+      return data.months.flatMap((month) => month.weeks.map((week) => week.sunday)).find((sunday) => sunday.date === sundayDate)
+        || currentWeekSunday;
+    }
+    function bibleBlock(reading) {
+      return reading.bibleText
+        ? `<div class="bible-placeholder"><div class="bible-text">${reading.bibleText}</div>${sourceNote(reading.reference, reading.bibleTextSource)}</div>`
+        : `<div class="bible-placeholder">Lee ${reading.reference} en tu Biblia (${reading.version}).${sourceNote(reading.reference, reading.bibleTextSource)}</div>`;
+    }
+    function renderReading() {
+      const reading = readingFor(selectedDate);
+      const month = monthFor(reading);
+      const week = weekFor(reading);
+      document.title = `En la Palabra | ${formatDate(reading.date, { weekday: undefined })} | PRFWB`;
+      document.querySelector('meta[name="description"]').setAttribute('content', `Lectura bíblica diaria de PRFWB - ${reading.title}.`);
+      document.getElementById('heroMonthTheme').textContent = month.theme;
+      document.getElementById('toolbarDate').textContent = formatDate(reading.date);
+      document.getElementById('monthDescription').textContent = month.description;
+      document.getElementById('todayReading').innerHTML = `
+        <div class="reading-meta">
+          <span class="pill">LECTURA DE HOY</span>
+          <span class="pill blue">${formatDate(reading.date)}</span>
+          <span class="pill blue">${reading.version}</span>
+        </div>
+        <div class="muted">Tema del mes: ${month.theme}</div>
+        <div class="muted">Tema de la semana: ${week.title}</div>
+        <h2 class="reading-title">${reading.title}</h2>
+        <div class="reference">${reading.reference}</div>
+        ${bibleBlock(reading)}
+        <div class="content-grid">
+          <section class="content-box"><h3>Para comprender</h3><p>${reading.explanation}</p></section>
+          <section class="content-box"><h3>Para meditar</h3><p>${reading.reflectionQuestion}</p></section>
+          <section class="content-box"><h3>Para vivirlo</h3><p>${reading.application}</p></section>
+          <section class="content-box"><h3>Para orar</h3><p>${reading.prayer}</p></section>
+        </div>
+      `;
+      renderSunday(reading.date);
+      renderWeek(week, reading.date);
+      renderMonth(month);
+      renderSearch();
+      document.getElementById('sharePanel').hidden = true;
+      history.replaceState(null, '', `${location.pathname}?fecha=${reading.date}${isEmbedMode() ? '&embed=1' : ''}`);
+      requestEmbedResize();
+    }
+    function renderSunday(date) {
+      const sunday = sundayFor(date);
+      document.getElementById('sundayCard').innerHTML = `
+        <span class="pill">ESTE DOMINGO</span>
+        <h2>${sunday.theme}</h2>
+        <p class="muted">${formatDate(sunday.date)}</p>
+        <p class="reference">${sunday.reference} <span class="muted">(${sunday.version})</span></p>
+        <p>${sunday.introduction}</p>
+        <p><strong>Verdad principal:</strong> ${sunday.mainTruth}</p>
+        <div class="bible-placeholder">${sunday.bibleText ? `<div class="bible-text">${sunday.bibleText}</div>` : `Lee ${sunday.reference} en tu Biblia (${sunday.version}).`}${sourceNote(sunday.reference, sunday.bibleTextSource)}</div>
+        <a class="button dark" href="./en-la-palabra-domingo.html?fecha=${sunday.date}${isEmbedMode() ? '&embed=1' : ''}">Ver lectura del domingo</a>
+      `;
+    }
+    function renderWeek(week, currentDate) {
+      const items = readings.filter((reading) => reading.date >= week.start && reading.date <= week.end);
+      document.getElementById('weekList').innerHTML = items.map((reading) => `
+        <a class="day-row ${reading.date === currentDate ? 'current' : ''}" href="./en-la-palabra.html?fecha=${reading.date}${isEmbedMode() ? '&embed=1' : ''}">
+          <strong>${parseDate(reading.date).toLocaleDateString('es-PR', { weekday:'long' })}</strong>
+          <span><strong>${reading.reference}</strong><br>${reading.title}</span>
+        </a>
+      `).join('');
+    }
+    function renderMonth(month) {
+      document.getElementById('monthGrid').innerHTML = month.weeks.map((week) => {
+        const items = readings.filter((reading) => reading.date >= week.start && reading.date <= week.end);
+        return `<article class="week-card">
+          <h3>${week.title}</h3>
+          <p class="muted">${formatDate(week.start, { weekday: undefined })} - ${formatDate(week.end, { weekday: undefined })}</p>
+          <p><strong>Domingo:</strong> ${week.sunday.reference}</p>
+          <ul>${items.map((item) => `<li><a href="./en-la-palabra.html?fecha=${item.date}${isEmbedMode() ? '&embed=1' : ''}">${item.reference}</a></li>`).join('')}</ul>
+        </article>`;
+      }).join('');
+    }
+    function renderSearch() {
+      const query = normalizeText(document.getElementById('searchInput').value.trim());
+      const results = query ? readings.filter((reading) => normalizeText([reading.reference, reading.title, reading.monthTheme, reading.weekTheme, ...(reading.keywords || [])].join(' ')).includes(query)).slice(0, 12) : [];
+      document.getElementById('searchResults').innerHTML = results.map((reading) => `
+        <a class="day-row" href="./en-la-palabra.html?fecha=${reading.date}${isEmbedMode() ? '&embed=1' : ''}">
+          <strong>${formatDate(reading.date, { year: undefined })}</strong>
+          <span><strong>${reading.reference}</strong><br>${reading.title}</span>
+        </a>
+      `).join('') || (query ? '<p class="muted">No se encontraron lecturas.</p>' : '');
+    }
+    document.getElementById('prevDay').onclick = () => { selectedDate = shiftDate(readingFor(selectedDate).date, -1); renderReading(); };
+    document.getElementById('nextDay').onclick = () => { selectedDate = shiftDate(readingFor(selectedDate).date, 1); renderReading(); };
+    document.getElementById('todayBtn').onclick = () => { selectedDate = getPuertoRicoDate(); renderReading(); };
+    document.getElementById('prevWeek').onclick = () => { selectedDate = shiftDate(readingFor(selectedDate).date, -7); renderReading(); };
+    document.getElementById('nextWeek').onclick = () => { selectedDate = shiftDate(readingFor(selectedDate).date, 7); renderReading(); };
+    document.getElementById('searchInput').addEventListener('input', renderSearch);
+    document.getElementById('shareBtn').onclick = async () => {
+      const reading = readingFor(selectedDate);
+      const url = readingUrl(reading);
+      const text = shareText(reading);
+      const shareData = { title:`En la Palabra - ${reading.title}`, text, url };
+      if (navigator.share) {
+        try {
+          await navigator.share(shareData);
+          return;
+        } catch (error) {
+          if (error.name === 'AbortError') return;
+        }
+      }
+      showSharePanel(reading, text, url);
+    };
+    function showSharePanel(reading, text, url) {
+      const panel = document.getElementById('sharePanel');
+      panel.innerHTML = `
+        <strong>Compartir ${reading.reference}</strong>
+        <div class="actions">
+          <a class="button" href="https://wa.me/?text=${encodeURIComponent(text)}" target="_blank" rel="noopener">WhatsApp</a>
+          <button class="button secondary" type="button" id="copyShareLink">Copiar lectura</button>
+          <a class="button secondary" href="${url}" target="_blank" rel="noopener">Abrir lectura</a>
+        </div>
+        <p class="muted">Si estás dentro de Wix y el celular bloquea compartir, usa WhatsApp o copia el enlace.</p>
+      `;
+      panel.hidden = false;
+      document.getElementById('copyShareLink').onclick = async () => {
+        try {
+          await navigator.clipboard.writeText(text);
+          panel.querySelector('.muted').textContent = 'Lectura copiada.';
+        } catch (error) {
+          panel.querySelector('.muted').textContent = url;
+        }
+      };
+      requestEmbedResize();
+    }
+    function requestEmbedResize() {
+      if (!isEmbedMode()) return;
+      window.requestAnimationFrame(() => {
+        const height = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+        window.parent.postMessage({ source: 'en-la-palabra-prfwb', type: 'resize', height }, '*');
+      });
+    }
+    if (window.ResizeObserver) {
+      new ResizeObserver(requestEmbedResize).observe(document.body);
+    }
+    window.addEventListener('load', requestEmbedResize);
+    window.addEventListener('resize', requestEmbedResize);
+    renderReading();
+  </script>
+</body>
+</html>

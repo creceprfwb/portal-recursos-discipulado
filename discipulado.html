@@ -8,7 +8,13 @@
       name="description"
       content="Guía de discipulado de 12 semanas: formando discípulos que forman discípulos."
     />    <script>
-      if (new URLSearchParams(window.location.search).get('embed') === '1') {
+      let isEmbedded = false;
+      try {
+        isEmbedded = window.self !== window.top;
+      } catch (error) {
+        isEmbedded = true;
+      }
+      if (new URLSearchParams(window.location.search).get('embed') === '1' || isEmbedded) {
         document.documentElement.classList.add('embed-mode');
         window.addEventListener('DOMContentLoaded', function () {
           document.querySelectorAll('a[href]').forEach(function (link) {
