@@ -115,6 +115,11 @@
         background: var(--white);
         box-shadow: var(--shadow);
       }
+      .feature + .feature { margin-top: 30px; }
+      .more-events-head { margin: 46px 0 18px; text-align: center; }
+      .more-events-head h2 { margin: 0; color: var(--deep); font-size: clamp(24px, 3vw, 32px); }
+      .simple-content { display: flex; flex-direction: column; align-items: flex-start; }
+      .simple-content .subtitle { margin-bottom: 24px; }
       .poster {
         min-width: 0;
         min-height: 100%;
@@ -516,6 +521,63 @@
               <span data-lang="es">El registro se completa en la plataforma oficial.</span>
               <span data-lang="en">Registration is completed through the official platform.</span>
             </p>
+          </div>
+        </article>
+
+        <header class="more-events-head">
+          <h2>
+            <span data-lang="es">Más eventos</span>
+            <span data-lang="en">More events</span>
+          </h2>
+        </header>
+
+        <article class="feature">
+          <div class="poster">
+            <img src="./files/es-mejor-juntos.jpg" alt="Es Mejor Juntos - Encuentro de Pastores y Líderes PRFWB" />
+          </div>
+          <div class="content simple-content">
+            <div class="brand-mark">
+              <span>PRFWB</span>
+              <small>Puerto Rico Free Will Baptists</small>
+            </div>
+            <div class="tag">
+              <span data-lang="es">Encuentro de líderes</span>
+              <span data-lang="en">Leaders gathering</span>
+            </div>
+            <h2 class="event-title">Es Mejor <span>Juntos</span></h2>
+            <p class="subtitle">
+              <span data-lang="es">Encuentro de pastores y líderes PRFWB.</span>
+              <span data-lang="en">A gathering for PRFWB pastors and leaders.</span>
+            </p>
+            <a class="btn btn-primary" href="https://www.prfwb.com/events/es-mejor-juntos" target="_top" rel="noopener">
+              <span data-lang="es">Regístrate</span>
+              <span data-lang="en">Register</span>
+            </a>
+          </div>
+        </article>
+
+        <article class="feature">
+          <div class="poster">
+            <img src="./files/taller-plataforma-crece.jpg" alt="Taller de Presentación de la Plataforma CRECE - Ministerio PRFWB" />
+          </div>
+          <div class="content simple-content">
+            <div class="brand-mark">
+              <span>CRECE</span>
+              <small>Ministerio PRFWB</small>
+            </div>
+            <div class="tag">
+              <span data-lang="es">Taller CRECE</span>
+              <span data-lang="en">CRECE workshop</span>
+            </div>
+            <h2 class="event-title">Plataforma <span>CRECE</span></h2>
+            <p class="subtitle">
+              <span data-lang="es">Taller de presentación de la Plataforma CRECE para iglesias y maestros.</span>
+              <span data-lang="en">Presentation workshop for the CRECE Platform for churches and teachers.</span>
+            </p>
+            <a class="btn btn-primary" href="https://www.prfwb.com/events/taller-de-presentacion-de-la-plataforma-crece" target="_top" rel="noopener">
+              <span data-lang="es">Regístrate</span>
+              <span data-lang="en">Register</span>
+            </a>
           </div>
         </article>
       </div>
