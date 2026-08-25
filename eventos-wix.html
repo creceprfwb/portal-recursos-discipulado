@@ -120,6 +120,38 @@
       .more-events-head h2 { margin: 0; color: var(--deep); font-size: clamp(22px, 3vw, 28px); }
       .simple-content { display: flex; flex-direction: column; align-items: flex-start; }
       .simple-content .subtitle { margin-bottom: 18px; }
+      .verse-quote {
+        margin: 0 0 18px;
+        padding: 14px 18px;
+        border-left: 4px solid var(--gold);
+        border-radius: 12px;
+        background: rgba(199, 145, 43, .08);
+        color: var(--deep);
+        font-size: 15px;
+        font-style: italic;
+      }
+      .verse-quote cite {
+        display: block;
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 800;
+        font-style: normal;
+        text-transform: uppercase;
+        letter-spacing: .6px;
+      }
+      .event-meta {
+        display: grid;
+        gap: 4px;
+        margin: 0 0 18px;
+        padding: 14px 16px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, .7);
+        color: var(--deep);
+        font-size: 14px;
+      }
+      .event-meta a { color: var(--teal); font-weight: 800; }
       .poster {
         min-width: 0;
         min-height: 100%;
@@ -538,6 +570,11 @@
               <span data-lang="es">Encuentro de pastores y líderes PRFWB.</span>
               <span data-lang="en">A gathering for PRFWB pastors and leaders.</span>
             </p>
+            <blockquote class="verse-quote">
+              <span data-lang="es">“Mejores son dos que uno; porque tienen mejor paga de su trabajo.”</span>
+              <span data-lang="en">“Two are better than one, because they have a good return for their labor.”</span>
+              <cite>Eclesiastés 4:9 (RVR1960)</cite>
+            </blockquote>
             <a class="btn btn-primary" href="https://www.prfwb.com/events/es-mejor-juntos" target="_top" rel="noopener">
               <span data-lang="es">Regístrate</span>
               <span data-lang="en">Register</span>
@@ -563,6 +600,16 @@
               <span data-lang="es">Taller de presentación de la Plataforma CRECE para iglesias y maestros.</span>
               <span data-lang="en">Presentation workshop for the CRECE Platform for churches and teachers.</span>
             </p>
+            <div class="event-meta">
+              <strong>
+                <span data-lang="es">24 de septiembre, 2026 · 7:00 PM - 8:30 PM</span>
+                <span data-lang="en">September 24, 2026 · 7:00 PM - 8:30 PM</span>
+              </strong>
+              <a href="https://maps.app.goo.gl/4hn7f6E3VVqqBFzB9" target="_blank" rel="noopener">
+                <span data-lang="es">Ver ubicación</span>
+                <span data-lang="en">View location</span>
+              </a>
+            </div>
             <a class="btn btn-primary" href="https://www.prfwb.com/events/taller-de-presentacion-de-la-plataforma-crece" target="_top" rel="noopener">
               <span data-lang="es">Regístrate</span>
               <span data-lang="en">Register</span>
