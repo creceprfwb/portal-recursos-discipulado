@@ -39,6 +39,16 @@
       html.embed-mode .logo-enlace { min-height: 140px !important; padding: 16px !important; }
       html.embed-mode .logo-iglesia { width: 128px !important; height: 105px !important; }
       html.embed-mode .iglesia-cuerpo { padding: 16px !important; }
+      /* El iframe del embed crece a la altura total del contenido y no tiene
+         scroll propio, asi que "fixed" no queda anclado a lo visible: en su
+         lugar el popup se fija al tope del documento embebido. */
+      html.embed-mode .crece-popup {
+        position: absolute !important;
+        inset: 0 0 auto 0 !important;
+        height: auto !important;
+        padding-top: 26px !important;
+        padding-bottom: 26px !important;
+      }
     </style>
     <style>
     :root{
@@ -389,8 +399,8 @@
       font-size:13px;
     }
 
-    /* JEEC POPUP */
-    .jeec-popup{
+    /* CRECE POPUP */
+    .crece-popup{
       position:fixed;
       inset:0;
       z-index:100;
@@ -403,8 +413,9 @@
       pointer-events:none;
       transition:opacity .22s ease;
     }
-    .jeec-popup.activo{opacity:1;pointer-events:auto}
-    .jeec-popup-card{
+    .crece-popup.activo{opacity:1;pointer-events:auto}
+    .crece-popup-card{
+      position:relative;
       width:min(920px,100%);
       display:grid;
       grid-template-columns:1.02fr .98fr;
@@ -413,14 +424,19 @@
       background:var(--blanco);
       color:var(--azul-oscuro);
       box-shadow:0 30px 90px rgba(0,0,0,.34);
+      transform:scale(.94);
+      transition:transform .22s ease;
     }
-    .jeec-popup-copy{padding:38px}
-    .jeec-popup-copy h2{margin:0 0 12px;font-size:clamp(30px,5vw,50px);line-height:1.05}
-    .jeec-popup-copy p{margin:0 0 24px;color:var(--texto);font-size:16px}
-    .jeec-popup-actions{display:flex;flex-wrap:wrap;gap:12px}
-    .jeec-popup-media{min-height:340px;background:#102f40}
-    .jeec-popup-media img{width:100%;height:100%;object-fit:cover}
-    .jeec-popup-close{
+    .crece-popup.activo .crece-popup-card{transform:scale(1)}
+    .crece-popup-copy{padding:44px 42px}
+    .crece-popup-copy .etiqueta{color:var(--coral)}
+    .crece-popup-copy h2{margin:10px 0 12px;font-size:clamp(28px,4.2vw,40px);line-height:1.08}
+    .crece-popup-copy p{margin:0 0 26px;color:var(--texto);font-size:16px}
+    .crece-popup-actions{display:flex;flex-wrap:wrap;align-items:center;gap:18px}
+    .crece-popup-dismiss{background:none;border:0;padding:0;color:var(--texto);font-size:14px;font-weight:700;text-decoration:underline;cursor:pointer}
+    .crece-popup-media{min-height:340px;background:#102f40}
+    .crece-popup-media img{width:100%;height:100%;object-fit:cover}
+    .crece-popup-close{
       position:absolute;
       top:18px;
       right:18px;
@@ -501,10 +517,10 @@
       .nosotros-frase{padding:32px 25px}
       .iglesias-grid,.pilares-grid{grid-template-columns:1fr}
       .logo-enlace{min-height:185px}
-      .jeec-popup-card{grid-template-columns:1fr;max-height:88vh;overflow:auto}
-      .jeec-popup-copy{padding:30px 22px}
-      .jeec-popup-actions{display:grid}
-      .jeec-popup-media{min-height:220px;order:-1}
+      .crece-popup-card{grid-template-columns:1fr;max-height:88vh;overflow:auto}
+      .crece-popup-copy{padding:30px 22px}
+      .crece-popup-actions{display:grid;text-align:center}
+      .crece-popup-media{min-height:220px;order:-1}
       .apoyo-caja{grid-template-columns:1fr;padding:36px 25px}
       .apoyo-boton{justify-content:stretch}
       .apoyo-boton .boton{width:100%}
@@ -786,6 +802,24 @@
     <a href="https://creceprfwb.github.io/portal-recursos-discipulado/admin.html" target="_top">Admin</a>
   </footer>
 
+  <div class="crece-popup" id="crecePopup" role="dialog" aria-modal="true" aria-labelledby="crecePopupTitulo">
+    <div class="crece-popup-card">
+      <button type="button" class="crece-popup-close" id="crecePopupCerrar" aria-label="Cerrar">&times;</button>
+      <div class="crece-popup-copy">
+        <span class="etiqueta">Ministerio CRECE</span>
+        <h2 id="crecePopupTitulo">Un espacio para que niños y jóvenes crezcan en la fe</h2>
+        <p>Asistencia con código QR, premios por participación y lecciones para cada domingo. Descubre la plataforma que usan nuestros maestros de CRECE.</p>
+        <div class="crece-popup-actions">
+          <a class="boton boton-principal" href="https://crece.prfwb.com/" target="_top" rel="noopener">Visitar CRECE →</a>
+          <button type="button" class="crece-popup-dismiss" id="crecePopupAhoraNo">Ahora no</button>
+        </div>
+      </div>
+      <div class="crece-popup-media">
+        <img src="./files/taller-plataforma-crece.jpg" alt="Maestros participando en el taller de la plataforma CRECE">
+      </div>
+    </div>
+  </div>
+
   <script>
     function irASeccion(id) {
       const destino = document.getElementById(id);
@@ -800,6 +834,40 @@
       });
     }
 
+    (function () {
+      const popup = document.getElementById("crecePopup");
+      const params = new URLSearchParams(window.location.search);
+
+      if (!popup || params.get("popup") === "0") {
+        return;
+      }
+
+      const DISMISS_KEY = "crecePopupDismissed";
+
+      if (sessionStorage.getItem(DISMISS_KEY) === "1") {
+        return;
+      }
+
+      function cerrarPopup() {
+        popup.classList.remove("activo");
+        sessionStorage.setItem(DISMISS_KEY, "1");
+      }
+
+      document.getElementById("crecePopupCerrar").addEventListener("click", cerrarPopup);
+      document.getElementById("crecePopupAhoraNo").addEventListener("click", cerrarPopup);
+      popup.addEventListener("click", (event) => {
+        if (event.target === popup) {
+          cerrarPopup();
+        }
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          cerrarPopup();
+        }
+      });
+
+      window.setTimeout(() => popup.classList.add("activo"), 900);
+    })();
   </script>
   <script src="js/wix-embed-resize.js"></script>
 
