@@ -694,6 +694,8 @@
     }
 
     function renderEventRow(item) {
+      const cleaned = cleanDescription(item.description || '');
+      const link = item.link || cleaned.link;
       return `
         <article class="row">
           <div class="row-head">
@@ -702,8 +704,8 @@
               ${item.isRecurring ? '<span class="pill" style="background:#94a3b8;color:#fff">Recurrente</span>' : ''}
               <div class="row-title">${escapeHtml(item.title)}</div>
               <div class="muted">${item.start ? `${escapeHtml(item.start)}${item.end ? ' - ' + escapeHtml(item.end) : ''} | ` : ''}${escapeHtml(item.location || 'Jesus es el Centro')}</div>
-              ${item.description ? `<div>${escapeHtml(item.description)}</div>` : ''}
-              ${item.link ? `<div><a href="${escapeHtml(item.link)}" target="_blank" rel="noopener">${escapeHtml(item.link)}</a></div>` : ''}
+              ${cleaned.text ? `<div>${escapeHtml(cleaned.text).replace(/\n/g, '<br>')}</div>` : ''}
+              ${link ? `<div><a href="${escapeHtml(link)}" target="_blank" rel="noopener">${escapeHtml(link)}</a></div>` : ''}
             </div>
           </div>
           <div class="row-actions">
@@ -731,8 +733,9 @@
       document.getElementById('locationInput').value = item.location || '';
       document.getElementById('categoryInput').value = item.category || '';
       document.getElementById('colorInput').value = item.color || COLOR_PALETTE[0].value;
-      document.getElementById('linkInput').value = item.link || '';
-      document.getElementById('descriptionInput').value = item.description || '';
+      const cleaned = cleanDescription(item.description || '');
+      document.getElementById('linkInput').value = item.link || cleaned.link;
+      document.getElementById('descriptionInput').value = cleaned.text;
       document.getElementById('recurringRow').style.display = 'none';
       document.getElementById('recurringUntilRow').style.display = 'none';
       els.formTitle.textContent = 'Editar evento';
