@@ -38,12 +38,16 @@
   var sendScheduled = false;
 
   function getDocumentHeight() {
+    // Only <body>'s own measurements are used. The root <html> element
+    // (document.documentElement) is special-cased by browsers to never
+    // report less than the current viewport for clientHeight/scrollHeight/
+    // offsetHeight alike. Since the viewport in this auto-resized iframe
+    // IS whatever height the wrapper just set, including any of those
+    // created a feedback loop (resize -> bigger reported height -> wrapper
+    // resizes again -> ...) that grew the iframe without bound.
     return Math.max(
       document.body.scrollHeight,
-      document.body.offsetHeight,
-      document.documentElement.clientHeight,
-      document.documentElement.scrollHeight,
-      document.documentElement.offsetHeight
+      document.body.offsetHeight
     );
   }
 
