@@ -164,6 +164,23 @@
       .row-meta { color: var(--muted); font-size: 13px; margin-top: 2px; }
       .page-footer { margin-top: 24px; text-align: center; }
       .page-footer a { color: var(--muted); font-size: 12px; font-weight: 700; text-decoration: underline; }
+      .view-toggle { display: flex; gap: 6px; }
+      .view-toggle .btn.ghost.active { background: var(--deep); color: var(--white); }
+      .agenda-date-heading {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        margin: 18px 0 8px;
+        padding: 6px 10px;
+        background: var(--soft);
+        color: var(--deep);
+        font-size: 12px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: .4px;
+        border-radius: 8px;
+      }
+      .agenda-date-heading:first-child { margin-top: 0; }
       @media (max-width: 640px) {
         .calendar-wrap { padding: 22px 10px 28px; }
         .calendar-card { padding: 12px; border-radius: 18px; }
@@ -201,20 +218,26 @@
         </div>
         <section class="calendar-card" aria-label="Calendario Jesús es el Centro">
           <div class="section-title">
-            <div class="month-title" id="monthTitle"></div>
-            <div class="month-nav">
-              <button class="btn ghost" type="button" id="prevMonth">Anterior</button>
-              <button class="btn ghost" type="button" id="nextMonth">Siguiente</button>
+            <h2 style="margin:0;color:var(--deep);font-size:20px">Agenda</h2>
+            <div class="view-toggle">
+              <button class="btn ghost active" type="button" id="viewAgendaBtn">Lista</button>
+              <button class="btn ghost" type="button" id="viewMonthBtn">Mes</button>
             </div>
           </div>
-          <div class="calendar" id="calendar"></div>
-          <div class="upcoming">
-            <h2>Próximas actividades especiales</h2>
-            <div class="event-list" id="upcomingList"></div>
+
+          <div id="agendaListView">
+            <div class="event-list" id="agendaList"></div>
           </div>
-          <div class="upcoming">
-            <h2>Actividades recurrentes</h2>
-            <div class="event-list" id="upcomingRecurringList"></div>
+
+          <div id="agendaMonthView" style="display:none">
+            <div class="section-title">
+              <div class="month-title" id="monthTitle"></div>
+              <div class="month-nav">
+                <button class="btn ghost" type="button" id="prevMonth">Anterior</button>
+                <button class="btn ghost" type="button" id="nextMonth">Siguiente</button>
+              </div>
+            </div>
+            <div class="calendar" id="calendar"></div>
           </div>
         </section>
         <footer class="page-footer">
@@ -237,8 +260,7 @@
       const els = {
         calendar: document.getElementById('calendar'),
         monthTitle: document.getElementById('monthTitle'),
-        upcomingList: document.getElementById('upcomingList'),
-        upcomingRecurringList: document.getElementById('upcomingRecurringList')
+        agendaList: document.getElementById('agendaList')
       };
 
       function toDateInput(date) {
@@ -272,7 +294,7 @@
 
       function render() {
         renderCalendar();
-        renderUpcoming();
+        renderAgendaList();
       }
 
       function renderCalendar() {
@@ -310,21 +332,52 @@
         `;
       }
 
-      function renderUpcoming() {
+      function renderAgendaList() {
         const today = toDateInput(new Date());
         const upcoming = state.events
           .filter((item) => item.date >= today)
           .sort((a, b) => `${a.date} ${a.start || ''}`.localeCompare(`${b.date} ${b.start || ''}`));
 
         const special = upcoming.filter((item) => !item.isRecurring).slice(0, 10);
-        els.upcomingList.innerHTML = special.map(eventRow).join('') || '<div class="row-meta">No hay actividades especiales próximas registradas.</div>';
 
         const recurring = upcoming.filter((item) => item.isRecurring);
         const nextByTitle = new Map();
         recurring.forEach((item) => {
           if (!nextByTitle.has(item.title)) nextByTitle.set(item.title, item);
         });
-        els.upcomingRecurringList.innerHTML = [...nextByTitle.values()].map(eventRow).join('') || '<div class="row-meta">No hay actividades recurrentes registradas.</div>';
+
+        const items = [...special, ...nextByTitle.values()]
+          .sort((a, b) => `${a.date} ${a.start || ''}`.localeCompare(`${b.date} ${b.start || ''}`));
+
+        if (!items.length) {
+          els.agendaList.innerHTML = '<div class="row-meta">No hay actividades próximas registradas.</div>';
+          return;
+        }
+
+        let lastDate = '';
+        let html = '';
+        items.forEach((item) => {
+          if (item.date !== lastDate) {
+            lastDate = item.date;
+            html += `<div class="agenda-date-heading">${formatDate(item.date)}</div>`;
+          }
+          html += eventRow(item);
+        });
+        els.agendaList.innerHTML = html;
+      }
+
+      function showAgendaListView() {
+        document.getElementById('agendaListView').style.display = '';
+        document.getElementById('agendaMonthView').style.display = 'none';
+        document.getElementById('viewAgendaBtn').classList.add('active');
+        document.getElementById('viewMonthBtn').classList.remove('active');
+      }
+
+      function showAgendaMonthView() {
+        document.getElementById('agendaListView').style.display = 'none';
+        document.getElementById('agendaMonthView').style.display = '';
+        document.getElementById('viewAgendaBtn').classList.remove('active');
+        document.getElementById('viewMonthBtn').classList.add('active');
       }
 
       document.getElementById('prevMonth').addEventListener('click', () => {
@@ -336,6 +389,9 @@
         state.monthCursor = new Date(state.monthCursor.getFullYear(), state.monthCursor.getMonth() + 1, 1);
         render();
       });
+
+      document.getElementById('viewAgendaBtn').addEventListener('click', showAgendaListView);
+      document.getElementById('viewMonthBtn').addEventListener('click', showAgendaMonthView);
 
       loadData();
     </script>
