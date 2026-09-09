@@ -13,6 +13,7 @@ Uso:
     python scripts/export_google_calendar.py
 """
 
+import html
 import json
 import re
 import urllib.request
@@ -69,6 +70,25 @@ def parse_ics_datetime(value: str) -> datetime:
     if is_utc:
         dt += PUERTO_RICO_UTC_OFFSET
     return dt
+
+
+def clean_description(value: str) -> tuple:
+    """Google Calendar descriptions sometimes contain raw HTML (e.g. a link
+    added with the rich-text editor comes through as `<a href="...">`).
+    Pulls out the first link so it can populate the dedicated "link" field,
+    and strips any HTML tags from the description so it renders as plain
+    text instead of literal markup."""
+    link = ""
+    match = re.search(r'<a\s[^>]*href=["\']([^"\']+)["\']', value, re.IGNORECASE)
+    if match:
+        link = match.group(1)
+
+    text = re.sub(r'(?i)<br\s*/?>', '\n', value)
+    text = re.sub(r'(?i)</(p|div)>', '\n', text)
+    text = re.sub(r'<[^>]+>', '', text)
+    text = html.unescape(text)
+    text = re.sub(r'\n{3,}', '\n\n', text).strip()
+    return text, link
 
 
 def sanitize_id(uid: str) -> str:
@@ -128,6 +148,7 @@ def parse_raw_events(lines):
 
 
 def build_event(raw, start_dt: datetime, end_dt: datetime, event_id: str, is_recurring: bool) -> dict:
+    description, link = clean_description(raw.get("description", ""))
     return {
         "id": event_id,
         "title": raw.get("title", ""),
@@ -135,8 +156,8 @@ def build_event(raw, start_dt: datetime, end_dt: datetime, event_id: str, is_rec
         "start": start_dt.strftime("%H:%M") if raw.get("has_time", True) else "",
         "end": end_dt.strftime("%H:%M") if raw.get("has_time", True) else "",
         "location": raw.get("location", ""),
-        "description": raw.get("description", ""),
-        "link": "",
+        "description": description,
+        "link": link,
         "isRecurring": is_recurring,
     }
 

@@ -549,6 +549,31 @@
       }[char]));
     }
 
+    // Algunos eventos importados de Google Calendar traen HTML crudo en la
+    // descripcion (ej. un link agregado con el editor de texto enriquecido
+    // llega como `<a href="...">`). Saca el primer link para el campo
+    // "link" y limpia las etiquetas para que se vea como texto normal.
+    function cleanDescription(value) {
+      const raw = String(value || '');
+      const linkMatch = raw.match(/<a\s[^>]*href=["']([^"']+)["']/i);
+      const link = linkMatch ? linkMatch[1] : '';
+
+      const text = raw
+        .replace(/<br\s*\/?>/gi, '\n')
+        .replace(/<\/(p|div)>/gi, '\n')
+        .replace(/<[^>]+>/g, '')
+        .replace(/&nbsp;/gi, ' ')
+        .replace(/&amp;/gi, '&')
+        .replace(/&lt;/gi, '<')
+        .replace(/&gt;/gi, '>')
+        .replace(/&quot;/gi, '"')
+        .replace(/&#0?39;/gi, "'")
+        .replace(/\n{3,}/g, '\n\n')
+        .trim();
+
+      return { text, link };
+    }
+
     function formatDate(dateKey) {
       return new Date(`${dateKey}T00:00:00`).toLocaleDateString('es-PR', {
         weekday:'short',
@@ -876,6 +901,7 @@
       let imported = 0;
       const failed = [];
       for (const item of events) {
+        const cleaned = cleanDescription(item.description || '');
         const payload = {
           id: item.id || '',
           title: item.title || '',
@@ -883,8 +909,8 @@
           start: item.start || '',
           end: item.end || '',
           location: item.location || '',
-          description: item.description || '',
-          link: item.link || '',
+          description: cleaned.text,
+          link: item.link || cleaned.link,
           isRecurring: Boolean(item.isRecurring),
           category: 'General',
           color: colorForTitle(item.title || '')
