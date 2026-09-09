@@ -178,13 +178,6 @@
     }
     .actions { display:flex; flex-wrap:wrap; gap:10px; }
 
-    .grid {
-      display:grid;
-      grid-template-columns:380px minmax(0, 1fr);
-      gap:18px;
-      margin-top:18px;
-    }
-
     form { display:grid; gap:12px; }
     label { display:grid; gap:6px; font-size:13px; font-weight:900; }
     input, select, textarea {
@@ -278,12 +271,11 @@
     }
 
     @media (max-width:980px) {
-      .grid { grid-template-columns:1fr; }
       .calendar { gap:6px; }
       .day { min-height:86px; padding:7px; }
     }
     @media (max-width:640px) {
-      .nav-inner, .toolbar, .section-title, .row-head { align-items:stretch; flex-direction:column; }
+      .nav-inner, .toolbar, .row-head { align-items:stretch; flex-direction:column; }
       .tabs { width:100%; display:grid; grid-template-columns:1fr; }
       .two { grid-template-columns:1fr; }
       .calendar { gap:3px; }
@@ -305,6 +297,82 @@
       .actions, .row-actions, .month-nav { width:100%; }
       .actions, .row-actions { display:grid; grid-template-columns:1fr; }
       .btn { width:100%; }
+    }
+
+    /* ===== App shell: bottom tab bar + agenda-first admin ===== */
+    .stats {
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:12px;
+      margin-bottom:18px;
+    }
+    .stat {
+      padding:16px;
+      background:var(--blanco);
+      border:1px solid var(--borde);
+      border-radius:12px;
+      box-shadow:0 10px 28px rgba(13,43,58,.07);
+    }
+    .stat strong { display:block; font-size:26px; line-height:1; }
+    .stat span { color:var(--texto); font-size:12px; font-weight:800; }
+
+    .tab-panel[hidden] { display:none; }
+
+    .view-toggle { display:flex; gap:6px; }
+    .btn.light.small.active { background:var(--azul-oscuro); color:var(--blanco); border-color:var(--azul-oscuro); }
+
+    .agenda-list { display:grid; gap:10px; }
+    .agenda-date-heading {
+      position:sticky;
+      top:73px;
+      z-index:5;
+      margin:18px 0 8px;
+      padding:6px 10px;
+      background:var(--fondo);
+      color:var(--azul-oscuro);
+      font-size:12px;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.4px;
+      border-radius:8px;
+    }
+    .agenda-date-heading:first-child { margin-top:0; }
+
+    .tabbar[hidden] { display:none; }
+    .tabbar {
+      position:fixed;
+      left:0;
+      right:0;
+      bottom:0;
+      z-index:30;
+      display:flex;
+      background:var(--blanco);
+      border-top:1px solid var(--borde);
+      box-shadow:0 -8px 24px rgba(13,43,58,.1);
+      padding-bottom:env(safe-area-inset-bottom, 0);
+    }
+    .tabbar-btn {
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:3px;
+      padding:10px 4px 8px;
+      border:0;
+      background:none;
+      color:var(--texto);
+      font-size:11px;
+      font-weight:900;
+      cursor:pointer;
+    }
+    .tabbar-icon { font-size:20px; line-height:1; }
+    .tabbar-btn.active { color:var(--azul-profundo); }
+    body.has-tabbar .shell { padding-bottom:86px; margin-top:18px; }
+    body.has-tabbar .hero { display:none; }
+    @media (min-width:641px) {
+      .tabbar { justify-content:center; gap:6px; }
+      .tabbar-btn { flex:none; flex-direction:row; padding:14px 22px; font-size:13px; }
+      .tabbar-icon { font-size:16px; }
     }
   </style>
 </head>
@@ -365,6 +433,7 @@
           <div class="muted">Los datos se comparten con todo el equipo en tiempo real.</div>
         </div>
         <div class="actions">
+          <a class="btn light" href="./admin.html">Todos los paneles</a>
           <button class="btn light" type="button" id="backupBtn">Exportar data</button>
           <label class="btn light" for="importFile">Importar data</label>
           <input id="importFile" type="file" accept="application/json" hidden>
@@ -372,76 +441,29 @@
         </div>
       </section>
 
-      <section class="grid">
-        <aside class="card">
-          <h2>Crear asignación</h2>
-          <p class="muted">Registra el servicio y asigna servidor. Si no hay servidor todavía, queda marcado como sin cubrir.</p>
+      <section class="stats" aria-label="Resumen">
+        <div class="stat"><strong id="statServers">0</strong><span>Servidores</span></div>
+        <div class="stat"><strong id="statOpen">0</strong><span>Servicios sin cubrir</span></div>
+      </section>
 
-          <form id="assignmentForm">
-            <label>Fecha
-              <input type="date" id="dateInput" required>
-            </label>
-            <div class="two">
-              <label>Hora inicio
-                <input type="time" id="startInput" value="09:00" required>
-              </label>
-              <label>Hora final
-                <input type="time" id="endInput" value="10:30" required>
-              </label>
-            </div>
-            <label>Servicio
-              <input id="serviceInput" value="Culto dominical" required>
-            </label>
-            <label>Área
-              <select id="roleInput">
-                <option>Estacionamiento</option>
-                <option>Flujo de vehículos</option>
-                <option>Seguridad peatonal</option>
-                <option>Coordinador</option>
-                <option>Apoyo general</option>
-              </select>
-            </label>
-            <label>Servidor
-              <select id="serverSelect"></select>
-            </label>
-            <label>Estado
-              <select id="statusInput">
-                <option value="open">Sin confirmar</option>
-                <option value="confirmed">Confirmado</option>
-                <option value="done">Completado</option>
-              </select>
-            </label>
-            <label>Notas
-              <textarea id="notesInput" placeholder="Ej. traer chaleco, llegar 20 minutos antes..."></textarea>
-            </label>
-            <input type="hidden" id="editingId">
-            <button class="btn gold" type="submit" id="saveAssignmentBtn">Guardar asignación</button>
-          </form>
+      <section class="card tab-panel" id="tabAgenda">
+        <div class="section-title">
+          <div>
+            <h2>Agenda</h2>
+            <div class="muted">Próximos servicios en orden. Lo sin cubrir queda marcado en rojo.</div>
+          </div>
+          <div class="view-toggle">
+            <button class="btn light small active" type="button" id="viewAgendaBtn">Lista</button>
+            <button class="btn light small" type="button" id="viewMonthBtn">Mes</button>
+          </div>
+        </div>
 
-          <hr style="border:0;border-top:1px solid var(--borde);margin:22px 0">
+        <div id="agendaListView">
+          <div class="agenda-list" id="agendaList"></div>
+        </div>
 
-          <h2>Servidores</h2>
-          <form id="serverForm">
-            <label>Nombre
-              <input id="serverName" placeholder="Nombre del servidor" required>
-            </label>
-            <label>WhatsApp
-              <input id="serverPhone" placeholder="7875551234" inputmode="tel">
-            </label>
-            <label>Notas de disponibilidad
-              <input id="serverNotes" placeholder="Ej. disponible domingos alternos">
-            </label>
-            <button class="btn" type="submit">Añadir servidor</button>
-          </form>
-          <div class="server-list" id="serverList" style="margin-top:14px"></div>
-        </aside>
-
-        <section class="card">
+        <div id="agendaMonthView" style="display:none">
           <div class="section-title">
-            <div>
-              <h2>Vista mensual</h2>
-              <div class="muted">Selecciona un día para ver, editar y enviar confirmaciones.</div>
-            </div>
             <div class="month-nav">
               <button class="btn light small" type="button" id="prevMonth">Anterior</button>
               <div class="month-title" id="monthTitle"></div>
@@ -449,22 +471,92 @@
             </div>
           </div>
           <div class="calendar" id="calendar"></div>
-
-          <div style="margin-top:22px" class="two">
-            <div>
-              <h3 id="selectedTitle">Asignaciones del día</h3>
-              <div class="assignment-list" id="assignmentList"></div>
-            </div>
-            <div>
-              <h3>Servicios sin cubrir</h3>
-              <div class="notice">Todo servicio sin servidor o sin confirmar aparece aquí para que no se quede fuera.</div>
-              <div class="uncovered-list" id="uncoveredList"></div>
-            </div>
+          <div style="margin-top:18px">
+            <h3 id="selectedTitle">Asignaciones del día</h3>
+            <div class="assignment-list" id="assignmentList"></div>
           </div>
-        </section>
+        </div>
+      </section>
+
+      <section class="card tab-panel" id="tabForm" hidden>
+        <h2 id="formTitle">Nueva asignación</h2>
+        <p class="muted">Registra el servicio y asigna servidor. Si no hay servidor todavía, queda marcado como sin cubrir.</p>
+
+        <form id="assignmentForm">
+          <label>Fecha
+            <input type="date" id="dateInput" required>
+          </label>
+          <div class="two">
+            <label>Hora inicio
+              <input type="time" id="startInput" value="09:00" required>
+            </label>
+            <label>Hora final
+              <input type="time" id="endInput" value="10:30" required>
+            </label>
+          </div>
+          <label>Servicio
+            <input id="serviceInput" value="Culto dominical" required>
+          </label>
+          <label>Área
+            <select id="roleInput">
+              <option>Estacionamiento</option>
+              <option>Flujo de vehículos</option>
+              <option>Seguridad peatonal</option>
+              <option>Coordinador</option>
+              <option>Apoyo general</option>
+            </select>
+          </label>
+          <label>Servidor
+            <select id="serverSelect"></select>
+          </label>
+          <label>Estado
+            <select id="statusInput">
+              <option value="open">Sin confirmar</option>
+              <option value="confirmed">Confirmado</option>
+              <option value="done">Completado</option>
+            </select>
+          </label>
+          <label>Notas
+            <textarea id="notesInput" placeholder="Ej. traer chaleco, llegar 20 minutos antes..."></textarea>
+          </label>
+          <input type="hidden" id="editingId">
+          <button class="btn gold" type="submit" id="saveAssignmentBtn">Guardar asignación</button>
+        </form>
+      </section>
+
+      <section class="card tab-panel" id="tabServers" hidden>
+        <h2>Servidores</h2>
+        <form id="serverForm">
+          <label>Nombre
+            <input id="serverName" placeholder="Nombre del servidor" required>
+          </label>
+          <label>WhatsApp
+            <input id="serverPhone" placeholder="7875551234" inputmode="tel">
+          </label>
+          <label>Notas de disponibilidad
+            <input id="serverNotes" placeholder="Ej. disponible domingos alternos">
+          </label>
+          <button class="btn" type="submit">Añadir servidor</button>
+        </form>
+        <div class="server-list" id="serverList" style="margin-top:14px"></div>
       </section>
     </div>
   </main>
+
+  <nav class="tabbar" id="tabbar" hidden aria-label="Navegación del panel">
+    <button type="button" class="tabbar-btn active" data-tab="tabAgenda">
+      <span class="tabbar-icon">📅</span>
+      <span>Agenda</span>
+    </button>
+    <button type="button" class="tabbar-btn" data-tab="tabForm">
+      <span class="tabbar-icon">➕</span>
+      <span>Nueva</span>
+    </button>
+    <button type="button" class="tabbar-btn" data-tab="tabServers">
+      <span class="tabbar-icon">👤</span>
+      <span>Servidores</span>
+    </button>
+  </nav>
 
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -492,12 +584,16 @@
       calendar: document.getElementById('calendar'),
       monthTitle: document.getElementById('monthTitle'),
       assignmentList: document.getElementById('assignmentList'),
-      uncoveredList: document.getElementById('uncoveredList'),
+      agendaList: document.getElementById('agendaList'),
       selectedTitle: document.getElementById('selectedTitle'),
       serverSelect: document.getElementById('serverSelect'),
       serverList: document.getElementById('serverList'),
       assignmentForm: document.getElementById('assignmentForm'),
-      serverForm: document.getElementById('serverForm')
+      serverForm: document.getElementById('serverForm'),
+      formTitle: document.getElementById('formTitle'),
+      statServers: document.getElementById('statServers'),
+      statOpen: document.getElementById('statOpen'),
+      tabbar: document.getElementById('tabbar')
     };
 
     function toDateInput(date) {
@@ -525,6 +621,8 @@
       els.loginView.style.display = state.isAdmin ? 'none' : 'block';
       els.adminView.style.display = state.isAdmin ? 'block' : 'none';
       els.logoutButton.style.display = state.isAdmin ? 'inline-flex' : 'none';
+      els.tabbar.hidden = !state.isAdmin;
+      document.body.classList.toggle('has-tabbar', state.isAdmin);
     }
 
     function getServer(id) {
@@ -532,11 +630,40 @@
     }
 
     function render() {
+      renderStats();
       renderServerOptions();
       renderServers();
       renderCalendar();
       renderAssignments();
-      renderUncovered();
+      renderAgendaList();
+    }
+
+    function renderStats() {
+      els.statServers.textContent = state.servers.length;
+      els.statOpen.textContent = state.assignments.filter(isOpen).length;
+    }
+
+    function renderAgendaList() {
+      const today = toDateInput(new Date());
+      const items = state.assignments
+        .filter((item) => item.date >= today)
+        .sort((a, b) => `${a.date} ${a.start}`.localeCompare(`${b.date} ${b.start}`));
+
+      if (!items.length) {
+        els.agendaList.innerHTML = '<div class="muted">No hay servicios próximos. Crea uno con el botón "Nueva".</div>';
+        return;
+      }
+
+      let lastDate = '';
+      let html = '';
+      items.forEach((item) => {
+        if (item.date !== lastDate) {
+          lastDate = item.date;
+          html += `<div class="agenda-date-heading">${formatDate(item.date)}</div>`;
+        }
+        html += renderAssignmentRow(item);
+      });
+      els.agendaList.innerHTML = html;
     }
 
     function renderServerOptions() {
@@ -595,13 +722,6 @@
       els.assignmentList.innerHTML = items.map(renderAssignmentRow).join('') || '<div class="muted">No hay asignaciones para este día.</div>';
     }
 
-    function renderUncovered() {
-      const items = state.assignments
-        .filter(isOpen)
-        .sort((a, b) => `${a.date} ${a.start}`.localeCompare(`${b.date} ${b.start}`));
-      els.uncoveredList.innerHTML = items.map(renderAssignmentRow).join('') || '<div class="muted">Todo esta cubierto.</div>';
-    }
-
     function renderAssignmentRow(item) {
       const server = getServer(item.serverId);
       const serverName = server ? server.name : 'Sin servidor';
@@ -656,7 +776,43 @@
       document.getElementById('statusInput').value = item.status;
       document.getElementById('notesInput').value = item.notes || '';
       document.getElementById('saveAssignmentBtn').textContent = 'Actualizar asignación';
-      window.scrollTo({ top: 260, behavior: 'smooth' });
+      els.formTitle.textContent = 'Editar asignación';
+      activateTab('tabForm');
+    }
+
+    function resetAssignmentForm() {
+      els.assignmentForm.reset();
+      document.getElementById('dateInput').value = state.selectedDate;
+      document.getElementById('startInput').value = '09:00';
+      document.getElementById('endInput').value = '10:30';
+      document.getElementById('serviceInput').value = 'Culto dominical';
+      document.getElementById('editingId').value = '';
+      document.getElementById('saveAssignmentBtn').textContent = 'Guardar asignación';
+      els.formTitle.textContent = 'Nueva asignación';
+    }
+
+    function activateTab(tabId) {
+      document.querySelectorAll('.tab-panel').forEach((panel) => {
+        panel.hidden = panel.id !== tabId;
+      });
+      document.querySelectorAll('.tabbar-btn').forEach((btn) => {
+        btn.classList.toggle('active', btn.dataset.tab === tabId);
+      });
+      document.getElementById(tabId).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function showAgendaListView() {
+      document.getElementById('agendaListView').style.display = '';
+      document.getElementById('agendaMonthView').style.display = 'none';
+      document.getElementById('viewAgendaBtn').classList.add('active');
+      document.getElementById('viewMonthBtn').classList.remove('active');
+    }
+
+    function showAgendaMonthView() {
+      document.getElementById('agendaListView').style.display = 'none';
+      document.getElementById('agendaMonthView').style.display = '';
+      document.getElementById('viewAgendaBtn').classList.remove('active');
+      document.getElementById('viewMonthBtn').classList.add('active');
     }
 
     async function deleteAssignment(id) {
@@ -797,14 +953,10 @@
       if (index >= 0) state.assignments[index] = nextItem;
       else state.assignments.push(nextItem);
       state.selectedDate = nextItem.date;
-      els.assignmentForm.reset();
-      document.getElementById('dateInput').value = state.selectedDate;
-      document.getElementById('startInput').value = '09:00';
-      document.getElementById('endInput').value = '10:30';
-      document.getElementById('serviceInput').value = 'Culto dominical';
-      document.getElementById('editingId').value = '';
-      document.getElementById('saveAssignmentBtn').textContent = 'Guardar asignación';
+      resetAssignmentForm();
       render();
+      showAgendaListView();
+      activateTab('tabAgenda');
     });
 
     els.serverForm.addEventListener('submit', async (event) => {
@@ -868,6 +1020,16 @@
     window.deleteAssignment = deleteAssignment;
     window.deleteServer = deleteServer;
     window.downloadIcs = downloadIcs;
+
+    document.querySelectorAll('.tabbar-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (btn.dataset.tab === 'tabForm') resetAssignmentForm();
+        activateTab(btn.dataset.tab);
+      });
+    });
+
+    document.getElementById('viewAgendaBtn').addEventListener('click', showAgendaListView);
+    document.getElementById('viewMonthBtn').addEventListener('click', showAgendaMonthView);
 
     applyAdminVisibility();
     if (state.isAdmin) loadData();
