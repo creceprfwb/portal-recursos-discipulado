@@ -153,13 +153,6 @@
     .check-row { display:flex; align-items:flex-start; gap:10px; font-size:13px; font-weight:800; color:var(--texto); }
     .check-row input { width:auto; margin-top:4px; }
 
-    .grid {
-      display:grid;
-      grid-template-columns:380px minmax(0, 1fr);
-      gap:18px;
-      margin-top:18px;
-    }
-
     form { display:grid; gap:12px; }
     label { display:grid; gap:6px; font-size:13px; font-weight:900; }
     input, select, textarea {
@@ -242,7 +235,6 @@
     .row-actions { display:flex; gap:8px; flex-wrap:wrap; }
 
     @media (max-width:980px) {
-      .grid { grid-template-columns:1fr; }
       .calendar { gap:6px; }
       .day { min-height:86px; padding:7px; }
     }
@@ -268,6 +260,64 @@
       }
       .row-actions, .month-nav { width:100%; }
       .btn { width:100%; }
+    }
+
+    /* ===== App shell: bottom tab bar + agenda-first admin ===== */
+    .tab-panel[hidden] { display:none; }
+    .view-toggle { display:flex; gap:6px; }
+    .btn.light.small.active { background:var(--azul-oscuro); color:var(--blanco); border-color:var(--azul-oscuro); }
+    .agenda-list { display:grid; gap:10px; }
+    .agenda-date-heading {
+      position:sticky;
+      top:73px;
+      z-index:5;
+      margin:18px 0 8px;
+      padding:6px 10px;
+      background:var(--fondo);
+      color:var(--azul-oscuro);
+      font-size:12px;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.4px;
+      border-radius:8px;
+    }
+    .agenda-date-heading:first-child { margin-top:0; }
+    .tabbar[hidden] { display:none; }
+    .tabbar {
+      position:fixed;
+      left:0;
+      right:0;
+      bottom:0;
+      z-index:30;
+      display:flex;
+      background:var(--blanco);
+      border-top:1px solid var(--borde);
+      box-shadow:0 -8px 24px rgba(13,43,58,.1);
+      padding-bottom:env(safe-area-inset-bottom, 0);
+    }
+    .tabbar-btn {
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:3px;
+      padding:10px 4px 8px;
+      border:0;
+      background:none;
+      color:var(--texto);
+      font-size:11px;
+      font-weight:900;
+      cursor:pointer;
+    }
+    .tabbar-icon { font-size:20px; line-height:1; }
+    .tabbar-btn.active { color:var(--azul-profundo); }
+    body.has-tabbar .shell { padding-bottom:86px; margin-top:18px; }
+    body.has-tabbar .hero { display:none; }
+    body.has-tabbar .site-nav { display:none; }
+    @media (min-width:641px) {
+      .tabbar { justify-content:center; gap:6px; }
+      .tabbar-btn { flex:none; flex-direction:row; padding:14px 22px; font-size:13px; }
+      .tabbar-icon { font-size:16px; }
     }
   </style>
 </head>
@@ -303,7 +353,11 @@
     <section class="card">
       <div class="section-title">
         <h2>Acceso administrativo</h2>
-        <button id="logoutButton" class="btn light small" type="button" style="display:none">Cerrar sesion</button>
+        <div class="actions">
+          <a class="btn light small" href="./eventos-calendario.html">Volver al calendario</a>
+          <a class="btn light small" href="./admin.html">Todos los paneles</a>
+          <button id="logoutButton" class="btn light small" type="button" style="display:none">Cerrar sesion</button>
+        </div>
       </div>
 
       <div id="loginView">
@@ -334,68 +388,24 @@
         </div>
       </section>
 
-      <section class="grid">
-        <aside class="card">
-          <h2 id="formTitle">Crear evento</h2>
-          <form id="eventForm">
-            <label>Titulo
-              <input id="titleInput" required>
-            </label>
-            <label>Fecha
-              <input type="date" id="dateInput" required>
-            </label>
-            <div class="two">
-              <label>Hora inicio
-                <input type="time" id="startInput" value="09:00">
-              </label>
-              <label>Hora final
-                <input type="time" id="endInput" value="10:30">
-              </label>
-            </div>
-            <label>Lugar
-              <input id="locationInput" placeholder="Jesus es el Centro">
-            </label>
-            <div class="two">
-              <label>Categoria
-                <input id="categoryInput" placeholder="Ej. Hogares, Estudio Biblico...">
-              </label>
-              <label>Color
-                <select id="colorInput"></select>
-              </label>
-            </div>
-            <label>Enlace (opcional)
-              <input id="linkInput" type="url" placeholder="https://...">
-            </label>
-            <label>Descripcion
-              <textarea id="descriptionInput"></textarea>
-            </label>
-            <label class="check-row" id="recurringRow">
-              <input type="checkbox" id="recurringInput">
-              Es un evento recurrente
-            </label>
-            <div class="two" id="recurringUntilRow" style="display:none">
-              <label>Frecuencia
-                <select id="recurringFrequencyInput">
-                  <option value="weekly">Semanal</option>
-                  <option value="monthly">Mensual</option>
-                  <option value="yearly">Anual</option>
-                </select>
-              </label>
-              <label>Repetir hasta
-                <input type="date" id="recurringUntilInput">
-              </label>
-            </div>
-            <input type="hidden" id="editingId">
-            <button class="btn gold" type="submit" id="saveEventBtn">Guardar evento</button>
-          </form>
-        </aside>
+      <section class="card tab-panel" id="tabAgenda">
+        <div class="section-title">
+          <div>
+            <h2>Agenda</h2>
+            <div class="muted">Próximos eventos en orden.</div>
+          </div>
+          <div class="view-toggle">
+            <button class="btn light small active" type="button" id="viewAgendaBtn">Lista</button>
+            <button class="btn light small" type="button" id="viewMonthBtn">Mes</button>
+          </div>
+        </div>
 
-        <section class="card">
+        <div id="agendaListView">
+          <div class="agenda-list" id="agendaList"></div>
+        </div>
+
+        <div id="agendaMonthView" style="display:none">
           <div class="section-title">
-            <div>
-              <h2>Vista mensual</h2>
-              <div class="muted">Selecciona un dia para ver sus eventos.</div>
-            </div>
             <div class="month-nav">
               <button class="btn light small" type="button" id="prevMonth">Anterior</button>
               <div class="month-title" id="monthTitle"></div>
@@ -403,13 +413,78 @@
             </div>
           </div>
           <div class="calendar" id="calendar"></div>
-
-          <h3 id="selectedTitle" style="margin-top:22px">Eventos del dia</h3>
+          <h3 id="selectedTitle" style="margin-top:18px">Eventos del dia</h3>
           <div class="event-list" id="eventList"></div>
-        </section>
+        </div>
+      </section>
+
+      <section class="card tab-panel" id="tabForm" hidden>
+        <h2 id="formTitle">Crear evento</h2>
+        <form id="eventForm">
+          <label>Titulo
+            <input id="titleInput" required>
+          </label>
+          <label>Fecha
+            <input type="date" id="dateInput" required>
+          </label>
+          <div class="two">
+            <label>Hora inicio
+              <input type="time" id="startInput" value="09:00">
+            </label>
+            <label>Hora final
+              <input type="time" id="endInput" value="10:30">
+            </label>
+          </div>
+          <label>Lugar
+            <input id="locationInput" placeholder="Jesus es el Centro">
+          </label>
+          <div class="two">
+            <label>Categoria
+              <input id="categoryInput" placeholder="Ej. Hogares, Estudio Biblico...">
+            </label>
+            <label>Color
+              <select id="colorInput"></select>
+            </label>
+          </div>
+          <label>Enlace (opcional)
+            <input id="linkInput" type="url" placeholder="https://...">
+          </label>
+          <label>Descripcion
+            <textarea id="descriptionInput"></textarea>
+          </label>
+          <label class="check-row" id="recurringRow">
+            <input type="checkbox" id="recurringInput">
+            Es un evento recurrente
+          </label>
+          <div class="two" id="recurringUntilRow" style="display:none">
+            <label>Frecuencia
+              <select id="recurringFrequencyInput">
+                <option value="weekly">Semanal</option>
+                <option value="monthly">Mensual</option>
+                <option value="yearly">Anual</option>
+              </select>
+            </label>
+            <label>Repetir hasta
+              <input type="date" id="recurringUntilInput">
+            </label>
+          </div>
+          <input type="hidden" id="editingId">
+          <button class="btn gold" type="submit" id="saveEventBtn">Guardar evento</button>
+        </form>
       </section>
     </div>
   </main>
+
+  <nav class="tabbar" id="tabbar" hidden aria-label="Navegación del panel">
+    <button type="button" class="tabbar-btn active" data-tab="tabAgenda">
+      <span class="tabbar-icon">📅</span>
+      <span>Agenda</span>
+    </button>
+    <button type="button" class="tabbar-btn" data-tab="tabForm">
+      <span class="tabbar-icon">➕</span>
+      <span>Nuevo</span>
+    </button>
+  </nav>
 
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -448,8 +523,10 @@
       monthTitle: document.getElementById('monthTitle'),
       selectedTitle: document.getElementById('selectedTitle'),
       eventList: document.getElementById('eventList'),
+      agendaList: document.getElementById('agendaList'),
       formTitle: document.getElementById('formTitle'),
-      saveEventBtn: document.getElementById('saveEventBtn')
+      saveEventBtn: document.getElementById('saveEventBtn'),
+      tabbar: document.getElementById('tabbar')
     };
 
     function toDateInput(date) {
@@ -501,11 +578,61 @@
       els.loginView.style.display = state.isAdmin ? 'none' : 'block';
       els.adminView.style.display = state.isAdmin ? 'block' : 'none';
       els.logoutButton.style.display = state.isAdmin ? 'inline-flex' : 'none';
+      els.tabbar.hidden = !state.isAdmin;
+      document.body.classList.toggle('has-tabbar', state.isAdmin);
     }
 
     function render() {
       renderCalendar();
       renderEventsForSelectedDate();
+      renderAgendaList();
+    }
+
+    function renderAgendaList() {
+      const today = toDateInput(new Date());
+      const items = state.events
+        .filter((item) => item.date >= today)
+        .sort((a, b) => `${a.date} ${a.start || ''}`.localeCompare(`${b.date} ${b.start || ''}`));
+
+      if (!items.length) {
+        els.agendaList.innerHTML = '<div class="muted">No hay eventos próximos. Crea uno con el botón "Nuevo".</div>';
+        return;
+      }
+
+      let lastDate = '';
+      let html = '';
+      items.forEach((item) => {
+        if (item.date !== lastDate) {
+          lastDate = item.date;
+          html += `<div class="agenda-date-heading">${formatDate(item.date)}</div>`;
+        }
+        html += renderEventRow(item);
+      });
+      els.agendaList.innerHTML = html;
+    }
+
+    function activateTab(tabId) {
+      document.querySelectorAll('.tab-panel').forEach((panel) => {
+        panel.hidden = panel.id !== tabId;
+      });
+      document.querySelectorAll('.tabbar-btn').forEach((btn) => {
+        btn.classList.toggle('active', btn.dataset.tab === tabId);
+      });
+      document.getElementById(tabId).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function showAgendaListView() {
+      document.getElementById('agendaListView').style.display = '';
+      document.getElementById('agendaMonthView').style.display = 'none';
+      document.getElementById('viewAgendaBtn').classList.add('active');
+      document.getElementById('viewMonthBtn').classList.remove('active');
+    }
+
+    function showAgendaMonthView() {
+      document.getElementById('agendaListView').style.display = 'none';
+      document.getElementById('agendaMonthView').style.display = '';
+      document.getElementById('viewAgendaBtn').classList.remove('active');
+      document.getElementById('viewMonthBtn').classList.add('active');
     }
 
     function renderCalendar() {
@@ -585,7 +712,7 @@
       document.getElementById('recurringUntilRow').style.display = 'none';
       els.formTitle.textContent = 'Editar evento';
       els.saveEventBtn.textContent = 'Actualizar evento';
-      window.scrollTo({ top: 260, behavior: 'smooth' });
+      activateTab('tabForm');
     }
 
     async function deleteEvent(id) {
@@ -710,6 +837,8 @@
       state.selectedDate = basePayload.date;
       resetForm();
       render();
+      showAgendaListView();
+      activateTab('tabAgenda');
     });
 
     document.getElementById('prevMonth').addEventListener('click', () => {
@@ -779,6 +908,16 @@
     window.selectDate = selectDate;
     window.editEvent = editEvent;
     window.deleteEvent = deleteEvent;
+
+    document.querySelectorAll('.tabbar-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (btn.dataset.tab === 'tabForm') resetForm();
+        activateTab(btn.dataset.tab);
+      });
+    });
+
+    document.getElementById('viewAgendaBtn').addEventListener('click', showAgendaListView);
+    document.getElementById('viewMonthBtn').addEventListener('click', showAgendaMonthView);
 
     populateColorSelect();
     applyAdminVisibility();
