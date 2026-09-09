@@ -321,6 +321,26 @@
       .actions, .row-actions { display:grid; grid-template-columns:1fr; }
       .btn { width:100%; }
     }
+
+    /* ===== Agenda-first view ===== */
+    .view-toggle { display:flex; gap:6px; }
+    .btn.light.small.active { background:var(--azul-oscuro); color:var(--blanco); border-color:var(--azul-oscuro); }
+    .agenda-list { display:grid; gap:10px; }
+    .agenda-date-heading {
+      position:sticky;
+      top:73px;
+      z-index:5;
+      margin:18px 0 8px;
+      padding:6px 10px;
+      background:var(--fondo);
+      color:var(--azul-oscuro);
+      font-size:12px;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.4px;
+      border-radius:8px;
+    }
+    .agenda-date-heading:first-child { margin-top:0; }
   </style>
 </head>
 <body>
@@ -368,42 +388,35 @@
       <div class="stat"><strong id="statConfirmed">0</strong><span>Confirmados</span></div>
     </section>
 
-    <section class="card" style="margin-bottom:18px">
-      <div class="two">
-        <div>
-          <h3>Proximos 3 asignados</h3>
-          <div class="assignment-list" id="nextAssignedList"></div>
-        </div>
-        <div>
-          <h3>Proximos 3 libres</h3>
-          <div class="uncovered-list" id="nextOpenList"></div>
-        </div>
-      </div>
-    </section>
-
     <section class="card">
       <div class="section-title">
         <div>
-          <h2>Vista mensual</h2>
-          <div class="muted">Selecciona un día para ver las asignaciones y enviar confirmaciones.</div>
+          <h2>Agenda</h2>
+          <div class="muted">Próximos servicios en orden. Lo sin cubrir queda marcado en rojo.</div>
         </div>
-        <div class="month-nav">
-          <button class="btn light small" type="button" id="prevMonth">Anterior</button>
-          <div class="month-title" id="monthTitle"></div>
-          <button class="btn light small" type="button" id="nextMonth">Siguiente</button>
+        <div class="view-toggle">
+          <button class="btn light small active" type="button" id="viewAgendaBtn">Lista</button>
+          <button class="btn light small" type="button" id="viewMonthBtn">Mes</button>
         </div>
       </div>
-      <div class="calendar" id="calendar"></div>
 
-      <div style="margin-top:22px" class="two">
-        <div>
+      <div id="agendaListView">
+        <div class="agenda-list" id="agendaList"></div>
+      </div>
+
+      <div id="agendaMonthView" style="display:none">
+        <div class="section-title">
+          <div class="month-nav">
+            <button class="btn light small" type="button" id="prevMonth">Anterior</button>
+            <div class="month-title" id="monthTitle"></div>
+            <button class="btn light small" type="button" id="nextMonth">Siguiente</button>
+          </div>
+        </div>
+        <div class="calendar" id="calendar"></div>
+
+        <div style="margin-top:18px">
           <h3 id="selectedTitle">Asignaciones del día</h3>
           <div class="assignment-list" id="assignmentList"></div>
-        </div>
-        <div>
-          <h3>Servicios sin cubrir</h3>
-          <div class="notice">Todo servicio sin servidor o sin confirmar aparece aquí para que no se quede fuera.</div>
-          <div class="uncovered-list" id="uncoveredList"></div>
         </div>
       </div>
     </section>
@@ -434,10 +447,8 @@
       calendar: document.getElementById('calendar'),
       monthTitle: document.getElementById('monthTitle'),
       assignmentList: document.getElementById('assignmentList'),
-      uncoveredList: document.getElementById('uncoveredList'),
       selectedTitle: document.getElementById('selectedTitle'),
-      nextAssignedList: document.getElementById('nextAssignedList'),
-      nextOpenList: document.getElementById('nextOpenList')
+      agendaList: document.getElementById('agendaList')
     };
 
     function toDateInput(date) {
@@ -471,8 +482,7 @@
       renderStats();
       renderCalendar();
       renderAssignments();
-      renderUncovered();
-      renderNextThree();
+      renderAgendaList();
     }
 
     function renderStats() {
@@ -521,24 +531,41 @@
       els.assignmentList.innerHTML = items.map(renderAssignmentRow).join('') || '<div class="muted">No hay asignaciones para este día.</div>';
     }
 
-    function renderUncovered() {
-      const items = state.assignments
-        .filter(isOpen)
-        .sort((a, b) => `${a.date} ${a.start}`.localeCompare(`${b.date} ${b.start}`));
-      els.uncoveredList.innerHTML = items.map(renderAssignmentRow).join('') || '<div class="muted">Todo está cubierto.</div>';
-    }
-
-    function renderNextThree() {
+    function renderAgendaList() {
       const today = toDateInput(new Date());
-      const upcoming = state.assignments
+      const items = state.assignments
         .filter((item) => item.date >= today)
         .sort((a, b) => `${a.date} ${a.start}`.localeCompare(`${b.date} ${b.start}`));
 
-      const nextAssigned = upcoming.filter((item) => !isOpen(item)).slice(0, 3);
-      const nextOpen = upcoming.filter(isOpen).slice(0, 3);
+      if (!items.length) {
+        els.agendaList.innerHTML = '<div class="muted">No hay servicios próximos.</div>';
+        return;
+      }
 
-      els.nextAssignedList.innerHTML = nextAssigned.map(renderAssignmentRow).join('') || '<div class="muted">No hay próximas asignaciones cubiertas.</div>';
-      els.nextOpenList.innerHTML = nextOpen.map(renderAssignmentRow).join('') || '<div class="muted">No hay servicios sin cubrir próximos.</div>';
+      let lastDate = '';
+      let html = '';
+      items.forEach((item) => {
+        if (item.date !== lastDate) {
+          lastDate = item.date;
+          html += `<div class="agenda-date-heading">${formatDate(item.date)}</div>`;
+        }
+        html += renderAssignmentRow(item);
+      });
+      els.agendaList.innerHTML = html;
+    }
+
+    function showAgendaListView() {
+      document.getElementById('agendaListView').style.display = '';
+      document.getElementById('agendaMonthView').style.display = 'none';
+      document.getElementById('viewAgendaBtn').classList.add('active');
+      document.getElementById('viewMonthBtn').classList.remove('active');
+    }
+
+    function showAgendaMonthView() {
+      document.getElementById('agendaListView').style.display = 'none';
+      document.getElementById('agendaMonthView').style.display = '';
+      document.getElementById('viewAgendaBtn').classList.remove('active');
+      document.getElementById('viewMonthBtn').classList.add('active');
     }
 
     function renderAssignmentRow(item) {
@@ -670,6 +697,9 @@
 
     window.selectDate = selectDate;
     window.downloadIcs = downloadIcs;
+
+    document.getElementById('viewAgendaBtn').addEventListener('click', showAgendaListView);
+    document.getElementById('viewMonthBtn').addEventListener('click', showAgendaMonthView);
 
     loadData();
   </script>
