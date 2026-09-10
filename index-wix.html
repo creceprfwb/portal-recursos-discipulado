@@ -584,6 +584,57 @@
       .jeec-actions{display:grid}
       .jeec-media{min-height:240px}
     }
+    html.force-mobile-embed .contenedor,
+    html.coarse-mobile-screen .contenedor {
+      padding:0 16px;
+    }
+    html.force-mobile-embed .seccion,
+    html.coarse-mobile-screen .seccion {
+      padding:42px 0;
+    }
+    html.force-mobile-embed .hero,
+    html.coarse-mobile-screen .hero {
+      min-height:auto !important;
+    }
+    html.force-mobile-embed .hero-contenido,
+    html.coarse-mobile-screen .hero-contenido {
+      grid-template-columns:1fr !important;
+      gap:18px !important;
+      padding-top:34px !important;
+      padding-bottom:40px !important;
+    }
+    html.force-mobile-embed .hero h1,
+    html.coarse-mobile-screen .hero h1 {
+      font-size:34px !important;
+      letter-spacing:0 !important;
+    }
+    html.force-mobile-embed .hero-texto,
+    html.coarse-mobile-screen .hero-texto {
+      font-size:15px;
+      margin-bottom:22px;
+    }
+    html.force-mobile-embed .hero-etiqueta,
+    html.coarse-mobile-screen .hero-etiqueta {
+      font-size:10px;
+      letter-spacing:1px;
+      margin-bottom:14px;
+    }
+    html.force-mobile-embed .hero-visual,
+    html.coarse-mobile-screen .hero-visual {
+      display:none;
+    }
+    html.force-mobile-embed .estadisticas-contenedor,
+    html.coarse-mobile-screen .estadisticas-contenedor {
+      margin-top:0 !important;
+    }
+    html.force-mobile-embed .estadistica,
+    html.coarse-mobile-screen .estadistica {
+      padding:18px 10px !important;
+    }
+    html.force-mobile-embed .numero,
+    html.coarse-mobile-screen .numero {
+      font-size:28px;
+    }
   </style>
 </head>
 <body>
@@ -869,7 +920,7 @@
       window.setTimeout(() => popup.classList.add("activo"), 900);
     })();
   </script>
-  <script src="js/wix-embed-resize.js"></script>
+  <script src="js/wix-embed-resize.js?v=mobilefix5"></script>
 
 </body>
 </html>
