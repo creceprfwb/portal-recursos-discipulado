@@ -139,6 +139,19 @@
       padding-left:16px;
       padding-right:16px;
     }
+    .hero-inner,
+    .shell,
+    .toolbar,
+    .card,
+    .section-title,
+    .month-nav,
+    .actions,
+    .calendar,
+    .row,
+    .row-head {
+      min-width:0;
+      max-width:100%;
+    }
     .toolbar, .card {
       background:var(--blanco);
       border:1px solid var(--borde);
@@ -156,6 +169,7 @@
     }
     .actions { display:flex; flex-wrap:wrap; gap:10px; }
     .btn {
+      min-width:0;
       min-height:42px;
       display:inline-flex;
       align-items:center;
@@ -168,6 +182,7 @@
       color:var(--blanco);
       font-weight:900;
       cursor:pointer;
+      white-space:normal;
     }
     .btn.gold { background:var(--dorado); color:var(--azul-profundo); }
     .btn.light { background:#eef7f9; color:var(--azul-oscuro); border-color:var(--borde); }
@@ -196,13 +211,15 @@
 
     .section-title {
       display:flex;
+      flex-wrap:wrap;
       gap:12px;
       align-items:center;
       justify-content:space-between;
       margin-bottom:12px;
     }
-    .month-nav { display:flex; align-items:center; gap:8px; }
-    .month-title { min-width:170px; text-align:center; font-weight:900; }
+    .section-title > div { min-width:0; max-width:100%; }
+    .month-nav { display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
+    .month-title { min-width:0; text-align:center; font-weight:900; }
 
     .calendar {
       display:grid;
@@ -273,15 +290,25 @@
       gap:10px;
     }
     .row {
+      min-width:0;
       padding:12px;
       border:1px solid var(--borde);
       border-radius:10px;
       background:#fbfdfe;
       display:grid;
       gap:8px;
+      overflow:hidden;
     }
     .row-head { display:flex; justify-content:space-between; gap:12px; align-items:start; }
-    .row-title { font-weight:900; }
+    .row-head > div { min-width:0; max-width:100%; }
+    .row-title { font-weight:900; overflow-wrap:anywhere; }
+    .row .muted,
+    .row div,
+    .row a {
+      max-width:100%;
+      overflow-wrap:anywhere;
+      word-break:break-word;
+    }
     .row-actions { display:flex; gap:8px; flex-wrap:wrap; }
 
     .two { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
@@ -745,6 +772,6 @@
 
     loadData();
   </script>
-  <script src="js/wix-embed-resize.js"></script>
+  <script src="js/wix-embed-resize.js?v=parkingfit1"></script>
 </body>
 </html>
