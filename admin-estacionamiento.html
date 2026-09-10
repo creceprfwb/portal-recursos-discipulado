@@ -48,6 +48,11 @@
       line-height:1.55;
       overflow-x:hidden;
     }
+    html.force-mobile-embed,
+    html.force-mobile-embed body {
+      width:var(--wix-screen-width, 390px);
+      max-width:var(--wix-screen-width, 390px);
+    }
     body { min-height:100vh; }
     html.embed-mode, html.embed-mode body { overflow-x:clip; }
     button, input, select, textarea { font:inherit; }
@@ -297,6 +302,69 @@
       .actions, .row-actions, .month-nav { width:100%; }
       .actions, .row-actions { display:grid; grid-template-columns:1fr; }
       .btn { width:100%; }
+    }
+    html.force-mobile-embed .hero-inner,
+    html.force-mobile-embed .shell {
+      width:var(--wix-screen-width, 390px);
+      max-width:var(--wix-screen-width, 390px);
+      padding-left:16px;
+      padding-right:16px;
+    }
+    html.force-mobile-embed .nav-inner,
+    html.force-mobile-embed .toolbar,
+    html.force-mobile-embed .row-head {
+      align-items:stretch;
+      flex-direction:column;
+    }
+    html.force-mobile-embed .tabs {
+      width:100%;
+      display:grid;
+      grid-template-columns:1fr;
+    }
+    html.force-mobile-embed .two {
+      grid-template-columns:1fr;
+    }
+    html.force-mobile-embed .calendar {
+      gap:3px;
+    }
+    html.force-mobile-embed .day {
+      min-height:52px;
+      padding:3px;
+      border-radius:6px;
+      gap:3px;
+    }
+    html.force-mobile-embed .day-number {
+      font-size:11px;
+    }
+    html.force-mobile-embed .day-name-full {
+      display:none;
+    }
+    html.force-mobile-embed .day-name-short {
+      display:block;
+    }
+    html.force-mobile-embed .calendar .day .pill {
+      width:6px;
+      height:6px;
+      min-width:0;
+      max-width:none;
+      padding:0;
+      border-radius:50%;
+      font-size:0;
+      line-height:0;
+      overflow:hidden;
+    }
+    html.force-mobile-embed .actions,
+    html.force-mobile-embed .row-actions,
+    html.force-mobile-embed .month-nav {
+      width:100%;
+    }
+    html.force-mobile-embed .actions,
+    html.force-mobile-embed .row-actions {
+      display:grid;
+      grid-template-columns:1fr;
+    }
+    html.force-mobile-embed .btn {
+      width:100%;
     }
 
     /* ===== App shell: bottom tab bar + agenda-first admin ===== */

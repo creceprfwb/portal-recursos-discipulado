@@ -20,6 +20,32 @@
 
   document.documentElement.classList.toggle("embedded-in-wix", isEmbedded);
 
+  function getPhysicalScreenWidth() {
+    var candidates = [
+      window.screen && window.screen.width,
+      window.screen && window.screen.availWidth
+    ].filter(function (value) {
+      return typeof value === "number" && value > 0;
+    });
+
+    return candidates.length ? Math.min.apply(Math, candidates) : window.innerWidth;
+  }
+
+  function updateEmbedWidthState() {
+    var screenWidth = getPhysicalScreenWidth();
+    var iframeWidth = window.innerWidth || document.documentElement.clientWidth || screenWidth;
+    var isNarrowScreen = screenWidth <= 640;
+    var iframeLooksDesktop = iframeWidth > screenWidth + 120;
+
+    document.documentElement.style.setProperty("--wix-screen-width", screenWidth + "px");
+    document.documentElement.classList.toggle(
+      "force-mobile-embed",
+      isEmbedded && isNarrowScreen && iframeLooksDesktop
+    );
+  }
+
+  updateEmbedWidthState();
+
   if (!isEmbedded) {
     return;
   }
@@ -31,6 +57,7 @@
     "  height: auto !important;\n" +
     "  min-height: 0 !important;\n" +
     "  overflow-y: visible !important;\n" +
+    "  max-width: 100% !important;\n" +
     "}\n";
   document.head.appendChild(style);
 
@@ -78,7 +105,10 @@
   }
 
   window.addEventListener("load", sendHeight);
-  window.addEventListener("resize", scheduleSendHeight);
+  window.addEventListener("resize", function () {
+    updateEmbedWidthState();
+    scheduleSendHeight();
+  });
 
   // Catches everything a plain load/resize listener would miss: images
   // that finish loading late, tabs/accordions, search/filter results,
