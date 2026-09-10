@@ -162,13 +162,30 @@
       .upcoming h2 { margin: 0 0 12px; color: var(--deep); font-size: 20px; }
       .event-list { display: grid; gap: 10px; }
       .row {
+        min-width: 0;
         padding: 12px;
         border: 1px solid var(--line);
         border-radius: 10px;
         background: #fbfdfe;
+        overflow: hidden;
       }
-      .row-title { font-weight: 900; color: var(--deep); }
-      .row-meta { color: var(--muted); font-size: 13px; margin-top: 2px; }
+      .row-title {
+        font-weight: 900;
+        color: var(--deep);
+        overflow-wrap: anywhere;
+      }
+      .row-meta {
+        max-width: 100%;
+        color: var(--muted);
+        font-size: 13px;
+        margin-top: 2px;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+      }
+      .row a {
+        overflow-wrap: anywhere;
+        word-break: break-word;
+      }
       .page-footer { margin-top: 24px; text-align: center; }
       .page-footer a { color: var(--muted); font-size: 12px; font-weight: 700; text-decoration: underline; }
       .view-toggle { display: flex; gap: 6px; }
