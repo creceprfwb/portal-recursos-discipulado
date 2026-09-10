@@ -557,6 +557,36 @@
       .jeec-actions{display:grid}
       .jeec-media{min-height:240px}
     }
+    @media(max-width:760px) {
+      html.embed-mode .hero {
+        min-height:auto !important;
+      }
+      html.embed-mode .hero-contenido {
+        grid-template-columns:1fr !important;
+        gap:18px !important;
+        padding-top:34px !important;
+        padding-bottom:40px !important;
+      }
+      html.embed-mode .hero h1 {
+        font-size:34px !important;
+        letter-spacing:0 !important;
+      }
+      html.embed-mode .hero-texto {
+        font-size:15px !important;
+        margin-bottom:22px !important;
+      }
+      html.embed-mode .hero-etiqueta {
+        font-size:10px !important;
+        letter-spacing:1px !important;
+        margin-bottom:14px !important;
+      }
+      html.embed-mode .hero-visual {
+        display:none !important;
+      }
+      html.embed-mode .estadisticas-contenedor {
+        margin-top:0 !important;
+      }
+    }
     html.force-mobile-embed .contenedor,
     html.coarse-mobile-screen .contenedor {
       padding:0 16px;
@@ -911,7 +941,7 @@
       window.setTimeout(() => popup.classList.add("activo"), 900);
     })();
   </script>
-  <script src="js/wix-embed-resize.js?v=mobilefix5"></script>
+  <script src="js/wix-embed-resize.js?v=mobilefix6"></script>
 
 </body>
 </html>
