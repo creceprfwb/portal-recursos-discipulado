@@ -525,12 +525,10 @@
     async function loadData() {
       render();
       try {
-        const timeout = new Promise((resolve) => setTimeout(() => resolve([[], []]), 3500));
-        const remoteData = Promise.all([
+        const [servers, assignments] = await Promise.all([
           window.discipladoFirebase?.getParkingServers?.(),
           window.discipladoFirebase?.getParkingAssignments?.()
         ]);
-        const [servers, assignments] = await Promise.race([remoteData, timeout]);
         state.servers = servers || [];
         state.assignments = assignments || [];
       } catch (error) {
@@ -777,6 +775,6 @@
 
     loadData();
   </script>
-  <script src="js/wix-embed-resize.js?v=parkingfit2"></script>
+  <script src="js/wix-embed-resize.js?v=parkingdata1"></script>
 </body>
 </html>
