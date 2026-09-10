@@ -134,8 +134,8 @@
     }
     html.embed-mode .hero-inner,
     html.embed-mode .shell {
-      width:100%;
-      max-width:100%;
+      width:min(1180px, calc(100% - 2rem));
+      max-width:1180px;
       padding-left:16px;
       padding-right:16px;
     }
@@ -328,6 +328,11 @@
       .day { min-height:92px; padding:7px; }
     }
     @media (max-width:640px) {
+      html.embed-mode .hero-inner,
+      html.embed-mode .shell {
+        width:100%;
+        max-width:100%;
+      }
       .nav-inner, .toolbar, .section-title, .row-head { align-items:stretch; flex-direction:column; }
       .tabs { width:100%; display:grid; grid-template-columns:1fr; }
       .stats, .two { grid-template-columns:1fr; }
@@ -772,6 +777,6 @@
 
     loadData();
   </script>
-  <script src="js/wix-embed-resize.js?v=parkingfit1"></script>
+  <script src="js/wix-embed-resize.js?v=parkingfit2"></script>
 </body>
 </html>
