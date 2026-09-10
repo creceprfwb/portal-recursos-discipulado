@@ -231,7 +231,24 @@
       cursor:pointer;
     }
     .day.empty { background:transparent; border-color:transparent; cursor:default; }
-    .day.selected { outline:3px solid rgba(241,200,75,.7); background:#fffaf0; }
+    .day.has-assignments {
+      border-color:rgba(7,140,163,.34);
+      background:#e8f8fb;
+      box-shadow:inset 0 0 0 1px rgba(7,140,163,.08);
+    }
+    .day.day-open {
+      border-color:#f0b2a8;
+      background:#fff0ed;
+    }
+    .day.day-confirmed {
+      border-color:#8fcfda;
+      background:#dff5f8;
+    }
+    .day.day-done {
+      border-color:#9bd3a7;
+      background:#e8f7ec;
+    }
+    .day.selected { outline:3px solid rgba(241,200,75,.7); outline-offset:1px; }
     .day-number { font-weight:900; }
     .pill {
       display:inline-flex;
@@ -302,8 +319,24 @@
         background:#eef7f9;
       }
       .calendar { gap:3px; }
-      .day { min-height:52px; padding:3px; border-radius:6px; gap:3px; }
+      .day {
+        min-height:52px;
+        padding:3px;
+        border-radius:6px;
+        gap:3px;
+        justify-items:center;
+        align-content:center;
+      }
       .day-number { font-size:11px; }
+      .day.has-assignments .day-number {
+        min-width:24px;
+        padding:4px 0;
+        border-radius:999px;
+        color:var(--azul-profundo);
+      }
+      .day.day-open .day-number { background:#d95643; color:#fff; }
+      .day.day-confirmed .day-number { background:#078ca3; color:#fff; }
+      .day.day-done .day-number { background:#5da56d; color:#fff; }
       .day-name-full { display:none; }
       .day-name-short { display:block; }
       .calendar .day .pill {
@@ -512,8 +545,10 @@
         const dateKey = toDateInput(new Date(year, month, day));
         const items = state.assignments.filter((item) => item.date === dateKey);
         const selected = dateKey === state.selectedDate ? ' selected' : '';
+        const dayStatus = calendarDayStatus(items);
+        const statusClass = dayStatus ? ` has-assignments day-${dayStatus}` : '';
         html += `
-          <button class="day${selected}" type="button" onclick="selectDate('${dateKey}')">
+          <button class="day${statusClass}${selected}" type="button" onclick="selectDate('${dateKey}')">
             <span class="day-number">${day}</span>
             ${items.slice(0, 3).map((item) => `<span class="pill ${item.status === 'done' ? 'done' : isOpen(item) ? 'open' : ''}">${escapeHtml(item.role)}</span>`).join('')}
             ${items.length > 3 ? `<span class="pill">+${items.length - 3}</span>` : ''}
@@ -521,6 +556,13 @@
         `;
       }
       els.calendar.innerHTML = html;
+    }
+
+    function calendarDayStatus(items) {
+      if (!items.length) return '';
+      if (items.some(isOpen)) return 'open';
+      if (items.every((item) => item.status === 'done')) return 'done';
+      return 'confirmed';
     }
 
     function renderAssignments() {
