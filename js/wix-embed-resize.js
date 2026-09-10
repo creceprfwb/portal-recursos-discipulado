@@ -21,12 +21,9 @@
   document.documentElement.classList.toggle("embedded-in-wix", isEmbedded);
 
   function getPhysicalScreenWidth() {
-    var ratio = window.devicePixelRatio || 1;
     var candidates = [
       window.screen && window.screen.width,
-      window.screen && window.screen.availWidth,
-      window.screen && window.screen.width && window.screen.width / ratio,
-      window.screen && window.screen.availWidth && window.screen.availWidth / ratio
+      window.screen && window.screen.availWidth
     ].filter(function (value) {
       return typeof value === "number" && value > 0;
     });
@@ -45,7 +42,7 @@
     document.documentElement.style.setProperty("--wix-screen-width", screenWidth + "px");
     document.documentElement.classList.toggle(
       "coarse-mobile-screen",
-      isNarrowScreen && (isTouchLikeScreen || ratio >= 2)
+      isEmbedded && isNarrowScreen && (isTouchLikeScreen || ratio >= 2)
     );
     document.documentElement.classList.toggle(
       "force-mobile-embed",
