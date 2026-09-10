@@ -21,32 +21,23 @@
   document.documentElement.classList.toggle("embedded-in-wix", isEmbedded);
 
   function getPhysicalScreenWidth() {
-    var ratio = window.devicePixelRatio || 1;
     var candidates = [
       window.screen && window.screen.width,
-      window.screen && window.screen.availWidth,
-      window.screen && window.screen.width && window.screen.width / ratio,
-      window.screen && window.screen.availWidth && window.screen.availWidth / ratio
+      window.screen && window.screen.availWidth
     ].filter(function (value) {
       return typeof value === "number" && value > 0;
     });
 
-    return Math.round(candidates.length ? Math.min.apply(Math, candidates) : window.innerWidth);
+    return candidates.length ? Math.min.apply(Math, candidates) : window.innerWidth;
   }
 
   function updateEmbedWidthState() {
     var screenWidth = getPhysicalScreenWidth();
     var iframeWidth = window.innerWidth || document.documentElement.clientWidth || screenWidth;
-    var ratio = window.devicePixelRatio || 1;
-    var isNarrowScreen = screenWidth <= 640 || (ratio >= 2 && screenWidth <= 820);
-    var isTouchLikeScreen = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
-    var iframeLooksDesktop = iframeWidth > screenWidth + 80;
+    var isNarrowScreen = screenWidth <= 640;
+    var iframeLooksDesktop = iframeWidth > screenWidth + 120;
 
     document.documentElement.style.setProperty("--wix-screen-width", screenWidth + "px");
-    document.documentElement.classList.toggle(
-      "coarse-mobile-screen",
-      isNarrowScreen && (isTouchLikeScreen || ratio >= 2)
-    );
     document.documentElement.classList.toggle(
       "force-mobile-embed",
       isEmbedded && isNarrowScreen && iframeLooksDesktop
