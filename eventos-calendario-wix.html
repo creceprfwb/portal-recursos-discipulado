@@ -27,7 +27,9 @@
         line-height: 1.55;
       }
       html.force-mobile-embed,
-      html.force-mobile-embed body {
+      html.force-mobile-embed body,
+      html.coarse-mobile-screen,
+      html.coarse-mobile-screen body {
         width: var(--wix-screen-width, 390px);
         max-width: var(--wix-screen-width, 390px);
       }
@@ -208,39 +210,48 @@
         .btn { width: 100%; }
         .actions { flex-direction: column; }
       }
-      html.force-mobile-embed .calendar-wrap {
+      html.force-mobile-embed .calendar-wrap,
+      html.coarse-mobile-screen .calendar-wrap {
         width: var(--wix-screen-width, 390px);
         max-width: var(--wix-screen-width, 390px);
         min-height: auto;
         padding: 22px 10px 28px;
       }
-      html.force-mobile-embed .calendar-shell {
+      html.force-mobile-embed .calendar-shell,
+      html.coarse-mobile-screen .calendar-shell {
         width: 100%;
         max-width: 100%;
       }
-      html.force-mobile-embed .calendar-card {
+      html.force-mobile-embed .calendar-card,
+      html.coarse-mobile-screen .calendar-card {
         padding: 12px;
         border-radius: 18px;
       }
-      html.force-mobile-embed .calendar {
+      html.force-mobile-embed .calendar,
+      html.coarse-mobile-screen .calendar {
         gap: 3px;
       }
-      html.force-mobile-embed .day {
+      html.force-mobile-embed .day,
+      html.coarse-mobile-screen .day {
         min-height: 52px;
         padding: 3px;
         border-radius: 6px;
         gap: 3px;
       }
-      html.force-mobile-embed .day-number {
+      html.force-mobile-embed .day-number,
+      html.coarse-mobile-screen .day-number {
         font-size: 11px;
       }
-      html.force-mobile-embed .day-name-full {
+      html.force-mobile-embed .day-name-full,
+      html.coarse-mobile-screen .day-name-full {
         display: none;
       }
-      html.force-mobile-embed .day-name-short {
+      html.force-mobile-embed .day-name-short,
+      html.coarse-mobile-screen .day-name-short {
         display: block;
       }
-      html.force-mobile-embed .calendar .day .pill {
+      html.force-mobile-embed .calendar .day .pill,
+      html.coarse-mobile-screen .calendar .day .pill {
         width: 6px;
         height: 6px;
         min-width: 0;
@@ -251,10 +262,12 @@
         line-height: 0;
         overflow: hidden;
       }
-      html.force-mobile-embed .btn {
+      html.force-mobile-embed .btn,
+      html.coarse-mobile-screen .btn {
         width: 100%;
       }
-      html.force-mobile-embed .actions {
+      html.force-mobile-embed .actions,
+      html.coarse-mobile-screen .actions {
         flex-direction: column;
       }
     </style>
@@ -449,6 +462,6 @@
 
       loadData();
     </script>
-  <script src="js/wix-embed-resize.js"></script>
+  <script src="js/wix-embed-resize.js?v=mobilefix2"></script>
 </body>
 </html>
