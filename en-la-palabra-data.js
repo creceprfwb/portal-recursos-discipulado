@@ -1237,6 +1237,198 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amén.`
       prayer: 'Padre, gracias por hablarnos en tu Hijo. Abre nuestros oídos para escuchar a Cristo y nuestros corazones para obedecerle. Amén.',
       keywords: ['hebreos', 'cristo', 'revelación', 'hijo']
     },
+    '2026-09-07': {
+      title: 'Meditar día y noche',
+      explanation: 'El salmista describe la bienaventuranza de quien no camina en consejo de malos sino que se deleita en la ley de Jehová y medita en ella de día y de noche. Esta meditación no es un ejercicio ocasional, sino un habito constante que da estabilidad: como árbol plantado junto a corrientes de aguas. La Palabra meditada nutre el alma, da dirección para las decisiones diarias y produce fruto en su tiempo. Comenzar la semana meditando en la Palabra establece el rumbo de nuestro corazón.',
+      reflectionQuestion: 'Qué lugar ocupa la meditación en la Palabra en tu rutina diaria?',
+      application: 'Separa unos minutos hoy para leer un pasaje breve y repetirlo en tu mente durante el día.',
+      prayer: 'Señor, que tu Palabra more en mí de día y de noche, y que dé fruto en mi vida. Amén.',
+      keywords: ['salmo 1', 'meditar', 'palabra', 'fruto']
+    },
+    '2026-09-08': {
+      title: 'Lampara para mis pies',
+      explanation: 'La Palabra de Dios se compara con una lámpara que ilumina el camino y una luz que guía cada paso. No promete revelar todo el trayecto de una vez, pero sí la claridad suficiente para el siguiente paso. En un mundo lleno de incertidumbre, esta imagen nos recuerda que no necesitamos ver todo el futuro; necesitamos confiar en la Palabra que Dios ya nos dio para caminar hoy con fidelidad, un paso a la vez, sin tropezar en la oscuridad.',
+      reflectionQuestion: 'En qué área de tu vida necesitas que la Palabra ilumine tu próximo paso?',
+      application: 'Antes de tomar una decisión hoy, pregúntate qué dice la Palabra al respecto.',
+      prayer: 'Señor, sé lámpara a mis pies y luz a mi camino. Guíame paso a paso hoy. Amén.',
+      keywords: ['salmo 119', 'lámpara', 'guía', 'camino']
+    },
+    '2026-09-09': {
+      title: 'Renovados en la mente',
+      explanation: 'Pablo llama a los creyentes a presentar sus cuerpos como sacrificio vivo y a no conformarse a este siglo, sino a transformarse mediante la renovación de la mente. El cambio verdadero no comienza afuera, con reglas externas, sino adentro, con una mente que aprende a pensar según Dios en lugar de según el mundo. Esta renovación es continua: cada día decidimos si llenamos la mente con la Palabra o con los patrones que nos rodean.',
+      reflectionQuestion: 'Qué está moldeando más tu forma de pensar esta semana: el mundo o la Palabra?',
+      application: 'Identifica un pensamiento o patrón del mundo que necesitas reemplazar con una verdad bíblica hoy.',
+      prayer: 'Señor, transforma mi mente. Que no me conforme a este siglo, sino que piense y viva según tu voluntad. Amén.',
+      keywords: ['romanos 12', 'renovación', 'mente', 'transformación']
+    },
+    '2026-09-10': {
+      title: 'La Palabra discierne el corazón',
+      explanation: 'La Palabra de Dios se describe como viva, eficaz y más cortante que espada de dos filos, capaz de penetrar hasta discernir los pensamientos e intenciones del corazón. Nada queda oculto delante de Dios. Esta verdad puede incomodar, pero también libera: la Palabra no solo nos informa, nos examina con precisión y nos invita a la honestidad delante de Aquel a quien debemos dar cuenta. Someternos a su examen es el camino hacia una vida sincera.',
+      reflectionQuestion: 'Qué área de tu corazón necesita ser examinada honestamente por la Palabra hoy?',
+      application: 'Pide a Dios en oración que revele algo en tu corazón que necesitas rendirle.',
+      prayer: 'Señor, examina mi corazón con tu Palabra. Dame valentía para ser sincero delante de ti. Amén.',
+      keywords: ['hebreos 4', 'corazón', 'discernimiento', 'palabra viva']
+    },
+    '2026-09-11': {
+      title: 'Recibir con mansedumbre',
+      explanation: 'Santiago instruye a ser prontos para oír, tardos para hablar y tardos para airarse, y a recibir con mansedumbre la Palabra implantada. La mansedumbre aquí no es debilidad, sino una disposición humilde que no pelea con la Palabra ni la resiste, sino que la deja hacer su obra. Muchas veces nuestra resistencia a la Palabra nace del orgullo o del enojo; Santiago nos llama a bajar la guardia y dejar que la verdad tenga espacio para transformarnos.',
+      reflectionQuestion: 'Qué actitud te impide recibir la Palabra con mansedumbre esta semana?',
+      application: 'La próxima vez que leas o escuches la Palabra, resiste el impulso de justificarte y simplemente recíbela.',
+      prayer: 'Señor, dame un corazón manso que reciba tu Palabra sin resistencia y me deje transformar por ella. Amén.',
+      keywords: ['santiago 1', 'mansedumbre', 'recibir', 'palabra implantada']
+    },
+    '2026-09-12': {
+      title: 'Permanecer en la verdad',
+      explanation: 'Jesús enseña que ser verdaderamente su discípulo implica permanecer en su palabra, y que conocer la verdad trae libertad genuina. La libertad que el mundo ofrece suele ser superficial; la libertad que Cristo da nace de conocer y vivir la verdad de su Palabra. Permanecer no es un acto único, sino una decisión continua de quedarse, volver y confiar en la enseñanza de Jesús aun cuando sea difícil o contraria a nuestros deseos.',
+      reflectionQuestion: 'En qué área necesitas permanecer con más constancia en la Palabra de Jesús?',
+      application: 'Comprométete hoy a leer la Palabra aunque no sientas ganas, confiando que la constancia trae libertad.',
+      prayer: 'Jesús, ayúdame a permanecer en tu palabra. Que conocer la verdad me haga verdaderamente libre. Amén.',
+      keywords: ['juan 8', 'permanecer', 'verdad', 'libertad']
+    },
+    '2026-09-13': {
+      title: 'Transformados por la Palabra',
+      explanation: 'Cerramos la semana volviendo al llamado de Pablo a la transformación por la renovación de la mente. Hemos visto que la Palabra ilumina el camino, examina el corazón y pide ser recibida con mansedumbre; hoy la iglesia se reúne para responder juntos a esa Palabra. Presentar el cuerpo como sacrificio vivo es un acto de adoración que continúa toda la semana, no solo el domingo. La congregación crece cuando cada creyente decide no conformarse, sino dejarse transformar en comunidad.',
+      reflectionQuestion: 'Qué cambio concreto ha comenzado la Palabra en ti esta semana?',
+      application: 'Comparte con alguien de la iglesia hoy una verdad que Dios te mostró esta semana en su Palabra.',
+      prayer: 'Señor, gracias por tu Palabra que transforma. Sigue renovando nuestra mente como iglesia esta semana. Amén.',
+      keywords: ['romanos 12', 'transformación', 'iglesia', 'adoración']
+    },
+    '2026-09-14': {
+      title: 'Cristo anunciado',
+      explanation: 'Jesús, caminando con los discípulos de Emaús, les reprende con amor por ser tardos de corazón para creer, y comenzando desde Moisés y todos los profetas, les declara lo que de Él decían las Escrituras. Toda la Biblia, desde el Antiguo Testamento, apunta hacia Cristo. Leer las Escrituras sin ver a Jesús es perderse el centro del mensaje. Esta semana recordamos que la meta de nuestro estudio bíblico no es solo información, sino encontrarnos con el Cristo anunciado en toda la Palabra.',
+      reflectionQuestion: 'Has buscado a Cristo al leer el Antiguo Testamento, o lo lees como historia separada?',
+      application: 'Lee hoy un pasaje del Antiguo Testamento buscando cómo apunta hacia Jesús.',
+      prayer: 'Señor Jesús, abre mis ojos para verte en toda la Escritura, desde Génesis hasta Apocalipsis. Amén.',
+      keywords: ['lucas 24', 'cristo', 'escrituras', 'emaús']
+    },
+    '2026-09-15': {
+      title: 'Las Escrituras dan testimonio',
+      explanation: 'Jesús confronta a los líderes religiosos que escudriñaban las Escrituras pensando tener en ellas vida eterna, sin darse cuenta de que las Escrituras dan testimonio de Él. Se puede conocer mucho de la Biblia y aun así perderse a Cristo si el corazón no viene a Él. El conocimiento bíblico no salva por sí mismo; la vida está en la persona a quien la Biblia señala. Estudiar la Palabra debe siempre llevarnos más cerca de Jesús, no solo a más información.',
+      reflectionQuestion: 'Tu estudio de la Biblia te está acercando a Cristo o solo aumentando tu conocimiento?',
+      application: 'Al leer hoy, pregúntate: qué me muestra este pasaje acerca de Jesús?',
+      prayer: 'Jesús, que mi conocimiento de la Escritura siempre me lleve a ti, la fuente de vida verdadera. Amén.',
+      keywords: ['juan 5', 'testimonio', 'escrituras', 'vida eterna']
+    },
+    '2026-09-16': {
+      title: 'El Verbo hecho carne',
+      explanation: 'Juan presenta a Jesús como el Verbo que estaba con Dios y era Dios desde el principio, y que se hizo carne y habitó entre nosotros. La Palabra escrita nos lleva a la Palabra viva: Dios mismo, revelado en un cuerpo humano, lleno de gracia y de verdad. Este es el corazón del evangelio: Dios no se quedó distante, sino que se acercó a nosotros en la persona de Jesucristo, para que pudiéramos conocerle y recibir de su plenitud.',
+      reflectionQuestion: 'Qué significa para ti que Dios se hiciera carne y habitara entre nosotros?',
+      application: 'Da gracias hoy por la cercanía de Dios en Jesús, y comparte esa buena noticia con alguien.',
+      prayer: 'Padre, gracias por enviar a tu Verbo hecho carne, lleno de gracia y de verdad. Amén.',
+      keywords: ['juan 1', 'verbo', 'encarnación', 'gracia']
+    },
+    '2026-09-17': {
+      title: 'El evangelio prometido',
+      explanation: 'Pablo comienza su carta explicando que el evangelio de Dios ya había sido prometido por los profetas en las Santas Escrituras, y que ahora se cumple en Jesucristo, descendiente de David según la carne y declarado Hijo de Dios con poder por la resurrección. El evangelio no es una idea nueva ni improvisada; es el cumplimiento fiel de las promesas de Dios a lo largo de toda la historia. Esto nos da confianza: el Dios que prometió es el mismo Dios que cumple.',
+      reflectionQuestion: 'Cómo fortalece tu fe saber que el evangelio es cumplimiento de promesas antiguas?',
+      application: 'Investiga hoy una promesa del Antiguo Testamento que se cumple en Jesús y agradece a Dios por su fidelidad.',
+      prayer: 'Señor, gracias porque cumples tus promesas. Fortalece mi fe en el evangelio de tu Hijo. Amén.',
+      keywords: ['romanos 1', 'evangelio', 'promesa', 'cumplimiento']
+    },
+    '2026-09-18': {
+      title: 'Cristo crucificado',
+      explanation: 'Pablo declara que la palabra de la cruz es locura para los que se pierden, pero para los que se salvan es poder de Dios. El mundo busca sabiduría o señales, pero Dios eligió lo que parece necio para avergonzar a los sabios. La cruz sigue siendo un escándalo para la lógica humana, pero es precisamente allí donde se revela el poder y la sabiduría de Dios para salvar. No debemos avergonzarnos de predicar a Cristo crucificado, aunque el mundo lo considere debilidad.',
+      reflectionQuestion: 'Te ha costado alguna vez sentir vergüenza del mensaje de la cruz? Cómo respondes a eso?',
+      application: 'Comparte hoy con alguien, sin temor, por qué la cruz de Cristo es central en tu fe.',
+      prayer: 'Señor, que nunca me avergüence de la cruz de Cristo, aunque el mundo la llame locura. Amén.',
+      keywords: ['1 corintios 1', 'cruz', 'poder de dios', 'sabiduría']
+    },
+    '2026-09-19': {
+      title: 'Cristo resucitado',
+      explanation: 'Pablo recuerda a los corintios el evangelio que recibieron y en el cual permanecen firmes: que Cristo murió por nuestros pecados, fue sepultado, resucitó al tercer día conforme a las Escrituras, y fue visto por muchos testigos. La resurrección no es una leyenda piadosa, sino un hecho histórico atestiguado por cientos de personas. Sobre esta base firme se sostiene toda la fe cristiana: si Cristo resucitó, la muerte fue vencida y nuestra esperanza es segura.',
+      reflectionQuestion: 'Qué diferencia hace en tu vida diaria saber que Cristo verdaderamente resucitó?',
+      application: 'Vive hoy con la esperanza de la resurrección, enfrentando cualquier dificultad con esa certeza.',
+      prayer: 'Señor, gracias porque resucitaste conforme a las Escrituras. Que viva hoy con la esperanza de tu victoria. Amén.',
+      keywords: ['1 corintios 15', 'resurrección', 'evangelio', 'esperanza']
+    },
+    '2026-09-20': {
+      title: 'Las Escrituras nos conducen a Cristo',
+      explanation: 'Terminamos la semana donde comenzamos: con Jesús explicando desde Moisés y los profetas todo lo que las Escrituras decían de Él. Hemos visto al Verbo hecho carne, el evangelio prometido, la cruz y la resurrección. Hoy, reunidos como iglesia, recordamos que toda la Biblia es una sola historia que apunta a un solo Salvador. Leer las Escrituras sin dejarnos conducir a Cristo es quedarnos a medio camino; la meta final de toda la Palabra es Jesús mismo.',
+      reflectionQuestion: 'De todo lo estudiado esta semana, qué te ayudó más a ver a Cristo con claridad?',
+      application: 'Al congregarte hoy, escucha la predicación buscando cómo te conduce a Cristo.',
+      prayer: 'Señor Jesús, gracias porque toda la Escritura nos conduce a ti. Sigue abriendo nuestro entendimiento como iglesia. Amén.',
+      keywords: ['lucas 24', 'cristo', 'escrituras', 'iglesia']
+    },
+    '2026-09-21': {
+      title: 'Oidores y hacedores',
+      explanation: 'Santiago advierte contra el engaño de ser solamente oidores de la palabra, comparándolos con alguien que se mira en un espejo y luego olvida cómo era. La verdadera bendición viene a quien mira atentamente en la Palabra y persevera, siendo no oidor olvidadizo sino hacedor de la obra. Escuchar sermones, leer la Biblia o asistir a estudios no basta si no se traduce en obediencia práctica. La Palabra está hecha para ser vivida, no solo escuchada.',
+      reflectionQuestion: 'Qué has escuchado recientemente de la Palabra que aún no has puesto en práctica?',
+      application: 'Elige una enseñanza reciente y ponla en práctica de manera concreta hoy mismo.',
+      prayer: 'Señor, no permitas que sea solo oidor de tu Palabra. Hazme hacedor fiel de lo que aprendo. Amén.',
+      keywords: ['santiago 1', 'oidores', 'hacedores', 'obediencia']
+    },
+    '2026-09-22': {
+      title: 'Obedecer por amor',
+      explanation: 'Jesús enseña que quien tiene sus mandamientos y los guarda, ese es el que le ama. La obediencia cristiana no nace del temor ni de la obligación fría, sino del amor a Cristo. Guardar la palabra de Jesús es la evidencia natural de amarle, así como quien ama a alguien busca agradarle. Esta semana somos llamados a examinar nuestra obediencia: nace de un corazón que ama a Jesús, o de un simple cumplimiento de reglas?',
+      reflectionQuestion: 'Tu obediencia a Dios nace más del amor o del deber?',
+      application: 'Hoy, al obedecer un mandato bíblico, hazlo conscientemente como expresión de amor a Jesús.',
+      prayer: 'Jesús, que mi obediencia nazca siempre de amarte, no solo de cumplir reglas. Amén.',
+      keywords: ['juan 14', 'obediencia', 'amor', 'mandamientos']
+    },
+    '2026-09-23': {
+      title: 'Fruto de la Palabra',
+      explanation: 'Pablo describe cómo se ve una vida vestida de la Palabra: compasión, benignidad, humildad, mansedumbre, paciencia, perdón mutuo y, sobre todo, amor, que es el vínculo perfecto. Cuando la palabra de Cristo mora en abundancia en nosotros, el resultado no es solo conocimiento, sino un carácter transformado que se nota en las relaciones diarias. La Palabra hecha vida produce un fruto visible: una comunidad que se trata con la misma gracia que ha recibido de Dios.',
+      reflectionQuestion: 'Qué virtud de esta lista necesitas cultivar más en tus relaciones esta semana?',
+      application: 'Practica hoy con alguien cercano una de las virtudes mencionadas: paciencia, perdón o benignidad.',
+      prayer: 'Señor, que tu palabra more en mí en abundancia y produzca en mi vida el fruto del amor. Amén.',
+      keywords: ['colosenses 3', 'fruto', 'amor', 'carácter']
+    },
+    '2026-09-24': {
+      title: 'Enseñar y amonestar',
+      explanation: 'Pablo llama a que la palabra de Cristo more en los creyentes en abundancia, enseñándose y amonestándose unos a otros con toda sabiduría. La Palabra no fue dada solo para el crecimiento individual, sino para edificar a la comunidad. Enseñar y amonestar con amor es parte de la vida en familia de la iglesia: nos ayudamos mutuamente a permanecer fieles, corrigiendo con humildad y animando con la verdad, siempre en un espíritu de gratitud y adoración.',
+      reflectionQuestion: 'Cuándo fue la última vez que animaste o corregiste a alguien con la Palabra, con amor?',
+      application: 'Busca hoy una oportunidad para animar a otro creyente con una palabra de la Escritura.',
+      prayer: 'Señor, ayúdame a edificar a otros con tu Palabra, con sabiduría, humildad y amor. Amén.',
+      keywords: ['colosenses 3', 'enseñar', 'amonestar', 'comunidad']
+    },
+    '2026-09-25': {
+      title: 'Practicar la justicia',
+      explanation: 'Juan enseña que conocemos el amor en que Cristo puso su vida por nosotros, y que también nosotros debemos poner la vida por los hermanos. El amor verdadero no se queda en palabras o de lengua, sino que se demuestra en hechos y en verdad. Si vemos a un hermano en necesidad y cerramos nuestro corazón, el amor de Dios no permanece en nosotros. La Palabra nos llama a un amor práctico, visible, que actúa cuando hay una necesidad real.',
+      reflectionQuestion: 'Hay alguna necesidad concreta a tu alrededor que puedas atender esta semana?',
+      application: 'Identifica una necesidad práctica de alguien cercano y ayúdale de manera concreta hoy.',
+      prayer: 'Señor, que mi amor no se quede en palabras, sino que se demuestre en hechos y en verdad. Amén.',
+      keywords: ['1 juan 3', 'amor', 'hechos', 'necesidad']
+    },
+    '2026-09-26': {
+      title: 'Perseverar en la doctrina',
+      explanation: 'La iglesia primitiva perseveraba en la doctrina de los apóstoles, en la comunión, en el partimiento del pan y en las oraciones. Esta perseverancia constante, no ocasional, producía una comunidad marcada por generosidad, alegría y crecimiento diario. Ser oidores y hacedores de la Palabra no es un esfuerzo solitario; florece mejor en comunidad, donde la enseñanza fiel se vive junto a otros que también buscan obedecer a Dios y cuidarse mutuamente.',
+      reflectionQuestion: 'Cómo describirías tu perseverancia en la comunión y las oraciones con tu iglesia?',
+      application: 'Comprométete esta semana a participar activamente en un espacio de comunión de tu iglesia.',
+      prayer: 'Señor, ayúdanos como iglesia a perseverar en tu doctrina, la comunión, el pan y la oración. Amén.',
+      keywords: ['hechos 2', 'perseverar', 'doctrina', 'comunión']
+    },
+    '2026-09-27': {
+      title: 'Obedecer la Palabra',
+      explanation: 'Cerramos la semana volviendo al llamado de Santiago a ser hacedores, no solo oidores. Hemos visto que obedecer nace del amor a Cristo, produce fruto visible, edifica a la comunidad y se demuestra en hechos de amor práctico. Hoy, como iglesia reunida, respondemos juntos al desafío: no basta con escuchar buena predicación; la bendición viene a quien lleva la Palabra a la práctica, en el hogar, el trabajo y cada relación de la semana que comienza.',
+      reflectionQuestion: 'Qué acción concreta tomarás esta semana como respuesta a lo escuchado hoy?',
+      application: 'Escribe una decisión concreta después de la predicación de hoy y compártela con alguien que te rinda cuentas.',
+      prayer: 'Señor, que seamos como iglesia hacedores de tu Palabra, no solo oidores. Amén.',
+      keywords: ['santiago 1', 'obediencia', 'iglesia', 'hacedores']
+    },
+    '2026-09-28': {
+      title: 'Continúa en lo aprendido',
+      explanation: 'Pablo anima a Timoteo a persistir en lo que aprendió y se persuadió, recordando de quién lo aprendió y que desde la niñez conoció las Sagradas Escrituras, capaces de hacerlo sabio para la salvación por la fe en Cristo Jesús. En tiempos de engaño y falsa enseñanza, la firmeza no viene de novedades, sino de continuar fielmente en lo que ya se ha recibido como verdad. La perseverancia en la sana doctrina protege al creyente de ser llevado por doctrinas extrañas.',
+      reflectionQuestion: 'Qué verdades bíblicas fundamentales necesitas reafirmar en esta temporada?',
+      application: 'Repasa hoy una verdad básica de tu fe que aprendiste hace tiempo y agradece a Dios por ella.',
+      prayer: 'Señor, ayúdame a continuar firme en lo que he aprendido de tu Palabra. Amén.',
+      keywords: ['2 timoteo 3', 'perseverancia', 'escrituras', 'fe']
+    },
+    '2026-09-29': {
+      title: 'Inspirada por Dios',
+      explanation: 'Pablo declara que toda la Escritura es inspirada por Dios y útil para enseñar, redargüir, corregir e instruir en justicia, a fin de que el hombre de Dios sea perfecto, enteramente preparado para toda buena obra. La Biblia no es simplemente literatura religiosa humana; es el aliento mismo de Dios puesto en palabras. Por eso tiene autoridad para enseñarnos lo que es verdad, señalar lo que está mal, corregir el rumbo y formar en nosotros una vida de justicia y buenas obras.',
+      reflectionQuestion: 'Cómo cambia tu forma de leer la Biblia saber que es inspirada por Dios mismo?',
+      application: 'Al leer hoy la Palabra, pídele a Dios que te enseñe, te corrija y te prepare para una buena obra específica.',
+      prayer: 'Señor, gracias porque tu Palabra es inspirada y útil. Prepárame por completo para toda buena obra. Amén.',
+      keywords: ['2 timoteo 3', 'inspiración', 'escritura', 'buenas obras']
+    },
+    '2026-09-30': {
+      title: 'Reten la forma de las sanas palabras',
+      explanation: 'Pablo instruye a Timoteo a retener la forma de las sanas palabras que ha oído, con fe y amor en Cristo Jesús, y a guardar el buen depósito por el Espíritu Santo que mora en nosotros. La sana doctrina no se guarda sola; requiere intención, fe y amor activo. El Espíritu Santo nos capacita para custodiar fielmente lo que hemos recibido, de manera que podamos transmitirlo íntegro a otros, sin distorsión ni compromiso, tal como lo recibimos.',
+      reflectionQuestion: 'Estás reteniendo con fidelidad las verdades esenciales de la fe que has recibido?',
+      application: 'Comparte hoy con alguien una verdad esencial de la fe que quieres que él o ella también retenga.',
+      prayer: 'Espíritu Santo, ayúdame a retener y guardar fielmente el buen depósito de la sana doctrina. Amén.',
+      keywords: ['2 timoteo 1', 'sana doctrina', 'espíritu santo', 'fidelidad']
+    },
     '2026-10-01': {
       title: 'Buscar a Dios de todo corazón',
       explanation: 'La oración comienza con una invitacion: Dios llama a su pueblo a buscarle. Jeremías habla a personas que necesitaban esperanza en medio de una temporada dificil, y les recuerda que Dios no esta lejos de quienes le buscan con todo el corazón. Buscar a Dios no es usar la oración solo para recibir cosas; es volver el corazón al Señor, confiar en sus promesas y rendir nuestros caminos delante de Él.',
@@ -1268,6 +1460,222 @@ porque tuyo es el reino, y el poder, y la gloria, por todos los siglos. Amén.`
       application: 'Ora lentamente usando las peticiones de Mateo 6:9-13 como guía para tu tiempo con Dios.',
       prayer: 'Padre nuestro, ordena mi corazón según tu reino y tu voluntad. Dame dependencia diaria, perdón y fortaleza para vivir para tu gloria. Amén.',
       keywords: ['padre nuestro', 'mateo 6', 'reino', 'voluntad']
+    },
+    '2026-10-05': {
+      title: 'Reconocer a Dios en todos los caminos',
+      explanation: 'Salomón instruye a confiar en Jehová de todo corazón y no apoyarse en la propia prudencia, sino reconocerlo en todos los caminos, con la promesa de que Él enderezará las veredas. La oración con dependencia comienza con humildad: reconocer que no tenemos toda la sabiduría ni el control. Confiar en Dios no significa dejar de pensar o planear, sino someter cada decisión, grande o pequeña, a su dirección, confiando en que Él ve lo que nosotros no vemos.',
+      reflectionQuestion: 'En qué decisión reciente confiaste más en tu propia prudencia que en Dios?',
+      application: 'Antes de tomar una decisión hoy, detente a reconocer a Dios en oración y pide su dirección.',
+      prayer: 'Señor, ayúdame a confiar en ti de todo corazón y reconocerte en cada camino que tome. Amén.',
+      keywords: ['proverbios 3', 'confianza', 'dependencia', 'dirección']
+    },
+    '2026-10-06': {
+      title: 'Presentar nuestras peticiones con gratitud',
+      explanation: 'Pablo llama a regocijarse siempre en el Señor y a no estar afanosos por nada, sino presentar las peticiones a Dios en oración y ruego, con acción de gracias. La promesa que sigue es hermosa: la paz de Dios, que sobrepasa todo entendimiento, guardará nuestros corazones y pensamientos. La gratitud transforma la oración de una simple lista de peticiones a una expresión de confianza, y es precisamente en ese lugar donde recibimos la paz que el mundo no puede dar.',
+      reflectionQuestion: 'Sueles orar con más afán o con más gratitud?',
+      application: 'Antes de presentar una petición hoy, escribe tres cosas por las que estás agradecido.',
+      prayer: 'Señor, ayúdame a orar con gratitud y a recibir tu paz que sobrepasa todo entendimiento. Amén.',
+      keywords: ['filipenses 4', 'gratitud', 'paz', 'oración']
+    },
+    '2026-10-07': {
+      title: 'Echar nuestra ansiedad sobre Dios',
+      explanation: 'Pedro llama a humillarnos bajo la poderosa mano de Dios, echando toda ansiedad sobre Él, porque Él tiene cuidado de nosotros. La ansiedad, cuando se carga sola, aplasta; pero cuando se entrega en oración, se convierte en una oportunidad de experimentar el cuidado personal de Dios. Este versículo no promete ausencia de dificultades, sino la certeza de que no las enfrentamos solos: Dios mismo carga con nuestras cargas cuando se las entregamos.',
+      reflectionQuestion: 'Qué ansiedad necesitas entregar a Dios en oración hoy mismo?',
+      application: 'Escribe tu ansiedad principal en una oración concreta y entrégasela a Dios hoy.',
+      prayer: 'Señor, echo sobre ti mi ansiedad, porque sé que tienes cuidado de mí. Amén.',
+      keywords: ['1 pedro 5', 'ansiedad', 'cuidado', 'humildad']
+    },
+    '2026-10-08': {
+      title: 'Estar quietos delante de Dios',
+      explanation: 'El salmo declara que Dios es nuestro amparo y fortaleza, ayuda presente en la tribulación, por lo cual no temeremos aunque la tierra sea removida. En medio de esa certeza llega la invitación: Estad quietos, y conoced que yo soy Dios. La quietud delante de Dios no es pasividad, sino confianza activa que deja de luchar por controlarlo todo y descansa en que Él es soberano sobre las naciones y sobre nuestra vida personal.',
+      reflectionQuestion: 'Qué te cuesta más: actuar o estar quieto y confiar en Dios?',
+      application: 'Aparta unos minutos de silencio hoy simplemente para estar quieto delante de Dios, sin pedir nada.',
+      prayer: 'Señor, ayúdame a estar quieto y reconocer que tú eres Dios, mi amparo y fortaleza. Amén.',
+      keywords: ['salmo 46', 'quietud', 'confianza', 'fortaleza']
+    },
+    '2026-10-09': {
+      title: 'No mi voluntad, sino la tuya',
+      explanation: 'En Getsemaní, Jesús ora con angustia profunda, pidiendo que si es posible pase de Él aquella copa, pero rindiendo su voluntad a la del Padre: no como yo quiero, sino como tú. Esta oración modela la dependencia más difícil: someter nuestros deseos más profundos, aun en medio del dolor, a la voluntad de Dios. La oración con dependencia no siempre elimina el sufrimiento, pero nos da la fuerza para atravesarlo confiando en el Padre.',
+      reflectionQuestion: 'Hay algo en tu vida donde necesitas orar no mi voluntad, sino la tuya?',
+      application: 'Lleva hoy a Dios en oración una situación difícil, rindiendo tu voluntad a la suya, aunque sea costoso.',
+      prayer: 'Padre, como Jesús en Getsemaní, quiero decir: no se haga mi voluntad, sino la tuya. Amén.',
+      keywords: ['mateo 26', 'getsemaní', 'voluntad', 'sumisión']
+    },
+    '2026-10-10': {
+      title: 'Acercarnos al trono de la gracia',
+      explanation: 'Hebreos nos anima a acercarnos confiadamente al trono de la gracia, porque tenemos un sumo sacerdote, Jesús, que puede compadecerse de nuestras debilidades, habiendo sido tentado en todo según nuestra semejanza, pero sin pecado. La oración con dependencia no se acerca a un Dios distante e indiferente, sino a un Salvador que comprende nuestras luchas desde experiencia propia. Por eso podemos acercarnos sin temor, buscando misericordia y gracia para el auxilio oportuno.',
+      reflectionQuestion: 'Te acercas a Dios con confianza o con temor a ser rechazado?',
+      application: 'Acércate hoy a Dios en oración con la confianza de que Jesús entiende tus luchas.',
+      prayer: 'Jesús, gracias porque puedo acercarme confiadamente a tu trono de gracia. Dame ayuda en el momento oportuno. Amén.',
+      keywords: ['hebreos 4', 'gracia', 'confianza', 'sumo sacerdote']
+    },
+    '2026-10-11': {
+      title: 'El Padre escucha a sus hijos',
+      explanation: 'Cerramos la semana con los discípulos pidiendo a Jesús: Señor, enséñanos a orar. Él responde con el Padre Nuestro y con la parábola del amigo persistente, terminando con una promesa: si nosotros, siendo malos, sabemos dar buenas dádivas, cuánto más nuestro Padre celestial dará el Espíritu Santo a quienes se lo pidan. Hoy, como iglesia, recordamos que oramos a un Padre que escucha, que se deleita en dar y que invita a la persistencia confiada.',
+      reflectionQuestion: 'Oras con la confianza de que tu Padre celestial realmente te escucha y se deleita en darte lo bueno?',
+      application: 'Ora hoy con persistencia por algo que has pedido antes, confiando en la bondad del Padre.',
+      prayer: 'Padre, gracias porque escuchas a tus hijos. Enséñanos como iglesia a orar con fe y persistencia. Amén.',
+      keywords: ['lucas 11', 'padre', 'oración', 'persistencia']
+    },
+    '2026-10-12': {
+      title: 'Interceder con amor por el pueblo',
+      explanation: 'Cuando Israel cae en idolatría con el becerro de oro, Dios le dice a Moisés que lo destruirá, pero Moisés intercede, apelando al carácter de Dios, sus promesas y su nombre delante de las naciones. Esta escena muestra el poder de la intercesión: alguien que se para en la brecha por otros, aun cuando ellos no lo merecen. Interceder por otros es un acto de amor que refleja el corazón de Dios, quien también intercede por nosotros en Cristo.',
+      reflectionQuestion: 'Por quién necesitas interceder con amor esta semana, aunque no lo merezca?',
+      application: 'Nombra hoy en oración a una persona que necesita misericordia y ora específicamente por ella.',
+      prayer: 'Señor, dame un corazón como el de Moisés, que interceda con amor por otros. Amén.',
+      keywords: ['éxodo 32', 'intercesión', 'misericordia', 'amor']
+    },
+    '2026-10-13': {
+      title: 'No cesar de orar por otros',
+      explanation: 'Samuel, después de reprender al pueblo por pedir un rey, les asegura que Jehová no los abandonará y declara: lejos sea de mí que peque contra Jehová cesando de orar por ustedes. Interceder por otros no es opcional para el líder ni para el creyente maduro; es una responsabilidad que Samuel considera pecado abandonar. Esta semana somos llamados a ver la intercesión no como una opción ocasional, sino como un compromiso constante hacia quienes Dios ha puesto en nuestra vida.',
+      reflectionQuestion: 'Por quién has dejado de orar que necesitas retomar en tu lista de intercesión?',
+      application: 'Haz una lista de tres personas por quienes te comprometes a orar constantemente esta semana.',
+      prayer: 'Señor, que nunca deje de orar por las personas que has puesto en mi vida. Amén.',
+      keywords: ['1 samuel 12', 'intercesión', 'compromiso', 'oración constante']
+    },
+    '2026-10-14': {
+      title: 'Orar para conocer mejor a Dios',
+      explanation: 'Pablo ora por los efesios pidiendo que Dios les dé espíritu de sabiduría y revelación en el conocimiento de Él, para que sepan cuál es la esperanza de su llamamiento y las riquezas de su herencia. Interceder por otros no es solo pedir por sus circunstancias externas, sino también por su crecimiento espiritual: que conozcan a Dios más profundamente. Esta oración de Pablo es un modelo de intercesión que busca lo eterno, no solo lo inmediato.',
+      reflectionQuestion: 'Sueles orar por las circunstancias de otros o también por su crecimiento espiritual?',
+      application: 'Ora hoy por alguien pidiendo específicamente que Dios le dé sabiduría y revelación en su conocimiento de Él.',
+      prayer: 'Padre, dame sabiduría y revelación para conocerte mejor, y ayúdame a orar lo mismo por otros. Amén.',
+      keywords: ['efesios 1', 'sabiduría', 'revelación', 'intercesión']
+    },
+    '2026-10-15': {
+      title: 'Orar por fortaleza espiritual',
+      explanation: 'Pablo dobla sus rodillas ante el Padre, orando para que los creyentes sean fortalecidos con poder en el hombre interior por su Espíritu, que Cristo habite por la fe en sus corazones, y que puedan comprender la anchura, largura, profundidad y altura del amor de Cristo. Esta oración intensa nos enseña a interceder no solo por necesidades superficiales, sino por la fortaleza interior y la comprensión profunda del amor de Dios en la vida de otros.',
+      reflectionQuestion: 'Por quién necesitas orar pidiendo fortaleza en su hombre interior esta semana?',
+      application: 'Ora hoy usando las palabras de Efesios 3:16-19 por alguien que atraviesa una lucha espiritual.',
+      prayer: 'Padre, fortaléceme en mi hombre interior y ayúdame a interceder así por otros. Amén.',
+      keywords: ['efesios 3', 'fortaleza', 'amor de cristo', 'intercesión']
+    },
+    '2026-10-16': {
+      title: 'Orar por crecimiento y fruto',
+      explanation: 'Pablo ora sin cesar por los colosenses, pidiendo que sean llenos del conocimiento de la voluntad de Dios, que anden como es digno del Señor, llevando fruto en toda buena obra y creciendo en el conocimiento de Dios, fortalecidos con poder para toda paciencia y longanimidad con gozo. Interceder por el crecimiento espiritual de otros incluye pedir tanto por su carácter como por su fruto visible: una vida que agrada a Dios en todos los sentidos.',
+      reflectionQuestion: 'Qué área del crecimiento espiritual de alguien cercano necesita tu oración esta semana?',
+      application: 'Ora hoy por alguien pidiendo que lleve fruto en toda buena obra y crezca en el conocimiento de Dios.',
+      prayer: 'Señor, ayúdame a orar por el crecimiento y fruto de otros como Pablo oraba por los colosenses. Amén.',
+      keywords: ['colosenses 1', 'crecimiento', 'fruto', 'intercesión']
+    },
+    '2026-10-17': {
+      title: 'Orar por todos',
+      explanation: 'Pablo exhorta a que se hagan rogativas, oraciones, peticiones y acciones de gracias por todos los hombres, incluyendo a los que están en autoridad, para que vivamos quieta y reposadamente en toda piedad y honestidad. La intercesión cristiana no se limita al círculo cercano; se extiende a toda la sociedad, incluyendo líderes y autoridades, porque Dios quiere que todos los hombres sean salvos y vengan al conocimiento de la verdad.',
+      reflectionQuestion: 'Oras regularmente por las autoridades y líderes de tu país y comunidad?',
+      application: 'Ora hoy específicamente por un líder de gobierno o autoridad, pidiendo sabiduría para él o ella.',
+      prayer: 'Señor, te ruego por todos los hombres, incluyendo a quienes están en autoridad. Amén.',
+      keywords: ['1 timoteo 2', 'autoridades', 'intercesión', 'todos']
+    },
+    '2026-10-18': {
+      title: 'La oración eficaz del justo',
+      explanation: 'Santiago cierra su carta llamando a orar en toda circunstancia: en aflicción, en alegría, en enfermedad, confesando faltas unos a otros, porque la oración eficaz del justo puede mucho. Usa el ejemplo de Elías, un hombre como nosotros, cuya oración detuvo y luego trajo la lluvia. Hoy, como iglesia reunida, recordamos que la intercesión no depende de ser extraordinarios, sino de orar con fe a un Dios que sí responde.',
+      reflectionQuestion: 'Qué situación en tu iglesia o comunidad necesita oración eficaz y perseverante hoy?',
+      application: 'Reúnete hoy con otros creyentes para orar juntos por una necesidad específica de la congregación.',
+      prayer: 'Señor, que como iglesia oremos unos por otros con fe, sabiendo que nuestra oración puede mucho. Amén.',
+      keywords: ['santiago 5', 'oración eficaz', 'elías', 'iglesia']
+    },
+    '2026-10-19': {
+      title: 'Orar siempre y no desmayar',
+      explanation: 'Jesús cuenta la parábola de la viuda persistente que, mediante su insistencia, obtiene justicia de un juez injusto, con el propósito de enseñar que es necesario orar siempre y no desmayar. Si un juez injusto responde a la persistencia, cuánto más nuestro Padre, que es justo y bueno, atenderá a quienes claman a Él día y noche. Esta parábola nos anima a no rendirnos en la oración, aun cuando la respuesta tarde en llegar.',
+      reflectionQuestion: 'Hay alguna oración que has dejado de hacer porque la respuesta tarda?',
+      application: 'Retoma hoy una petición que habías abandonado y ora por ella con renovada perseverancia.',
+      prayer: 'Señor, enséñame a orar siempre y a no desmayar, confiando en tu justicia y bondad. Amén.',
+      keywords: ['lucas 18', 'perseverancia', 'oración', 'justicia']
+    },
+    '2026-10-20': {
+      title: 'Constantes en la oración',
+      explanation: 'Pablo describe la vida cristiana práctica: amor sin fingimiento, aborrecer lo malo, seguir lo bueno, gozosos en la esperanza, pacientes en la tribulación y constantes en la oración. La constancia en la oración no está aislada; está entretejida con el gozo, la paciencia y el amor genuino. La oración perseverante sostiene todas las demás virtudes cristianas, dándonos la fuerza para amar sin fingir y soportar la tribulación con esperanza.',
+      reflectionQuestion: 'Qué virtud de esta lista se fortalecería más en ti si oraras con más constancia?',
+      application: 'Establece hoy un horario fijo de oración esta semana y compártelo con alguien que te anime a cumplirlo.',
+      prayer: 'Señor, hazme constante en la oración, y que de ahí nazcan el amor, el gozo y la paciencia. Amén.',
+      keywords: ['romanos 12', 'constancia', 'oración', 'esperanza']
+    },
+    '2026-10-21': {
+      title: 'Perseverar velando con acción de gracias',
+      explanation: 'Pablo instruye a perseverar en la oración, velando en ella con acción de gracias, y pide también que oren por él, para que Dios le abra puerta para predicar el misterio de Cristo. La perseverancia en la oración incluye velar, es decir, estar alerta y atento, no distraído ni adormecido. Además, esta oración perseverante se extiende a interceder por quienes anuncian el evangelio, pidiendo oportunidades y claridad para compartir a Cristo.',
+      reflectionQuestion: 'Qué significa para ti velar en oración, estando alerta en lugar de distraído?',
+      application: 'Ora hoy por un misionero, pastor o líder, pidiendo que Dios le abra puertas para el evangelio.',
+      prayer: 'Señor, ayúdame a perseverar velando en oración, con un corazón agradecido. Amén.',
+      keywords: ['colosenses 4', 'perseverancia', 'velar', 'evangelio']
+    },
+    '2026-10-22': {
+      title: 'Orar sin cesar',
+      explanation: 'Pablo resume la vida de oración en tres mandatos breves pero profundos: estad siempre gozosos, orad sin cesar, dad gracias en todo, porque esta es la voluntad de Dios para con nosotros en Cristo Jesús. Orar sin cesar no significa estar de rodillas todo el día, sino mantener una actitud constante de dependencia y comunicación con Dios en medio de las actividades diarias, convirtiendo cada momento en una oportunidad de comunión con Él.',
+      reflectionQuestion: 'Cómo se ve para ti orar sin cesar en medio de tu rutina diaria?',
+      application: 'Practica hoy oraciones breves y frecuentes a lo largo del día, en lugar de solo un momento fijo.',
+      prayer: 'Señor, enséñame a orar sin cesar, con gozo y gratitud en cada momento del día. Amén.',
+      keywords: ['1 tesalonicenses 5', 'oración sin cesar', 'gozo', 'gratitud']
+    },
+    '2026-10-23': {
+      title: 'Orar en medio de la espera',
+      explanation: 'El salmista clama con honestidad: Hasta cuándo, Jehová, me olvidarás para siempre? Este salmo breve muestra el proceso real de la oración en la espera: comienza con angustia y preguntas sinceras, pero termina en confianza, declarando que en la misericordia de Dios ha confiado su corazón. La oración perseverante no exige fingir que todo está bien; permite traer la queja honesta a Dios y, en ese proceso, encontrar de nuevo la confianza en su fidelidad.',
+      reflectionQuestion: 'Te permites orar con honestidad cuando sientes que Dios tarda en responder?',
+      application: 'Escribe hoy una oración honesta sobre algo que sientes que Dios ha tardado en resolver, y termina afirmando su fidelidad.',
+      prayer: 'Señor, aunque a veces siento que tardas, en tu misericordia ha confiado mi corazón. Amén.',
+      keywords: ['salmo 13', 'espera', 'honestidad', 'confianza']
+    },
+    '2026-10-24': {
+      title: 'Confiar aunque no veamos',
+      explanation: 'Habacuc declara que aunque la higuera no florezca, ni haya fruto en las vides, ni ganado en los corrales, él se alegrará en Jehová y se gozará en el Dios de su salvación, porque Jehová es su fortaleza. Esta es la cúspide de la oración perseverante: alabar y confiar en Dios no por las circunstancias favorables, sino a pesar de ellas. La fe que persevera en oración aprende a gozarse en Dios mismo, independientemente de lo que veamos a nuestro alrededor.',
+      reflectionQuestion: 'Puedes decir con Habacuc yo me alegraré en Jehová aunque tus circunstancias actuales no mejoren?',
+      application: 'Escribe hoy tu propia versión del Salmo de Habacuc, afirmando confianza en Dios en medio de tu situación actual.',
+      prayer: 'Señor, aunque no vea el fruto que espero, me alegraré en ti, mi fortaleza y salvación. Amén.',
+      keywords: ['habacuc 3', 'confianza', 'gozo', 'fortaleza']
+    },
+    '2026-10-25': {
+      title: 'Una iglesia que ora con valentía',
+      explanation: 'Después de ser amenazados, Pedro y Juan regresan a los suyos, y la iglesia, unánime, alza la voz a Dios pidiendo no que quiten las amenazas, sino que les den valentía para seguir hablando su palabra. El lugar donde estaban tembló y todos fueron llenos del Espíritu Santo. Cerramos la semana de perseverancia en oración recordando que la iglesia que ora unida con valentía experimenta el poder de Dios de manera tangible.',
+      reflectionQuestion: 'Qué situación de tu iglesia necesita hoy una oración valiente, no solo de alivio sino de valentía?',
+      application: 'Únete hoy en oración con otros creyentes pidiendo valentía para la iglesia, no solo protección.',
+      prayer: 'Señor, danos como iglesia valentía para hablar tu palabra, y llénanos de tu Espíritu. Amén.',
+      keywords: ['hechos 4', 'valentía', 'iglesia', 'espíritu santo']
+    },
+    '2026-10-26': {
+      title: 'Rogar por obreros',
+      explanation: 'Jesús, viendo las multitudes cansadas y dispersas como ovejas sin pastor, tiene compasión de ellas y dice a sus discípulos que la mies es mucha pero los obreros pocos, por lo cual deben rogar al Señor de la mies que envíe obreros a su mies. Orar por misión comienza con ver a las personas como Jesús las ve: con compasión, no con indiferencia. Nuestra primera responsabilidad misionera es orar pidiendo que Dios levante obreros para el campo que ya está listo.',
+      reflectionQuestion: 'Ves a las personas perdidas a tu alrededor con la compasión de Jesús?',
+      application: 'Ora hoy pidiendo a Dios que envíe y levante obreros, y pregúntale si tú eres parte de la respuesta.',
+      prayer: 'Señor, dame tu compasión por las multitudes y ayúdame a rogar por obreros para tu mies. Amén.',
+      keywords: ['mateo 9', 'compasión', 'obreros', 'misión']
+    },
+    '2026-10-27': {
+      title: 'Unidos en oración',
+      explanation: 'Después de la ascensión de Jesús, los discípulos suben a un aposento alto y todos, unánimes, perseveran en oración junto con las mujeres y los hermanos de Jesús, esperando la promesa del Espíritu Santo. Antes de que la iglesia saliera a cumplir la misión, primero se unió en oración perseverante. La misión efectiva no comienza con actividad humana, sino con un pueblo unido que busca a Dios juntos antes de moverse a la acción.',
+      reflectionQuestion: 'Tu preparación para servir a Dios incluye tiempos de oración unida con otros?',
+      application: 'Busca hoy un espacio de oración conjunta con otros creyentes antes de tu próxima actividad de servicio.',
+      prayer: 'Señor, únenos en oración como iglesia antes de enviarnos a la misión. Amén.',
+      keywords: ['hechos 1', 'unidad', 'oración', 'espíritu santo']
+    },
+    '2026-10-28': {
+      title: 'Orar antes de enviar',
+      explanation: 'Mientras la iglesia en Antioquía ministraba al Señor y ayunaba, el Espíritu Santo dijo que apartaran a Bernabé y a Saulo para la obra a la cual los había llamado; después de ayunar y orar, les impusieron las manos y los enviaron. La misión no se decide solo por planeación humana, sino que nace de la oración y el ayuno, buscando primero escuchar la dirección del Espíritu antes de enviar a los obreros al campo misionero.',
+      reflectionQuestion: 'Las decisiones importantes de tu vida o ministerio nacen de la oración o solo de la planeación?',
+      application: 'Antes de tomar una decisión importante esta semana, aparta tiempo de oración buscando la dirección de Dios.',
+      prayer: 'Espíritu Santo, guíanos en oración antes de enviar y decidir, como guiaste a la iglesia en Antioquía. Amén.',
+      keywords: ['hechos 13', 'envío', 'ayuno', 'dirección']
+    },
+    '2026-10-29': {
+      title: 'Orar para que corra la Palabra',
+      explanation: 'Pablo pide a los tesalonicenses que oren por él, para que la palabra del Señor corra y sea glorificada, así como sucedió entre ellos, y para ser librado de hombres perversos, porque no todos tienen fe. Orar por la misión incluye pedir específicamente que el mensaje del evangelio avance sin obstáculos y que quienes lo predican sean protegidos y fortalecidos en medio de la oposición que inevitablemente enfrentarán.',
+      reflectionQuestion: 'Oras regularmente para que la Palabra corra y se glorifique en tu comunidad?',
+      application: 'Ora hoy por un predicador o maestro de tu iglesia, pidiendo protección y que su mensaje avance con poder.',
+      prayer: 'Señor, que tu palabra corra y sea glorificada. Protege y fortalece a quienes la predican. Amén.',
+      keywords: ['2 tesalonicenses 3', 'palabra', 'protección', 'misión']
+    },
+    '2026-10-30': {
+      title: 'Orar en el Espíritu',
+      explanation: 'Judas exhorta a los creyentes a edificarse sobre su santísima fe, orando en el Espíritu Santo, y a conservarse en el amor de Dios, esperando la misericordia de nuestro Señor Jesucristo para vida eterna. Orar en el Espíritu implica depender de Su ayuda, ya que muchas veces no sabemos qué pedir como conviene. Esta dependencia del Espíritu Santo edifica nuestra fe y nos mantiene firmes en el amor de Dios mientras vivimos en misión en este mundo.',
+      reflectionQuestion: 'Qué significa para ti depender del Espíritu Santo en tu vida de oración?',
+      application: 'Pide hoy al Espíritu Santo que te ayude a orar cuando no sepas qué pedir.',
+      prayer: 'Espíritu Santo, ayúdame a orar en ti, edificando mi fe y permaneciendo en el amor de Dios. Amén.',
+      keywords: ['judas', 'espíritu santo', 'fe', 'amor de dios']
+    },
+    '2026-10-31': {
+      title: 'Las oraciones delante del Cordero',
+      explanation: 'Juan ve en visión a los veinticuatro ancianos delante del Cordero, cada uno con arpas y copas de oro llenas de incienso, que son las oraciones de los santos, cantando un cántico nuevo de redención. Esta imagen celestial nos recuerda que nuestras oraciones, aun las más pequeñas y silenciosas, no se pierden; suben como incienso delante del trono de Dios. Cerramos estos dos meses de lecturas con la certeza de que orar y vivir en misión tiene valor eterno delante del Cordero.',
+      reflectionQuestion: 'Cómo cambia tu perspectiva de la oración saber que asciende como incienso delante del trono de Dios?',
+      application: 'Termina este mes escribiendo una oración de adoración al Cordero por su obra de redención.',
+      prayer: 'Cordero de Dios, recibe nuestras oraciones como incienso agradable delante de tu trono. Amén.',
+      keywords: ['apocalipsis 5', 'oraciones', 'cordero', 'adoración']
     },
     '2026-11-01': {
       title: 'Heme aquí, envíame a mí',
