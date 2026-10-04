@@ -1,0 +1,1847 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Visitas y seguimiento | PRFWB</title>
+  <meta name="description" content="Panel para registrar visitas y dar seguimiento a los visitantes de la iglesia.">
+  <meta name="robots" content="noindex">
+  <script>
+    if (new URLSearchParams(window.location.search).get('embed') === '1') {
+      document.documentElement.classList.add('embed-mode');
+      window.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('a[href]').forEach(function (link) {
+          var href = link.getAttribute('href');
+          if (!href || href.indexOf('.html') === -1) return;
+          try {
+            var url = new URL(href, window.location.href);
+            if (url.origin !== window.location.origin) return;
+            url.searchParams.set('embed', '1');
+            link.setAttribute('href', url.pathname + url.search + url.hash);
+          } catch (e) {}
+        });
+      });
+    }
+  </script>
+  <style>
+    :root {
+      --azul:#078ca3;
+      --azul-oscuro:#12384d;
+      --azul-profundo:#0d2b3a;
+      --dorado:#f1c84b;
+      --verde:#5da56d;
+      --coral:#d95643;
+      --fondo:#f4f8fa;
+      --borde:#dbe7ec;
+      --texto:#526875;
+      --blanco:#ffffff;
+      --sombra:0 18px 50px rgba(13,43,58,.12);
+      font-family:Arial, Helvetica, sans-serif;
+    }
+
+    * { box-sizing:border-box; }
+    html, body {
+      width:100%;
+      max-width:100%;
+      margin:0;
+      background:var(--fondo);
+      color:var(--azul-oscuro);
+      line-height:1.55;
+      overflow-x:hidden;
+    }
+    body { min-height:100vh; }
+    html.embed-mode, html.embed-mode body { overflow-x:clip; }
+    button, input, select, textarea { font:inherit; }
+    img, svg, canvas { max-width:100%; }
+    a { color:inherit; text-decoration:none; }
+    [hidden] { display:none !important; }
+
+    .site-nav {
+      background:var(--blanco);
+      border-bottom:1px solid var(--borde);
+      position:sticky;
+      top:0;
+      z-index:20;
+    }
+    html.embed-mode .site-nav { display:none; }
+    .nav-inner {
+      width:min(1180px, calc(100% - 2rem));
+      margin:auto;
+      min-height:72px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+    }
+    .brand img { width:118px; height:44px; object-fit:contain; }
+    .tabs a {
+      min-height:42px;
+      display:inline-flex;
+      align-items:center;
+      padding:9px 15px;
+      border-radius:999px;
+      font-size:14px;
+      font-weight:900;
+    }
+
+    .hero {
+      color:var(--blanco);
+      background:
+        radial-gradient(circle at 86% 20%, rgba(241,200,75,.22), transparent 26%),
+        linear-gradient(120deg, var(--azul-profundo), var(--azul-oscuro));
+    }
+    .hero-inner {
+      width:min(1180px, calc(100% - 2rem));
+      margin:auto;
+      padding:54px 0 42px;
+    }
+    .eyebrow-logo { display:block; height:52px; width:auto; margin-bottom:10px; }
+    h1 { margin:12px 0 12px; font-size:clamp(30px, 5vw, 50px); line-height:1; }
+    .hero p { max-width:560px; margin:0; color:#eaf6f8; font-size:16px; }
+
+    .shell {
+      width:min(1180px, calc(100% - 2rem));
+      margin:-24px auto 60px;
+      position:relative;
+      z-index:2;
+    }
+    html.embed-mode .hero-inner,
+    html.embed-mode .shell {
+      width:100%;
+      max-width:100%;
+      padding-left:16px;
+      padding-right:16px;
+    }
+    /* Dentro de Wix la altura del iframe se calcula con <body>; un margen
+       inferior quedaria fuera de esa medida y crearia una barra interna. */
+    html.embed-mode .shell, html.embedded-in-wix .shell { margin-bottom:0; }
+    .card {
+      background:var(--blanco);
+      border:1px solid var(--borde);
+      border-radius:12px;
+      box-shadow:var(--sombra);
+      padding:20px;
+      min-width:0;
+    }
+    .card + .card, .stack > * + * { margin-top:18px; }
+    .card h2, .card h3 { margin:0 0 12px; line-height:1.15; }
+    .card h3 { font-size:16px; }
+    .muted { color:var(--texto); }
+    .small { font-size:13px; }
+    .error-text { color:var(--coral); font-weight:800; font-size:13px; }
+
+    .btn {
+      min-height:42px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:10px 15px;
+      border:1px solid transparent;
+      border-radius:10px;
+      background:var(--azul-oscuro);
+      color:var(--blanco);
+      font-weight:900;
+      cursor:pointer;
+      text-align:center;
+    }
+    .btn.gold { background:var(--dorado); color:var(--azul-profundo); }
+    .btn.light { background:#eef7f9; color:var(--azul-oscuro); border-color:var(--borde); }
+    .btn.green { background:var(--verde); color:var(--blanco); }
+    .btn.danger { background:#fff1ef; color:var(--coral); border-color:#ffd5cf; }
+    .btn.small { min-height:36px; padding:7px 10px; font-size:13px; border-radius:8px; }
+    .btn[disabled] { opacity:.6; cursor:not-allowed; }
+    .btn:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, .person-row:focus-visible {
+      outline:3px solid rgba(7,140,163,.45);
+      outline-offset:1px;
+    }
+
+    form { display:grid; gap:12px; }
+    label { display:grid; gap:6px; font-size:13px; font-weight:900; }
+    input, select, textarea {
+      width:100%;
+      min-height:44px;
+      border:1px solid var(--borde);
+      border-radius:10px;
+      padding:10px 12px;
+      color:var(--azul-oscuro);
+      background:#fbfdfe;
+      font-size:16px;
+      font-weight:400;
+    }
+    input[type="checkbox"] { width:20px; min-height:0; height:20px; padding:0; flex:none; accent-color:var(--azul); }
+    textarea { min-height:84px; resize:vertical; }
+    .two { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .three { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:10px; }
+    .check { display:flex; align-items:center; gap:10px; font-weight:700; }
+
+    .section-title {
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:12px;
+    }
+    .section-title h2 { margin:0; }
+    .actions, .row-actions { display:flex; flex-wrap:wrap; gap:8px; }
+
+    .stats {
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:12px;
+      margin:14px 0;
+    }
+    .stat {
+      padding:14px;
+      background:#fbfdfe;
+      border:1px solid var(--borde);
+      border-radius:12px;
+      text-align:left;
+      color:inherit;
+    }
+    button.stat { cursor:pointer; }
+    .stat strong { display:block; font-size:28px; line-height:1; }
+    .stat span { display:block; margin-top:4px; color:var(--texto); font-size:12px; font-weight:800; }
+    .stat.alert strong { color:var(--coral); }
+
+    .list { display:grid; gap:10px; }
+    .row {
+      padding:12px;
+      border:1px solid var(--borde);
+      border-radius:10px;
+      background:#fbfdfe;
+      display:grid;
+      gap:6px;
+      min-width:0;
+    }
+    .row-head { display:flex; justify-content:space-between; gap:10px; align-items:flex-start; }
+    .row-title { font-weight:900; overflow-wrap:anywhere; }
+    .person-row { width:100%; text-align:left; color:inherit; cursor:pointer; }
+    .person-row:hover { border-color:var(--azul); }
+    .pre { white-space:pre-wrap; overflow-wrap:anywhere; }
+    .pills { display:flex; flex-wrap:wrap; gap:6px; }
+    .pill {
+      display:inline-flex;
+      padding:3px 9px;
+      border-radius:999px;
+      background:#eef7f9;
+      color:var(--azul-oscuro);
+      font-size:11px;
+      font-weight:900;
+      white-space:nowrap;
+    }
+    .pill.pendiente, .pill.alert { background:#fff1ef; color:#a5321f; }
+    .pill.contactado { background:#e8f8fb; color:#05616f; }
+    .pill.regreso, .pill.ok { background:#eaf7ee; color:#236b3a; }
+    .pill.discipulado { background:#fff8db; color:#6f5800; }
+    .pill.pausado { background:#edf0f2; color:var(--texto); }
+
+    .notice {
+      padding:12px 14px;
+      border-radius:12px;
+      background:#fff8db;
+      border:1px solid rgba(241,200,75,.6);
+      color:#6f5800;
+      font-weight:800;
+    }
+    .notice.restricted { background:#f3f0fa; border-color:#d9cff0; color:#4a3a78; }
+    .flash {
+      margin-bottom:14px;
+      padding:12px 14px;
+      border-radius:12px;
+      background:#eaf7ee;
+      border:1px solid #bfe3c8;
+      color:#236b3a;
+      font-weight:800;
+    }
+    .flash.error { background:#fff1ef; border-color:#ffd5cf; color:#a5321f; }
+    .empty { padding:18px; text-align:center; color:var(--texto); border:1px dashed var(--borde); border-radius:10px; }
+    .subsection { margin-top:20px; padding-top:18px; border-top:1px solid var(--borde); }
+    .day-nav { display:grid; grid-template-columns:auto minmax(0, 1fr) auto; gap:8px; align-items:end; }
+    .stats.day-stats { grid-template-columns:repeat(3, minmax(0, 1fr)); }
+    .day-stats .stat { padding:10px 8px; text-align:center; }
+    .day-nav .btn { min-width:44px; min-height:44px; padding:10px 12px; }
+    .qr-box { display:flex; flex-wrap:wrap; gap:16px; align-items:center; }
+    #qrCode { width:164px; min-height:164px; padding:10px; background:#fff; border:1px solid var(--borde); border-radius:10px; }
+    .link-text { overflow-wrap:anywhere; font-weight:800; }
+
+    .tabbar {
+      position:fixed;
+      left:0;
+      right:0;
+      bottom:0;
+      z-index:30;
+      display:flex;
+      background:var(--blanco);
+      border-top:1px solid var(--borde);
+      box-shadow:0 -8px 24px rgba(13,43,58,.1);
+      padding-bottom:env(safe-area-inset-bottom, 0);
+    }
+    .tabbar-btn {
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:3px;
+      padding:10px 4px 8px;
+      border:0;
+      background:none;
+      color:var(--texto);
+      font-size:11px;
+      font-weight:900;
+      cursor:pointer;
+    }
+    .tabbar-icon { font-size:20px; line-height:1; }
+    .tabbar-btn.active { color:var(--azul-profundo); box-shadow:inset 0 3px 0 var(--dorado); }
+    body.has-tabbar .shell { padding-bottom:86px; margin-top:18px; }
+    body.has-tabbar .hero { display:none; }
+    /* Dentro de Wix el iframe mide todo el contenido, asi que una barra fija
+       quedaria al final de la pagina: alli se muestra arriba, en el flujo. */
+    html.embed-mode .tabbar, html.embedded-in-wix .tabbar {
+      position:static;
+      margin-bottom:14px;
+      border:1px solid var(--borde);
+      border-radius:12px;
+      box-shadow:none;
+      overflow:hidden;
+    }
+    html.embed-mode body.has-tabbar .shell, html.embedded-in-wix body.has-tabbar .shell {
+      margin-top:0;
+      padding-top:16px;
+      padding-bottom:16px;
+    }
+
+    @media (min-width:641px) {
+      .tabbar { justify-content:center; gap:6px; }
+      .tabbar-btn { flex:none; flex-direction:row; padding:14px 22px; font-size:13px; }
+      .tabbar-icon { font-size:16px; }
+    }
+    @media (max-width:800px) {
+      .three { grid-template-columns:1fr 1fr; }
+    }
+    @media (max-width:640px) {
+      .nav-inner { align-items:stretch; flex-direction:column; }
+      .two, .three { grid-template-columns:1fr; }
+      .stats { grid-template-columns:1fr 1fr; }
+      .card { padding:16px; }
+      .actions .btn, .row-actions .btn { flex:1 1 140px; }
+      /* En el telefono la barra de pestanas ya hace de menu. */
+      body.has-tabbar .site-nav { display:none; }
+      body.has-tabbar .shell { margin-top:12px; }
+      .session-bar { margin-bottom:10px; }
+      .session-bar .actions { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); width:100%; }
+      .session-bar .btn { padding:6px 4px; }
+      .stats { gap:8px; margin:12px 0; }
+      .stat { padding:10px 12px; }
+      .stat strong { font-size:24px; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav" aria-label="Navegación principal">
+    <div class="nav-inner">
+      <a class="brand" href="./index.html"><img src="./prfwb-logo-main-cropped.png" alt="PRFWB"></a>
+      <div class="tabs">
+        <a href="./index.html">Inicio</a>
+        <a href="./admin.html">Todos los paneles</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <img class="eyebrow-logo" src="./jeec-logo-white.png" alt="Jesús es el Centro">
+      <h1>Visitas y seguimiento</h1>
+      <p>Registra a quienes nos visitan y acompáñalos después de su primera visita.</p>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="card" id="accessCard">
+      <div class="section-title">
+        <h2>Acceso</h2>
+        <a class="btn light small" href="./admin.html">Todos los paneles</a>
+      </div>
+      <p class="muted" id="loadingView">Cargando…</p>
+
+      <div id="loginView" hidden>
+        <p class="muted">Inicia sesión con tu cuenta del portal.</p>
+        <form id="loginForm" style="max-width:360px">
+          <label>Correo
+            <input id="loginEmail" type="email" autocomplete="username" required>
+          </label>
+          <label>Contraseña
+            <input id="loginPassword" type="password" autocomplete="current-password" required>
+          </label>
+          <button class="btn gold" type="submit">Iniciar sesión</button>
+          <p id="loginError" class="error-text" role="alert"></p>
+        </form>
+      </div>
+
+      <div id="noAccessView" hidden>
+        <div class="notice">Tu cuenta todavía no tiene acceso a este módulo.</div>
+        <p class="muted">Pide al administrador o al pastor que te añada al equipo de visitas con este correo: <strong id="noAccessEmail"></strong></p>
+        <button class="btn light" type="button" data-action="logout">Cerrar sesión</button>
+      </div>
+    </section>
+
+    <div id="appView" hidden>
+      <nav class="tabbar" id="tabbar" aria-label="Secciones del panel">
+        <button type="button" class="tabbar-btn" data-tab="tabDia"><span class="tabbar-icon" aria-hidden="true">📅</span><span>Hoy</span></button>
+        <button type="button" class="tabbar-btn" data-tab="tabResumen"><span class="tabbar-icon" aria-hidden="true">📊</span><span>Resumen</span></button>
+        <button type="button" class="tabbar-btn" data-tab="tabPersonas"><span class="tabbar-icon" aria-hidden="true">👥</span><span>Personas</span></button>
+        <button type="button" class="tabbar-btn" data-tab="tabRegistrar"><span class="tabbar-icon" aria-hidden="true">➕</span><span>Registrar</span></button>
+        <button type="button" class="tabbar-btn" data-tab="tabEquipo" id="teamTabBtn" hidden><span class="tabbar-icon" aria-hidden="true">⚙️</span><span>Equipo</span></button>
+      </nav>
+
+      <div class="section-title session-bar">
+        <div class="small muted" id="sessionInfo"></div>
+        <div class="actions">
+          <button class="btn light small" type="button" data-action="refresh">Actualizar</button>
+          <a class="btn light small" href="./admin.html">Paneles</a>
+          <button class="btn light small" type="button" data-action="logout">Salir</button>
+        </div>
+      </div>
+
+      <div id="flash" class="flash" role="status" aria-live="polite" hidden></div>
+
+      <section class="tab-panel" id="tabDia" hidden></section>
+      <section class="tab-panel" id="tabResumen" hidden></section>
+      <section class="tab-panel" id="tabPersonas" hidden></section>
+      <section class="tab-panel" id="tabPerfil" hidden></section>
+      <section class="tab-panel" id="tabRegistrar" hidden></section>
+      <section class="tab-panel" id="tabEquipo" hidden></section>
+    </div>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-functions-compat.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+  <script src="./firebase-config.js"></script>
+  <script src="./firebase-bridge.js"></script>
+  <script src="./js/visitas-core.js"></script>
+  <script src="./js/visitas-data.js"></script>
+  <script>
+    const core = window.VisitasCore;
+    const data = window.VisitasData;
+    const authStorageKey = 'discipulado-admin-session-v1';
+    const relations = ['Cónyuge', 'Hijo o hija', 'Padre o madre', 'Otro familiar', 'Amigo o amiga'];
+    const pageSize = 100;
+
+    const state = {
+      staff: null,
+      staffList: [],
+      people: [],
+      records: [],
+      loading: false,
+      tab: 'tabDia',
+      day: { key: core.dateKey(new Date()), records: [], loading: false },
+      period: { preset: 'mes', ...core.periodPreset('mes') },
+      filters: { text: '', status: '', assignedTo: '', fromKey: '', toKey: '' },
+      shown: pageSize,
+      showDuplicates: false,
+      profileId: null,
+      profile: null,
+      pendingRegistration: null
+    };
+
+    const $ = (id) => document.getElementById(id);
+    const els = {
+      loadingView: $('loadingView'),
+      loginView: $('loginView'),
+      noAccessView: $('noAccessView'),
+      accessCard: $('accessCard'),
+      appView: $('appView'),
+      flash: $('flash')
+    };
+
+    function esc(value) {
+      return String(value ?? '').replace(/[&<>"']/g, (char) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
+      }[char]));
+    }
+
+    const isManager = () => Boolean(state.staff) && ['admin', 'pastor'].includes(state.staff.role);
+    const isFollowUp = () => Boolean(state.staff) && state.staff.role === 'responsable';
+    const canFollow = (person) => isManager() || (isFollowUp() && person.assignedTo === state.staff.id);
+    const canExport = () => isManager() || isFollowUp();
+    const todayKey = () => core.dateKey(new Date());
+    const personById = (id) => state.people.find((person) => person.id === id);
+    const options = (list, selected) => list
+      .map((item) => `<option value="${esc(item.id)}"${item.id === selected ? ' selected' : ''}>${esc(item.label)}</option>`)
+      .join('');
+
+    function flash(message, isError) {
+      els.flash.textContent = message;
+      els.flash.classList.toggle('error', Boolean(isError));
+      els.flash.hidden = !message;
+      if (message) els.flash.scrollIntoView({ block: 'nearest' });
+    }
+
+    function errorMessage(error) {
+      const code = String((error && error.code) || '');
+      if (code.includes('permission-denied')) return 'No tienes permiso para hacer este cambio.';
+      if (code.includes('unavailable')) return 'No hay conexión. Revisa tu internet e inténtalo de nuevo.';
+      if (code.startsWith('functions/') && error.message) return error.message;
+      return 'No se pudo completar la acción. Inténtalo de nuevo.';
+    }
+
+    /** Ejecuta una accion mostrando el boton como ocupado y avisando si falla. */
+    async function run(button, task, successMessage) {
+      const label = button ? button.textContent : '';
+      if (button) {
+        button.disabled = true;
+        button.textContent = 'Guardando…';
+      }
+      try {
+        await task();
+        if (successMessage) flash(successMessage);
+        return true;
+      } catch (error) {
+        console.warn(error);
+        flash(errorMessage(error), true);
+        return false;
+      } finally {
+        if (button && button.isConnected) {
+          button.disabled = false;
+          button.textContent = label;
+        }
+      }
+    }
+
+    function showAccess(view) {
+      els.loadingView.hidden = view !== 'loading';
+      els.loginView.hidden = view !== 'login';
+      els.noAccessView.hidden = view !== 'none';
+      els.accessCard.hidden = view === 'app';
+      els.appView.hidden = view !== 'app';
+      document.body.classList.toggle('has-tabbar', view === 'app');
+    }
+
+    // ===== Sesion =====
+
+    async function onAuthChanged(user) {
+      state.staff = null;
+      if (!user) {
+        showAccess('login');
+        return;
+      }
+      showAccess('loading');
+      try {
+        let staff = await data.getOwnStaff(user.uid);
+        if (!staff) {
+          const activated = await data.activateAdmin().catch(() => false);
+          if (activated) staff = await data.getOwnStaff(user.uid);
+        }
+        if (!staff || staff.active !== true) {
+          $('noAccessEmail').textContent = user.email || '';
+          showAccess('none');
+          return;
+        }
+        state.staff = staff;
+        $('sessionInfo').textContent = `${staff.name || user.email} · ${core.labelOf(core.ROLES, staff.role)}`;
+        $('teamTabBtn').hidden = !isManager();
+        showAccess('app');
+        await loadAll();
+        activateTab(staff.role === 'bienvenida' ? 'tabRegistrar' : 'tabDia');
+      } catch (error) {
+        console.warn(error);
+        $('noAccessEmail').textContent = user.email || '';
+        showAccess('none');
+      }
+    }
+
+    async function loadAll() {
+      state.loading = true;
+      renderCurrent();
+      try {
+        const [people, staffList, records, dayRecords] = await Promise.all([
+          data.listPeople(),
+          data.listStaff(),
+          data.listRecords(state.period.from, state.period.to),
+          data.listRecords(state.day.key, state.day.key)
+        ]);
+        state.people = people;
+        state.staffList = staffList;
+        state.records = records;
+        state.day.records = dayRecords;
+      } catch (error) {
+        console.warn(error);
+        flash(errorMessage(error), true);
+      }
+      state.loading = false;
+      renderCurrent();
+    }
+
+    async function reloadPeople() {
+      const [people, records, dayRecords] = await Promise.all([
+        data.listPeople(),
+        data.listRecords(state.period.from, state.period.to),
+        data.listRecords(state.day.key, state.day.key)
+      ]);
+      state.people = people;
+      state.records = records;
+      state.day.records = dayRecords;
+    }
+
+    function activateTab(tabId) {
+      state.tab = tabId;
+      document.querySelectorAll('.tab-panel').forEach((panel) => { panel.hidden = panel.id !== tabId; });
+      const active = tabId === 'tabPerfil' ? (state.profileFrom || 'tabPersonas') : tabId;
+      document.querySelectorAll('.tabbar-btn').forEach((btn) => {
+        const isActive = btn.dataset.tab === active;
+        btn.classList.toggle('active', isActive);
+        if (isActive) btn.setAttribute('aria-current', 'page');
+        else btn.removeAttribute('aria-current');
+      });
+      renderCurrent();
+    }
+
+    function renderCurrent() {
+      if (!state.staff) return;
+      if (state.tab === 'tabDia') renderDay();
+      if (state.tab === 'tabResumen') renderSummary();
+      if (state.tab === 'tabPersonas') renderPeople();
+      if (state.tab === 'tabPerfil') renderProfile();
+      if (state.tab === 'tabRegistrar') renderRegister();
+      if (state.tab === 'tabEquipo') renderTeam();
+    }
+
+    const loadingHtml = '<div class="empty">Cargando datos…</div>';
+
+    // ===== Visitas del dia =====
+
+    /** Una fila por persona que vino ese dia, en orden de llegada. */
+    function dayRows() {
+      const key = state.day.key;
+      const seen = {};
+      return state.day.records
+        .slice()
+        .sort((a, b) => a.visitedAt - b.visitedAt)
+        .filter((record) => {
+          if (seen[record.personId]) return false;
+          seen[record.personId] = true;
+          return true;
+        })
+        .map((record) => {
+          const person = personById(record.personId);
+          return {
+            record,
+            person,
+            isNew: Boolean(person) && core.dateKey(person.firstVisitAt) === key
+          };
+        });
+    }
+
+    function renderDay() {
+      const panel = $('tabDia');
+      const key = state.day.key;
+      const today = todayKey();
+      const isToday = key === today;
+      const rows = dayRows();
+      const newCount = rows.filter((row) => row.isNew).length;
+      const backCount = rows.length - newCount;
+      const busy = state.loading || state.day.loading;
+      const longDate = core.dayStart(key).toLocaleDateString('es-PR', {
+        timeZone: core.TIME_ZONE, weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+      });
+
+      panel.innerHTML = `
+        <div class="card">
+          <div class="section-title">
+            <h2>${isToday ? 'Visitas de hoy' : 'Visitas del día'}</h2>
+            <span class="muted small">${esc(longDate)}</span>
+          </div>
+          <div class="day-nav">
+            <button class="btn light" type="button" data-action="day-shift" data-days="-1" aria-label="Día anterior">‹</button>
+            <label>Elegir día
+              <input type="date" id="dayInput" value="${esc(key)}" max="${esc(today)}">
+            </label>
+            <button class="btn light" type="button" data-action="day-shift" data-days="1" aria-label="Día siguiente"${isToday ? ' disabled' : ''}>›</button>
+          </div>
+          ${busy ? loadingHtml : `
+          <div class="stats day-stats" aria-label="Indicadores del día">
+            <div class="stat"><strong>${rows.length}</strong><span>${rows.length === 1 ? 'Persona' : 'Personas'}</span></div>
+            <div class="stat"><strong>${newCount}</strong><span>Primera visita</span></div>
+            <div class="stat"><strong>${backCount}</strong><span>${backCount === 1 ? 'Regresó' : 'Regresaron'}</span></div>
+          </div>
+          <div class="actions" style="margin-bottom:14px">
+            ${isToday ? '' : '<button class="btn light small" type="button" data-action="day-today">Ir a hoy</button>'}
+            <button class="btn gold small" type="button" data-action="go-register">Registrar visita</button>
+            ${canExport() && rows.length ? '<button class="btn light small" type="button" data-action="export-day">Exportar el día (CSV)</button>' : ''}
+          </div>
+          <div class="list">
+            ${rows.map(({ record, person, isNew }) => `
+              <button type="button" class="row person-row" data-action="open-person" data-id="${esc(record.personId)}"${person ? '' : ' disabled'}>
+                <span class="row-head">
+                  <span class="row-title">${esc(person ? person.name : 'Persona no disponible')}</span>
+                  <span class="pills">
+                    ${person && person.trackFollowUp === false ? '<span class="pill">Acompañante</span>' : ''}
+                    <span class="pill ${isNew ? 'discipulado' : 'ok'}">${isNew ? 'Primera visita' : 'Regresó'}</span>
+                  </span>
+                </span>
+                <span class="muted small">${esc(core.formatTime(record.visitedAt))} · ${esc((person && person.phone) || 'Sin teléfono')} · ${record.source === 'formulario' ? 'Formulario' : 'Panel'}</span>
+              </button>`).join('') || `<div class="empty">${isToday ? 'Todavía no hay visitas registradas hoy.' : 'No hay visitas registradas ese día.'}</div>`}
+          </div>`}
+        </div>`;
+    }
+
+    async function setDay(key) {
+      const today = todayKey();
+      if (!key) return;
+      state.day.key = key > today ? today : key;
+      state.day.loading = true;
+      renderDay();
+      try {
+        state.day.records = await data.listRecords(state.day.key, state.day.key);
+      } catch (error) {
+        flash(errorMessage(error), true);
+      }
+      state.day.loading = false;
+      renderDay();
+    }
+
+    function exportDay() {
+      const allowed = {};
+      exportablePeople(state.people).forEach((person) => { allowed[person.id] = true; });
+      const rows = dayRows()
+        .filter((row) => row.person && allowed[row.person.id])
+        .map(({ record, person, isNew }) => ({
+          time: core.timeKey(record.visitedAt),
+          name: person.name,
+          phone: person.phone,
+          email: person.email,
+          kind: isNew ? 'Primera visita' : 'Regresó',
+          source: record.source === 'formulario' ? 'Formulario público' : 'Panel'
+        }));
+      download(`visitas-${state.day.key}.csv`, core.toCsv([
+        { key: 'time', label: 'Hora' },
+        { key: 'name', label: 'Nombre' },
+        { key: 'phone', label: 'Teléfono' },
+        { key: 'email', label: 'Correo' },
+        { key: 'kind', label: 'Tipo' },
+        { key: 'source', label: 'Origen' }
+      ], rows));
+      flash(`Se exportaron ${rows.length} personas del día.`);
+    }
+
+    // ===== Resumen =====
+
+    function publicFormUrl() {
+      const url = new URL('./bienvenida.html', window.location.href);
+      return url.origin + url.pathname;
+    }
+
+    function renderSummary() {
+      const panel = $('tabResumen');
+      const period = state.period;
+      const metrics = core.computeMetrics({
+        people: state.people,
+        records: state.records,
+        fromKey: period.from,
+        toKey: period.to,
+        todayKey: todayKey()
+      });
+      const recent = state.records
+        .slice()
+        .sort((a, b) => b.visitedAt - a.visitedAt)
+        .slice(0, 25);
+      const presets = [
+        { id: 'mes', label: 'Este mes' },
+        { id: 'mes-pasado', label: 'Mes pasado' },
+        { id: '7d', label: 'Últimos 7 días' },
+        { id: '30d', label: 'Últimos 30 días' },
+        { id: 'anio', label: 'Este año' },
+        { id: 'custom', label: 'Fechas específicas' }
+      ];
+
+      panel.innerHTML = `
+        <div class="card">
+          <div class="section-title">
+            <h2>Resumen</h2>
+            <span class="muted small">${esc(core.formatDateKey(period.from))} – ${esc(core.formatDateKey(period.to))}</span>
+          </div>
+          <form id="periodForm">
+            <label>Período
+              <select id="periodPreset">${options(presets, period.preset)}</select>
+            </label>
+            <div class="two"${period.preset === 'custom' ? '' : ' hidden'}>
+              <label>Desde
+                <input type="date" id="periodFrom" value="${esc(period.from)}" max="${esc(todayKey())}">
+              </label>
+              <label>Hasta
+                <input type="date" id="periodTo" value="${esc(period.to)}">
+              </label>
+            </div>
+          </form>
+          ${state.loading ? loadingHtml : `
+          <div class="stats" aria-label="Indicadores del período">
+            <div class="stat"><strong>${metrics.newVisitors}</strong><span>Visitantes nuevos</span></div>
+            <div class="stat"><strong>${metrics.visits}</strong><span>Visitas del período</span></div>
+            <div class="stat"><strong>${metrics.uniquePeople}</strong><span>Personas únicas</span></div>
+            <div class="stat"><strong>${metrics.returning}</strong><span>Personas que regresaron</span></div>
+            <button type="button" class="stat" data-action="filter-status" data-status="pendiente"><strong>${metrics.pending}</strong><span>Seguimientos pendientes ›</span></button>
+            <button type="button" class="stat${metrics.overdue ? ' alert' : ''}" data-action="filter-status" data-status="vencido"><strong>${metrics.overdue}</strong><span>Seguimientos vencidos ›</span></button>
+          </div>
+          <p class="muted small">Las <strong>visitas</strong> cuentan cada asistencia; las <strong>personas únicas</strong> cuentan a cada persona una sola vez. Quien vino tres veces suma 3 visitas y 1 persona. Los pendientes y vencidos son el estado actual, no dependen del período.</p>
+          ${canExport() ? `<div class="actions"><button class="btn light" type="button" data-action="export-visits">Exportar visitas del período (CSV)</button></div>` : ''}
+
+          <div class="subsection">
+            <h3>Visitas recientes del período</h3>
+            <div class="list">
+              ${recent.map((record) => {
+                const person = personById(record.personId);
+                return `
+                  <button type="button" class="row person-row" data-action="open-person" data-id="${esc(record.personId)}"${person ? '' : ' disabled'}>
+                    <span class="row-head">
+                      <span class="row-title">${esc(person ? person.name : 'Persona no disponible')}</span>
+                      <span class="pill">${record.source === 'formulario' ? 'Formulario' : 'Panel'}</span>
+                    </span>
+                    <span class="muted small">${esc(core.formatDateTime(record.visitedAt))}</span>
+                  </button>`;
+              }).join('') || '<div class="empty">No hay visitas registradas en este período.</div>'}
+            </div>
+          </div>`}
+        </div>
+
+        <div class="card">
+          <h2>Formulario público de bienvenida</h2>
+          <p class="muted">Comparte este enlace o imprime el código QR para que los visitantes se registren desde su celular.</p>
+          <div class="qr-box">
+            <div id="qrCode" aria-label="Código QR del formulario de bienvenida"></div>
+            <div style="flex:1; min-width:220px">
+              <p class="link-text" id="publicLink">${esc(publicFormUrl())}</p>
+              <div class="actions">
+                <button class="btn light small" type="button" data-action="copy-link">Copiar enlace</button>
+                <a class="btn light small" href="${esc(publicFormUrl())}" target="_blank" rel="noopener">Abrir formulario</a>
+              </div>
+            </div>
+          </div>
+        </div>`;
+
+      const qrBox = $('qrCode');
+      if (window.QRCode) {
+        new QRCode(qrBox, { text: publicFormUrl(), width: 144, height: 144 });
+      } else {
+        qrBox.innerHTML = '<span class="muted small">El código QR no se pudo cargar. Usa el enlace.</span>';
+      }
+    }
+
+    async function changePeriod() {
+      const preset = $('periodPreset').value;
+      let from = $('periodFrom').value;
+      let to = $('periodTo').value;
+      if (preset !== 'custom') {
+        const range = core.periodPreset(preset);
+        from = range.from;
+        to = range.to;
+      }
+      if (!from || !to) return;
+      if (from > to) [from, to] = [to, from];
+      state.period = { preset, from, to };
+      state.loading = true;
+      renderSummary();
+      try {
+        state.records = await data.listRecords(from, to);
+      } catch (error) {
+        flash(errorMessage(error), true);
+      }
+      state.loading = false;
+      renderSummary();
+    }
+
+    function download(filename, content) {
+      const blob = new Blob([content], { type: 'text/csv;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+    const yesNo = (value) => (value ? 'Sí' : 'No');
+
+    /** El responsable solo exporta a las personas que tiene asignadas. */
+    function exportablePeople(people) {
+      if (isManager()) return people;
+      return people.filter((person) => person.assignedTo === state.staff.id);
+    }
+
+    function exportVisits() {
+      const allowed = {};
+      exportablePeople(state.people).forEach((person) => { allowed[person.id] = person; });
+      const rows = state.records
+        .filter((record) => allowed[record.personId])
+        .sort((a, b) => a.visitedAt - b.visitedAt)
+        .map((record) => {
+          const person = allowed[record.personId];
+          return {
+            date: core.dateKey(record.visitedAt),
+            time: core.timeKey(record.visitedAt),
+            name: person.name,
+            phone: person.phone,
+            email: person.email,
+            firstTime: yesNo(record.firstTime),
+            source: record.source === 'formulario' ? 'Formulario público' : 'Panel',
+            by: record.registeredByName || ''
+          };
+        });
+      download(`visitas-${state.period.from}-a-${state.period.to}.csv`, core.toCsv([
+        { key: 'date', label: 'Fecha' },
+        { key: 'time', label: 'Hora' },
+        { key: 'name', label: 'Nombre' },
+        { key: 'phone', label: 'Teléfono' },
+        { key: 'email', label: 'Correo' },
+        { key: 'firstTime', label: 'Dijo que era su primera visita' },
+        { key: 'source', label: 'Origen' },
+        { key: 'by', label: 'Registrado por' }
+      ], rows));
+      flash(`Se exportaron ${rows.length} visitas.`);
+    }
+
+    function exportPeople() {
+      const rows = exportablePeople(filteredPeople()).map((person) => ({
+        name: person.name,
+        phone: person.phone,
+        email: person.email,
+        preferred: core.labelOf(core.CONTACT_METHODS, person.preferredContact),
+        contact: yesNo(person.consent && person.consent.contact),
+        info: yesNo(person.consent && person.consent.info),
+        first: core.dateKey(person.firstVisitAt),
+        last: core.dateKey(person.lastVisitAt),
+        visits: person.visitCount || 0,
+        status: person.trackFollowUp === false ? 'Acompañante' : core.labelOf(core.STATUSES, person.followUpStatus),
+        assigned: person.assignedToName || '',
+        nextAction: person.nextAction || '',
+        nextDate: person.nextActionDate || ''
+      }));
+      download(`personas-visitantes-${todayKey()}.csv`, core.toCsv([
+        { key: 'name', label: 'Nombre' },
+        { key: 'phone', label: 'Teléfono' },
+        { key: 'email', label: 'Correo' },
+        { key: 'preferred', label: 'Medio preferido' },
+        { key: 'contact', label: 'Autoriza contacto' },
+        { key: 'info', label: 'Desea información' },
+        { key: 'first', label: 'Primera visita' },
+        { key: 'last', label: 'Última visita' },
+        { key: 'visits', label: 'Cantidad de visitas' },
+        { key: 'status', label: 'Estado' },
+        { key: 'assigned', label: 'Responsable' },
+        { key: 'nextAction', label: 'Próxima acción' },
+        { key: 'nextDate', label: 'Fecha de próxima acción' }
+      ], rows));
+      flash(`Se exportaron ${rows.length} personas.`);
+    }
+
+    // ===== Personas =====
+
+    function filteredPeople() {
+      return core.filterPeople(state.people, { ...state.filters, todayKey: todayKey() });
+    }
+
+    function duplicatePairs() {
+      const pairs = [];
+      state.people.forEach((person) => {
+        if (!core.isActivePerson(person)) return;
+        (person.duplicateCandidates || []).forEach((otherId) => {
+          if ((person.duplicateDismissed || []).includes(otherId)) return;
+          const other = personById(otherId);
+          if (other && core.isActivePerson(other)) pairs.push({ person, other });
+        });
+      });
+      return pairs;
+    }
+
+    function statusPill(person) {
+      if (person.trackFollowUp === false) return '<span class="pill">Acompañante</span>';
+      return `<span class="pill ${esc(person.followUpStatus)}">${esc(core.labelOf(core.STATUSES, person.followUpStatus))}</span>`;
+    }
+
+    function renderPeople() {
+      const panel = $('tabPersonas');
+      const f = state.filters;
+      const statusOptions = [{ id: '', label: 'Todos los estados' }, ...core.STATUSES, { id: 'vencido', label: 'Seguimiento vencido' }];
+      const followers = state.staffList.filter((member) => member.role !== 'bienvenida' && member.active);
+      const assignedOptions = [
+        { id: '', label: 'Todos los responsables' },
+        { id: 'sin-asignar', label: 'Sin responsable' },
+        ...followers.map((member) => ({ id: member.id, label: member.id === state.staff.id ? `${member.name} (yo)` : member.name }))
+      ];
+      const pairs = isManager() ? duplicatePairs() : [];
+
+      panel.innerHTML = `
+        ${pairs.length ? `
+        <div class="card">
+          <div class="section-title">
+            <h2>Posibles duplicados (${pairs.length})</h2>
+            <button class="btn light small" type="button" data-action="toggle-duplicates">${state.showDuplicates ? 'Ocultar' : 'Revisar'}</button>
+          </div>
+          <p class="muted small">Comparten teléfono o correo. Combínalas solo si son la misma persona: una familia puede compartir el mismo teléfono.</p>
+          ${state.showDuplicates ? `<div class="list">${pairs.map(({ person, other }) => `
+            <div class="row">
+              <div class="two">
+                ${[person, other].map((item) => `
+                  <div>
+                    <div class="row-title">${esc(item.name)}</div>
+                    <div class="muted small">${esc(item.phone || 'Sin teléfono')}${item.email ? ' · ' + esc(item.email) : ''}</div>
+                    <div class="muted small">${item.visitCount || 0} visitas · última ${esc(core.formatDate(item.lastVisitAt))}</div>
+                    <button class="btn light small" type="button" data-action="open-person" data-id="${esc(item.id)}">Ver ficha</button>
+                  </div>`).join('')}
+              </div>
+              <div class="row-actions">
+                <button class="btn small" type="button" data-action="merge" data-source="${esc(person.id)}" data-target="${esc(other.id)}">Son la misma persona: combinar</button>
+                <button class="btn light small" type="button" data-action="dismiss-duplicate" data-id="${esc(person.id)}" data-other="${esc(other.id)}">Son personas distintas</button>
+              </div>
+            </div>`).join('')}</div>` : ''}
+        </div>` : ''}
+
+        <div class="card">
+          <div class="section-title">
+            <h2>Personas</h2>
+            ${canExport() ? '<button class="btn light small" type="button" data-action="export-people">Exportar lista (CSV)</button>' : ''}
+          </div>
+          <form id="filterForm">
+            <label>Buscar por nombre o teléfono
+              <input type="search" id="filterText" value="${esc(f.text)}" placeholder="Ej. María o 787555" autocomplete="off">
+            </label>
+            <div class="two">
+              <label>Estado
+                <select id="filterStatus">${options(statusOptions, f.status)}</select>
+              </label>
+              <label>Responsable
+                <select id="filterAssigned">${options(assignedOptions, f.assignedTo)}</select>
+              </label>
+            </div>
+            <div class="two">
+              <label>Última visita desde
+                <input type="date" id="filterFrom" value="${esc(f.fromKey)}">
+              </label>
+              <label>Última visita hasta
+                <input type="date" id="filterTo" value="${esc(f.toKey)}">
+              </label>
+            </div>
+            <div class="actions">
+              ${isFollowUp() || isManager() ? '<button class="btn light small" type="button" data-action="filter-mine">Mis seguimientos</button>' : ''}
+              <button class="btn light small" type="button" data-action="clear-filters">Limpiar filtros</button>
+            </div>
+          </form>
+          <div id="peopleList" style="margin-top:14px"></div>
+        </div>`;
+      renderPeopleList();
+    }
+
+    function renderPeopleList() {
+      const box = $('peopleList');
+      if (!box) return;
+      if (state.loading) {
+        box.innerHTML = loadingHtml;
+        return;
+      }
+      const people = filteredPeople();
+      const today = todayKey();
+      const hasPeople = state.people.some(core.isActivePerson);
+      if (!people.length) {
+        box.innerHTML = `<div class="empty">${hasPeople
+          ? 'Ninguna persona coincide con la búsqueda o los filtros.'
+          : 'Todavía no hay personas registradas. Usa «Registrar» o comparte el formulario de bienvenida.'}</div>`;
+        return;
+      }
+      box.innerHTML = `
+        <p class="muted small" aria-live="polite">${people.length} ${people.length === 1 ? 'persona' : 'personas'}</p>
+        <div class="list">
+          ${people.slice(0, state.shown).map((person) => `
+            <button type="button" class="row person-row" data-action="open-person" data-id="${esc(person.id)}">
+              <span class="row-head">
+                <span class="row-title">${esc(person.name)}</span>
+                <span class="pills">
+                  ${core.isOverdue(person, today) ? '<span class="pill alert">Vencido</span>' : ''}
+                  ${statusPill(person)}
+                </span>
+              </span>
+              <span class="muted small">${esc(person.phone || 'Sin teléfono')} · ${person.visitCount || 0} ${person.visitCount === 1 ? 'visita' : 'visitas'} · última ${esc(core.formatDate(person.lastVisitAt))}</span>
+              <span class="muted small">${person.trackFollowUp === false ? 'Seguimiento a través de su familia' : 'Responsable: ' + esc(person.assignedToName || 'sin asignar')}${person.nextActionDate ? ' · próxima acción ' + esc(core.formatDateKey(person.nextActionDate)) : ''}</span>
+            </button>`).join('')}
+        </div>
+        ${people.length > state.shown ? '<div class="actions" style="margin-top:12px"><button class="btn light" type="button" data-action="show-more">Mostrar más</button></div>' : ''}`;
+    }
+
+    function readFilters() {
+      state.filters = {
+        text: $('filterText').value,
+        status: $('filterStatus').value,
+        assignedTo: $('filterAssigned').value,
+        fromKey: $('filterFrom').value,
+        toKey: $('filterTo').value
+      };
+      state.shown = pageSize;
+      renderPeopleList();
+    }
+
+    // ===== Perfil =====
+
+    function linkedIds(person) {
+      return [person.id, ...state.people.filter((item) => item.mergedInto === person.id).map((item) => item.id)];
+    }
+
+    /** Con keepView se recarga la ficha abierta sin moverla ni vaciarla. */
+    async function openPerson(id, keepView) {
+      const person = personById(id);
+      if (!person) return;
+      state.profileId = id;
+      if (!keepView) {
+        if (state.tab !== 'tabPerfil') state.profileFrom = state.tab;
+        state.profile = null;
+        flash('');
+      }
+      activateTab('tabPerfil');
+      if (!keepView) $('tabPerfil').scrollIntoView({ block: 'start' });
+      const ids = linkedIds(person);
+      try {
+        const [records, contacts, pastoral] = await Promise.all([
+          data.listPersonRecords(ids),
+          canFollow(person) ? data.listContacts(ids) : Promise.resolve([]),
+          data.listPastoral(ids, state.staff)
+        ]);
+        if (state.profileId !== id) return;
+        state.profile = { records, contacts, pastoral };
+      } catch (error) {
+        console.warn(error);
+        state.profile = { records: [], contacts: [], pastoral: [], failed: true };
+      }
+      renderProfile();
+    }
+
+    function renderProfile() {
+      const panel = $('tabPerfil');
+      const person = personById(state.profileId);
+      if (!person) {
+        panel.innerHTML = '<div class="card"><div class="empty">No se encontró la persona.</div></div>';
+        return;
+      }
+      const profile = state.profile;
+      const follow = canFollow(person);
+      const consent = person.consent || {};
+      const family = person.familyId
+        ? state.people.filter((item) => item.familyId === person.familyId && item.id !== person.id && core.isActivePerson(item))
+        : [];
+      const followers = state.staffList.filter((member) => member.role !== 'bienvenida' && member.active);
+      const visitedToday = core.dateKey(person.lastVisitAt) === todayKey();
+      const message = core.welcomeMessage(person.name, state.staff.name);
+
+      panel.innerHTML = `
+        <div class="card">
+          <div class="actions" style="margin-bottom:12px">
+            <button class="btn light small" type="button" data-action="back-to-people">‹ Volver</button>
+          </div>
+          <div class="section-title">
+            <h2>${esc(person.name)}</h2>
+            <div class="pills">
+              ${core.isOverdue(person, todayKey()) ? '<span class="pill alert">Seguimiento vencido</span>' : ''}
+              ${statusPill(person)}
+              <span class="pill">${person.visitCount || 0} ${person.visitCount === 1 ? 'visita' : 'visitas'}</span>
+            </div>
+          </div>
+          <div class="muted">
+            ${esc(person.phone || 'Sin teléfono')}${person.email ? ' · ' + esc(person.email) : ''}<br>
+            Prefiere: ${esc(core.labelOf(core.CONTACT_METHODS, person.preferredContact))}${person.familyRelation ? ' · ' + esc(person.familyRelation) : ''}
+          </div>
+          <div class="pills" style="margin:10px 0">
+            <span class="pill ${consent.contact ? 'ok' : 'alert'}">${consent.contact ? 'Autoriza contacto' : 'No autorizó contacto'}</span>
+            <span class="pill ${consent.info ? 'ok' : ''}">${consent.info ? 'Desea información' : 'No pidió información'}</span>
+          </div>
+          <div class="actions">
+            ${person.phone ? '<button class="btn green" type="button" data-action="toggle-whatsapp">WhatsApp</button>' : ''}
+            ${person.phone ? `<a class="btn light" href="tel:${esc(core.phoneKey(person.phone))}">Llamar</a>` : ''}
+            <button class="btn light" type="button" data-action="visit-today"${visitedToday ? ' disabled' : ''}>${visitedToday ? 'Visita de hoy registrada' : 'Registrar visita de hoy'}</button>
+          </div>
+
+          <div id="whatsBox" class="subsection" hidden>
+            <h3>Mensaje de bienvenida por WhatsApp</h3>
+            ${consent.contact ? '' : '<div class="notice" style="margin-bottom:10px">Esta persona no autorizó que la contacten. Confirma su permiso antes de escribirle.</div>'}
+            <label>Revisa y edita el mensaje antes de enviarlo
+              <textarea id="whatsText" rows="5">${esc(message)}</textarea>
+            </label>
+            <div class="actions" style="margin-top:10px">
+              <a class="btn green" id="whatsLink" target="_blank" rel="noopener" href="${esc(core.whatsAppHref(person.phone, message))}">Abrir WhatsApp para enviar</a>
+            </div>
+            <p class="muted small">El mensaje no se envía solo: se abre WhatsApp con el texto y tú lo envías.</p>
+          </div>
+
+          ${person.trackFollowUp === false ? `
+          <div class="subsection">
+            <div class="notice">Esta persona se registró como acompañante. Su seguimiento se hace a través de su familia.</div>
+            ${isManager() ? '<div class="actions" style="margin-top:10px"><button class="btn light small" type="button" data-action="enable-follow">Dar seguimiento propio a esta persona</button></div>' : ''}
+          </div>` : `
+          <div class="subsection">
+            <h3>Seguimiento</h3>
+            ${follow ? `
+            <form id="followForm">
+              <div class="two">
+                <label>Estado
+                  <select id="followStatus">${options(core.STATUSES, person.followUpStatus)}</select>
+                </label>
+                <label>Responsable
+                  ${isManager()
+                    ? `<select id="followAssigned">${options([{ id: '', label: 'Sin asignar' }, ...followers.map((m) => ({ id: m.id, label: m.name }))], person.assignedTo || '')}</select>`
+                    : `<input value="${esc(person.assignedToName || 'Sin asignar')}" disabled>`}
+                </label>
+              </div>
+              <div class="two">
+                <label>Próxima acción
+                  <input id="followAction" maxlength="160" value="${esc(person.nextAction || '')}" placeholder="Ej. llamar para invitar al grupo">
+                </label>
+                <label>Fecha de la próxima acción
+                  <input type="date" id="followDate" value="${esc(person.nextActionDate || '')}">
+                </label>
+              </div>
+              <p class="muted small" style="margin:0">Todo el equipo ve la próxima acción. Lo delicado va en las notas pastorales.</p>
+              <button class="btn gold" type="submit">Guardar seguimiento</button>
+            </form>` : `
+            <p class="muted">Responsable: <strong>${esc(person.assignedToName || 'sin asignar')}</strong>${person.nextAction ? '<br>Próxima acción: ' + esc(person.nextAction) : ''}${person.nextActionDate ? ' (' + esc(core.formatDateKey(person.nextActionDate)) + ')' : ''}</p>
+            ${isFollowUp() && !person.assignedTo ? '<button class="btn" type="button" data-action="claim">Tomar este seguimiento</button>' : ''}`}
+          </div>`}
+
+          <div class="subsection">
+            <h3>Historial de visitas</h3>
+            ${!profile ? loadingHtml : `<div class="list">${profile.records.map((record) => `
+              <div class="row">
+                <div class="row-head">
+                  <span class="row-title">${esc(core.formatDateTime(record.visitedAt))}</span>
+                  <span class="pill">${record.source === 'formulario' ? 'Formulario' : 'Panel'}</span>
+                </div>
+                <span class="muted small">${record.firstTime ? 'Indicó que era su primera visita' : 'Indicó que ya había venido'}${record.registeredByName ? ' · ' + esc(record.registeredByName) : ''}</span>
+              </div>`).join('') || '<div class="empty">Sin visitas registradas.</div>'}</div>`}
+          </div>
+
+          ${family.length ? `
+          <div class="subsection">
+            <h3>Familia</h3>
+            <div class="list">${family.map((member) => `
+              <button type="button" class="row person-row" data-action="open-person" data-id="${esc(member.id)}">
+                <span class="row-title">${esc(member.name)}</span>
+                <span class="muted small">${esc(member.familyRelation || 'Familiar')} · ${member.visitCount || 0} ${member.visitCount === 1 ? 'visita' : 'visitas'}</span>
+              </button>`).join('')}</div>
+          </div>` : ''}
+
+          <div class="subsection">
+            <h3>Contactos y notas</h3>
+            ${follow ? `
+            <form id="contactForm">
+              <div class="two">
+                <label>Tipo
+                  <select id="contactType">${options(core.CONTACT_TYPES, person.preferredContact === 'correo' ? 'correo' : person.preferredContact)}</select>
+                </label>
+                <label>Estado después de este contacto
+                  <select id="contactStatus">${options(core.STATUSES, person.followUpStatus === 'pendiente' ? 'contactado' : person.followUpStatus)}</select>
+                </label>
+              </div>
+              <label>Nota
+                <textarea id="contactNote" maxlength="2000" placeholder="Qué se habló o qué pasó"></textarea>
+              </label>
+              <button class="btn" type="submit">Añadir al historial</button>
+            </form>
+            <div class="list" style="margin-top:12px">
+              ${!profile ? loadingHtml : profile.contacts.map((entry) => `
+                <div class="row">
+                  <div class="row-head">
+                    <span class="row-title">${esc(core.labelOf(core.CONTACT_TYPES, entry.type))}</span>
+                    <span class="muted small">${esc(core.formatDateTime(entry.at))}</span>
+                  </div>
+                  ${entry.note ? `<div class="pre">${esc(entry.note)}</div>` : ''}
+                  <span class="muted small">${esc(entry.byName || '')}</span>
+                </div>`).join('') || '<div class="empty">Todavía no hay contactos registrados.</div>'}
+            </div>` : '<p class="muted">Solo el responsable asignado, el pastor y el administrador ven y registran este historial.</p>'}
+          </div>
+
+          <div class="subsection">
+            <h3>Notas pastorales y peticiones de oración</h3>
+            <div class="notice restricted" style="margin-bottom:12px">${isManager()
+              ? 'Acceso restringido: solo el pastor y el administrador leen esta sección.'
+              : 'Acceso restringido: solo el pastor y el administrador leen esta sección. Tú ves únicamente lo que escribiste.'}</div>
+            ${person.hasPrayerRequest && !isManager() ? '<p class="muted">Esta persona dejó una petición de oración. Habla con el pastor si necesitas conocerla.</p>' : ''}
+            ${follow ? `
+            <form id="pastoralForm">
+              <label>Nueva nota pastoral
+                <textarea id="pastoralText" maxlength="2000" required></textarea>
+              </label>
+              <button class="btn" type="submit">Guardar nota pastoral</button>
+            </form>` : ''}
+            <div class="list" style="margin-top:12px">
+              ${!profile ? loadingHtml : profile.pastoral.map((note) => `
+                <div class="row">
+                  <div class="row-head">
+                    <span class="row-title">${note.type === 'peticion' ? 'Petición de oración' : 'Nota pastoral'}</span>
+                    <span class="muted small">${esc(core.formatDateTime(note.at))}</span>
+                  </div>
+                  <div class="pre">${esc(note.text)}</div>
+                  <span class="muted small">${esc(note.byName || '')}</span>
+                </div>`).join('') || (isManager() ? '<div class="empty">Sin notas ni peticiones.</div>' : '')}
+            </div>
+          </div>
+
+          <div class="subsection">
+            <h3>Datos de contacto</h3>
+            <form id="contactDataForm">
+              <label>Nombre y apellido
+                <input id="editName" maxlength="80" value="${esc(person.name)}" required>
+              </label>
+              <div class="two">
+                <label>Teléfono
+                  <input id="editPhone" type="tel" inputmode="tel" maxlength="30" value="${esc(person.phone || '')}">
+                </label>
+                <label>Correo
+                  <input id="editEmail" type="email" maxlength="120" value="${esc(person.email || '')}">
+                </label>
+              </div>
+              <label>Medio de contacto preferido
+                <select id="editPreferred">${options(core.CONTACT_METHODS, person.preferredContact)}</select>
+              </label>
+              <label class="check"><input type="checkbox" id="editInfo"${consent.info ? ' checked' : ''}> Desea recibir información de la iglesia</label>
+              <label class="check"><input type="checkbox" id="editContact"${consent.contact ? ' checked' : ''}> Autoriza que le contacten para darle seguimiento</label>
+              <button class="btn light" type="submit">Guardar datos de contacto</button>
+            </form>
+          </div>
+        </div>`;
+    }
+
+    async function refreshProfile() {
+      await reloadPeople();
+      await openPerson(state.profileId, true);
+    }
+
+    // ===== Registrar =====
+
+    function companionRowHtml() {
+      return `
+        <div class="two companion-row">
+          <label>Nombre del acompañante
+            <input class="companion-name" maxlength="80">
+          </label>
+          <label>Parentesco
+            <select class="companion-relation">${relations.map((text) => `<option>${esc(text)}</option>`).join('')}</select>
+          </label>
+        </div>`;
+    }
+
+    function renderRegister() {
+      const panel = $('tabRegistrar');
+      if (panel.dataset.ready === 'true') return;
+      panel.dataset.ready = 'true';
+      panel.innerHTML = `
+        <div class="card">
+          <h2>Registrar visita</h2>
+          <p class="muted">Escribe los datos del visitante. Si ya tiene ficha, la visita se añade a su historial.</p>
+          <form id="registerForm" novalidate>
+            <label>Nombre y apellido
+              <input id="regName" maxlength="80" autocomplete="off" required>
+            </label>
+            <div class="two">
+              <label>Teléfono
+                <input id="regPhone" type="tel" inputmode="tel" maxlength="30" autocomplete="off" placeholder="787 555 1234">
+              </label>
+              <label>Correo (opcional)
+                <input id="regEmail" type="email" maxlength="120" autocomplete="off">
+              </label>
+            </div>
+            <div class="three">
+              <label>Medio de contacto preferido
+                <select id="regPreferred">${options(core.CONTACT_METHODS, 'whatsapp')}</select>
+              </label>
+              <label>Fecha de la visita
+                <input type="date" id="regDate">
+              </label>
+              <label>Hora
+                <input type="time" id="regTime">
+              </label>
+            </div>
+            <label class="check"><input type="checkbox" id="regFirst" checked> Es su primera visita</label>
+            <label class="check"><input type="checkbox" id="regInfo"> Desea recibir información de la iglesia</label>
+            <label class="check"><input type="checkbox" id="regContact"> Autoriza que le contactemos para darle seguimiento</label>
+            <label class="check"><input type="checkbox" id="regFamily"> Viene acompañado y desea registrar a su familia</label>
+            <div id="regCompanions" hidden>
+              <div id="regCompanionList" class="list"></div>
+              <button class="btn light small" type="button" data-action="add-companion" style="margin-top:10px">Añadir otra persona</button>
+            </div>
+            <label>Petición de oración (opcional; acceso restringido)
+              <textarea id="regPrayer" maxlength="1000"></textarea>
+            </label>
+            <p id="regError" class="error-text" role="alert"></p>
+            <div id="regMatches"></div>
+            <button class="btn gold" type="submit" id="regSubmit">Registrar visita</button>
+          </form>
+        </div>`;
+      resetRegisterDate();
+    }
+
+    function resetRegisterDate() {
+      const now = new Date();
+      $('regDate').value = core.dateKey(now);
+      $('regDate').max = core.dateKey(now);
+      $('regTime').value = core.timeKey(now);
+    }
+
+    function readRegisterForm() {
+      const companions = $('regFamily').checked
+        ? Array.from(document.querySelectorAll('#regCompanionList .companion-row')).map((row) => ({
+          name: row.querySelector('.companion-name').value.trim(),
+          relation: row.querySelector('.companion-relation').value
+        })).filter((item) => item.name)
+        : [];
+      return {
+        name: $('regName').value.trim(),
+        phone: $('regPhone').value.trim(),
+        email: $('regEmail').value.trim(),
+        preferredContact: $('regPreferred').value,
+        firstVisit: $('regFirst').checked,
+        wantsInfo: $('regInfo').checked,
+        allowContact: $('regContact').checked,
+        companions,
+        prayerRequest: $('regPrayer').value.trim(),
+        visitedAt: core.fromLocalInputs($('regDate').value || todayKey(), $('regTime').value || '12:00')
+      };
+    }
+
+    function registrationMatches(input) {
+      const matches = core.findMatches(state.people, input);
+      const ids = matches.map((match) => match.person.id);
+      const nameKey = core.normalizeName(input.name);
+      state.people.forEach((person) => {
+        if (core.isActivePerson(person) && !ids.includes(person.id) && core.normalizeName(person.name) === nameKey) {
+          matches.push({ person, sameName: true, byPhone: false, byEmail: false });
+        }
+      });
+      return matches;
+    }
+
+    async function submitRegistration() {
+      const input = readRegisterForm();
+      const error = $('regError');
+      error.textContent = '';
+      if (core.normalizeName(input.name).length < 2) {
+        error.textContent = 'Escribe el nombre y apellido.';
+        $('regName').focus();
+        return;
+      }
+      if (input.phone && !core.isValidPhone(input.phone)) {
+        error.textContent = 'Revisa el teléfono: debe incluir el código de área.';
+        $('regPhone').focus();
+        return;
+      }
+      if (input.email && !core.isValidEmail(input.email)) {
+        error.textContent = 'Revisa el correo electrónico.';
+        $('regEmail').focus();
+        return;
+      }
+      if (!input.phone && !input.email) {
+        error.textContent = 'Escribe un teléfono o un correo para poder dar seguimiento.';
+        $('regPhone').focus();
+        return;
+      }
+
+      const matches = registrationMatches(input);
+      if (!matches.length) {
+        await saveRegistration(input, null, []);
+        return;
+      }
+      // Hay fichas parecidas: la persona del equipo decide, no el sistema.
+      state.pendingRegistration = { input, matches };
+      $('regSubmit').hidden = true;
+      $('regMatches').innerHTML = `
+        <div class="notice" style="margin-bottom:10px">Encontramos ${matches.length === 1 ? 'una ficha parecida' : 'fichas parecidas'}. ¿Es la misma persona?</div>
+        <div class="list">
+          ${matches.map((match) => `
+            <div class="row">
+              <div class="row-head">
+                <span class="row-title">${esc(match.person.name)}</span>
+                <span class="pills">
+                  ${match.sameName ? '<span class="pill ok">Mismo nombre</span>' : ''}
+                  ${match.byPhone ? '<span class="pill">Mismo teléfono</span>' : ''}
+                  ${match.byEmail ? '<span class="pill">Mismo correo</span>' : ''}
+                </span>
+              </div>
+              <span class="muted small">${esc(match.person.phone || 'Sin teléfono')} · ${match.person.visitCount || 0} visitas · última ${esc(core.formatDate(match.person.lastVisitAt))}</span>
+              <div class="row-actions">
+                <button class="btn small" type="button" data-action="register-existing" data-id="${esc(match.person.id)}">Sí, añadir la visita a esta ficha</button>
+              </div>
+            </div>`).join('')}
+        </div>
+        <div class="actions" style="margin-top:10px">
+          <button class="btn gold" type="button" data-action="register-new">Es otra persona: crear ficha nueva</button>
+          <button class="btn light" type="button" data-action="register-cancel">Corregir datos</button>
+        </div>`;
+      $('regMatches').scrollIntoView({ block: 'nearest' });
+    }
+
+    function clearMatches() {
+      state.pendingRegistration = null;
+      $('regMatches').innerHTML = '';
+      $('regSubmit').hidden = false;
+    }
+
+    async function saveRegistration(input, existingPerson, duplicateCandidates, button) {
+      let alreadyVisited = false;
+      const ok = await run(button || $('regSubmit'), async () => {
+        const result = await data.registerVisit({ ...input, existingPerson, duplicateCandidates, updateConsent: true }, state.staff, state.people);
+        alreadyVisited = result.alreadyVisited;
+        await reloadPeople();
+      });
+      if (!ok) return;
+      if (alreadyVisited) flash(`${existingPerson.name} ya tenía una visita registrada ese día. Se actualizaron sus datos, sin duplicar la visita.`);
+      else if (existingPerson) flash(`Visita añadida a la ficha de ${existingPerson.name}.`);
+      else flash(`Visita registrada. Se creó la ficha de ${input.name}.`);
+      $('registerForm').reset();
+      $('regCompanionList').innerHTML = '';
+      $('regCompanions').hidden = true;
+      clearMatches();
+      resetRegisterDate();
+      $('regName').focus();
+    }
+
+    // ===== Equipo =====
+
+    function renderTeam() {
+      const panel = $('tabEquipo');
+      if (!isManager()) {
+        panel.innerHTML = '';
+        return;
+      }
+      panel.innerHTML = `
+        <div class="card">
+          <h2>Equipo de visitas</h2>
+          <p class="muted small">
+            <strong>Equipo de bienvenida:</strong> registra visitas y busca personas.
+            <strong>Responsable:</strong> además trabaja los seguimientos que tiene asignados.
+            <strong>Pastor y administrador:</strong> gestionan todo el módulo y leen las notas pastorales.
+          </p>
+          <form id="teamForm">
+            <div class="three">
+              <label>Nombre
+                <input id="teamName" maxlength="80" required>
+              </label>
+              <label>Correo
+                <input id="teamEmail" type="email" maxlength="120" required>
+              </label>
+              <label>Rol
+                <select id="teamRole">${options(core.ROLES, 'bienvenida')}</select>
+              </label>
+            </div>
+            <button class="btn gold" type="submit">Añadir al equipo</button>
+            <p class="muted small" style="margin:0">Si la persona no tiene cuenta, se crea y recibe un correo para definir su contraseña.</p>
+          </form>
+          <div class="list" style="margin-top:16px">
+            ${state.staffList.map((member) => {
+              const self = member.id === state.staff.id;
+              return `
+                <div class="row">
+                  <div class="row-head">
+                    <div>
+                      <div class="row-title">${esc(member.name)}${self ? ' (tú)' : ''}</div>
+                      <div class="muted small">${esc(member.email)}</div>
+                    </div>
+                    <span class="pill ${member.active ? 'ok' : 'pausado'}">${member.active ? 'Activo' : 'Sin acceso'}</span>
+                  </div>
+                  ${self ? `<span class="muted small">${esc(core.labelOf(core.ROLES, member.role))}. Otra persona con rol de pastor o administrador puede cambiar tu acceso.</span>` : `
+                  <div class="two">
+                    <label>Rol
+                      <select data-change="team-role" data-id="${esc(member.id)}">${options(core.ROLES, member.role)}</select>
+                    </label>
+                    <div class="row-actions" style="align-items:end">
+                      <button class="btn light small" type="button" data-action="team-toggle" data-id="${esc(member.id)}">${member.active ? 'Quitar acceso' : 'Devolver acceso'}</button>
+                    </div>
+                  </div>`}
+                </div>`;
+            }).join('') || '<div class="empty">Todavía no hay nadie en el equipo.</div>'}
+          </div>
+        </div>`;
+    }
+
+    async function reloadTeam() {
+      state.staffList = await data.listStaff();
+      renderTeam();
+    }
+
+    // ===== Eventos =====
+
+    const actions = {
+      async logout() {
+        await window.discipladoFirebase?.signOut?.();
+        localStorage.removeItem(authStorageKey);
+      },
+      async refresh() {
+        flash('');
+        await loadAll();
+        if (state.tab === 'tabPerfil') await openPerson(state.profileId, true);
+      },
+      'day-shift'(button) {
+        setDay(core.addDays(state.day.key, Number(button.dataset.days)));
+      },
+      'day-today'() {
+        setDay(todayKey());
+      },
+      'go-register'() {
+        activateTab('tabRegistrar');
+      },
+      'export-day': exportDay,
+      'filter-status'(button) {
+        state.filters = { text: '', status: button.dataset.status, assignedTo: '', fromKey: '', toKey: '' };
+        state.shown = pageSize;
+        activateTab('tabPersonas');
+      },
+      'filter-mine'() {
+        state.filters = { ...state.filters, assignedTo: state.staff.id };
+        state.shown = pageSize;
+        renderPeople();
+      },
+      'clear-filters'() {
+        state.filters = { text: '', status: '', assignedTo: '', fromKey: '', toKey: '' };
+        state.shown = pageSize;
+        renderPeople();
+      },
+      'show-more'() {
+        state.shown += pageSize;
+        renderPeopleList();
+      },
+      'toggle-duplicates'() {
+        state.showDuplicates = !state.showDuplicates;
+        renderPeople();
+      },
+      'export-visits': exportVisits,
+      'export-people': exportPeople,
+      async 'copy-link'() {
+        try {
+          await navigator.clipboard.writeText(publicFormUrl());
+          flash('Enlace copiado.');
+        } catch (error) {
+          flash('No se pudo copiar. Selecciona el enlace y cópialo manualmente.', true);
+        }
+      },
+      'open-person'(button) {
+        openPerson(button.dataset.id);
+      },
+      'back-to-people'() {
+        activateTab(state.profileFrom || 'tabPersonas');
+      },
+      'toggle-whatsapp'() {
+        const box = $('whatsBox');
+        box.hidden = !box.hidden;
+        if (!box.hidden) $('whatsText').focus();
+      },
+      async 'visit-today'(button) {
+        const person = personById(state.profileId);
+        const ok = await run(button, () => data.registerVisit({
+          existingPerson: person,
+          firstVisit: false,
+          visitedAt: new Date(),
+          companions: []
+        }, state.staff, state.people), 'Visita de hoy registrada.');
+        if (ok) await refreshProfile();
+      },
+      async claim(button) {
+        const ok = await run(button, () => data.updatePerson(state.profileId, {
+          assignedTo: state.staff.id,
+          assignedToName: state.staff.name || ''
+        }), 'Ahora eres responsable de este seguimiento.');
+        if (ok) await refreshProfile();
+      },
+      async 'enable-follow'(button) {
+        const ok = await run(button, () => data.updatePerson(state.profileId, { trackFollowUp: true }), 'Esta persona ahora tiene seguimiento propio.');
+        if (ok) await refreshProfile();
+      },
+      async merge(button) {
+        // Primer toque pide confirmacion; el segundo combina.
+        if (button.dataset.armed !== 'true') {
+          button.dataset.armed = 'true';
+          button.textContent = 'Confirmar: combinar las dos fichas';
+          return;
+        }
+        const source = personById(button.dataset.source);
+        const target = personById(button.dataset.target);
+        const ok = await run(button, () => data.mergePeople(source, target, state.people), `Las fichas se combinaron en la de ${target.name}.`);
+        if (ok) {
+          await reloadPeople();
+          renderPeople();
+        }
+      },
+      async 'dismiss-duplicate'(button) {
+        const ok = await run(button, () => data.dismissDuplicate(button.dataset.id, button.dataset.other), 'Marcadas como personas distintas.');
+        if (ok) {
+          await reloadPeople();
+          renderPeople();
+        }
+      },
+      'add-companion'() {
+        if (document.querySelectorAll('#regCompanionList .companion-row').length >= 8) return;
+        $('regCompanionList').insertAdjacentHTML('beforeend', companionRowHtml());
+      },
+      'register-existing'(button) {
+        const pending = state.pendingRegistration;
+        saveRegistration(pending.input, personById(button.dataset.id), [], button);
+      },
+      'register-new'(button) {
+        const pending = state.pendingRegistration;
+        saveRegistration(pending.input, null, pending.matches.map((match) => match.person.id), button);
+      },
+      'register-cancel': clearMatches,
+      async 'team-toggle'(button) {
+        const member = state.staffList.find((item) => item.id === button.dataset.id);
+        const ok = await run(button, () => data.updateStaffMember(member.id, { active: !member.active }),
+          member.active ? `${member.name} ya no tiene acceso.` : `${member.name} vuelve a tener acceso.`);
+        if (ok) await reloadTeam();
+      }
+    };
+
+    document.addEventListener('click', (event) => {
+      const tabButton = event.target.closest('.tabbar-btn');
+      if (tabButton) {
+        flash('');
+        activateTab(tabButton.dataset.tab);
+        return;
+      }
+      const button = event.target.closest('[data-action]');
+      if (!button || button.disabled) return;
+      const action = actions[button.dataset.action];
+      if (action) action(button);
+    });
+
+    document.addEventListener('input', (event) => {
+      if (event.target.id === 'filterText') readFilters();
+      if (event.target.id === 'whatsText') {
+        const person = personById(state.profileId);
+        $('whatsLink').href = core.whatsAppHref(person.phone, event.target.value);
+      }
+    });
+
+    document.addEventListener('change', async (event) => {
+      const target = event.target;
+      if (['filterStatus', 'filterAssigned', 'filterFrom', 'filterTo'].includes(target.id)) readFilters();
+      if (target.id === 'dayInput') setDay(target.value);
+      if (target.id === 'periodPreset') {
+        if (target.value === 'custom') {
+          state.period.preset = 'custom';
+          renderSummary();
+          $('periodFrom').focus();
+        } else {
+          changePeriod();
+        }
+      }
+      if (target.id === 'periodFrom' || target.id === 'periodTo') {
+        $('periodPreset').value = 'custom';
+        changePeriod();
+      }
+      if (target.id === 'regFamily') {
+        $('regCompanions').hidden = !target.checked;
+        if (target.checked && !$('regCompanionList').children.length) actions['add-companion']();
+      }
+      if (target.dataset.change === 'team-role') {
+        try {
+          await data.updateStaffMember(target.dataset.id, { role: target.value });
+          flash('Rol actualizado.');
+        } catch (error) {
+          flash(errorMessage(error), true);
+        }
+        await reloadTeam();
+      }
+    });
+
+    document.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const form = event.target;
+      const button = form.querySelector('button[type="submit"]');
+
+      if (form.id === 'loginForm') {
+        $('loginError').textContent = '';
+        const ok = await window.discipladoFirebase?.signIn?.($('loginEmail').value.trim(), $('loginPassword').value);
+        if (ok) {
+          // Misma marca de sesion que usan los demas paneles del portal.
+          localStorage.setItem(authStorageKey, 'authenticated');
+          $('loginPassword').value = '';
+        } else {
+          $('loginError').textContent = 'Correo o contraseña incorrectos.';
+        }
+      }
+
+      if (form.id === 'registerForm') await submitRegistration();
+
+      if (form.id === 'followForm') {
+        const patch = {
+          followUpStatus: $('followStatus').value,
+          nextAction: $('followAction').value.trim(),
+          nextActionDate: $('followDate').value
+        };
+        if (isManager()) {
+          const member = state.staffList.find((item) => item.id === $('followAssigned').value);
+          patch.assignedTo = member ? member.id : null;
+          patch.assignedToName = member ? member.name : '';
+        }
+        const ok = await run(button, () => data.updatePerson(state.profileId, patch), 'Seguimiento guardado.');
+        if (ok) await refreshProfile();
+      }
+
+      if (form.id === 'contactForm') {
+        const person = personById(state.profileId);
+        const ok = await run(button, () => data.addContact(person, {
+          type: $('contactType').value,
+          note: $('contactNote').value.trim(),
+          status: $('contactStatus').value
+        }, state.staff), 'Contacto añadido al historial.');
+        if (ok) await refreshProfile();
+      }
+
+      if (form.id === 'pastoralForm') {
+        const text = $('pastoralText').value.trim();
+        if (!text) return;
+        const ok = await run(button, () => data.addPastoralNote(state.profileId, text, state.staff), 'Nota pastoral guardada.');
+        if (ok) await refreshProfile();
+      }
+
+      if (form.id === 'contactDataForm') {
+        const input = {
+          name: $('editName').value.trim(),
+          phone: $('editPhone').value.trim(),
+          email: $('editEmail').value.trim(),
+          preferredContact: $('editPreferred').value,
+          wantsInfo: $('editInfo').checked,
+          allowContact: $('editContact').checked
+        };
+        if (core.normalizeName(input.name).length < 2 ||
+            (input.phone && !core.isValidPhone(input.phone)) ||
+            (input.email && !core.isValidEmail(input.email))) {
+          flash('Revisa el nombre, el teléfono y el correo.', true);
+          return;
+        }
+        const ok = await run(button, () => data.updateContactData(state.profileId, input), 'Datos de contacto guardados.');
+        if (ok) await refreshProfile();
+      }
+
+      if (form.id === 'teamForm') {
+        const member = {
+          name: $('teamName').value.trim(),
+          email: $('teamEmail').value.trim().toLowerCase(),
+          role: $('teamRole').value
+        };
+        let created = false;
+        const ok = await run(button, async () => {
+          created = (await data.saveStaffMember(member)).created;
+        });
+        if (ok) {
+          flash(created
+            ? `Se creó la cuenta de ${member.name} y se le envió un correo para definir su contraseña.`
+            : `${member.name} ya tiene acceso con su cuenta actual.`);
+          await reloadTeam();
+        }
+      }
+    });
+
+    if (data.init()) {
+      data.auth.onAuthStateChanged(onAuthChanged);
+    } else {
+      els.loadingView.textContent = 'No se pudo conectar con Firebase. Revisa tu conexión y recarga la página.';
+    }
+  </script>
+<script src="js/wix-embed-resize.js"></script>
+</body>
+</html>

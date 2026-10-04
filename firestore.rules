@@ -152,6 +152,139 @@ service cloud.firestore {
       allow create, update, delete: if request.auth != null;
     }
 
+    // ===== Visitas y seguimiento =====
+    // Los roles viven en visitStaff/{uid}: bienvenida, responsable, pastor, admin.
+    // El formulario publico no toca estas colecciones: escribe mediante la
+    // Cloud Function registrarVisitaPublica.
+    function visitStaffData() {
+      return get(/databases/$(database)/documents/visitStaff/$(request.auth.uid)).data;
+    }
+
+    function isVisitStaff() {
+      return request.auth != null
+        && exists(/databases/$(database)/documents/visitStaff/$(request.auth.uid))
+        && visitStaffData().active == true;
+    }
+
+    function isVisitManager() {
+      return isVisitStaff() && visitStaffData().role in ["admin", "pastor"];
+    }
+
+    function isVisitFollowUp() {
+      return isVisitStaff() && visitStaffData().role == "responsable";
+    }
+
+    function assignedToMe(personId) {
+      return get(/databases/$(database)/documents/visitPeople/$(personId)).data.assignedTo == request.auth.uid;
+    }
+
+    function validVisitPerson(data) {
+      return data.name is string
+        && data.name.size() > 0
+        && data.name.size() <= 120
+        && data.followUpStatus in ["pendiente", "contactado", "regreso", "discipulado", "pausado"];
+    }
+
+    function visitChangedOnly(keys) {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(keys);
+    }
+
+    match /visitStaff/{staffId} {
+      allow get: if request.auth != null && request.auth.uid == staffId;
+      allow read: if isVisitStaff();
+      // Las altas se hacen con la funcion visitasGuardarEquipo. Desde el panel
+      // solo se cambia rol o estado, y nadie se modifica a si mismo.
+      allow update: if isVisitManager()
+        && request.auth.uid != staffId
+        && visitChangedOnly(["name", "role", "active", "updatedAt"])
+        && request.resource.data.role in ["bienvenida", "responsable", "pastor", "admin"]
+        && request.resource.data.active is bool;
+      allow create, delete: if false;
+    }
+
+    match /visitPeople/{personId} {
+      allow read: if isVisitStaff();
+
+      allow create: if isVisitStaff()
+        && validVisitPerson(request.resource.data)
+        && request.resource.data.createdBy == request.auth.uid
+        && request.resource.data.mergedInto == null
+        && (request.resource.data.assignedTo == null || isVisitManager());
+
+      // Administrador o pastor: gestion completa.
+      allow update: if isVisitManager() && validVisitPerson(request.resource.data);
+
+      // Todo el equipo: datos de contacto y contadores al registrar una visita.
+      allow update: if isVisitStaff()
+        && validVisitPerson(request.resource.data)
+        && visitChangedOnly([
+          "name", "nameKey", "phone", "phoneKey", "email", "emailKey",
+          "preferredContact", "consent", "familyId", "familyRelation",
+          "hasPrayerRequest", "firstVisitAt", "lastVisitAt", "visitCount", "followUpStatus", "updatedAt"
+        ])
+        && (request.resource.data.followUpStatus == resource.data.followUpStatus
+          || request.resource.data.followUpStatus == "regreso");
+
+      // Responsable: trabaja el seguimiento de las personas que tiene asignadas.
+      allow update: if isVisitFollowUp()
+        && resource.data.assignedTo == request.auth.uid
+        && validVisitPerson(request.resource.data)
+        && visitChangedOnly([
+          "name", "nameKey", "phone", "phoneKey", "email", "emailKey",
+          "preferredContact", "consent", "hasPrayerRequest", "firstVisitAt", "lastVisitAt", "visitCount",
+          "followUpStatus", "nextAction", "nextActionDate", "lastContactAt", "updatedAt"
+        ]);
+
+      // Responsable: puede tomar un seguimiento que nadie tiene asignado.
+      allow update: if isVisitFollowUp()
+        && resource.data.assignedTo == null
+        && request.resource.data.assignedTo == request.auth.uid
+        && visitChangedOnly(["assignedTo", "assignedToName", "updatedAt"]);
+
+      allow delete: if false;
+
+      // Historial de contactos y notas de seguimiento.
+      match /contacts/{contactId} {
+        allow read: if isVisitManager() || (isVisitFollowUp() && assignedToMe(personId));
+        allow create: if (isVisitManager() || (isVisitFollowUp() && assignedToMe(personId)))
+          && request.resource.data.byUid == request.auth.uid
+          && request.resource.data.note is string
+          && request.resource.data.note.size() <= 2000;
+        allow update, delete: if isVisitManager();
+      }
+
+      // Notas pastorales y peticiones de oracion: solo admin y pastor las
+      // leen. El resto del equipo puede escribirlas y ver solo las propias.
+      match /pastoral/{noteId} {
+        allow read: if isVisitManager()
+          || (isVisitStaff() && resource.data.byUid == request.auth.uid);
+        allow create: if isVisitStaff()
+          && request.resource.data.byUid == request.auth.uid
+          && request.resource.data.type in ["nota", "peticion"]
+          && request.resource.data.text is string
+          && request.resource.data.text.size() > 0
+          && request.resource.data.text.size() <= 2000;
+        allow update, delete: if isVisitManager();
+      }
+    }
+
+    match /visitRecords/{recordId} {
+      allow read: if isVisitStaff();
+      allow create: if isVisitStaff()
+        && request.resource.data.personId is string
+        && request.resource.data.registeredBy == request.auth.uid
+        && request.resource.data.visitedAt is timestamp;
+      allow update, delete: if isVisitManager();
+    }
+
+    match /visitFamilies/{familyId} {
+      allow read: if isVisitStaff();
+      allow create, update: if isVisitStaff()
+        && request.resource.data.name is string
+        && request.resource.data.name.size() <= 160;
+      allow delete: if false;
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }

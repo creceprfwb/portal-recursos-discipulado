@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bienvenida | Jesús es el Centro</title>
+  <meta name="description" content="Registra tu visita a la iglesia Jesús es el Centro.">
+  <meta name="robots" content="noindex">
+  <script>
+    if (new URLSearchParams(window.location.search).get('embed') === '1') {
+      document.documentElement.classList.add('embed-mode');
+    }
+  </script>
+  <style>
+    :root {
+      --azul:#078ca3;
+      --azul-oscuro:#12384d;
+      --azul-profundo:#0d2b3a;
+      --dorado:#f1c84b;
+      --verde:#5da56d;
+      --coral:#d95643;
+      --fondo:#f4f8fa;
+      --borde:#dbe7ec;
+      --texto:#526875;
+      --blanco:#ffffff;
+      --sombra:0 18px 50px rgba(13,43,58,.12);
+      font-family:Arial, Helvetica, sans-serif;
+    }
+
+    * { box-sizing:border-box; }
+    html, body {
+      width:100%;
+      max-width:100%;
+      margin:0;
+      background:var(--fondo);
+      color:var(--azul-oscuro);
+      line-height:1.55;
+      overflow-x:hidden;
+    }
+    body { min-height:100vh; }
+    html.embed-mode, html.embed-mode body { overflow-x:clip; }
+    button, input, select, textarea { font:inherit; }
+
+    .hero {
+      color:var(--blanco);
+      background:
+        radial-gradient(circle at 86% 20%, rgba(241,200,75,.22), transparent 26%),
+        linear-gradient(120deg, var(--azul-profundo), var(--azul-oscuro));
+    }
+    .hero-inner {
+      width:min(640px, calc(100% - 2rem));
+      margin:auto;
+      padding:24px 0 44px;
+    }
+    .eyebrow-logo { display:block; height:48px; width:auto; margin-bottom:12px; }
+    h1 { margin:0 0 8px; font-size:clamp(28px, 7vw, 40px); line-height:1.05; }
+    .hero p { margin:0; color:#eaf6f8; font-size:16px; }
+
+    .shell {
+      width:min(640px, calc(100% - 2rem));
+      margin:-28px auto 48px;
+      position:relative;
+      z-index:2;
+    }
+    /* Dentro de Wix la altura del iframe se calcula con <body>; un margen
+       inferior quedaria fuera de esa medida y crearia una barra interna. */
+    html.embed-mode .shell, html.embedded-in-wix .shell { margin-bottom:0; padding-bottom:24px; }
+    .card {
+      background:var(--blanco);
+      border:1px solid var(--borde);
+      border-radius:12px;
+      box-shadow:var(--sombra);
+      padding:20px;
+    }
+    .card h2 { margin:0 0 10px; line-height:1.15; }
+    .muted { color:var(--texto); }
+    .hint { color:var(--texto); font-size:13px; font-weight:400; }
+
+    form { display:grid; gap:16px; }
+    label, legend { font-size:14px; font-weight:900; }
+    label { display:grid; gap:6px; }
+    fieldset { margin:0; padding:0; border:0; min-width:0; display:grid; gap:8px; }
+    legend { padding:0; margin-bottom:8px; }
+    input[type="text"], input[type="tel"], input[type="email"], select, textarea {
+      width:100%;
+      min-height:48px;
+      border:1px solid var(--borde);
+      border-radius:10px;
+      padding:12px;
+      color:var(--azul-oscuro);
+      background:#fbfdfe;
+      font-size:16px;
+      font-weight:400;
+    }
+    textarea { min-height:96px; resize:vertical; }
+    input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible {
+      outline:3px solid rgba(7,140,163,.45);
+      outline-offset:1px;
+    }
+
+    .choices { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .choice {
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-height:48px;
+      padding:10px 12px;
+      border:1px solid var(--borde);
+      border-radius:10px;
+      background:#fbfdfe;
+      font-weight:800;
+      cursor:pointer;
+    }
+    .choice input { width:20px; height:20px; flex:none; accent-color:var(--azul); }
+    .choice:has(input:checked) { border-color:var(--azul); background:#e8f8fb; }
+    .choice.wide { grid-column:1 / -1; align-items:flex-start; font-weight:700; }
+    .choice.wide input { margin-top:2px; }
+
+    .companions { display:grid; gap:10px; }
+    .companion {
+      display:grid;
+      grid-template-columns:minmax(0, 1.4fr) minmax(0, 1fr) auto;
+      gap:8px;
+      align-items:center;
+    }
+
+    .btn {
+      min-height:48px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:12px 16px;
+      border:1px solid transparent;
+      border-radius:10px;
+      background:var(--azul-oscuro);
+      color:var(--blanco);
+      font-weight:900;
+      cursor:pointer;
+    }
+    .btn.gold { background:var(--dorado); color:var(--azul-profundo); font-size:17px; }
+    .btn.light { background:#eef7f9; color:var(--azul-oscuro); border-color:var(--borde); }
+    .btn.green { background:var(--verde); color:var(--blanco); text-decoration:none; }
+    .btn.icon { min-width:48px; padding:0; }
+    .btn[disabled] { opacity:.6; cursor:progress; }
+
+    .error-box {
+      padding:12px 14px;
+      border-radius:10px;
+      background:#fff1ef;
+      border:1px solid #ffd5cf;
+      color:#a5321f;
+      font-weight:800;
+    }
+    .error-box:empty { display:none; }
+    .success { text-align:center; padding:28px 20px; outline:none; }
+    .success .btn { width:100%; }
+    .success-mark {
+      width:64px;
+      height:64px;
+      margin:0 auto 14px;
+      display:grid;
+      place-items:center;
+      border-radius:50%;
+      background:#eaf7ee;
+      color:#236b3a;
+      font-size:32px;
+      font-weight:900;
+    }
+    /* Campo trampa para registros automatizados: fuera de la vista. */
+    .extra-field { position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+
+    @media (max-width:480px) {
+      .card { padding:16px; }
+      .companion { grid-template-columns:minmax(0, 1fr) auto; }
+      .companion select { grid-column:1 / -1; grid-row:2; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <img class="eyebrow-logo" src="./jeec-logo-white.png" alt="Jesús es el Centro">
+      <h1>¡Bienvenido a casa!</h1>
+      <p>Nos alegra que nos visites. Déjanos tus datos; toma menos de un minuto.</p>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="card" id="formCard">
+      <form id="visitForm" novalidate>
+        <label>Nombre y apellido
+          <input type="text" id="nameInput" name="name" autocomplete="name" maxlength="80" required>
+        </label>
+
+        <label>Teléfono
+          <input type="tel" id="phoneInput" name="phone" autocomplete="tel" inputmode="tel" maxlength="30" placeholder="787 555 1234" required>
+        </label>
+
+        <label><span>Correo electrónico <span class="hint">(opcional)</span></span>
+          <input type="email" id="emailInput" name="email" autocomplete="email" maxlength="120">
+        </label>
+
+        <label>¿Cómo prefieres que te contactemos?
+          <select id="preferredInput" name="preferredContact">
+            <option value="whatsapp">WhatsApp</option>
+            <option value="llamada">Llamada</option>
+            <option value="texto">Mensaje de texto</option>
+            <option value="correo">Correo electrónico</option>
+          </select>
+        </label>
+
+        <fieldset>
+          <legend>¿Es tu primera visita?</legend>
+          <div class="choices">
+            <label class="choice"><input type="radio" name="firstVisit" value="si" checked> Sí</label>
+            <label class="choice"><input type="radio" name="firstVisit" value="no"> No</label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>¿Vienes acompañado y deseas registrar a tu familia?</legend>
+          <div class="choices">
+            <label class="choice"><input type="radio" name="withFamily" value="no" checked> No</label>
+            <label class="choice"><input type="radio" name="withFamily" value="si"> Sí</label>
+          </div>
+          <div id="familyBlock" hidden>
+            <div class="companions" id="companionList"></div>
+            <button class="btn light" type="button" id="addCompanionBtn" style="margin-top:10px">Añadir otra persona</button>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Tus preferencias</legend>
+          <div class="choices">
+            <label class="choice wide"><input type="checkbox" id="wantsInfoInput"> Deseo recibir información de la iglesia.</label>
+            <label class="choice wide"><input type="checkbox" id="allowContactInput"> Autorizo que me contacten para darme seguimiento.</label>
+          </div>
+        </fieldset>
+
+        <label><span>¿Podemos orar por algo? <span class="hint">(opcional; solo lo verá el equipo pastoral)</span></span>
+          <textarea id="prayerInput" name="prayerRequest" maxlength="1000"></textarea>
+        </label>
+
+        <div class="extra-field" aria-hidden="true">
+          <label>Sitio web
+            <input type="text" id="websiteInput" name="website" tabindex="-1" autocomplete="off">
+          </label>
+        </div>
+
+        <div class="error-box" id="errorBox" role="alert"></div>
+        <button class="btn gold" type="submit" id="submitBtn">Registrar mi visita</button>
+        <p class="hint" style="margin:0">Usamos tus datos solo para darte la bienvenida y, si lo autorizas, mantenernos en contacto.</p>
+      </form>
+    </section>
+
+    <section class="card success" id="successCard" hidden tabindex="-1" aria-live="polite">
+      <div class="success-mark" aria-hidden="true">✓</div>
+      <h2>¡Gracias por registrarte!</h2>
+      <p class="muted">Recibimos tu visita. Es una alegría tenerte hoy con nosotros.</p>
+      <div id="whatsappBlock" hidden>
+        <p class="muted">¿Quieres saludarnos? Escríbenos y te respondemos por WhatsApp.</p>
+        <a class="btn green" id="whatsappLink" target="_blank" rel="noopener">Escríbenos por WhatsApp</a>
+      </div>
+      <button class="btn light" type="button" id="againBtn" style="margin-top:12px">Registrar a otra persona</button>
+    </section>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-functions-compat.js"></script>
+  <script src="./firebase-config.js"></script>
+  <script src="./js/visitas-core.js"></script>
+  <script>
+    const core = window.VisitasCore;
+    const relations = ['Cónyuge', 'Hijo o hija', 'Padre o madre', 'Otro familiar', 'Amigo o amiga'];
+    const maxCompanions = 8;
+    let startedAt = Date.now();
+    let registerVisit = null;
+
+    const els = {
+      form: document.getElementById('visitForm'),
+      formCard: document.getElementById('formCard'),
+      successCard: document.getElementById('successCard'),
+      errorBox: document.getElementById('errorBox'),
+      submitBtn: document.getElementById('submitBtn'),
+      familyBlock: document.getElementById('familyBlock'),
+      companionList: document.getElementById('companionList'),
+      addCompanionBtn: document.getElementById('addCompanionBtn')
+    };
+
+    function loadScript(src) {
+      return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = src;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+      });
+    }
+
+    async function initFirebase() {
+      if (!window.firebase || !window.firebaseConfig) return;
+      try {
+        const app = firebase.initializeApp(window.firebaseConfig);
+        // Opcional: App Check con reCAPTCHA v3 si firebase-config.js define la clave.
+        if (window.firebaseAppCheckSiteKey) {
+          await loadScript('https://www.gstatic.com/firebasejs/10.12.2/firebase-app-check-compat.js');
+          firebase.appCheck().activate(window.firebaseAppCheckSiteKey, true);
+        }
+        const functions = app.functions('us-central1');
+        const isLocal = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+        if (isLocal && new URLSearchParams(window.location.search).get('emulador') === '1') {
+          functions.useEmulator('127.0.0.1', 5001);
+        }
+        registerVisit = functions.httpsCallable('registrarVisitaPublica');
+      } catch (error) {
+        console.warn('No se pudo inicializar Firebase:', error);
+      }
+    }
+
+    function addCompanionRow() {
+      if (els.companionList.children.length >= maxCompanions) return;
+      const number = els.companionList.children.length + 1;
+      const row = document.createElement('div');
+      row.className = 'companion';
+
+      const name = document.createElement('input');
+      name.type = 'text';
+      name.maxLength = 80;
+      name.placeholder = 'Nombre y apellido';
+      name.setAttribute('aria-label', 'Nombre del acompañante ' + number);
+
+      const relation = document.createElement('select');
+      relation.setAttribute('aria-label', 'Parentesco del acompañante ' + number);
+      relations.forEach((text) => relation.add(new Option(text, text)));
+
+      const remove = document.createElement('button');
+      remove.type = 'button';
+      remove.className = 'btn light icon';
+      remove.textContent = '×';
+      remove.setAttribute('aria-label', 'Quitar acompañante ' + number);
+      remove.addEventListener('click', () => {
+        row.remove();
+        updateCompanionButton();
+      });
+
+      row.append(name, relation, remove);
+      els.companionList.appendChild(row);
+      updateCompanionButton();
+    }
+
+    function updateCompanionButton() {
+      els.addCompanionBtn.hidden = els.companionList.children.length >= maxCompanions;
+    }
+
+    function readCompanions() {
+      if (els.form.withFamily.value !== 'si') return [];
+      return Array.from(els.companionList.children)
+        .map((row) => ({
+          name: row.querySelector('input').value.trim(),
+          relation: row.querySelector('select').value
+        }))
+        .filter((item) => item.name);
+    }
+
+    function showError(message, field) {
+      els.errorBox.textContent = message;
+      if (field) field.focus();
+    }
+
+    function validate() {
+      const name = els.form.name;
+      const phone = els.form.phone;
+      const email = els.form.email;
+      if (core.normalizeName(name.value).length < 2) {
+        showError('Escribe tu nombre y apellido.', name);
+        return false;
+      }
+      if (!core.isValidPhone(phone.value)) {
+        showError('Escribe un teléfono válido, con código de área.', phone);
+        return false;
+      }
+      if (email.value.trim() && !core.isValidEmail(email.value)) {
+        showError('Revisa el correo electrónico.', email);
+        return false;
+      }
+      if (els.form.preferredContact.value === 'correo' && !email.value.trim()) {
+        showError('Escribe tu correo para poder contactarte por ese medio.', email);
+        return false;
+      }
+      return true;
+    }
+
+    function setSending(sending) {
+      els.submitBtn.disabled = sending;
+      els.submitBtn.textContent = sending ? 'Enviando…' : 'Registrar mi visita';
+    }
+
+    els.form.addEventListener('change', (event) => {
+      if (event.target.name !== 'withFamily') return;
+      const withFamily = event.target.value === 'si';
+      els.familyBlock.hidden = !withFamily;
+      if (withFamily && !els.companionList.children.length) addCompanionRow();
+    });
+
+    els.addCompanionBtn.addEventListener('click', addCompanionRow);
+    els.form.addEventListener('input', () => { els.errorBox.textContent = ''; });
+
+    els.form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      els.errorBox.textContent = '';
+      if (!validate()) return;
+      if (!registerVisit) {
+        showError('No pudimos conectar con el registro. Revisa tu conexión y recarga la página.');
+        return;
+      }
+
+      setSending(true);
+      try {
+        await registerVisit({
+          name: els.form.name.value.trim(),
+          phone: els.form.phone.value.trim(),
+          email: els.form.email.value.trim(),
+          preferredContact: els.form.preferredContact.value,
+          firstVisit: els.form.firstVisit.value === 'si',
+          companions: readCompanions(),
+          wantsInfo: document.getElementById('wantsInfoInput').checked,
+          allowContact: document.getElementById('allowContactInput').checked,
+          prayerRequest: els.form.prayerRequest.value.trim(),
+          website: els.form.website.value,
+          elapsedMs: Date.now() - startedAt
+        });
+        if (core.CHURCH_WHATSAPP) {
+          const greeting = 'Hola, soy ' + els.form.name.value.trim() + '. Acabo de registrar mi visita en ' + core.CHURCH_NAME + '.';
+          document.getElementById('whatsappLink').href = core.whatsAppHref(core.CHURCH_WHATSAPP, greeting);
+          document.getElementById('whatsappBlock').hidden = false;
+        }
+        els.formCard.hidden = true;
+        els.successCard.hidden = false;
+        els.successCard.focus();
+        els.successCard.scrollIntoView({ block: 'start' });
+      } catch (error) {
+        const known = ['invalid-argument', 'resource-exhausted', 'failed-precondition'];
+        const code = String(error.code || '').replace('functions/', '');
+        showError(known.includes(code) && error.message
+          ? error.message
+          : 'No pudimos guardar tu registro. Inténtalo de nuevo o avisa al equipo de bienvenida.');
+      } finally {
+        setSending(false);
+      }
+    });
+
+    document.getElementById('againBtn').addEventListener('click', () => {
+      els.form.reset();
+      els.companionList.innerHTML = '';
+      els.familyBlock.hidden = true;
+      els.errorBox.textContent = '';
+      startedAt = Date.now();
+      els.successCard.hidden = true;
+      els.formCard.hidden = false;
+      els.form.name.focus();
+    });
+
+    initFirebase();
+  </script>
+  <script src="js/wix-embed-resize.js"></script>
+</body>
+</html>
