@@ -377,12 +377,48 @@
           <button class="btn gold" type="submit">Iniciar sesión</button>
           <p id="loginError" class="error-text" role="alert"></p>
         </form>
+        <div class="actions" style="margin-top:12px">
+          <button class="btn light small" type="button" data-action="show-signup">Es mi primera vez</button>
+          <button class="btn light small" type="button" data-action="reset-password">Olvidé mi contraseña</button>
+        </div>
+        <p id="loginNote" class="muted small" role="status"></p>
+      </div>
+
+      <div id="signupView" hidden>
+        <p class="muted">Si el administrador ya te añadió al equipo y todavía no tienes cuenta en el portal, crea aquí tu contraseña con ese mismo correo.</p>
+        <form id="signupForm" style="max-width:360px">
+          <label>Correo
+            <input id="signupEmail" type="email" autocomplete="username" required>
+          </label>
+          <label>Contraseña nueva (mínimo 8 caracteres)
+            <input id="signupPassword" type="password" autocomplete="new-password" minlength="8" required>
+          </label>
+          <button class="btn gold" type="submit">Crear mi cuenta</button>
+          <p id="signupError" class="error-text" role="alert"></p>
+        </form>
+        <div class="actions" style="margin-top:12px">
+          <button class="btn light small" type="button" data-action="show-login">Ya tengo cuenta</button>
+        </div>
+      </div>
+
+      <div id="verifyView" hidden>
+        <div class="notice">Falta confirmar tu correo.</div>
+        <p class="muted">Para proteger los datos de los visitantes, confirma que <strong id="verifyEmail"></strong> es tuyo. Pulsa el botón, abre el enlace del correo que te llegará y vuelve aquí. Solo se hace una vez.</p>
+        <div class="actions">
+          <button class="btn gold" type="button" data-action="send-verification">Enviarme el correo</button>
+          <button class="btn" type="button" data-action="check-verification">Ya lo confirmé</button>
+          <button class="btn light" type="button" data-action="logout">Cerrar sesión</button>
+        </div>
+        <p id="verifyNote" class="muted small" role="status"></p>
       </div>
 
       <div id="noAccessView" hidden>
         <div class="notice">Tu cuenta todavía no tiene acceso a este módulo.</div>
         <p class="muted">Pide al administrador o al pastor que te añada al equipo de visitas con este correo: <strong id="noAccessEmail"></strong></p>
-        <button class="btn light" type="button" data-action="logout">Cerrar sesión</button>
+        <div class="actions">
+          <button class="btn" type="button" data-action="check-verification">Ya me añadieron: reintentar</button>
+          <button class="btn light" type="button" data-action="logout">Cerrar sesión</button>
+        </div>
       </div>
     </section>
 
@@ -405,6 +441,7 @@
       </div>
 
       <div id="flash" class="flash" role="status" aria-live="polite" hidden></div>
+      <div id="pendingBox" class="notice" style="margin-bottom:14px" hidden></div>
 
       <section class="tab-panel" id="tabDia" hidden></section>
       <section class="tab-panel" id="tabResumen" hidden></section>
@@ -418,7 +455,6 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-functions-compat.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
   <script src="./firebase-config.js"></script>
   <script src="./firebase-bridge.js"></script>
@@ -430,6 +466,9 @@
     const authStorageKey = 'discipulado-admin-session-v1';
     const relations = ['Cónyuge', 'Hijo o hija', 'Padre o madre', 'Otro familiar', 'Amigo o amiga'];
     const pageSize = 100;
+    // Mas registros pendientes que esto no se anaden solos: pueden ser
+    // registros automatizados y conviene mirarlos antes.
+    const maxAutoSubmissions = 40;
 
     const state = {
       staff: null,
@@ -437,6 +476,7 @@
       people: [],
       records: [],
       loading: false,
+      pending: [],
       tab: 'tabDia',
       day: { key: core.dateKey(new Date()), records: [], loading: false },
       period: { preset: 'mes', ...core.periodPreset('mes') },
@@ -485,7 +525,6 @@
       const code = String((error && error.code) || '');
       if (code.includes('permission-denied')) return 'No tienes permiso para hacer este cambio.';
       if (code.includes('unavailable')) return 'No hay conexión. Revisa tu internet e inténtalo de nuevo.';
-      if (code.startsWith('functions/') && error.message) return error.message;
       return 'No se pudo completar la acción. Inténtalo de nuevo.';
     }
 
@@ -515,6 +554,8 @@
     function showAccess(view) {
       els.loadingView.hidden = view !== 'loading';
       els.loginView.hidden = view !== 'login';
+      $('signupView').hidden = view !== 'signup';
+      $('verifyView').hidden = view !== 'verify';
       els.noAccessView.hidden = view !== 'none';
       els.accessCard.hidden = view === 'app';
       els.appView.hidden = view !== 'app';
@@ -529,12 +570,18 @@
         showAccess('login');
         return;
       }
+      // El acceso exige correo confirmado (ver firestore.rules).
+      if (!user.emailVerified) {
+        $('verifyEmail').textContent = user.email || '';
+        $('verifyNote').textContent = '';
+        showAccess('verify');
+        return;
+      }
       showAccess('loading');
       try {
-        let staff = await data.getOwnStaff(user.uid);
-        if (!staff) {
-          const activated = await data.activateAdmin().catch(() => false);
-          if (activated) staff = await data.getOwnStaff(user.uid);
+        let staff = await data.getOwnStaff(user);
+        if (!staff && await data.bootstrapAdmin(user)) {
+          staff = await data.getOwnStaff(user);
         }
         if (!staff || staff.active !== true) {
           $('noAccessEmail').textContent = user.email || '';
@@ -568,12 +615,64 @@
         state.staffList = staffList;
         state.records = records;
         state.day.records = dayRecords;
+        await processPending(false);
       } catch (error) {
         console.warn(error);
         flash(errorMessage(error), true);
       }
       state.loading = false;
       renderCurrent();
+    }
+
+    /**
+     * Convierte en fichas y visitas los registros que dejo el formulario
+     * publico. Corre cada vez que se cargan los datos del panel.
+     */
+    async function processPending(force) {
+      const pending = await data.listPendingSubmissions();
+      state.pending = [];
+      if (pending.length > maxAutoSubmissions && !force) {
+        state.pending = pending;
+        renderPending();
+        return;
+      }
+      let added = 0;
+      for (const submission of pending) {
+        try {
+          if (core.normalizeName(submission.name).length < 2) {
+            await data.discardSubmissions([submission], state.staff);
+            continue;
+          }
+          const touched = await data.processSubmission(submission, state.staff, state.people);
+          if (!touched) continue;
+          added += 1;
+          // Las fichas recien creadas cuentan para reconocer los registros siguientes.
+          touched.forEach((person) => {
+            const index = state.people.findIndex((item) => item.id === person.id);
+            if (index >= 0) state.people[index] = person;
+            else state.people.push(person);
+          });
+        } catch (error) {
+          console.warn('No se pudo procesar un registro del formulario:', error);
+        }
+      }
+      renderPending();
+      if (added) await reloadPeople();
+    }
+
+    function renderPending() {
+      const box = $('pendingBox');
+      const count = state.pending.length;
+      box.hidden = !count;
+      if (!count) return;
+      const names = state.pending.slice(0, 5).map((item) => esc(item.name)).join(', ');
+      box.innerHTML = `
+        <div>Hay ${count} registros del formulario sin añadir, más de lo habitual. Revísalos antes de añadirlos.</div>
+        <div class="small" style="font-weight:400; margin:6px 0 10px">Los primeros: ${names}…</div>
+        <div class="actions">
+          <button class="btn small" type="button" data-action="pending-add">Añadir todos</button>
+          ${isManager() ? '<button class="btn danger small" type="button" data-action="pending-discard">Descartar todos</button>' : ''}
+        </div>`;
     }
 
     async function reloadPeople() {
@@ -1100,11 +1199,12 @@
       activateTab('tabPerfil');
       if (!keepView) $('tabPerfil').scrollIntoView({ block: 'start' });
       const ids = linkedIds(person);
+      const linked = ids.map(personById);
       try {
         const [records, contacts, pastoral] = await Promise.all([
           data.listPersonRecords(ids),
           canFollow(person) ? data.listContacts(ids) : Promise.resolve([]),
-          data.listPastoral(ids, state.staff)
+          data.listPastoral(linked, state.staff)
         ]);
         if (state.profileId !== id) return;
         state.profile = { records, contacts, pastoral };
@@ -1530,7 +1630,7 @@
               </label>
             </div>
             <button class="btn gold" type="submit">Añadir al equipo</button>
-            <p class="muted small" style="margin:0">Si la persona no tiene cuenta, se crea y recibe un correo para definir su contraseña.</p>
+            <p class="muted small" style="margin:0">La persona entra con ese correo. Si ya tiene cuenta en el portal usa su contraseña de siempre; si no, crea la suya con «Es mi primera vez». La primera vez tendrá que confirmar su correo.</p>
           </form>
           <div class="list" style="margin-top:16px">
             ${state.staffList.map((member) => {
@@ -1570,6 +1670,74 @@
       async logout() {
         await window.discipladoFirebase?.signOut?.();
         localStorage.removeItem(authStorageKey);
+      },
+      'show-signup'() {
+        $('signupEmail').value = $('loginEmail').value;
+        showAccess('signup');
+      },
+      'show-login'() {
+        showAccess('login');
+      },
+      async 'reset-password'() {
+        const email = $('loginEmail').value.trim();
+        const note = $('loginNote');
+        if (!core.isValidEmail(email)) {
+          note.textContent = 'Escribe tu correo arriba y vuelve a pulsar «Olvidé mi contraseña».';
+          $('loginEmail').focus();
+          return;
+        }
+        try {
+          await data.auth.sendPasswordResetEmail(email);
+        } catch (error) {
+          console.warn(error);
+        }
+        // Mismo mensaje exista o no la cuenta, para no revelar quien tiene una.
+        note.textContent = 'Si ese correo tiene cuenta, recibirá un mensaje para cambiar la contraseña.';
+      },
+      async 'send-verification'(button) {
+        const note = $('verifyNote');
+        button.disabled = true;
+        try {
+          await data.auth.currentUser.sendEmailVerification();
+          note.textContent = 'Correo enviado. Ábrelo, pulsa el enlace y luego toca «Ya lo confirmé». Revisa también la carpeta de spam.';
+        } catch (error) {
+          console.warn(error);
+          note.textContent = 'No se pudo enviar el correo. Espera un minuto e inténtalo de nuevo.';
+        }
+        button.disabled = false;
+      },
+      async 'check-verification'() {
+        const user = data.auth.currentUser;
+        if (!user) return;
+        try {
+          await user.reload();
+          // La confirmacion viaja en el token de sesion: hay que renovarlo.
+          await data.auth.currentUser.getIdToken(true);
+        } catch (error) {
+          console.warn(error);
+        }
+        if (!data.auth.currentUser.emailVerified) {
+          $('verifyNote').textContent = 'Todavía no aparece confirmado. Abre el enlace del correo y vuelve a intentarlo.';
+          return;
+        }
+        onAuthChanged(data.auth.currentUser);
+      },
+      async 'pending-add'(button) {
+        const ok = await run(button, () => processPending(true), 'Registros del formulario añadidos.');
+        if (ok) renderCurrent();
+      },
+      async 'pending-discard'(button) {
+        // Primer toque pide confirmacion; el segundo descarta.
+        if (button.dataset.armed !== 'true') {
+          button.dataset.armed = 'true';
+          button.textContent = 'Confirmar: descartar todos';
+          return;
+        }
+        const ok = await run(button, () => data.discardSubmissions(state.pending, state.staff), 'Registros descartados.');
+        if (ok) {
+          state.pending = [];
+          renderPending();
+        }
       },
       async refresh() {
         flash('');
@@ -1764,6 +1932,24 @@
         }
       }
 
+      if (form.id === 'signupForm') {
+        const error = $('signupError');
+        error.textContent = '';
+        try {
+          const credential = await data.auth.createUserWithEmailAndPassword(
+            $('signupEmail').value.trim().toLowerCase(), $('signupPassword').value);
+          localStorage.setItem(authStorageKey, 'authenticated');
+          $('signupPassword').value = '';
+          await credential.user.sendEmailVerification().catch(() => {});
+        } catch (signupError) {
+          const code = String(signupError.code || '');
+          if (code.includes('email-already-in-use')) error.textContent = 'Ese correo ya tiene cuenta. Usa «Ya tengo cuenta» o «Olvidé mi contraseña».';
+          else if (code.includes('weak-password')) error.textContent = 'La contraseña debe tener al menos 8 caracteres.';
+          else if (code.includes('operation-not-allowed') || code.includes('admin-restricted')) error.textContent = 'La creación de cuentas está desactivada. Pide al administrador que cree la tuya.';
+          else error.textContent = 'No se pudo crear la cuenta. Revisa el correo e inténtalo de nuevo.';
+        }
+      }
+
       if (form.id === 'registerForm') await submitRegistration();
 
       if (form.id === 'followForm') {
@@ -1823,16 +2009,17 @@
           email: $('teamEmail').value.trim().toLowerCase(),
           role: $('teamRole').value
         };
-        let created = false;
-        const ok = await run(button, async () => {
-          created = (await data.saveStaffMember(member)).created;
-        });
-        if (ok) {
-          flash(created
-            ? `Se creó la cuenta de ${member.name} y se le envió un correo para definir su contraseña.`
-            : `${member.name} ya tiene acceso con su cuenta actual.`);
-          await reloadTeam();
+        if (!member.name || !core.isValidEmail(member.email)) {
+          flash('Escribe el nombre y un correo válido.', true);
+          return;
         }
+        if (state.staffList.some((item) => item.id === member.email)) {
+          flash('Ese correo ya está en el equipo. Cambia su rol o su acceso en la lista.', true);
+          return;
+        }
+        const ok = await run(button, () => data.addStaffMember(member),
+          `${member.name} ya está en el equipo. Avísale que entre al panel con ${member.email}.`);
+        if (ok) await reloadTeam();
       }
     });
 

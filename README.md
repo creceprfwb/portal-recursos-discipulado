@@ -30,32 +30,32 @@ Esta versión inicial usa datos locales de ejemplo para permitir el desarrollo y
 
 ## Visitas y seguimiento
 
-Módulo para registrar visitantes de la iglesia y darles seguimiento.
+Módulo para registrar visitantes de la iglesia y darles seguimiento. Funciona en el plan gratuito de Firebase (sin Cloud Functions).
 
-- `bienvenida.html` (`bienvenida-wix.html` para Wix): formulario público, sin cuenta. Escribe solo a través de la Cloud Function `registrarVisitaPublica`.
-- `admin-visitas.html` (`admin-visitas-wix.html` para Wix): panel del equipo, enlazado desde `admin.html`.
-- `js/visitas-core.js` (lógica y fechas de Puerto Rico), `js/visitas-data.js` (Firestore), `functions/visitas.js` (funciones) y las reglas `visit*` en `firestore.rules`.
+- `bienvenida.html` (`bienvenida-wix.html` para Wix): formulario público, sin cuenta. Solo puede dejar registros nuevos en `visitSubmissions`; no lee nada.
+- `admin-visitas.html` (`admin-visitas-wix.html` para Wix): panel del equipo, enlazado desde `admin.html`. Al abrirse convierte los registros del formulario en fichas y visitas.
+- `js/visitas-core.js` (lógica y fechas de Puerto Rico), `js/visitas-data.js` (Firestore) y las reglas `visit*` en `firestore.rules`.
 
-Colecciones: `visitPeople` (ficha de la persona, con subcolecciones `contacts` y `pastoral`), `visitRecords` (una por visita), `visitFamilies`, `visitStaff` (roles: `bienvenida`, `responsable`, `pastor`, `admin`) y `visitRateLimits` (interna).
+Colecciones: `visitSubmissions` (bandeja de entrada del formulario; la petición de oración va en `private/prayer`), `visitPeople` (ficha de la persona, con subcolecciones `contacts` y `pastoral`), `visitRecords` (una por visita), `visitFamilies` y `visitStaff` (un documento por correo, con rol `bienvenida`, `responsable`, `pastor` o `admin`).
+
+### Acceso
+
+- El panel usa las mismas cuentas del portal, pero exige que el correo esté confirmado; la primera vez el panel envía el correo de confirmación.
+- El primer administrador es el correo escrito en `firestore.rules` (regla de `visitStaff`). Al entrar con esa cuenta ya confirmada se da de alta solo.
+- El administrador o el pastor añaden al resto en la pestaña **Equipo**, por correo. Quien no tenga cuenta la crea con «Es mi primera vez».
 
 ### Puesta en marcha
 
-1. Crear `functions/.env` con `VISITAS_ADMIN_EMAILS=correo@ejemplo.com` (los correos, separados por coma, que serán administradores del módulo).
-   - `VISITAS_NOTIFY_TO=correo@ejemplo.com`: quién recibe el aviso de cada visitante nuevo (vacío = sin avisos).
-   - `VISITAS_WELCOME_EMAIL=false`: desactiva el correo de bienvenida al visitante (por defecto se envía a quien dejó correo y autorizó contacto).
-2. `firebase deploy --only functions,firestore:rules`
-3. Publicar las páginas y entrar a `admin-visitas.html` con uno de esos correos: la cuenta se activa como administrador y desde la pestaña **Equipo** se añade al resto.
+1. `firebase deploy --only firestore:rules`
+2. Publicar las páginas (push a `main`).
+3. Entrar a `admin-visitas.html` con el correo de administrador y confirmar el correo.
 
-### Mensajes automáticos
-
-- Al crearse una ficha, la función `correosDeNuevaVisita` envía el correo de bienvenida al visitante y el aviso al equipo, con la misma cuenta de correo que usa el muro de oración (`functions/mail.js`). Las visitas repetidas y los acompañantes no generan correos.
-- Para mostrar el botón «Escríbenos por WhatsApp» al terminar el formulario, poner el número de la iglesia en `CHURCH_WHATSAPP` (`js/visitas-core.js`).
+Para mostrar otro número en el botón «Escríbenos por WhatsApp» del formulario, cambiar `CHURCH_WHATSAPP` en `js/visitas-core.js`.
 
 ### Verificación local
 
 ```bash
 npm run test
-# functions/.env.local debe definir VISITAS_ADMIN_EMAILS=pastor@prueba.test
-firebase emulators:start --only auth,functions,firestore --project demo-visitas
+firebase emulators:start --only auth,firestore --project demo-visitas
 node scripts/verificar-visitas.mjs
 ```

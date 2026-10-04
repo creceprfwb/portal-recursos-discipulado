@@ -1,13 +1,16 @@
 const { initializeApp } = require("firebase-admin/app");
 const { logger } = require("firebase-functions");
-const { defineString } = require("firebase-functions/params");
+const { defineSecret, defineString } = require("firebase-functions/params");
 const { onDocumentCreated } = require("firebase-functions/v2/firestore");
-const { smtpPassword, smtpFrom, createTransporter } = require("./mail");
+const nodemailer = require("nodemailer");
 
 initializeApp();
 
-Object.assign(exports, require("./visitas"));
-
+const smtpPassword = defineSecret("SMTP_PASSWORD");
+const smtpHost = defineString("SMTP_HOST", { default: "smtp.gmail.com" });
+const smtpPort = defineString("SMTP_PORT", { default: "465" });
+const smtpUser = defineString("SMTP_USER", { default: "prfwbwallofpray@gmail.com" });
+const smtpFrom = defineString("SMTP_FROM", { default: "PRFWB Muro de Oracion <prfwbwallofpray@gmail.com>" });
 const prayerNotifyTo = defineString("PRAYER_NOTIFY_TO", { default: "prfwbwallofpray@gmail.com" });
 const adminPrayerUrl = defineString("ADMIN_PRAYER_URL", {
   default: "https://creceprfwb.github.io/portal-recursos-discipulado/admin-oracion-wix.html"
@@ -30,7 +33,15 @@ exports.notifyNewPrayerRequest = onDocumentCreated(
       return;
     }
 
-    const transporter = createTransporter();
+    const transporter = nodemailer.createTransport({
+      host: smtpHost.value(),
+      port: Number(smtpPort.value()),
+      secure: Number(smtpPort.value()) === 465,
+      auth: {
+        user: smtpUser.value(),
+        pass: smtpPassword.value()
+      }
+    });
 
     const title = cleanText(request.title, "Nueva peticion de oracion");
     const category = cleanText(request.category, "General");

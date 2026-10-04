@@ -267,15 +267,16 @@
   </main>
 
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-functions-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
   <script src="./firebase-config.js"></script>
   <script src="./js/visitas-core.js"></script>
   <script>
     const core = window.VisitasCore;
     const relations = ['Cónyuge', 'Hijo o hija', 'Padre o madre', 'Otro familiar', 'Amigo o amiga'];
     const maxCompanions = 8;
+    const minFillMs = 2500;
     let startedAt = Date.now();
-    let registerVisit = null;
+    let db = null;
 
     const els = {
       form: document.getElementById('visitForm'),
@@ -288,34 +289,50 @@
       addCompanionBtn: document.getElementById('addCompanionBtn')
     };
 
-    function loadScript(src) {
-      return new Promise((resolve, reject) => {
-        const script = document.createElement('script');
-        script.src = src;
-        script.onload = resolve;
-        script.onerror = reject;
-        document.head.appendChild(script);
-      });
-    }
-
-    async function initFirebase() {
+    function initFirebase() {
       if (!window.firebase || !window.firebaseConfig) return;
       try {
-        const app = firebase.initializeApp(window.firebaseConfig);
-        // Opcional: App Check con reCAPTCHA v3 si firebase-config.js define la clave.
-        if (window.firebaseAppCheckSiteKey) {
-          await loadScript('https://www.gstatic.com/firebasejs/10.12.2/firebase-app-check-compat.js');
-          firebase.appCheck().activate(window.firebaseAppCheckSiteKey, true);
-        }
-        const functions = app.functions('us-central1');
+        firebase.initializeApp(window.firebaseConfig);
+        db = firebase.firestore();
         const isLocal = ['localhost', '127.0.0.1'].includes(window.location.hostname);
         if (isLocal && new URLSearchParams(window.location.search).get('emulador') === '1') {
-          functions.useEmulator('127.0.0.1', 5001);
+          db.useEmulator('127.0.0.1', 8080);
         }
-        registerVisit = functions.httpsCallable('registrarVisitaPublica');
       } catch (error) {
         console.warn('No se pudo inicializar Firebase:', error);
       }
+    }
+
+    /**
+     * Deja el registro en la bandeja de entrada (visitSubmissions). Las
+     * reglas solo permiten crear: este formulario no puede leer nada. La
+     * peticion de oracion va en un documento aparte, de acceso restringido.
+     */
+    function saveSubmission(entry) {
+      const now = firebase.firestore.FieldValue.serverTimestamp();
+      const ref = db.collection('visitSubmissions').doc();
+      const batch = db.batch();
+      batch.set(ref, {
+        name: entry.name,
+        phone: entry.phone,
+        email: entry.email,
+        preferredContact: entry.preferredContact,
+        firstVisit: entry.firstVisit,
+        companions: entry.companions,
+        wantsInfo: entry.wantsInfo,
+        allowContact: entry.allowContact,
+        hasPrayerRequest: Boolean(entry.prayerRequest),
+        status: 'nueva',
+        createdAt: now
+      });
+      if (entry.prayerRequest) {
+        batch.set(ref.collection('private').doc('prayer'), { text: entry.prayerRequest, createdAt: now });
+      }
+      // Sin conexion, Firestore deja la escritura en espera sin avisar.
+      const timeout = new Promise((resolve, reject) => {
+        setTimeout(() => reject(new Error('sin-conexion')), 15000);
+      });
+      return Promise.race([batch.commit(), timeout]);
     }
 
     function addCompanionRow() {
@@ -410,26 +427,32 @@
       event.preventDefault();
       els.errorBox.textContent = '';
       if (!validate()) return;
-      if (!registerVisit) {
+      if (!db) {
         showError('No pudimos conectar con el registro. Revisa tu conexión y recarga la página.');
+        return;
+      }
+      if (Date.now() - startedAt < minFillMs) {
+        showError('Un momento, por favor. Revisa tus datos e inténtalo de nuevo.');
         return;
       }
 
       setSending(true);
       try {
-        await registerVisit({
-          name: els.form.name.value.trim(),
-          phone: els.form.phone.value.trim(),
-          email: els.form.email.value.trim(),
-          preferredContact: els.form.preferredContact.value,
-          firstVisit: els.form.firstVisit.value === 'si',
-          companions: readCompanions(),
-          wantsInfo: document.getElementById('wantsInfoInput').checked,
-          allowContact: document.getElementById('allowContactInput').checked,
-          prayerRequest: els.form.prayerRequest.value.trim(),
-          website: els.form.website.value,
-          elapsedMs: Date.now() - startedAt
-        });
+        // Campo trampa: las personas no lo ven. Si viene lleno es un
+        // registro automatizado y se descarta sin avisar.
+        if (!els.form.website.value) {
+          await saveSubmission({
+            name: els.form.name.value.trim().slice(0, 80),
+            phone: els.form.phone.value.trim().slice(0, 30),
+            email: els.form.email.value.trim().toLowerCase().slice(0, 120),
+            preferredContact: els.form.preferredContact.value,
+            firstVisit: els.form.firstVisit.value === 'si',
+            companions: readCompanions(),
+            wantsInfo: document.getElementById('wantsInfoInput').checked,
+            allowContact: document.getElementById('allowContactInput').checked,
+            prayerRequest: els.form.prayerRequest.value.trim().slice(0, 1000)
+          });
+        }
         if (core.CHURCH_WHATSAPP) {
           const greeting = 'Hola, soy ' + els.form.name.value.trim() + '. Acabo de registrar mi visita en ' + core.CHURCH_NAME + '.';
           document.getElementById('whatsappLink').href = core.whatsAppHref(core.CHURCH_WHATSAPP, greeting);
@@ -440,10 +463,9 @@
         els.successCard.focus();
         els.successCard.scrollIntoView({ block: 'start' });
       } catch (error) {
-        const known = ['invalid-argument', 'resource-exhausted', 'failed-precondition'];
-        const code = String(error.code || '').replace('functions/', '');
-        showError(known.includes(code) && error.message
-          ? error.message
+        console.warn(error);
+        showError(error.message === 'sin-conexion'
+          ? 'No hay conexión. Revisa tu internet e inténtalo de nuevo.'
           : 'No pudimos guardar tu registro. Inténtalo de nuevo o avisa al equipo de bienvenida.');
       } finally {
         setSending(false);

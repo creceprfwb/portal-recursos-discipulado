@@ -153,16 +153,26 @@ service cloud.firestore {
     }
 
     // ===== Visitas y seguimiento =====
-    // Los roles viven en visitStaff/{uid}: bienvenida, responsable, pastor, admin.
-    // El formulario publico no toca estas colecciones: escribe mediante la
-    // Cloud Function registrarVisitaPublica.
+    // Roles en visitStaff/{correo}: bienvenida, responsable, pastor, admin.
+    // Solo valen cuentas con el correo confirmado: asi nadie puede hacerse
+    // pasar por un miembro del equipo registrando su correo antes que el.
+    function visitEmail() {
+      return request.auth.token.email;
+    }
+
+    function visitVerified() {
+      return request.auth != null
+        && request.auth.token.email != null
+        && request.auth.token.email_verified == true;
+    }
+
     function visitStaffData() {
-      return get(/databases/$(database)/documents/visitStaff/$(request.auth.uid)).data;
+      return get(/databases/$(database)/documents/visitStaff/$(visitEmail())).data;
     }
 
     function isVisitStaff() {
-      return request.auth != null
-        && exists(/databases/$(database)/documents/visitStaff/$(request.auth.uid))
+      return visitVerified()
+        && exists(/databases/$(database)/documents/visitStaff/$(visitEmail()))
         && visitStaffData().active == true;
     }
 
@@ -175,7 +185,7 @@ service cloud.firestore {
     }
 
     function assignedToMe(personId) {
-      return get(/databases/$(database)/documents/visitPeople/$(personId)).data.assignedTo == request.auth.uid;
+      return get(/databases/$(database)/documents/visitPeople/$(personId)).data.assignedTo == visitEmail();
     }
 
     function validVisitPerson(data) {
@@ -185,21 +195,91 @@ service cloud.firestore {
         && data.followUpStatus in ["pendiente", "contactado", "regreso", "discipulado", "pausado"];
     }
 
+    function validVisitStaff(data, staffId) {
+      return data.email == staffId
+        && staffId == staffId.lower()
+        && data.name is string
+        && data.name.size() > 0
+        && data.name.size() <= 80
+        && data.role in ["bienvenida", "responsable", "pastor", "admin"]
+        && data.active is bool;
+    }
+
     function visitChangedOnly(keys) {
       return request.resource.data.diff(resource.data).affectedKeys().hasOnly(keys);
     }
 
     match /visitStaff/{staffId} {
-      allow get: if request.auth != null && request.auth.uid == staffId;
+      allow get: if request.auth != null && request.auth.token.email == staffId;
       allow read: if isVisitStaff();
-      // Las altas se hacen con la funcion visitasGuardarEquipo. Desde el panel
-      // solo se cambia rol o estado, y nadie se modifica a si mismo.
+
+      // Primer administrador: solo estos correos, ya confirmados, pueden
+      // darse de alta a si mismos.
+      allow create: if visitVerified()
+        && staffId == visitEmail()
+        && staffId in ["jesuseselcentropr@gmail.com"]
+        && validVisitStaff(request.resource.data, staffId)
+        && request.resource.data.role == "admin";
+
+      allow create: if isVisitManager() && validVisitStaff(request.resource.data, staffId);
+
+      // Nadie cambia su propio rol ni su propio acceso.
       allow update: if isVisitManager()
-        && request.auth.uid != staffId
+        && staffId != visitEmail()
         && visitChangedOnly(["name", "role", "active", "updatedAt"])
-        && request.resource.data.role in ["bienvenida", "responsable", "pastor", "admin"]
-        && request.resource.data.active is bool;
-      allow create, delete: if false;
+        && validVisitStaff(request.resource.data, staffId);
+      allow delete: if false;
+    }
+
+    // Bandeja de entrada del formulario publico: cualquiera puede dejar un
+    // registro nuevo, pero solo el equipo los lee. El panel los convierte en
+    // fichas y visitas.
+    match /visitSubmissions/{submissionId} {
+      allow create: if request.resource.data.keys().hasOnly([
+          "name", "phone", "email", "preferredContact", "firstVisit", "companions",
+          "wantsInfo", "allowContact", "hasPrayerRequest", "status", "createdAt"
+        ])
+        && request.resource.data.keys().hasAll([
+          "name", "phone", "email", "preferredContact", "firstVisit", "companions",
+          "wantsInfo", "allowContact", "hasPrayerRequest", "status", "createdAt"
+        ])
+        && request.resource.data.name is string
+        && request.resource.data.name.size() >= 2
+        && request.resource.data.name.size() <= 80
+        && request.resource.data.phone is string
+        && request.resource.data.phone.size() >= 7
+        && request.resource.data.phone.size() <= 30
+        && request.resource.data.email is string
+        && request.resource.data.email.size() <= 120
+        && request.resource.data.preferredContact in ["whatsapp", "llamada", "texto", "correo"]
+        && request.resource.data.firstVisit is bool
+        && request.resource.data.wantsInfo is bool
+        && request.resource.data.allowContact is bool
+        && request.resource.data.hasPrayerRequest is bool
+        && request.resource.data.companions is list
+        && request.resource.data.companions.size() <= 8
+        && request.resource.data.status == "nueva"
+        && request.resource.data.createdAt == request.time;
+
+      allow read: if isVisitStaff();
+      allow update: if isVisitStaff()
+        && resource.data.status == "nueva"
+        && request.resource.data.status in ["procesada", "descartada"]
+        && visitChangedOnly(["status", "personId", "processedAt", "processedBy"]);
+      allow delete: if false;
+
+      // La peticion de oracion se guarda aparte para que solo la lean el
+      // pastor y el administrador.
+      match /private/{docId} {
+        allow create: if docId == "prayer"
+          && request.resource.data.keys().hasOnly(["text", "createdAt"])
+          && request.resource.data.text is string
+          && request.resource.data.text.size() > 0
+          && request.resource.data.text.size() <= 1000
+          && request.resource.data.createdAt == request.time;
+        allow read: if isVisitManager();
+        allow update, delete: if false;
+      }
     }
 
     match /visitPeople/{personId} {
@@ -220,25 +300,27 @@ service cloud.firestore {
         && visitChangedOnly([
           "name", "nameKey", "phone", "phoneKey", "email", "emailKey",
           "preferredContact", "consent", "familyId", "familyRelation",
-          "hasPrayerRequest", "firstVisitAt", "lastVisitAt", "visitCount", "followUpStatus", "updatedAt"
+          "hasPrayerRequest", "prayerSubmissionIds", "firstVisitAt", "lastVisitAt",
+          "visitCount", "followUpStatus", "updatedAt"
         ])
         && (request.resource.data.followUpStatus == resource.data.followUpStatus
           || request.resource.data.followUpStatus == "regreso");
 
       // Responsable: trabaja el seguimiento de las personas que tiene asignadas.
       allow update: if isVisitFollowUp()
-        && resource.data.assignedTo == request.auth.uid
+        && resource.data.assignedTo == visitEmail()
         && validVisitPerson(request.resource.data)
         && visitChangedOnly([
           "name", "nameKey", "phone", "phoneKey", "email", "emailKey",
-          "preferredContact", "consent", "hasPrayerRequest", "firstVisitAt", "lastVisitAt", "visitCount",
+          "preferredContact", "consent", "hasPrayerRequest", "prayerSubmissionIds",
+          "firstVisitAt", "lastVisitAt", "visitCount",
           "followUpStatus", "nextAction", "nextActionDate", "lastContactAt", "updatedAt"
         ]);
 
       // Responsable: puede tomar un seguimiento que nadie tiene asignado.
       allow update: if isVisitFollowUp()
         && resource.data.assignedTo == null
-        && request.resource.data.assignedTo == request.auth.uid
+        && request.resource.data.assignedTo == visitEmail()
         && visitChangedOnly(["assignedTo", "assignedToName", "updatedAt"]);
 
       allow delete: if false;

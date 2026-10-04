@@ -1,31 +1,31 @@
 /**
- * Acceso a datos del panel "Visitas y seguimiento" (Firestore + Functions).
+ * Acceso a datos del panel "Visitas y seguimiento" (Firestore y Auth).
  * Los permisos reales estan en firestore.rules; aqui no se decide quien
  * puede hacer que.
+ *
+ * El formulario publico solo deja registros en visitSubmissions. Este
+ * modulo los convierte en fichas y visitas cuando alguien del equipo abre
+ * el panel (processSubmission).
  */
 (function () {
   const core = window.VisitasCore;
-  const REGION = 'us-central1';
   const localHosts = ['localhost', '127.0.0.1'];
   const useEmulators = localHosts.includes(window.location.hostname) &&
     new URLSearchParams(window.location.search).get('emulador') === '1';
 
   let auth = null;
   let db = null;
-  let functions = null;
 
   function init() {
     if (db) return true;
     if (!window.firebase || !window.firebaseConfig) return false;
     try {
-      const app = firebase.apps.length ? firebase.app() : firebase.initializeApp(window.firebaseConfig);
+      if (!firebase.apps.length) firebase.initializeApp(window.firebaseConfig);
       auth = firebase.auth();
       db = firebase.firestore();
-      functions = app.functions(REGION);
       if (useEmulators) {
         auth.useEmulator('http://127.0.0.1:9099', { disableWarnings: true });
         db.useEmulator('127.0.0.1', 8080);
-        functions.useEmulator('127.0.0.1', 5001);
       }
       return true;
     } catch (error) {
@@ -36,6 +36,7 @@
 
   const serverNow = () => firebase.firestore.FieldValue.serverTimestamp();
   const stamp = (date) => firebase.firestore.Timestamp.fromDate(date);
+  const clean = (value, max) => String(value == null ? '' : value).replace(/\s+/g, ' ').trim().slice(0, max);
 
   function fromDoc(doc) {
     const data = doc.data();
@@ -50,14 +51,33 @@
     return out;
   }
 
-  async function getOwnStaff(uid) {
-    const snap = await db.collection('visitStaff').doc(uid).get();
-    return snap.exists ? fromDoc(snap) : null;
+  // ===== Equipo =====
+  // Cada persona del equipo es visitStaff/{correo}. "id" es el correo y
+  // "uid" la cuenta con la que firma lo que escribe.
+
+  async function getOwnStaff(user) {
+    const snap = await db.collection('visitStaff').doc(user.email).get();
+    return snap.exists ? { ...fromDoc(snap), uid: user.uid } : null;
   }
 
-  async function activateAdmin() {
-    const result = await functions.httpsCallable('visitasActivarAdmin')({});
-    return Boolean(result.data && result.data.activated);
+  /**
+   * Alta del primer administrador. Las reglas solo la aceptan para los
+   * correos listados en firestore.rules; para el resto falla y no pasa nada.
+   */
+  async function bootstrapAdmin(user) {
+    try {
+      await db.collection('visitStaff').doc(user.email).set({
+        email: user.email,
+        name: user.displayName || user.email,
+        role: 'admin',
+        active: true,
+        createdAt: serverNow(),
+        updatedAt: serverNow()
+      });
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
 
   async function listStaff() {
@@ -65,19 +85,22 @@
     return snap.docs.map(fromDoc).sort((a, b) => String(a.name).localeCompare(String(b.name), 'es'));
   }
 
-  async function saveStaffMember(member) {
-    const result = await functions.httpsCallable('visitasGuardarEquipo')(member);
-    if (result.data.created) {
-      // La cuenta nueva no tiene contrasena conocida: la persona la define
-      // con este correo.
-      await auth.sendPasswordResetEmail(member.email);
-    }
-    return result.data;
+  function addStaffMember(member) {
+    return db.collection('visitStaff').doc(member.email).set({
+      email: member.email,
+      name: member.name,
+      role: member.role,
+      active: true,
+      createdAt: serverNow(),
+      updatedAt: serverNow()
+    });
   }
 
-  function updateStaffMember(uid, patch) {
-    return db.collection('visitStaff').doc(uid).update({ ...patch, updatedAt: serverNow() });
+  function updateStaffMember(email, patch) {
+    return db.collection('visitStaff').doc(email).update({ ...patch, updatedAt: serverNow() });
   }
+
+  // ===== Lecturas =====
 
   async function listPeople() {
     const snap = await db.collection('visitPeople').orderBy('lastVisitAt', 'desc').limit(3000).get();
@@ -110,18 +133,39 @@
       .sort((a, b) => (b.at || 0) - (a.at || 0));
   }
 
-  /** Admin y pastor ven todas; el resto solo las que escribio. */
-  async function listPastoral(personIds, staff) {
+  /**
+   * Notas pastorales y peticiones. Admin y pastor ven todas, incluidas las
+   * peticiones que llegaron por el formulario; el resto solo sus notas.
+   */
+  async function listPastoral(people, staff) {
     const isManager = ['admin', 'pastor'].includes(staff.role);
-    const snaps = await Promise.all(personIds.map((id) => {
-      let query = db.collection('visitPeople').doc(id).collection('pastoral');
-      if (!isManager) query = query.where('byUid', '==', staff.id);
+    const noteSnaps = await Promise.all(people.map((person) => {
+      let query = db.collection('visitPeople').doc(person.id).collection('pastoral');
+      if (!isManager) query = query.where('byUid', '==', staff.uid);
       return query.get().catch(() => ({ docs: [] }));
     }));
-    return snaps
-      .flatMap((snap) => snap.docs.map(fromDoc))
-      .sort((a, b) => (b.at || 0) - (a.at || 0));
+    const notes = noteSnaps.flatMap((snap) => snap.docs.map(fromDoc));
+
+    if (isManager) {
+      const ids = people.flatMap((person) => person.prayerSubmissionIds || []);
+      const prayerSnaps = await Promise.all(ids.map((id) =>
+        db.collection('visitSubmissions').doc(id).collection('private').doc('prayer').get().catch(() => null)));
+      prayerSnaps.forEach((snap, index) => {
+        if (!snap || !snap.exists) return;
+        const prayer = fromDoc(snap);
+        notes.push({
+          id: 'peticion-' + ids[index],
+          type: 'peticion',
+          text: prayer.text,
+          byName: 'Formulario público',
+          at: prayer.createdAt
+        });
+      });
+    }
+    return notes.sort((a, b) => (b.at || 0) - (a.at || 0));
   }
+
+  // ===== Registro de visitas =====
 
   function personFields(input) {
     return {
@@ -135,16 +179,20 @@
     };
   }
 
-  function newPerson(input, staff, visitedAt) {
+  function consentOf(input, source) {
+    return {
+      contact: Boolean(input.allowContact),
+      info: Boolean(input.wantsInfo),
+      source,
+      updatedAt: stamp(new Date())
+    };
+  }
+
+  function newPerson(input, staff, visitedAt, source) {
     return {
       churchId: core.CHURCH_ID,
       ...personFields(input),
-      consent: {
-        contact: Boolean(input.allowContact),
-        info: Boolean(input.wantsInfo),
-        source: 'panel',
-        updatedAt: stamp(new Date())
-      },
+      consent: consentOf(input, source),
       familyId: input.familyId || null,
       familyRelation: input.familyRelation || '',
       trackFollowUp: input.trackFollowUp !== false,
@@ -155,31 +203,33 @@
       nextActionDate: '',
       lastContactAt: null,
       hasPrayerRequest: Boolean(input.hasPrayerRequest),
+      prayerSubmissionIds: input.prayerSubmissionIds || [],
       firstVisitAt: stamp(visitedAt),
       lastVisitAt: stamp(visitedAt),
       visitCount: 1,
       duplicateCandidates: input.duplicateCandidates || [],
       duplicateDismissed: [],
       mergedInto: null,
-      source: 'panel',
-      createdBy: staff.id,
+      source,
+      createdBy: staff.uid,
       createdAt: serverNow(),
       updatedAt: serverNow()
     };
   }
 
-  function newRecord(personId, input, staff, visitedAt, isCompanion) {
+  function newRecord(personId, input, staff, visitedAt, source, isCompanion) {
     return {
       churchId: core.CHURCH_ID,
       personId,
       visitedAt: stamp(visitedAt),
       firstTime: Boolean(input.firstVisit),
       withFamily: (input.companions || []).length > 0,
+      // Las autorizaciones las da el contacto principal solo para si mismo.
       consentContact: !isCompanion && Boolean(input.allowContact),
       consentInfo: !isCompanion && Boolean(input.wantsInfo),
-      source: 'panel',
-      registeredBy: staff.id,
-      registeredByName: staff.name || '',
+      source,
+      registeredBy: staff.uid,
+      registeredByName: source === 'formulario' ? 'Formulario público' : staff.name || '',
       createdAt: serverNow()
     };
   }
@@ -203,18 +253,22 @@
   }
 
   /**
-   * Registra una visita desde el panel. Con input.existingPerson se anade a
-   * esa ficha; sin el, se crea una persona nueva.
+   * Anade a "writer" (un lote o una transaccion) todo lo necesario para
+   * registrar una visita: ficha nueva o actualizada, visita, familia y
+   * acompanantes. Devuelve las fichas locales nuevas o cambiadas.
    */
-  async function registerVisit(input, staff, people) {
+  function writeVisit(writer, input, staff, people, source) {
     const visitedAt = input.visitedAt || new Date();
-    const companions = (input.companions || []).filter((item) => core.normalizeName(item.name).length >= 2);
+    const companions = (input.companions || [])
+      .slice(0, 8)
+      .map((item) => ({ name: clean(item && item.name, 80), relation: clean(item && item.relation, 40) }))
+      .filter((item) => core.normalizeName(item.name).length >= 2);
     const peopleRef = db.collection('visitPeople');
     const recordsRef = db.collection('visitRecords');
-    const batch = db.batch();
     const existing = input.existingPerson || null;
     const data = { ...input, companions };
     const alreadyVisited = Boolean(existing) && visitedThatDay(existing, visitedAt);
+    const touched = [];
 
     let personRef;
     let familyId = existing ? existing.familyId || null : null;
@@ -224,31 +278,44 @@
     if (existing) {
       personRef = peopleRef.doc(existing.id);
       const patch = repeatVisitPatch(existing, visitedAt);
-      if (input.updateConsent) {
-        patch.consent = {
-          contact: Boolean(input.allowContact),
-          info: Boolean(input.wantsInfo),
-          source: 'panel',
-          updatedAt: stamp(new Date())
-        };
+      if (input.updateConsent) patch.consent = consentOf(input, source);
+      if (source === 'formulario') {
+        // Quien llena el formulario confirma sus propios datos de contacto.
+        patch.phone = input.phone || '';
+        patch.phoneKey = core.phoneKey(input.phone);
+        patch.preferredContact = input.preferredContact || 'whatsapp';
+        if (input.email) {
+          patch.email = core.emailKey(input.email);
+          patch.emailKey = core.emailKey(input.email);
+        }
       }
       if (createFamily) patch.familyId = familyId;
-      if (input.prayerRequest) patch.hasPrayerRequest = true;
-      batch.update(personRef, patch);
+      if (input.hasPrayerRequest) patch.hasPrayerRequest = true;
+      if (input.prayerSubmissionId) {
+        patch.prayerSubmissionIds = firebase.firestore.FieldValue.arrayUnion(input.prayerSubmissionId);
+      }
+      writer.update(personRef, patch);
+      touched.push({
+        ...existing,
+        familyId,
+        lastVisitAt: !existing.lastVisitAt || visitedAt > existing.lastVisitAt ? visitedAt : existing.lastVisitAt
+      });
     } else {
       personRef = peopleRef.doc();
-      batch.set(personRef, newPerson({
+      const person = newPerson({
         ...data,
         familyId,
-        hasPrayerRequest: Boolean(input.prayerRequest)
-      }, staff, visitedAt));
+        prayerSubmissionIds: input.prayerSubmissionId ? [input.prayerSubmissionId] : []
+      }, staff, visitedAt, source);
+      writer.set(personRef, person);
+      touched.push({ ...person, id: personRef.id, firstVisitAt: visitedAt, lastVisitAt: visitedAt });
     }
     if (!alreadyVisited) {
-      batch.set(recordsRef.doc(), newRecord(personRef.id, data, staff, visitedAt, false));
+      writer.set(recordsRef.doc(), newRecord(personRef.id, data, staff, visitedAt, source, false));
     }
 
     if (createFamily) {
-      batch.set(db.collection('visitFamilies').doc(familyId), {
+      writer.set(db.collection('visitFamilies').doc(familyId), {
         churchId: core.CHURCH_ID,
         name: 'Familia de ' + (existing ? existing.name : input.name),
         primaryPersonId: personRef.id,
@@ -268,34 +335,118 @@
       const member = members.find((person) => core.normalizeName(person.name) === key);
       if (member) {
         if (!visitedThatDay(member, visitedAt)) {
-          batch.update(peopleRef.doc(member.id), repeatVisitPatch(member, visitedAt));
-          batch.set(recordsRef.doc(), newRecord(member.id, data, staff, visitedAt, true));
+          writer.update(peopleRef.doc(member.id), repeatVisitPatch(member, visitedAt));
+          writer.set(recordsRef.doc(), newRecord(member.id, data, staff, visitedAt, source, true));
+          touched.push({ ...member, lastVisitAt: visitedAt });
         }
         return;
       }
+      // Los acompanantes tienen ficha y visitas propias, pero el seguimiento
+      // se hace a traves del contacto principal.
       const companionRef = peopleRef.doc();
-      batch.set(companionRef, newPerson({
+      const person = newPerson({
         name: companion.name,
         familyId,
-        familyRelation: companion.relation || '',
+        familyRelation: companion.relation,
         trackFollowUp: false
-      }, staff, visitedAt));
-      batch.set(recordsRef.doc(), newRecord(companionRef.id, data, staff, visitedAt, true));
+      }, staff, visitedAt, source);
+      writer.set(companionRef, person);
+      writer.set(recordsRef.doc(), newRecord(companionRef.id, data, staff, visitedAt, source, true));
+      touched.push({ ...person, id: companionRef.id, firstVisitAt: visitedAt, lastVisitAt: visitedAt });
     });
 
+    return { personRef, alreadyVisited, touched };
+  }
+
+  /**
+   * Registra una visita desde el panel. Con input.existingPerson se anade a
+   * esa ficha; sin el, se crea una persona nueva.
+   */
+  async function registerVisit(input, staff, people) {
+    const batch = db.batch();
+    const result = writeVisit(batch, {
+      ...input,
+      hasPrayerRequest: Boolean(input.prayerRequest)
+    }, staff, people, 'panel');
     if (input.prayerRequest) {
-      batch.set(personRef.collection('pastoral').doc(), {
+      batch.set(result.personRef.collection('pastoral').doc(), {
         type: 'peticion',
         text: input.prayerRequest,
-        byUid: staff.id,
+        byUid: staff.uid,
         byName: staff.name || '',
         at: serverNow()
       });
     }
-
     await batch.commit();
-    return { personId: personRef.id, alreadyVisited };
+    return { personId: result.personRef.id, alreadyVisited: result.alreadyVisited };
   }
+
+  // ===== Registros del formulario publico =====
+
+  async function listPendingSubmissions() {
+    const snap = await db.collection('visitSubmissions').where('status', '==', 'nueva').get();
+    return snap.docs.map(fromDoc).sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+  }
+
+  /**
+   * Convierte un registro del formulario en ficha y visita. La transaccion
+   * marca el registro como procesado en el mismo paso, asi que dos personas
+   * con el panel abierto no lo duplican. Devuelve las fichas tocadas, o null
+   * si otro ya lo habia procesado.
+   */
+  async function processSubmission(submission, staff, people) {
+    const input = {
+      name: clean(submission.name, 80),
+      phone: clean(submission.phone, 30),
+      email: core.isValidEmail(submission.email) ? core.emailKey(submission.email) : '',
+      preferredContact: submission.preferredContact,
+      firstVisit: submission.firstVisit !== false,
+      wantsInfo: submission.wantsInfo === true,
+      allowContact: submission.allowContact === true,
+      companions: Array.isArray(submission.companions) ? submission.companions : [],
+      hasPrayerRequest: submission.hasPrayerRequest === true,
+      prayerSubmissionId: submission.hasPrayerRequest === true ? submission.id : '',
+      visitedAt: submission.createdAt || new Date(),
+      updateConsent: true
+    };
+    // Misma persona = mismo nombre y mismo telefono o correo. Quien solo
+    // comparte el telefono queda como posible duplicado, sin combinar.
+    const matches = core.findMatches(people, input);
+    const same = matches.find((match) => match.sameName);
+    input.existingPerson = same ? same.person : null;
+    input.duplicateCandidates = same ? [] : matches.map((match) => match.person.id);
+
+    const ref = db.collection('visitSubmissions').doc(submission.id);
+    return db.runTransaction(async (tx) => {
+      const snap = await tx.get(ref);
+      if (!snap.exists || snap.data().status !== 'nueva') return null;
+      const result = writeVisit(tx, input, staff, people, 'formulario');
+      tx.update(ref, {
+        status: 'procesada',
+        personId: result.personRef.id,
+        processedAt: serverNow(),
+        processedBy: staff.uid
+      });
+      return result.touched;
+    });
+  }
+
+  /** Solo admin o pastor: descarta registros que no son visitas reales. */
+  async function discardSubmissions(submissions, staff) {
+    for (let start = 0; start < submissions.length; start += 400) {
+      const batch = db.batch();
+      submissions.slice(start, start + 400).forEach((submission) => {
+        batch.update(db.collection('visitSubmissions').doc(submission.id), {
+          status: 'descartada',
+          processedAt: serverNow(),
+          processedBy: staff.uid
+        });
+      });
+      await batch.commit();
+    }
+  }
+
+  // ===== Seguimiento =====
 
   function updatePerson(personId, patch) {
     return db.collection('visitPeople').doc(personId).update({ ...patch, updatedAt: serverNow() });
@@ -304,12 +455,7 @@
   function updateContactData(personId, input) {
     return updatePerson(personId, {
       ...personFields(input),
-      consent: {
-        contact: Boolean(input.allowContact),
-        info: Boolean(input.wantsInfo),
-        source: 'panel',
-        updatedAt: stamp(new Date())
-      }
+      consent: consentOf(input, 'panel')
     });
   }
 
@@ -319,7 +465,7 @@
     batch.set(personRef.collection('contacts').doc(), {
       type: entry.type,
       note: entry.note || '',
-      byUid: staff.id,
+      byUid: staff.uid,
       byName: staff.name || '',
       at: serverNow()
     });
@@ -334,7 +480,7 @@
     return db.collection('visitPeople').doc(personId).collection('pastoral').add({
       type: 'nota',
       text,
-      byUid: staff.id,
+      byUid: staff.uid,
       byName: staff.name || '',
       at: serverNow()
     });
@@ -377,6 +523,7 @@
     const patch = {
       visitCount: Math.max(kept.length, 1),
       hasPrayerRequest: Boolean(target.hasPrayerRequest || source.hasPrayerRequest),
+      prayerSubmissionIds: (target.prayerSubmissionIds || []).concat(source.prayerSubmissionIds || []),
       duplicateCandidates: (target.duplicateCandidates || []).filter((id) => id !== source.id),
       updatedAt: serverNow()
     };
@@ -413,9 +560,9 @@
     init,
     get auth() { return auth; },
     getOwnStaff,
-    activateAdmin,
+    bootstrapAdmin,
     listStaff,
-    saveStaffMember,
+    addStaffMember,
     updateStaffMember,
     listPeople,
     listRecords,
@@ -423,6 +570,9 @@
     listContacts,
     listPastoral,
     registerVisit,
+    listPendingSubmissions,
+    processSubmission,
+    discardSubmissions,
     updatePerson,
     updateContactData,
     addContact,
