@@ -178,6 +178,10 @@ async function main() {
   check('valida el largo del nombre', denied(await createWithServerTime('visitSubmissions/s6', null, submission({ name: 'x'.repeat(81) }))));
   check('valida el telefono', denied(await createWithServerTime('visitSubmissions/s7', null, submission({ phone: '123' }))));
   check('valida el medio de contacto', denied(await createWithServerTime('visitSubmissions/s8', null, submission({ preferredContact: 'paloma' }))));
+  check('acepta quien le invito',
+    (await createWithServerTime('visitSubmissions/s10', null, submission({ invitedBy: 'Marta Soto' }))).ok);
+  check('limita el largo de quien le invito',
+    denied(await createWithServerTime('visitSubmissions/s11', null, submission({ invitedBy: 'x'.repeat(81) }))));
   check('limita los acompanantes',
     denied(await createWithServerTime('visitSubmissions/s9', null, submission({ companions: Array(9).fill({ name: 'X Y', relation: 'Otro' }) }))));
   check('limita el largo de la peticion',
@@ -247,7 +251,7 @@ async function main() {
 
   console.log('\nEquipo de bienvenida');
   check('ve la lista de personas', (await list('visitPeople', welcome.token)).ok);
-  check('ve los registros del formulario', (await list('visitSubmissions', welcome.token)).docs.length === 1);
+  check('ve los registros del formulario', (await list('visitSubmissions', welcome.token)).docs.length === 2);
   check('pero no la peticion que venia con el registro', denied(await get('visitSubmissions/s1/private/prayer', welcome.token)));
   check('registra una persona', (await create('visitPeople/marta', welcome.token, person(welcome.uid, { name: 'Marta Soto', nameKey: 'marta soto' }))).ok);
   check('registra su visita',

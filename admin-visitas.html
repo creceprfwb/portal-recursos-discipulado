@@ -1008,6 +1008,7 @@
         phone: person.phone,
         email: person.email,
         preferred: core.labelOf(core.CONTACT_METHODS, person.preferredContact),
+        invitedBy: person.invitedBy || '',
         contact: yesNo(person.consent && person.consent.contact),
         info: yesNo(person.consent && person.consent.info),
         first: core.dateKey(person.firstVisitAt),
@@ -1023,6 +1024,7 @@
         { key: 'phone', label: 'Teléfono' },
         { key: 'email', label: 'Correo' },
         { key: 'preferred', label: 'Medio preferido' },
+        { key: 'invitedBy', label: 'Quién le invitó' },
         { key: 'contact', label: 'Autoriza contacto' },
         { key: 'info', label: 'Desea información' },
         { key: 'first', label: 'Primera visita' },
@@ -1247,7 +1249,7 @@
           </div>
           <div class="muted">
             ${esc(person.phone || 'Sin teléfono')}${person.email ? ' · ' + esc(person.email) : ''}<br>
-            Prefiere: ${esc(core.labelOf(core.CONTACT_METHODS, person.preferredContact))}${person.familyRelation ? ' · ' + esc(person.familyRelation) : ''}
+            Prefiere: ${esc(core.labelOf(core.CONTACT_METHODS, person.preferredContact))}${person.familyRelation ? ' · ' + esc(person.familyRelation) : ''}${person.invitedBy ? '<br>Le invitó: ' + esc(person.invitedBy) : ''}
           </div>
           <div class="pills" style="margin:10px 0">
             <span class="pill ${consent.contact ? 'ok' : 'alert'}">${consent.contact ? 'Autoriza contacto' : 'No autorizó contacto'}</span>
@@ -1400,6 +1402,9 @@
               <label>Medio de contacto preferido
                 <select id="editPreferred">${options(core.CONTACT_METHODS, person.preferredContact)}</select>
               </label>
+              <label>¿Quién le invitó?
+                <input id="editInvitedBy" maxlength="80" value="${esc(person.invitedBy || '')}">
+              </label>
               <label class="check"><input type="checkbox" id="editInfo"${consent.info ? ' checked' : ''}> Desea recibir información de la iglesia</label>
               <label class="check"><input type="checkbox" id="editContact"${consent.contact ? ' checked' : ''}> Autoriza que le contacten para darle seguimiento</label>
               <button class="btn light" type="submit">Guardar datos de contacto</button>
@@ -1458,6 +1463,9 @@
                 <input type="time" id="regTime">
               </label>
             </div>
+            <label>¿Quién le invitó? (opcional)
+              <input id="regInvitedBy" maxlength="80" autocomplete="off">
+            </label>
             <label class="check"><input type="checkbox" id="regFirst" checked> Es su primera visita</label>
             <label class="check"><input type="checkbox" id="regInfo"> Desea recibir información de la iglesia</label>
             <label class="check"><input type="checkbox" id="regContact"> Autoriza que le contactemos para darle seguimiento</label>
@@ -1496,6 +1504,7 @@
         phone: $('regPhone').value.trim(),
         email: $('regEmail').value.trim(),
         preferredContact: $('regPreferred').value,
+        invitedBy: $('regInvitedBy').value.trim(),
         firstVisit: $('regFirst').checked,
         wantsInfo: $('regInfo').checked,
         allowContact: $('regContact').checked,
@@ -1990,6 +1999,7 @@
           phone: $('editPhone').value.trim(),
           email: $('editEmail').value.trim(),
           preferredContact: $('editPreferred').value,
+          invitedBy: $('editInvitedBy').value.trim(),
           wantsInfo: $('editInfo').checked,
           allowContact: $('editContact').checked
         };

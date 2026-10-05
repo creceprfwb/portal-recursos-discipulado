@@ -175,7 +175,8 @@
       phoneKey: core.phoneKey(input.phone),
       email: core.emailKey(input.email),
       emailKey: core.emailKey(input.email),
-      preferredContact: input.preferredContact || 'whatsapp'
+      preferredContact: input.preferredContact || 'whatsapp',
+      invitedBy: clean(input.invitedBy, 80)
     };
   }
 
@@ -289,6 +290,8 @@
           patch.emailKey = core.emailKey(input.email);
         }
       }
+      // Se conserva quien le invito la primera vez.
+      if (input.invitedBy && !existing.invitedBy) patch.invitedBy = clean(input.invitedBy, 80);
       if (createFamily) patch.familyId = familyId;
       if (input.hasPrayerRequest) patch.hasPrayerRequest = true;
       if (input.prayerSubmissionId) {
@@ -346,6 +349,7 @@
       const companionRef = peopleRef.doc();
       const person = newPerson({
         name: companion.name,
+        invitedBy: input.invitedBy,
         familyId,
         familyRelation: companion.relation,
         trackFollowUp: false
@@ -401,6 +405,7 @@
       email: core.isValidEmail(submission.email) ? core.emailKey(submission.email) : '',
       preferredContact: submission.preferredContact,
       firstVisit: submission.firstVisit !== false,
+      invitedBy: clean(submission.invitedBy, 80),
       wantsInfo: submission.wantsInfo === true,
       allowContact: submission.allowContact === true,
       companions: Array.isArray(submission.companions) ? submission.companions : [],
@@ -539,6 +544,7 @@
       patch.phone = source.phone;
       patch.phoneKey = source.phoneKey || '';
     }
+    if (!target.invitedBy && source.invitedBy) patch.invitedBy = source.invitedBy;
     if (!target.familyId && source.familyId) patch.familyId = source.familyId;
     batch.update(db.collection('visitPeople').doc(target.id), patch);
 

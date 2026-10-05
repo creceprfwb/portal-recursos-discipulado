@@ -218,6 +218,10 @@
           </div>
         </fieldset>
 
+        <label><span>¿Quién te invitó? <span class="hint">(opcional)</span></span>
+          <input type="text" id="invitedByInput" name="invitedBy" maxlength="80" autocomplete="off">
+        </label>
+
         <fieldset>
           <legend>¿Vienes acompañado y deseas registrar a tu familia?</legend>
           <div class="choices">
@@ -318,6 +322,7 @@
         email: entry.email,
         preferredContact: entry.preferredContact,
         firstVisit: entry.firstVisit,
+        invitedBy: entry.invitedBy,
         companions: entry.companions,
         wantsInfo: entry.wantsInfo,
         allowContact: entry.allowContact,
@@ -447,6 +452,7 @@
             email: els.form.email.value.trim().toLowerCase().slice(0, 120),
             preferredContact: els.form.preferredContact.value,
             firstVisit: els.form.firstVisit.value === 'si',
+            invitedBy: els.form.invitedBy.value.trim().slice(0, 80),
             companions: readCompanions(),
             wantsInfo: document.getElementById('wantsInfoInput').checked,
             allowContact: document.getElementById('allowContactInput').checked,
