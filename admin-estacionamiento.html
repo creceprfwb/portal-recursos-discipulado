@@ -413,6 +413,17 @@
     .tabbar-btn.active { color:var(--azul-profundo); }
     body.has-tabbar .shell { padding-bottom:86px; margin-top:18px; }
     body.has-tabbar .hero { display:none; }
+    /* Wix expands the iframe to fit its content, so keep navigation at the top. */
+    html.embed-mode .tabbar, html.embedded-in-wix .tabbar {
+      position:static;
+      margin:14px 0;
+      border:1px solid var(--borde);
+      border-radius:12px;
+      box-shadow:none;
+      overflow:hidden;
+    }
+    html.embed-mode body.has-tabbar .shell,
+    html.embedded-in-wix body.has-tabbar .shell { padding-bottom:16px; }
     @media (min-width:641px) {
       .tabbar { justify-content:center; gap:6px; }
       .tabbar-btn { flex:none; flex-direction:row; padding:14px 22px; font-size:13px; }
@@ -471,6 +482,20 @@
     </section>
 
     <div id="adminView" style="display:none">
+  <nav class="tabbar" id="tabbar" hidden aria-label="Navegación del panel">
+    <button type="button" class="tabbar-btn active" data-tab="tabAgenda">
+      <span class="tabbar-icon">📅</span>
+      <span>Agenda</span>
+    </button>
+    <button type="button" class="tabbar-btn" data-tab="tabForm">
+      <span class="tabbar-icon">➕</span>
+      <span>Nueva</span>
+    </button>
+    <button type="button" class="tabbar-btn" data-tab="tabServers">
+      <span class="tabbar-icon">👤</span>
+      <span>Servidores</span>
+    </button>
+  </nav>
       <section class="toolbar" aria-label="Herramientas" style="margin-top:18px">
         <div>
           <strong>Portal de asignaciones</strong>
@@ -587,20 +612,7 @@
     </div>
   </main>
 
-  <nav class="tabbar" id="tabbar" hidden aria-label="Navegación del panel">
-    <button type="button" class="tabbar-btn active" data-tab="tabAgenda">
-      <span class="tabbar-icon">📅</span>
-      <span>Agenda</span>
-    </button>
-    <button type="button" class="tabbar-btn" data-tab="tabForm">
-      <span class="tabbar-icon">➕</span>
-      <span>Nueva</span>
-    </button>
-    <button type="button" class="tabbar-btn" data-tab="tabServers">
-      <span class="tabbar-icon">👤</span>
-      <span>Servidores</span>
-    </button>
-  </nav>
+
 
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
