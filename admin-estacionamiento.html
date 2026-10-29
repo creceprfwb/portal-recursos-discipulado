@@ -384,10 +384,8 @@
 
     .tabbar[hidden] { display:none; }
     .tabbar {
-      position:fixed;
-      left:0;
-      right:0;
-      bottom:0;
+      position:static;
+      margin:14px 0;
       z-index:30;
       display:flex;
       background:var(--blanco);
@@ -411,9 +409,9 @@
     }
     .tabbar-icon { font-size:20px; line-height:1; }
     .tabbar-btn.active { color:var(--azul-profundo); }
-    body.has-tabbar .shell { padding-bottom:86px; margin-top:18px; }
+    body.has-tabbar .shell { padding-bottom:16px; margin-top:18px; }
     body.has-tabbar .hero { display:none; }
-    /* Wix expands the iframe to fit its content, so keep navigation at the top. */
+    /* Keep navigation in the content flow inside Wix too. */
     html.embed-mode .tabbar, html.embedded-in-wix .tabbar {
       position:static;
       margin:14px 0;
@@ -482,20 +480,7 @@
     </section>
 
     <div id="adminView" style="display:none">
-  <nav class="tabbar" id="tabbar" hidden aria-label="Navegación del panel">
-    <button type="button" class="tabbar-btn active" data-tab="tabAgenda">
-      <span class="tabbar-icon">📅</span>
-      <span>Agenda</span>
-    </button>
-    <button type="button" class="tabbar-btn" data-tab="tabForm">
-      <span class="tabbar-icon">➕</span>
-      <span>Nueva</span>
-    </button>
-    <button type="button" class="tabbar-btn" data-tab="tabServers">
-      <span class="tabbar-icon">👤</span>
-      <span>Servidores</span>
-    </button>
-  </nav>
+
       <section class="toolbar" aria-label="Herramientas" style="margin-top:18px">
         <div>
           <strong>Portal de asignaciones</strong>
@@ -540,6 +525,20 @@
             </div>
           </div>
           <div class="calendar" id="calendar"></div>
+  <nav class="tabbar" id="tabbar" hidden aria-label="Navegación del panel">
+    <button type="button" class="tabbar-btn active" data-tab="tabAgenda">
+      <span class="tabbar-icon">📅</span>
+      <span>Agenda</span>
+    </button>
+    <button type="button" class="tabbar-btn" data-tab="tabForm">
+      <span class="tabbar-icon">➕</span>
+      <span>Nueva</span>
+    </button>
+    <button type="button" class="tabbar-btn" data-tab="tabServers">
+      <span class="tabbar-icon">👤</span>
+      <span>Servidores</span>
+    </button>
+  </nav>
           <div style="margin-top:18px">
             <h3 id="selectedTitle">Asignaciones del día</h3>
             <div class="assignment-list" id="assignmentList"></div>
@@ -856,7 +855,18 @@
       els.formTitle.textContent = 'Nueva asignación';
     }
 
+    function positionPanelNavigation(tabId = 'tabAgenda') {
+      if (tabId !== 'tabAgenda') {
+        document.getElementById(tabId).prepend(els.tabbar);
+      } else if (document.getElementById('agendaMonthView').style.display !== 'none') {
+        els.calendar.after(els.tabbar);
+      } else {
+        document.getElementById('agendaListView').prepend(els.tabbar);
+      }
+    }
+
     function activateTab(tabId) {
+      positionPanelNavigation(tabId);
       document.querySelectorAll('.tab-panel').forEach((panel) => {
         panel.hidden = panel.id !== tabId;
       });
@@ -871,6 +881,7 @@
       document.getElementById('agendaMonthView').style.display = 'none';
       document.getElementById('viewAgendaBtn').classList.add('active');
       document.getElementById('viewMonthBtn').classList.remove('active');
+      positionPanelNavigation();
     }
 
     function showAgendaMonthView() {
@@ -878,6 +889,7 @@
       document.getElementById('agendaMonthView').style.display = '';
       document.getElementById('viewAgendaBtn').classList.remove('active');
       document.getElementById('viewMonthBtn').classList.add('active');
+      positionPanelNavigation();
     }
 
     async function deleteAssignment(id) {
