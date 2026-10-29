@@ -330,6 +330,17 @@
       .actions, .row-actions, .month-nav { width:100%; }
       .actions, .row-actions { display:grid; grid-template-columns:1fr; }
       .btn { width:100%; }
+      .card { padding:12px; }
+      .section-title { flex-wrap:wrap; }
+      .section-title > div { min-width:0; }
+      .view-toggle { width:100%; }
+      .view-toggle .btn { flex:1; }
+      .month-nav { display:grid; grid-template-columns:auto minmax(0, 1fr) auto; gap:4px; }
+      .month-title { min-width:0; font-size:14px; overflow-wrap:anywhere; }
+      .month-nav .btn { padding:7px 6px; font-size:12px; }
+      .btn.small { min-height:44px; }
+      input, select, textarea { min-width:0; font-size:16px; }
+      .row { min-width:0; overflow-wrap:anywhere; }
     }
 
     /* ===== App shell: bottom tab bar + agenda-first admin ===== */
@@ -486,16 +497,16 @@
             <div class="muted">Próximos servicios en orden. Lo sin cubrir queda marcado en rojo.</div>
           </div>
           <div class="view-toggle">
-            <button class="btn light small active" type="button" id="viewAgendaBtn">Lista</button>
-            <button class="btn light small" type="button" id="viewMonthBtn">Mes</button>
+            <button class="btn light small" type="button" id="viewAgendaBtn">Lista</button>
+            <button class="btn light small active" type="button" id="viewMonthBtn">Mes</button>
           </div>
         </div>
 
-        <div id="agendaListView">
+        <div id="agendaListView" style="display:none">
           <div class="agenda-list" id="agendaList"></div>
         </div>
 
-        <div id="agendaMonthView" style="display:none">
+        <div id="agendaMonthView">
           <div class="section-title">
             <div class="month-nav">
               <button class="btn light small" type="button" id="prevMonth">Anterior</button>
@@ -997,7 +1008,7 @@
       state.selectedDate = nextItem.date;
       resetAssignmentForm();
       render();
-      showAgendaListView();
+      showAgendaMonthView();
       activateTab('tabAgenda');
     });
 
