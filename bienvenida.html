@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Bienvenida | Jesús es el Centro</title>
   <meta name="description" content="Registra tu visita a la iglesia Jesús es el Centro.">
   <meta name="robots" content="noindex">
@@ -178,6 +178,16 @@
       .companion select { grid-column:1 / -1; grid-row:2; }
     }
   </style>
+  <link rel="manifest" href="./bienvenida.webmanifest">
+  <meta name="theme-color" content="#12384d">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Bienvenida">
+  <link rel="apple-touch-icon" href="./files/apps/bienvenida-180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="./files/apps/bienvenida-192.png">
+  <link rel="stylesheet" href="./visitas-app.css">
+  <script src="./js/visitas-app.js" defer></script>
 </head>
 <body>
   <header class="hero">
@@ -438,6 +448,10 @@
       event.preventDefault();
       els.errorBox.textContent = '';
       if (!validate()) return;
+      if (!navigator.onLine) {
+        showError('No hay conexión. Conéctate a internet para enviar tu registro.');
+        return;
+      }
       if (!db) {
         showError('No pudimos conectar con el registro. Revisa tu conexión y recarga la página.');
         return;

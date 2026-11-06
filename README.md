@@ -52,6 +52,14 @@ Colecciones: `visitSubmissions` (bandeja de entrada del formulario; la petición
 
 Para mostrar otro número en el botón «Escríbenos por WhatsApp» del formulario, cambiar `CHURCH_WHATSAPP` en `js/visitas-core.js`.
 
+### Apps de Bienvenida y Visitas
+
+Los enlaces `bienvenida.html` y `admin-visitas.html` conservan su funcionamiento y ahora ofrecen instalación en la pantalla de inicio. Cada uno tiene su propio manifiesto, nombre, icono e inicio en modo `standalone`. Dentro de Wix, «Abrir como app» abre el enlace directo; la instalación se realiza desde esa página, fuera del iframe. En iPhone se muestran instrucciones para Safari.
+
+`js/visitas-app.js` y `visitas-app.css` comparten la interfaz de instalación. Los iconos editables y sus exportaciones PNG están en `files/apps/`. Publicar estos archivos junto con `bienvenida.webmanifest`, `visitas.webmanifest`, `visitas-sw.js` y `visitas-sin-conexion.html` por HTTPS (o localhost para desarrollo).
+
+El service worker solo atiende navegaciones a las cuatro páginas de visitas y bienvenida, incluidas sus entradas Wix. Siempre solicita la página actual a la red y, si no hay conexión, muestra una pantalla de reintento. Su caché guarda únicamente esa pantalla: no almacena respuestas de Firebase, datos de personas ni formularios, y no agrega una cola de envíos. Los registros y el panel requieren conexión. Los permisos de acceso siguen en Firebase.
+
 ### Verificación local
 
 ```bash

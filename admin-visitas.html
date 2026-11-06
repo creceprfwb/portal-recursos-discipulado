@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Visitas y seguimiento | PRFWB</title>
   <meta name="description" content="Panel para registrar visitas y dar seguimiento a los visitantes de la iglesia.">
   <meta name="robots" content="noindex">
@@ -11,6 +11,7 @@
       document.documentElement.classList.add('embed-mode');
       window.addEventListener('DOMContentLoaded', function () {
         document.querySelectorAll('a[href]').forEach(function (link) {
+          if (link.hasAttribute('data-open-app')) return;
           var href = link.getAttribute('href');
           if (!href || href.indexOf('.html') === -1) return;
           try {
@@ -337,6 +338,16 @@
       .stat strong { font-size:24px; }
     }
   </style>
+  <link rel="manifest" href="./visitas.webmanifest">
+  <meta name="theme-color" content="#12384d">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Visitas">
+  <link rel="apple-touch-icon" href="./files/apps/visitas-180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="./files/apps/visitas-192.png">
+  <link rel="stylesheet" href="./visitas-app.css">
+  <script src="./js/visitas-app.js" defer></script>
 </head>
 <body>
   <nav class="site-nav" aria-label="Navegación principal">
