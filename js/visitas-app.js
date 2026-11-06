@@ -8,6 +8,7 @@
   const embedded = window.self !== window.top;
   const standalone = window.matchMedia('(display-mode: standalone)');
   const installed = () => standalone.matches || navigator.standalone === true;
+  const appLaunchRequested = new URLSearchParams(location.search).get('app') === '1';
   const name = parking ? 'Estacionamiento' : admin ? 'Visitas' : 'Bienvenida';
   const iconName = parking ? (admin ? 'parking-admin' : 'parking') : admin ? 'visitas' : 'bienvenida';
   const subtitleText = parking
@@ -19,7 +20,7 @@
 
   // Un enlace antiguo de Wix abierto directamente debe recuperar el menu fijo.
   if (!embedded) root.classList.remove('embed-mode');
-  root.classList.toggle('visit-app-standalone', installed());
+  root.classList.toggle('visit-app-standalone', installed() || appLaunchRequested);
 
   const bar = document.createElement('section');
   bar.className = 'visit-app-bar';
@@ -50,7 +51,7 @@
     direct.searchParams.set('app', '1');
     action.href = direct.href;
     action.setAttribute('data-open-app', '');
-    action.target = '_blank';
+    action.target = '_top';
     action.rel = 'noopener';
     action.textContent = 'Abrir como app';
   } else {
