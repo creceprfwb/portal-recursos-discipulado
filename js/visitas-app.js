@@ -1,11 +1,18 @@
 (function () {
   'use strict';
 
-  const admin = location.pathname.endsWith('/admin-visitas.html');
+  const parking = document.body.dataset.installableApp === 'parking';
+  const admin = parking
+    ? location.pathname.endsWith('/admin-estacionamiento.html')
+    : location.pathname.endsWith('/admin-visitas.html');
   const embedded = window.self !== window.top;
   const standalone = window.matchMedia('(display-mode: standalone)');
   const installed = () => standalone.matches || navigator.standalone === true;
-  const name = admin ? 'Visitas' : 'Bienvenida';
+  const name = parking ? 'Estacionamiento' : admin ? 'Visitas' : 'Bienvenida';
+  const iconName = parking ? (admin ? 'parking-admin' : 'parking') : admin ? 'visitas' : 'bienvenida';
+  const subtitleText = parking
+    ? (admin ? 'Equipo de estacionamiento' : 'Calendario mensual PRFWB')
+    : admin ? 'Equipo de bienvenida' : 'Jesús es el Centro';
   const root = document.documentElement;
   const shell = document.querySelector('main.shell');
   if (!shell) return;
@@ -20,13 +27,13 @@
   const brand = document.createElement('div');
   brand.className = 'visit-app-brand';
   const icon = document.createElement('img');
-  icon.src = './files/apps/' + (admin ? 'visitas' : 'bienvenida') + '-192.png';
+  icon.src = './files/apps/' + iconName + '-192.png';
   icon.alt = '';
   const label = document.createElement('div');
   const title = document.createElement('strong');
   title.textContent = name;
   const subtitle = document.createElement('small');
-  subtitle.textContent = admin ? 'Equipo de bienvenida' : 'Jesús es el Centro';
+  subtitle.textContent = subtitleText;
   label.append(title, subtitle);
   brand.append(icon, label);
   bar.append(brand);
@@ -34,7 +41,12 @@
   const action = document.createElement(embedded ? 'a' : 'button');
   action.className = 'visit-app-action';
   if (embedded) {
-    const direct = new URL(admin ? './admin-visitas.html' : './bienvenida.html', location.href);
+    const directPath = parking
+      ? admin ? './admin-estacionamiento.html' : './estacionamiento.html'
+      : admin ? './admin-visitas.html' : './bienvenida.html';
+    const direct = new URL(directPath, location.href);
+    direct.searchParams.delete('embed');
+    direct.searchParams.delete('v');
     direct.searchParams.set('app', '1');
     action.href = direct.href;
     action.setAttribute('data-open-app', '');
@@ -51,7 +63,9 @@
   network.className = 'visit-app-network';
   network.setAttribute('role', 'status');
   network.hidden = navigator.onLine;
-  network.textContent = 'Sin conexión. Necesitas internet para enviar registros y consultar información actualizada.';
+  network.textContent = parking
+    ? 'Sin conexión. Necesitas internet para consultar el calendario y sus asignaciones actualizadas.'
+    : 'Sin conexión. Necesitas internet para enviar registros y consultar información actualizada.';
   shell.prepend(bar, network);
   const updateNetwork = () => { network.hidden = navigator.onLine; };
   window.addEventListener('online', updateNetwork);
@@ -71,7 +85,9 @@
     ? 'En Safari, abre el menú Compartir y elige Añadir a pantalla de inicio. Si aparece la opción Abrir como app web, déjala activada. Después toca Añadir.'
     : 'Abre el menú de tu navegador y busca Instalar aplicación o Añadir a pantalla de inicio. En una computadora, busca el icono de instalación junto a la dirección. Si no aparece, abre este enlace en Chrome o Edge.';
   const note = document.createElement('p');
-  note.textContent = 'Después, abre ' + name + ' desde su icono. Necesitarás conexión a internet.';
+  note.textContent = parking
+    ? 'Después, abre Estacionamiento desde su icono. Necesitarás conexión a internet para cargar las asignaciones.'
+    : 'Después, abre ' + name + ' desde su icono. Necesitarás conexión a internet.';
   const close = document.createElement('button');
   close.type = 'button';
   close.className = 'visit-app-action';
@@ -112,6 +128,11 @@
   if ('serviceWorker' in navigator && window.isSecureContext) {
     // Solo maneja navegaciones de estas dos paginas; nunca almacena datos de visitas.
     navigator.serviceWorker.register('./visitas-sw.js', { scope: './', updateViaCache: 'none' })
-      .catch(() => { /* El formulario sigue disponible sin instalacion. */ });
+      .catch(() => { /* Las paginas siguen disponibles sin instalacion. */ });
+  }
+
+  // El icono principal abre directamente la vista mensual del calendario.
+  if (parking && !admin && new URLSearchParams(location.search).get('app') === '1') {
+    document.addEventListener('DOMContentLoaded', () => document.getElementById('viewMonthBtn')?.click(), { once: true });
   }
 })();

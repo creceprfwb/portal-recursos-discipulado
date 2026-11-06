@@ -2,9 +2,19 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Calendario de Estacionamiento | PRFWB</title>
   <meta name="description" content="Consulta quién sirve en estacionamiento cada semana y descarga el calendario.">
+  <link rel="manifest" href="./estacionamiento.webmanifest">
+  <meta name="theme-color" content="#12384d">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Estacionamiento">
+  <link rel="apple-touch-icon" href="./files/apps/parking-180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="./files/apps/parking-192.png">
+  <link rel="stylesheet" href="./visitas-app.css">
+  <script src="./js/visitas-app.js" defer></script>
   <script>
     if (new URLSearchParams(window.location.search).get('embed') === '1') {
       document.documentElement.classList.add('embed-mode');
@@ -408,7 +418,7 @@
     .agenda-date-heading:first-child { margin-top:0; }
   </style>
 </head>
-<body>
+<body data-installable-app="parking">
   <nav class="site-nav" aria-label="Navegacion principal">
     <div class="nav-inner">
       <a class="brand" href="./index.html">

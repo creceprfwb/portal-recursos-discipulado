@@ -2,14 +2,25 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Admin Estacionamiento | PRFWB</title>
   <meta name="description" content="Panel para administrar servidores, asignaciones y confirmaciones de estacionamiento.">
+  <link rel="manifest" href="./admin-estacionamiento.webmanifest">
+  <meta name="theme-color" content="#12384d">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Parking Admin">
+  <link rel="apple-touch-icon" href="./files/apps/parking-admin-180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="./files/apps/parking-admin-192.png">
+  <link rel="stylesheet" href="./visitas-app.css">
+  <script src="./js/visitas-app.js" defer></script>
   <script>
     if (new URLSearchParams(window.location.search).get('embed') === '1') {
       document.documentElement.classList.add('embed-mode');
       window.addEventListener('DOMContentLoaded', function () {
         document.querySelectorAll('a[href]').forEach(function (link) {
+          if (link.hasAttribute('data-open-app')) return;
           var href = link.getAttribute('href');
           if (!href || href.indexOf('.html') === -1) return;
           try {
@@ -429,7 +440,7 @@
     }
   </style>
 </head>
-<body>
+<body data-installable-app="parking">
   <nav class="site-nav" aria-label="Navegacion principal">
     <div class="nav-inner">
       <a class="brand" href="./index.html">

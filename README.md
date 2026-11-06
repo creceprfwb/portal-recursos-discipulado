@@ -58,7 +58,9 @@ Los enlaces `bienvenida.html` y `admin-visitas.html` conservan su funcionamiento
 
 `js/visitas-app.js` y `visitas-app.css` comparten la interfaz de instalación. Los iconos editables y sus exportaciones PNG están en `files/apps/`. Publicar estos archivos junto con `bienvenida.webmanifest`, `visitas.webmanifest`, `visitas-sw.js` y `visitas-sin-conexion.html` por HTTPS (o localhost para desarrollo).
 
-El service worker solo atiende navegaciones a las cuatro páginas de visitas y bienvenida, incluidas sus entradas Wix. Siempre solicita la página actual a la red y, si no hay conexión, muestra una pantalla de reintento. Su caché guarda únicamente esa pantalla: no almacena respuestas de Firebase, datos de personas ni formularios, y no agrega una cola de envíos. Los registros y el panel requieren conexión. Los permisos de acceso siguen en Firebase.
+El service worker solo atiende navegaciones a las páginas de Bienvenida, Visitas y Estacionamiento, incluidas sus entradas Wix. Siempre solicita la página actual a la red y, si no hay conexión, muestra una pantalla de reintento. Su caché guarda únicamente esa pantalla: no almacena respuestas de Firebase, datos de personas ni formularios, y no agrega una cola de envíos. Los registros y paneles requieren conexión. Los permisos de acceso siguen en Firebase.
+
+El calendario público de estacionamiento y su panel de administración también se pueden instalar como apps separadas desde sus páginas directas. Wix ofrece «Abrir como app» hacia esas mismas páginas. El icono público abre la vista mensual; ambas apps usan el mismo aviso sin conexión y siguen necesitando internet para leer Firebase.
 
 ### Verificación local
 

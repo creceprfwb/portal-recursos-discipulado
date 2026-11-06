@@ -1,8 +1,11 @@
 'use strict';
 
-const CACHE = 'jeec-visitas-offline-v1';
+const CACHE = 'jeec-apps-offline-v2';
 const OFFLINE = new URL('./visitas-sin-conexion.html', self.location.href).href;
-const PAGES = new Set(['bienvenida.html', 'bienvenida-wix.html', 'admin-visitas.html', 'admin-visitas-wix.html']
+const PAGES = new Set([
+  'bienvenida.html', 'bienvenida-wix.html', 'admin-visitas.html', 'admin-visitas-wix.html',
+  'estacionamiento.html', 'estacionamiento-wix.html', 'admin-estacionamiento.html', 'admin-estacionamiento-wix.html',
+]
   .map((name) => new URL('./' + name, self.location.href).pathname));
 
 self.addEventListener('install', (event) => {
@@ -10,7 +13,7 @@ self.addEventListener('install', (event) => {
 });
 self.addEventListener('activate', (event) => {
   event.waitUntil(caches.keys().then((keys) => Promise.all(keys
-    .filter((key) => key.startsWith('jeec-visitas-offline-') && key !== CACHE)
+    .filter((key) => (key.startsWith('jeec-apps-offline-') || key === 'jeec-visitas-offline-v1') && key !== CACHE)
     .map((key) => caches.delete(key)))).then(() => self.clients.claim()));
 });
 self.addEventListener('fetch', (event) => {
