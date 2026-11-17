@@ -605,6 +605,28 @@
     }
   }
 
+  // Teléfonos y notas: con las reglas de protección de contactos viven en parkingContacts (privado, solo quien administra el calendario). Mientras esas reglas no existan
+  // (o si la sesión no tiene permiso) todo sigue funcionando como antes con lo que haya en parkingServers.
+  // contactsMode: 'desconocido' hasta la primera lectura; 'privado' si parkingContacts respondió; 'anterior' si se denegó el permiso (un error de red NO cambia el modo).
+  // contactsLoaded: última lectura CONFIRMADA por el servidor de parkingContacts en esta sesión (null = todavía ninguna). Solo con ella un valor vacío puede borrar un contacto.
+  let contactsMode = 'desconocido';
+  let contactsLoaded = null;
+  async function readParkingContacts() {
+    if (!firebaseState.db || !firebaseState.auth) return null;
+    try {
+      if (firebaseState.auth.authStateReady) await firebaseState.auth.authStateReady();
+      if (!firebaseState.auth.currentUser) return null; // sin sesión no se pide nada
+      const snapshot = await firebaseState.db.collection('parkingContacts').get();
+      contactsMode = 'privado';
+      const contacts = new Map(snapshot.docs.map((doc) => [doc.id, doc.data()]));
+      if (!(snapshot.metadata && snapshot.metadata.fromCache)) contactsLoaded = contacts;
+      return contacts;
+    } catch (error) {
+      if (error && error.code === 'permission-denied') contactsMode = 'anterior';
+      return null; // sin permiso o sin la colección protegida: se conserva lo que traiga parkingServers
+    }
+  }
+
   async function getParkingServers() {
     const localServers = JSON.parse(localStorage.getItem(parkingServersStorageKey) || 'null') || [];
 
@@ -615,8 +637,11 @@
     try {
       const snapshot = await firebaseState.db.collection('parkingServers').get();
       const remoteServers = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      localStorage.setItem(parkingServersStorageKey, JSON.stringify(remoteServers));
-      return remoteServers;
+      localStorage.setItem(parkingServersStorageKey, JSON.stringify(remoteServers)); // la copia del navegador no lleva los contactos privados
+      const contacts = await readParkingContacts();
+      if (!contacts) return remoteServers;
+      // Modo privado: el contacto manda; lo que aún quedara en parkingServers solo sirve mientras no exista el contacto (migración a medias).
+      return remoteServers.map((s) => (contacts.has(s.id) ? { ...s, phone: contacts.get(s.id).phone || '', notes: contacts.get(s.id).notes || '' } : s));
     } catch (error) {
       console.warn('No se pudieron leer los servidores de estacionamiento:', error);
       return localServers;
@@ -629,7 +654,29 @@
     }
 
     try {
-      const { id, ...data } = server;
+      const { id, phone, notes, ...rest } = server;
+      let data = { ...rest, ...(phone !== undefined ? { phone } : {}), ...(notes !== undefined ? { notes } : {}) }; // modo anterior
+      if (phone !== undefined || notes !== undefined) {
+        // Un valor vacío solo se guarda como «borrar» si esta sesión leyó ese contacto del servidor; si no, podría ser un formulario abierto sin los contactos.
+        const fields = {};
+        for (const [key, value] of [['phone', phone], ['notes', notes]]) {
+          if (value !== undefined && (value !== '' || (contactsLoaded && contactsLoaded.has(id)))) fields[key] = value;
+        }
+        if (Object.keys(fields).length) {
+          try {
+            await firebaseState.db.collection('parkingContacts').doc(id).set(fields, { merge: true });
+            contactsMode = 'privado';
+            if (contactsLoaded) contactsLoaded.set(id, { ...(contactsLoaded.get(id) || {}), ...fields });
+            // El contacto quedó en la colección privada: el servidor público conserva solo lo público y se retiran restos antiguos.
+            data = { ...rest, phone: firebase.firestore.FieldValue.delete(), notes: firebase.firestore.FieldValue.delete() };
+          } catch (error) {
+            // Solo si la colección protegida AÚN no existe (permiso denegado y nunca visto en modo privado) se guarda como antes.
+            // Con cualquier otro error, o en modo privado, no se escribe el teléfono en el servidor público: se informa del fallo.
+            if (!(error && error.code === 'permission-denied' && contactsMode !== 'privado')) throw error;
+            contactsMode = 'anterior';
+          }
+        }
+      }
       await firebaseState.db.collection('parkingServers').doc(id).set(data, { merge: true });
       return true;
     } catch (error) {
@@ -645,6 +692,8 @@
 
     try {
       await firebaseState.db.collection('parkingServers').doc(id).delete();
+      try { await firebaseState.db.collection('parkingContacts').doc(id).delete(); } catch (error) { /* sin colección protegida o sin contacto */ }
+      if (contactsLoaded) contactsLoaded.delete(id);
       return true;
     } catch (error) {
       console.warn('No se pudo borrar el servidor de estacionamiento:', error);
