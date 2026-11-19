@@ -611,6 +611,10 @@
   // contactsLoaded: última lectura CONFIRMADA por el servidor de parkingContacts en esta sesión (null = todavía ninguna). Solo con ella un valor vacío puede borrar un contacto.
   let contactsMode = 'desconocido';
   let contactsLoaded = null;
+  // Notas privadas: con las reglas del diseño de equipos viven en parkingNotes (solo administración; así parkingContacts puede compartirse con compañeros sin exponer notas).
+  // notesMode: 'desconocido' → 'privado' si parkingNotes respondió · 'anterior' si no existe o se denegó (las notas siguen en parkingContacts, como hasta ahora). notesLoaded: última lectura CONFIRMADA.
+  let notesMode = 'desconocido';
+  let notesLoaded = null;
   async function readParkingContacts() {
     if (!firebaseState.db || !firebaseState.auth) return null;
     try {
@@ -624,6 +628,22 @@
     } catch (error) {
       if (error && error.code === 'permission-denied') contactsMode = 'anterior';
       return null; // sin permiso o sin la colección protegida: se conserva lo que traiga parkingServers
+    }
+  }
+
+  async function readParkingNotes() {
+    if (!firebaseState.db || !firebaseState.auth) return null;
+    try {
+      if (firebaseState.auth.authStateReady) await firebaseState.auth.authStateReady();
+      if (!firebaseState.auth.currentUser) return null;
+      const snapshot = await firebaseState.db.collection('parkingNotes').get();
+      notesMode = 'privado';
+      const notes = new Map(snapshot.docs.map((doc) => [doc.id, doc.data()]));
+      if (!(snapshot.metadata && snapshot.metadata.fromCache)) notesLoaded = notes;
+      return notes;
+    } catch (error) {
+      if (error && error.code === 'permission-denied') notesMode = 'anterior'; // un error de red NO cambia el modo
+      return null;
     }
   }
 
@@ -641,7 +661,8 @@
       const contacts = await readParkingContacts();
       if (!contacts) return remoteServers;
       // Modo privado: el contacto manda; lo que aún quedara en parkingServers solo sirve mientras no exista el contacto (migración a medias).
-      return remoteServers.map((s) => (contacts.has(s.id) ? { ...s, phone: contacts.get(s.id).phone || '', notes: contacts.get(s.id).notes || '' } : s));
+      const notas = await readParkingNotes();
+      return remoteServers.map((s) => (contacts.has(s.id) ? { ...s, phone: contacts.get(s.id).phone || '', notes: (notas && notas.has(s.id) ? notas.get(s.id).notes : contacts.get(s.id).notes) || '' } : s));
     } catch (error) {
       console.warn('No se pudieron leer los servidores de estacionamiento:', error);
       return localServers;
@@ -657,16 +678,26 @@
       const { id, phone, notes, ...rest } = server;
       let data = { ...rest, ...(phone !== undefined ? { phone } : {}), ...(notes !== undefined ? { notes } : {}) }; // modo anterior
       if (phone !== undefined || notes !== undefined) {
-        // Un valor vacío solo se guarda como «borrar» si esta sesión leyó ese contacto del servidor; si no, podría ser un formulario abierto sin los contactos.
-        const fields = {};
+        // Un valor vacío solo se guarda como «borrar» si esta sesión leyó ese contacto (o esa nota) del servidor; si no, podría ser un formulario abierto sin los contactos.
+        const fields = {}; let notaPrivada;
         for (const [key, value] of [['phone', phone], ['notes', notes]]) {
-          if (value !== undefined && (value !== '' || (contactsLoaded && contactsLoaded.has(id)))) fields[key] = value;
+          if (value === undefined) continue;
+          const aparte = key === 'notes' && notesMode === 'privado', cargado = aparte ? (notesLoaded && notesLoaded.has(id)) : (contactsLoaded && contactsLoaded.has(id));
+          if (value !== '' || cargado) { if (aparte) notaPrivada = value; else fields[key] = value; }
+        }
+        if (notaPrivada !== undefined) {
+          // La nota va a parkingNotes ANTES de tocar el contacto (si falla, no se pierde nada) y el contacto no conserva notas (así su teléfono se puede compartir con compañeros).
+          const refNota = firebaseState.db.collection('parkingNotes').doc(id);
+          if (notaPrivada === '') await refNota.delete(); else await refNota.set({ notes: notaPrivada }, { merge: true });
+          if (notesLoaded) { if (notaPrivada === '') notesLoaded.delete(id); else notesLoaded.set(id, { notes: notaPrivada }); }
+          if (contactsLoaded && contactsLoaded.get(id) && contactsLoaded.get(id).notes) fields.notes = firebase.firestore.FieldValue.delete();
+          delete data.notes; // nunca viaja una nota al directorio público, aunque no haya que tocar el contacto
         }
         if (Object.keys(fields).length) {
           try {
             await firebaseState.db.collection('parkingContacts').doc(id).set(fields, { merge: true });
             contactsMode = 'privado';
-            if (contactsLoaded) contactsLoaded.set(id, { ...(contactsLoaded.get(id) || {}), ...fields });
+            if (contactsLoaded) { const previo = { ...(contactsLoaded.get(id) || {}) }; for (const [k, v] of Object.entries(fields)) { if (k === 'notes' && v && typeof v === 'object') delete previo.notes; else previo[k] = v; } contactsLoaded.set(id, previo); }
             // El contacto quedó en la colección privada: el servidor público conserva solo lo público y se retiran restos antiguos.
             data = { ...rest, phone: firebase.firestore.FieldValue.delete(), notes: firebase.firestore.FieldValue.delete() };
           } catch (error) {
@@ -693,6 +724,7 @@
     try {
       await firebaseState.db.collection('parkingServers').doc(id).delete();
       try { await firebaseState.db.collection('parkingContacts').doc(id).delete(); } catch (error) { /* sin colección protegida o sin contacto */ }
+      if (notesMode === 'privado') { try { await firebaseState.db.collection('parkingNotes').doc(id).delete(); } catch (error) { /* sin nota */ } if (notesLoaded) notesLoaded.delete(id); }
       if (contactsLoaded) contactsLoaded.delete(id);
       return true;
     } catch (error) {
