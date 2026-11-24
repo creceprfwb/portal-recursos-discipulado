@@ -305,7 +305,7 @@
       }
 
       async function loadData() {
-        state.events = await window.discipladoFirebase?.getCalendarEvents?.() || [];
+        state.events = await window.discipladoFirebase?.getPublicCalendar?.() || []; // solo el calendario público aprobado (el resto de eventos es privado)
         render();
       }
 

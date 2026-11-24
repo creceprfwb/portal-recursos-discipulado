@@ -544,8 +544,27 @@
       } catch (error) {
         console.warn('No se pudo cargar estacionamiento, mostrando calendario vacío:', error);
       }
+      if (window.discipladoFirebase?.parkingDenied?.()) { avisoSinPermiso(); return; }
       render();
     }
+
+    // El calendario es solo para el equipo autorizado: sin permiso se reemplaza todo por un aviso (no se deja un calendario vacío ni datos viejos).
+    async function avisoSinPermiso() {
+      const main = document.querySelector('main.shell'); if (!main) return;
+      const dentro = document.documentElement.classList.contains('app-mode');
+      Array.from(main.children).forEach((el) => { el.style.display = 'none'; }); // se ocultan (no se borran): el resto de la página sigue buscando esos elementos
+      main.insertAdjacentHTML('afterbegin', '<section class="card" role="status"><h2>Calendario solo para el equipo autorizado</h2><p>' + (dentro
+        ? 'Tu cuenta aún no tiene acceso a Estacionamiento. La administración te lo da al asignarte al ministerio Estacionamiento.'
+        : 'Para ver el calendario completo, entra a JEEC con tu cuenta y abre Estacionamiento. Si aún no tienes acceso, pídelo a la administración.') + '</p></section>');
+      if (dentro) return;
+      // Sitio público (CRECE y Wix): solo el calendario general aprobado por la administración (publicCalendar): sin nombres, servidores ni asignaciones.
+      const hoy = toDateInput(new Date());
+      const lista = ((await window.discipladoFirebase?.getPublicCalendar?.()) || []).filter((e) => e.date >= hoy).sort((x, y) => (x.date + (x.start || '')).localeCompare(y.date + (y.start || ''))).slice(0, 12);
+      main.insertAdjacentHTML('beforeend', '<section class="card" aria-label="Calendario general"><h2>Próximas fechas</h2>' + (lista.length
+        ? '<ul class="public-cal">' + lista.map((e) => '<li><strong>' + escapeHtml(new Date(e.date + 'T12:00:00').toLocaleDateString('es-PR', { weekday: 'long', day: 'numeric', month: 'long' })) + '</strong>' + (e.start ? ' · ' + escapeHtml(e.start) + (e.end ? '-' + escapeHtml(e.end) : '') : '') + ' · ' + escapeHtml(e.title) + '</li>').join('') + '</ul>'
+        : '<p>Aún no hay fechas publicadas.</p>') + '</section>');
+    }
+
 
     function getServer(id) {
       return state.servers.find((server) => server.id === id);

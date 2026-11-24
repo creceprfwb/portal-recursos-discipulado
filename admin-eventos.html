@@ -445,6 +445,17 @@
         </div>
       </section>
 
+      <section class="card tab-panel" id="tabPublico" hidden>
+        <h2>Publicar en el calendario público</h2>
+        <p class="muted">Elige, uno por uno, los eventos próximos que se mostrarán en CRECE y Wix. Solo se publican título, fecha, hora y categoría; nunca la descripción, el lugar ni el enlace. Nada se publica sin tu confirmación.</p>
+        <label class="muted" for="loteMax">Máximo de eventos por lote (1 a 50)</label>
+        <input id="loteMax" type="number" min="1" max="50" inputmode="numeric" style="max-width:120px">
+        <div id="loteLista" class="event-list"></div>
+        <h3>Vista previa pública</h3>
+        <div id="lotePrevia" class="muted"></div>
+        <div class="row-actions"><button id="lotePublicar" class="btn" type="button" disabled>Publicar seleccionados</button></div>
+        <div id="loteMsg" class="muted" role="status" aria-live="polite"></div>
+      </section>
       <section class="card tab-panel" id="tabForm" hidden>
         <h2 id="formTitle">Crear evento</h2>
         <form id="eventForm">
@@ -506,6 +517,10 @@
     <button type="button" class="tabbar-btn active" data-tab="tabAgenda">
       <span class="tabbar-icon">📅</span>
       <span>Agenda</span>
+    </button>
+    <button type="button" class="tabbar-btn" data-tab="tabPublico">
+      <span class="tabbar-icon">🌐</span>
+      <span>Público</span>
     </button>
     <button type="button" class="tabbar-btn" data-tab="tabForm">
       <span class="tabbar-icon">➕</span>
@@ -622,6 +637,7 @@
 
     async function loadData() {
       state.events = await window.discipladoFirebase?.getCalendarEvents?.() || [];
+      state.publicos = new Map(((await window.discipladoFirebase?.getPublicCalendar?.()) || []).map((p) => [p.id, p]));
       document.getElementById('dateInput').value = state.selectedDate;
       render();
     }
@@ -638,6 +654,7 @@
       renderCalendar();
       renderEventsForSelectedDate();
       renderAgendaList();
+      renderLote();
     }
 
     function renderAgendaList() {
@@ -662,6 +679,63 @@
       });
       els.agendaList.innerHTML = html;
     }
+
+    // ===== Publicar varios eventos próximos en el calendario público =====
+    // Selección individual (nada viene marcado), vista previa de los campos públicos, confirmación explícita y un máximo por lote. Reutiliza publishPublicEvent (solo copia título, fecha, hora, categoría, color y recurrencia).
+    const LOTE_TOPE = 50, LOTE_CLAVE = 'prfwb-lote-publico-max';
+    const lote = { sel: new Set() };
+    function loteMax() {
+      let n = 10; try { n = parseInt(localStorage.getItem(LOTE_CLAVE) || '10', 10); } catch (e) { /* sin almacenamiento */ }
+      return Math.min(LOTE_TOPE, Math.max(1, n || 10));
+    }
+    const horaPublica = (e) => (e.start ? e.start + (e.end ? '-' + e.end : '') : 'sin hora');
+    function lotePendientes() {
+      const hoy = toDateInput(new Date());
+      return state.events
+        .filter((e) => e.date >= hoy && !(state.publicos && state.publicos.get(e.id) && publicoAlDia(e, state.publicos.get(e.id))))
+        .sort((a, b) => (a.date + (a.start || '')).localeCompare(b.date + (b.start || '')))
+        .slice(0, 100);
+    }
+    function renderLote() {
+      const cont = document.getElementById('loteLista'); if (!cont) return;
+      const pend = lotePendientes();
+      lote.sel = new Set(Array.from(lote.sel).filter((id) => pend.some((e) => e.id === id)));
+      document.getElementById('loteMax').value = loteMax();
+      cont.innerHTML = pend.map((e) => `<label class="row"><input type="checkbox" data-lote="${escapeHtml(e.id)}"${lote.sel.has(e.id) ? ' checked' : ''}> <span><strong>${escapeHtml(e.title)}</strong><br><span class="muted">${escapeHtml(formatDate(e.date))} · ${escapeHtml(horaPublica(e))} · ${escapeHtml(e.category || 'General')}${state.publicos && state.publicos.get(e.id) ? ' · ya hay una versión pública anterior' : ''}</span></span></label>`).join('') || '<div class="muted">No hay eventos próximos pendientes de publicar.</div>';
+      const elegidos = pend.filter((e) => lote.sel.has(e.id));
+      document.getElementById('lotePrevia').innerHTML = elegidos.length
+        ? '<ul>' + elegidos.map((e) => `<li>${escapeHtml(e.title)} — ${escapeHtml(formatDate(e.date))}, ${escapeHtml(horaPublica(e))}, ${escapeHtml(e.category || 'General')}</li>`).join('') + '</ul><div>No se copian la descripción, el lugar ni el enlace.</div>'
+        : 'Marca los eventos que quieres mostrar al público.';
+      const btn = document.getElementById('lotePublicar');
+      btn.disabled = !elegidos.length;
+      btn.textContent = elegidos.length ? `Publicar ${elegidos.length} seleccionado${elegidos.length === 1 ? '' : 's'}` : 'Publicar seleccionados';
+    }
+    async function publicarLote() {
+      const elegidos = lotePendientes().filter((e) => lote.sel.has(e.id)).slice(0, loteMax());
+      if (!elegidos.length) return;
+      const aviso = [`Se publicarán ${elegidos.length} evento(s) en el calendario público (CRECE y Wix).`, 'Solo se muestran título, fecha, hora y categoría. Revisa que los títulos no tengan nombres de personas.', '¿Confirmas la publicación?'];
+      if (!confirm(aviso.join(String.fromCharCode(10, 10)))) return;
+      const msg = document.getElementById('loteMsg'); msg.textContent = 'Publicando…';
+      let hechos = 0;
+      for (const e of elegidos) { if (await window.discipladoFirebase?.publishPublicEvent?.(e)) hechos += 1; }
+      lote.sel.clear();
+      await loadData();
+      msg.textContent = hechos === elegidos.length ? `Se publicaron ${hechos} evento(s).` : `Se publicaron ${hechos} de ${elegidos.length}. Verifica tu sesión e inténtalo de nuevo con los que faltan.`;
+    }
+    document.getElementById('loteLista')?.addEventListener('change', (ev) => {
+      const box = ev.target.closest('input[data-lote]'); if (!box) return;
+      if (box.checked && lote.sel.size >= loteMax()) { box.checked = false; document.getElementById('loteMsg').textContent = `El máximo por lote es ${loteMax()}. Publica este lote o cambia el máximo.`; return; }
+      document.getElementById('loteMsg').textContent = '';
+      if (box.checked) lote.sel.add(box.dataset.lote); else lote.sel.delete(box.dataset.lote);
+      renderLote();
+    });
+    document.getElementById('loteMax')?.addEventListener('change', (ev) => {
+      const n = Math.min(LOTE_TOPE, Math.max(1, parseInt(ev.target.value, 10) || 10));
+      try { localStorage.setItem(LOTE_CLAVE, String(n)); } catch (e) { /* sin almacenamiento */ }
+      lote.sel = new Set(Array.from(lote.sel).slice(0, n));
+      renderLote();
+    });
+    document.getElementById('lotePublicar')?.addEventListener('click', publicarLote);
 
     function activateTab(tabId) {
       document.querySelectorAll('.tab-panel').forEach((panel) => {
@@ -720,6 +794,31 @@
       els.eventList.innerHTML = items.map(renderEventRow).join('') || '<div class="muted">No hay eventos para este dia.</div>';
     }
 
+    // Calendario público (CRECE y Wix): solo lo que se aprueba aquí, con campos mínimos. Nada se publica solo.
+    const PUB_CAMPOS = ['title', 'date', 'start', 'end', 'category', 'isRecurring'];
+    const publicoAlDia = (item, pub) => PUB_CAMPOS.every((k) => (item[k] || (k === 'isRecurring' ? false : '')) === (pub[k] || (k === 'isRecurring' ? false : '')));
+    function renderPublico(item) {
+      const pub = state.publicos && state.publicos.get(item.id);
+      const boton = (accion, texto) => `<button class="btn light small" type="button" onclick="${accion}('${item.id}')">${texto}</button>`;
+      if (!pub) return `<div class="muted">Privado: no aparece en el calendario público.</div><div class="row-actions">${boton('publishEvent', 'Publicar en el calendario público')}</div>`;
+      const alDia = publicoAlDia(item, pub);
+      return `<div class="muted">${alDia ? 'Público (solo título, fecha, hora y categoría).' : 'Público, pero la versión pública es anterior a tus cambios.'}</div><div class="row-actions">${alDia ? '' : boton('publishEvent', 'Actualizar versión pública')}${boton('unpublishEvent', 'Retirar de lo público')}</div>`;
+    }
+    async function publishEvent(id) {
+      const item = state.events.find((entry) => entry.id === id); if (!item) return;
+      const aviso = ['Se mostrará en el calendario público (CRECE y Wix) SOLO: título, fecha, hora y categoría. No se muestran descripción, lugar ni enlace.', 'Revisa que el título no tenga nombres de personas.', `"${item.title}" — ${item.date}`, '¿Publicar?'];
+      if (!confirm(aviso.join(String.fromCharCode(10, 10)))) return;
+      const ok = await window.discipladoFirebase?.publishPublicEvent?.(item);
+      if (!ok) { alert('No se pudo publicar. Verifica que tu sesion siga activa.'); return; }
+      await loadData();
+    }
+    async function unpublishEvent(id) {
+      if (!confirm('¿Retirar este evento del calendario público? El evento sigue guardado aquí.')) return;
+      const ok = await window.discipladoFirebase?.unpublishPublicEvent?.(id);
+      if (!ok) { alert('No se pudo retirar. Verifica que tu sesion siga activa.'); return; }
+      await loadData();
+    }
+
     function renderEventRow(item) {
       const cleaned = cleanDescription(item.description || '');
       const link = item.link || cleaned.link;
@@ -739,6 +838,7 @@
             <button class="btn light small" type="button" onclick="editEvent('${item.id}')">Editar</button>
             <button class="btn danger small" type="button" onclick="deleteEvent('${item.id}')">Borrar</button>
           </div>
+          ${renderPublico(item)}
         </article>
       `;
     }
@@ -778,6 +878,7 @@
         return;
       }
       state.events = state.events.filter((item) => item.id !== id);
+      if (state.publicos) state.publicos.delete(id);
       render();
     }
 

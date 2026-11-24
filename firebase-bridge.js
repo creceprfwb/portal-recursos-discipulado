@@ -647,6 +647,14 @@
     }
   }
 
+  // El calendario ya NO es público: sin permiso (permission-denied) no se muestra NADA, ni siquiera la copia guardada en este navegador (podría ser de antes de retirar el acceso).
+  let parkingDenied = false;
+  function sinPermisoCalendario(error, clave) {
+    if (!error || error.code !== 'permission-denied') return false;
+    parkingDenied = true; try { localStorage.removeItem(clave); } catch (e) { /* sin almacenamiento */ }
+    return true;
+  }
+
   async function getParkingServers() {
     const localServers = JSON.parse(localStorage.getItem(parkingServersStorageKey) || 'null') || [];
 
@@ -664,6 +672,7 @@
       const notas = await readParkingNotes();
       return remoteServers.map((s) => (contacts.has(s.id) ? { ...s, phone: contacts.get(s.id).phone || '', notes: (notas && notas.has(s.id) ? notas.get(s.id).notes : contacts.get(s.id).notes) || '' } : s));
     } catch (error) {
+      if (sinPermisoCalendario(error, parkingServersStorageKey)) return [];
       console.warn('No se pudieron leer los servidores de estacionamiento:', error);
       return localServers;
     }
@@ -746,6 +755,7 @@
       localStorage.setItem(parkingAssignmentsStorageKey, JSON.stringify(remoteAssignments));
       return remoteAssignments;
     } catch (error) {
+      if (sinPermisoCalendario(error, parkingAssignmentsStorageKey)) return [];
       console.warn('No se pudieron leer las asignaciones de estacionamiento:', error);
       return localAssignments;
     }
@@ -793,9 +803,47 @@
       localStorage.setItem(calendarEventsStorageKey, JSON.stringify(remoteEvents));
       return remoteEvents;
     } catch (error) {
+      if (sinPermisoCalendario(error, calendarEventsStorageKey)) return [];
       console.warn('No se pudieron leer los eventos del calendario:', error);
       return localEvents;
     }
+  }
+
+  // ===== Calendario PÚBLICO (publicCalendar): copia mínima y APROBADA de un evento. Es lo único que lee el sitio público (CRECE y Wix). =====
+  // Campos públicos: título, fecha, hora, categoría, color y si es recurrente. NUNCA descripción, lugar, enlace, servidores ni asignaciones.
+  const publicCalendarStorageKey = 'prfwb-public-calendar-v1';
+  async function getPublicCalendar() {
+    const local = JSON.parse(localStorage.getItem(publicCalendarStorageKey) || 'null') || [];
+    if (!firebaseState.isConfigured || !firebaseState.db) return local;
+    try {
+      const snapshot = await firebaseState.db.collection('publicCalendar').get();
+      const items = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      localStorage.setItem(publicCalendarStorageKey, JSON.stringify(items));
+      return items;
+    } catch (error) {
+      console.warn('No se pudo leer el calendario público:', error);
+      return local;
+    }
+  }
+  const publicCopy = (e) => {
+    const o = { title: String(e.title || '').slice(0, 100), date: e.date || '', approvedAt: firebase.firestore.FieldValue.serverTimestamp() };
+    if (e.start) o.start = String(e.start).slice(0, 5);
+    if (e.end) o.end = String(e.end).slice(0, 5);
+    if (e.category) o.category = String(e.category).slice(0, 40);
+    if (/^#[0-9a-fA-F]{3,8}$/.test(e.color || '')) o.color = e.color;
+    o.isRecurring = Boolean(e.isRecurring);
+    return o;
+  };
+  // Solo la llama el botón «Publicar» de la administración (una persona aprueba cada evento). No hay ninguna copia automática.
+  async function publishPublicEvent(event) {
+    if (!event || !event.id || !event.title || !event.date || !firebaseState.db || !firebaseState.auth?.currentUser) return false;
+    try { await firebaseState.db.collection('publicCalendar').doc(event.id).set(publicCopy(event)); return true; }
+    catch (error) { console.warn('No se pudo publicar el evento:', error); return false; }
+  }
+  async function unpublishPublicEvent(id) {
+    if (!id || !firebaseState.db || !firebaseState.auth?.currentUser) return false;
+    try { await firebaseState.db.collection('publicCalendar').doc(id).delete(); return true; }
+    catch (error) { console.warn('No se pudo retirar el evento público:', error); return false; }
   }
 
   async function createCalendarEvent(payload) {
@@ -880,6 +928,7 @@
 
     try {
       await firebaseState.db.collection('calendarEvents').doc(id).delete();
+      try { await firebaseState.db.collection('publicCalendar').doc(id).delete(); } catch (e) { /* sin copia pública o sin permiso: no bloquea */ }
       return true;
     } catch (error) {
       console.warn('No se pudo borrar el evento del calendario:', error);
@@ -912,6 +961,10 @@
     saveParkingAssignment,
     deleteParkingAssignment,
     getCalendarEvents,
+    getPublicCalendar,
+    publishPublicEvent,
+    unpublishPublicEvent,
+    parkingDenied: () => parkingDenied,
     createCalendarEvent,
     saveCalendarEvent,
     updateCalendarEvent,
